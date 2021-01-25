@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const debug = require('debug')(`node-script:greet`);
+
+debug(`Inside the greet module: argv.length=${ process.argv.length }`);
+
+if (process.argv.length != 3) {
+  console.log(`Hello, world!!!`);  
+} else {
+  console.log(`Hello to ${ process.argv[2] }!!!`);
+}
+

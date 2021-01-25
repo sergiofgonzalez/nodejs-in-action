@@ -1,0 +1,31 @@
+{
+  "name": "e01-dice-experiment-infinite-sequences",
+  "version": "0.0.1",
+  "description": "Throwing dice modeled as infinite sequences",
+  "engines": {
+    "node": "6.10.10",
+    "npm": "3.10.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.16.1"
+  },
+  "dependencies": {},
+  "scripts": {
+    "prestart": "npm run lint",
+    "start": "node app/src/index.js",
+    "lint": "eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "node --inspect --debug-brk app/src/index.js",
+    "dev": "nodemon --ext js,json,yml --watch app/src --watch .eslintrc.yml --exec 'npm start'"
+  }
+}

@@ -1,0 +1,6 @@
+node_modules
+.vscode
+.nyc_output
+coverage
+*.pem
+tokens.db

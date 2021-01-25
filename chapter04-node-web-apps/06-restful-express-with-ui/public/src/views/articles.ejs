@@ -1,0 +1,17 @@
+<% include head %>
+<div class="container-fluid">
+  <% if (articles.length === 0) { %>
+    <h2>No articles found!</h2>
+  <% } else { %>
+    <ul>
+      <% articles.forEach(article => { %>
+        <li>
+          <a href="/articles/<%= article.id %>">
+            <%= article.title %>
+          </a>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</div>
+<% include foot %>

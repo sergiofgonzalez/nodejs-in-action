@@ -1,0 +1,9 @@
+#
+## Application Properties
+#
+
+logger:
+  format: ":date[iso] :method :url :status :response-time msec :res[content-length] bytes"
+
+server:
+  port: 5050

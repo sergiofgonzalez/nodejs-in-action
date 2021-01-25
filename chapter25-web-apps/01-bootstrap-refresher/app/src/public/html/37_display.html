@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/styles1.css">
+
+    <title>Web Apps &mdash; Bootstrap Refresher</title>
+  </head>
+  <body>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active">Utilities</li>
+        <li class="breadcrumb-item active" aria-current="page">Display</li>
+      </ol>
+    </nav>
+    <h1>Bootstrap Refresher &raquo; Utilities: Display</h1>
+
+    <!-- Intro -->
+    <div class="container">
+      <h2>Display</h2>
+      <p>
+        Quickly toggle the <code>display</code> value of a component with these utilities.
+      </p>
+    </div>
+
+    <!-- d-inline -->
+    <div class="container">
+      <h2><code>.d-inline</code></h2>
+      <div class="container">
+        <div class="p-2 bg-primary text-white">normal</div>
+        <div class="p-2 bg-dark text-white">normal</div>
+      </div>
+      <div class="container">
+        <div class="d-inline p-2 bg-primary text-white">.d-inline</div>
+        <div class="d-inline p-2 bg-dark text-white">.d-inline</div>
+      </div>
+    </div>
+    <!-- end: d-inline -->
+
+    <!-- hiding elements -->
+    <div class="container">
+      <h2>Responsively hiding elements</h2>
+      <div class="container" style="width: 60%;">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Behavior</th>
+              <th scope="col">Class</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Hidden on all breakpoints</td><td><code>.d-none</code></td></tr>
+            <tr><td>Hidden only on xs</td><td><code>.d-none .d-sm-block</code></td></tr>
+            <tr><td>Hidden only on sm</td><td><code>.d-sm-none .d-md-block</code></td></tr>
+            <tr><td>Hidden only on md</td><td><code>.d-md-none .d-lg-block</code></td></tr>
+            <tr><td>Hidden only on lg</td><td><code>.d-lg-none .d-xl-block</code></td></tr>
+            <tr><td>Hidden only on xl</td><td><code>.d-xl-none</code></td></tr>
+            <tr><td>Visible across all breakpoints</td><td><code>.d-block</code></td></tr>
+            <tr><td>Visible only on xs</td><td><code>.d-block .d-sm-none</code></td></tr>
+            <tr><td>Visible only on sm</td><td><code>.d-none .d-sm-block .d-md-none</code></td></tr>
+            <tr><td>Visible only on md</td><td><code>.d-none .d-md-block .d-lg-none</code></td></tr>
+            <tr><td>Visible only on lg</td><td><code>.d-none .d-lg-block .d-xl-none</code></td></tr>
+            <tr><td>Visible only on xl</td><td><code>.d-none .d-xl-block</code></td></tr>
+            <tr><td>Visible on md or larger</td><td><code>.d-none .d-md-block</code></td></tr>
+            <tr><td>Visible on smaller than md</td><td><code>.d-md-none</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="container">
+        <div class="d-none d-md-block">Show only on screens larger than md</div>
+        <div class="d-md-none bg-dark text-white">Show only on screens smaller than md</div>
+      </div>
+    </div>
+    <!-- end: hiding elements -->
+
+    <!-- Printing -->
+    <div class="container">
+      <h2>Controlling Print elements</h2>
+      <div class="d-print-none">Screen only (will be hidden when printing)</div>
+      <div class="d-none d-print-block">Print Only (will not be showing on screen)</div>
+      <div class="d-none d-lg-block d-print-block">Hide up to large screes, but always show on print</div>
+    </div>
+    <!-- end: Printing-->
+
+
+    <!-- Bootstrap JavaScript for behavior -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+</html>

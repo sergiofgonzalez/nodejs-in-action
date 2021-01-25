@@ -1,0 +1,46 @@
+{
+  "name": "e04-express-https-rest",
+  "version": "0.0.1",
+  "description": "Serving not only static websites from a Express application",
+  "main": "index.js",
+  "engines": {
+    "node": "9.8.0",
+    "npm": "5.7.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "4.18.2"
+  },
+  "config": {
+    "debugModules": "server:*"
+  },
+  "dependencies": {
+    "debug": "3.1.0",
+    "ejs": "2.5.7",
+    "express": "4.16.3",
+    "helmet": "3.12.0",
+    "js-yaml": "3.11.0",
+    "nconf": "0.10.0",
+    "serve-favicon": "2.4.5"
+  },
+  "scripts": {
+    "setup": "rm -rf node_modules && npm install",
+    "prestart": "npm run lint",
+    "start": "DEBUG=${npm_package_config_debugModules:-$npm_package_name} node ./app/src/bin/www",
+    "lint": "eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "DEBUG=${npm_package_config_debugModules:-$npm_package_name} node --inspect-brk=${npm_config_debugHost:-127.0.0.1} ./app/src/bin/www",
+    "dev": "node_modules/.bin/nodemon --ext js,json,yml,ejs --watch app/src --watch .eslintrc.yml --watch package.json --exec 'npm start'",
+    "pretest": "./node_modules/.bin/eslint app/tst/",
+    "test": "node app/tst/test.js"
+  }
+}

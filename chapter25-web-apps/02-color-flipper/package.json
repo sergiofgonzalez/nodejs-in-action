@@ -1,0 +1,46 @@
+{
+  "name": "web-dev-nodejs-in-action",
+  "version": "0.0.1",
+  "description": "Node.js project template for JavaScript examples in the browser",
+  "main": "./bin/www",
+  "engines": {
+    "node": "14.x.x",
+    "npm": "6.14.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/eloquent-js.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {
+    "debugModules": "disabled"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-eslint": "10.1.0",
+    "eslint": "6.8.0"
+  },
+  "dependencies": {
+    "compression": "1.7.4",
+    "debug": "4.1.1",
+    "dotenv": "8.2.0",
+    "ejs": "3.1.3",
+    "express": "4.17.1",
+    "helmet": "3.22.0",
+    "morgan": "1.10.0",
+    "serve-favicon": "2.5.0",
+    "winston": "3.2.1"
+  },
+  "scripts": {
+    "prestart": "npm run lint",
+    "start": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node app/src/${npm_package_main}",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk=${npm_config_debugHost:-127.0.0.1} app/src/${npm_package_main}",
+    "freshen-deps": "./scripts/freshen.sh"
+  }
+}

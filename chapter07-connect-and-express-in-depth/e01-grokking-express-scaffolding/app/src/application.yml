@@ -1,0 +1,10 @@
+#
+## Application Properties
+#
+
+logger:
+  format: "dev" #":date[iso] :method :url :status :response-time msec"
+
+server:
+  port: 5000
+  public: "public"

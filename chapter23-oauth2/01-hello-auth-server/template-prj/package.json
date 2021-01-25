@@ -1,0 +1,48 @@
+{
+  "name": "01-hello-oauth2",
+  "version": "0.0.1",
+  "description": "The simplest setup for Node.js OAuth2 components.",
+  "engines": {
+    "node": "10.x.x",
+    "npm": "6.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {
+    "debugModules": "auth-server:*"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "5.16.0"
+  },
+  "dependencies": {
+    "body-parser": "1.18.3",
+    "cookie-parser": "1.4.4",
+    "debug": "4.1.1",
+    "ejs": "2.6.1",
+    "express": "4.16.4",
+    "express-session": "1.16.1",
+    "helmet": "3.16.0",
+    "js-yaml": "3.13.1",
+    "morgan": "1.9.1",
+    "nconf": "0.10.0",
+    "serve-favicon": "2.5.0"
+  },
+  "scripts": {
+    "setup": "rm -rf node_modules && rm -f package-lock.json && rm -rf .nyc_output coverage && npm install",
+    "prestart": "npm run lint",
+    "start": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node app/src/bin/www",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk=${npm_config_debugHost:-127.0.0.1} app/src/bin/www",
+    "dev": "node_modules/.bin/nodemon --ext js,json,yml, --watch app/src --watch .eslintrc.yml --exec 'npm start'",
+    "test": "echo nothing to do\n"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "fpjs",
+  "version": "0.0.1",
+  "description": "Functional Programming examples using vanilla JS/Node.js",
+  "main": "index.js",
+  "exports": "index.js",
+  "engines": {
+    "node": "14.x.x",
+    "npm": "6.14.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {},
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "7.0.0",
+    "tap": "14.10.7"
+  },
+  "dependencies": {
+    "@hapi/joi": "17.1.1"
+  },
+  "scripts": {
+    "prestart": "npm run lint",
+    "start": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node app/src/${npm_package_main}",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "pretest": "npm run lint",
+    "test": "tap app/test/ --bail --coverage-report=lcov",
+    "test-one": "tap app/tst/bubble-sort.js",
+    "predebug": "npm run lint",
+    "debug": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/src/${npm_package_main}",
+    "debug-test": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/tst/nth-test.js",
+    "freshen-deps": "./scripts/freshen.sh"
+  }
+}

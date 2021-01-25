@@ -1,0 +1,12 @@
+#
+## Application Properties
+#
+
+server:
+  port: 8443
+
+  public: "public"
+
+  https:
+    server-key: "./app/src/certs/server.key"
+    server-cert: ./app/src/certs/server.crt

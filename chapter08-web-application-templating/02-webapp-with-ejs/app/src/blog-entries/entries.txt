@@ -1,0 +1,8 @@
+title: Hello blog!
+date: May 8, 2016
+I've decided to start my own blog
+---
+title: Goodbye blog!
+date: May 9, 2016
+I've just realised I don't have time for this stuff, so
+I'm abandoning the blog.

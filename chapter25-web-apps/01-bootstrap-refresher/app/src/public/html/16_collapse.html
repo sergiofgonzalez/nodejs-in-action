@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/styles1.css">
+
+    <title>Web Apps &mdash; Bootstrap Refresher</title>
+  </head>
+  <body>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active">Components</li>
+        <li class="breadcrumb-item active" aria-current="page">Collapse</li>
+      </ol>
+    </nav>
+    <h1>Bootstrap Refresher &raquo; Components: Collapse</h1>
+
+
+    <div class="container">
+      <h2>Collapse <small class="text-muted"> A JavaScript component to show and hide content</small></h2>
+      <p>
+        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Link with href
+        </a>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          Button with data-target
+        </button>
+      </p>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+          This section will be shown or hidden by clicking on the link or button above.
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Collapse <small class="text-muted"> with multiple targets</small></h2>
+      <p>
+        <a class="btn btn-primary" data-toggle="collapse" href="#multipleCollapseExample1" role="button" aria-expanded="false" aria-controls="multipleCollapseExample1">link to toggle first elem</a>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multipleCollapseExample2" aria-expanded="false" aria-controls="multipleCollapseExample2">Button to toggle second elem</button>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multipleCollapseExample1 multipleCollapseExample2">Button to toggle both elems</button>
+      </p>
+      <div class="row">
+        <div class="col">
+          <div class="collapse multi-collapse" id="multipleCollapseExample1">
+            <div class="card card-body">
+              This is the first toggable element. This section will be shown or hidden by clicking on the link or button above.
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="collapse multi-collapse" id="multipleCollapseExample2">
+            <div class="card card-body">
+              This is the second toggable element. This section will be shown or hidden by clicking on the link or button above.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Accordion <small class="text-muted"> multiple collapsible links</small></h2>
+      <div class="accordion" id="accordionExample">
+        <div class="card">
+          <!-- heading one-->
+          <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Collapsible Group Item #1
+              </button>
+            </h2>
+          </div>
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+              First toggable card of the accordion
+            </div>
+          </div>
+
+          <!-- heading two -->
+          <div class="card-header" id="headingTwo">
+            <h2 class="mb-0">
+              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                Collapsible Group Item #2
+              </button>
+            </h2>
+          </div>
+          <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body">
+              Second toggable card of the accordion
+            </div>
+          </div>
+
+          <!-- heading three -->
+          <div class="card-header" id="headingThree">
+            <h2 class="mb-0">
+              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                Collapsible Group Item #3
+              </button>
+            </h2>
+          </div>
+          <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordionExample">
+            <div class="card-body">
+              Third toggable card of the accordion
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Bootstrap JavaScript for behavior -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

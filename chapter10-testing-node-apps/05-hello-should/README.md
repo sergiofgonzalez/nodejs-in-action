@@ -1,0 +1,28 @@
+# 05-hello-should
+> an introduction to the `should` assertion library.
+
+## Description
+*Should* is an assertion library that lets you express assertion in a BDD style.
+
+
+```javascript
+const tips = require("../src/lib/tips.js");
+const should = require("should"); // eslint-disable-line no-unused-vars 
+
+const tax = 0.12;
+const tip = 0.15;
+const prices = [10, 20];
+
+const pricesWithTipAndTax = tips.addPercentageToEach(prices, tip + tax);
+pricesWithTipAndTax[0].should.equal(12.7);
+pricesWithTipAndTax[1].should.equal(25.4);
+
+const totalAmount = tips.sum(pricesWithTipAndTax).toFixed(2);
+totalAmount.should.equal("38.10");
+
+const totalAmountAsCurrency = tips.dollarFormat(totalAmount);
+totalAmountAsCurrency.should.equal("$38.10");
+
+const tipAsPercent = tips.percentFormat(tip);
+tipAsPercent.should.equal("15%");
+```

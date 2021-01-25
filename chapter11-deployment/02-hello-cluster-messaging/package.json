@@ -1,0 +1,35 @@
+{
+  "name": "02-hello-cluster-messaging",
+  "version": "0.0.1",
+  "description": "Basis of Node.js cluster messaging functionality",
+  "main": "index.js",
+  "engines": {
+    "node": "8.0.0",
+    "npm": "5.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.19.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "setup": "rm -rf node_modules && npm install",
+    "prestart": "npm run lint",
+    "start": "node app/src/$npm_package_main",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "node --inspect-brk=${npm_config_debugHost:-127.0.0.1} app/src/$npm_package_main",
+    "dev": "node_modules/.bin/nodemon --ext js,json,yml --watch app/src --watch .eslintrc.yml --exec 'npm start'",
+    "pretest": "./node_modules/.bin/eslint app/tst/",
+    "test": "node app/tst/todo.js"
+  }
+}

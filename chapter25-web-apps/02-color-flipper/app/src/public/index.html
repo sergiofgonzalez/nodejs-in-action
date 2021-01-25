@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- OpenIconic Icons -->
+    <link rel="stylesheet" href="stylesheets/open-iconic/font/css/open-iconic-bootstrap.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+
+    <title>Color Flipper</title>
+  </head>
+  <body>
+
+    <!-- Bootstrap Navbar component with nav elements -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">Color Flipper</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <div class="navbar-nav" id="navBar">
+          <a class="nav-item nav-link active" href="#">Simple</a>
+          <a class="nav-item nav-link" href="#">Hex</a>
+        </div>
+      </div>
+    </nav>
+
+    <div id="nonNavArea" style="min-height: calc(100vh - 3.5rem); background: #f1f5f8;">
+      <div class="container" style="height: 90vh;">
+        <div class="row align-items-center h-100">
+          <div class="col-8 mx-auto">
+            <div class="card text-center text-white bg-dark mb-3" style="width: 100%">
+              <div class="card-body">
+                <h2 class="card-title">Background Color: <span id="colorName" style="color:rgba(73, 166, 233, 1)">#f1f5f8</span></h2>
+              </div>
+            </div> <!-- card -->
+            <div class="row justify-content-center">
+              <button type="button" id="changeColorBtn" class="btn btn-lg btn-outline-dark">Click Me</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript-->
+    <script src="javascript/app.js" type="module"></script>
+  </body>
+</html>

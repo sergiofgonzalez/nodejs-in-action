@@ -1,0 +1,40 @@
+{
+  "name": "01-hello-express",
+  "version": "0.0.1",
+  "description": "The simplest HTTP server using the Express framework",
+  "engines": {
+    "node": "6.9.2",
+    "npm": "3.10.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.13.0"
+  },
+  "dependencies": {
+  },
+  "config": {
+    "PROPERTIES_FILENAME": "application.yml"
+  },
+  "scripts": {
+    "start": "node build/index.js",
+    "lint": "eslint public/src/",
+    "clean": "rm -rf build/",
+    "copy": "cp -r public/src/ build/",
+    "build": "npm run lint",
+    "prebuild": "npm run clean",
+    "postbuild": "npm run copy",
+    "debug": "node --inspect --debug-brk build/index.js",
+    "dev": "nodemon --ext js,json,yml --watch public/src --watch .eslintrc.yml --exec 'npm run build --silent && npm start --silent'",
+    "b+r": "npm run build && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

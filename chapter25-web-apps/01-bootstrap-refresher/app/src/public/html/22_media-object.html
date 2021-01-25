@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/styles1.css">
+
+    <title>Web Apps &mdash; Bootstrap Refresher</title>
+  </head>
+  <body>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active">Components</li>
+        <li class="breadcrumb-item active" aria-current="page">Media Object</li>
+      </ol>
+    </nav>
+    <h1>Bootstrap Refresher &raquo; Components: Media Object</h1>
+
+    <!-- Intro -->
+    <div class="container">
+      <h2>Media Object</h2>
+      <p>
+        Use the media object component to construct a highly repetitive components like blog comments, tweets...
+      </p>
+    </div>
+
+    <!-- Basic -->
+    <div class="container">
+      <h2>Basic Example</h2>
+      <div class="media">
+        <img src="/images/bomb.png" class="mr-3" width="64" height="64">
+        <div class="media-body">
+          <h5 class="mt-0">Media heading</h5>
+          This is the text that goes in the media body
+        </div>
+      </div>
+    </div>
+    <!-- end: basic-->
+
+    <!-- Nested -->
+    <div class="container">
+      <h2>Media Object <small class="text-muted">with nesting</small></h2>
+      <div class="media">
+        <img src="/images/bomb.png" class="mr-3" width="64" height="64">
+        <div class="media-body">
+          <h5 class="mt-0">Media heading</h5>
+          This is the text that goes in the media body for the outer media object
+          <div class="media mt-3">
+            <a class="mr-3" href="#">
+              <img src="/images/bomb.png" class="mr-3" width="64" height="64">
+            </a>
+            <div class="media-body">
+              <h5 class="mt-0">Media heading</h5>
+              This the text that goes in the media body for the nested media object
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end: Nested -->
+
+    <!-- Alignment -->
+    <div class="container">
+      <h2>Media Object <small class="text-muted">alignment examples</small></h2>
+      <!-- aligned top -->
+      <div class="media">
+        <img src="/images/bomb.png" class="align-self-start mr-3" width="64" height="64">
+        <div class="media-body">
+          <h5 class="mt-0">Top aligned media</h5>
+          <p>This is the first paragraph of the media object</p>
+          <p>This is the second paragraph of the media object</p>
+        </div>
+      </div>
+
+      <!-- aligned center -->
+      <div class="media">
+        <img src="/images/bomb.png" class="align-self-center mr-3" width="64" height="64">
+        <div class="media-body">
+          <h5 class="mt-0">Centered aligned media</h5>
+          <p>This is the first paragraph of the media object</p>
+          <p>This is the second paragraph of the media object</p>
+        </div>
+      </div>
+
+      <!-- aligned bottom -->
+      <div class="media">
+        <img src="/images/bomb.png" class="align-self-end mr-3" width="64" height="64">
+        <div class="media-body">
+          <h5 class="mt-0">Bottom aligned media</h5>
+          <p>This is the first paragraph of the media object</p>
+          <p>This is the second paragraph of the media object</p>
+        </div>
+      </div>
+    </div>
+    <!-- end: Alignment -->
+
+    <!-- order -->
+    <div class="container">
+      <h2>Basic Example <small class="text-muted">changing the order</small></h2>
+      <div class="media">
+        <div class="media-body">
+          <h5 class="mt-0 mb-1">Media body</h5>
+          This is the text that goes in the media body
+        </div>
+        <img src="/images/bomb.png" class="mr-3" width="64" height="64">
+      </div>
+    </div>
+    <!-- end: order-->
+
+    <!-- media list -->
+    <div class="container">
+      <h2>Basic Example <small class="text-muted"> using a list</small></h2>
+      <ul class="list-unstyled">
+        <li class="media">
+          <img src="/images/bomb.png" class="mr-3" width="64" height="64">
+          <div class="media-body">
+            <h5 class="mt-0 mb-1">List-based media object</h5>
+            this is the text that goes with the list item.
+          </div>
+        </li>
+        <li class="media my-4">
+          <img src="/images/bomb.png" class="mr-3" width="64" height="64">
+          <div class="media-body">
+            <h5 class="mt-0 mb-1">List-based media object</h5>
+            this is the text that goes with the second list item.
+          </div>
+        </li>
+        <li class="media">
+          <img src="/images/bomb.png" class="mr-3" width="64" height="64">
+          <div class="media-body">
+            <h5 class="mt-0 mb-1">List-based media object</h5>
+            this is the text that goes with the third list item.
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!-- end: list-->
+
+
+
+
+
+    <!-- Bootstrap JavaScript for behavior -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

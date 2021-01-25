@@ -1,0 +1,53 @@
+{
+  "name": "07-full-express-app",
+  "version": "0.0.1",
+  "description": "Creating a complete Express base app",
+  "main": "index.js",
+  "engines": {
+    "node": "7.9.0",
+    "npm": "4.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.19.0",
+    "nodemon": "1.11.0"
+  },
+  "config": {
+    "debugModules": "*:server"
+  },
+  "dependencies": {
+    "basic-auth": "1.1.0",
+    "bcrypt": "1.0.2",
+    "body-parser": "1.17.1",
+    "cookie-parser": "1.4.3",
+    "debug": "4.1.0",
+    "ejs": "2.5.6",
+    "express": "4.15.2",
+    "express-session": "1.15.2",
+    "js-yaml": "3.8.3",
+    "morgan": "1.8.1",
+    "nconf": "0.8.4",
+    "redis": "2.7.1",
+    "serve-favicon": "2.4.2"
+  },
+  "scripts": {
+    "setup": "rm -rf node_modules && npm install",
+    "prestart": "npm run lint",
+    "start": "DEBUG=${npm_package_config_debugModules:-$npm_package_name} node ./app/src/bin/www",
+    "lint": "eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "DEBUG=${npm_package_config_debugModules:-$npm_package_name} node --inspect-brk=${npm_config_debugHost:-127.0.0.1} ./app/src/bin/www",
+    "dev": "node_modules/.bin/nodemon --ext js,json,yml,ejs --watch app/src --watch .eslintrc.yml --watch package.json --exec 'npm start'",
+    "pretest": "./node_modules/.bin/eslint app/tst/",
+    "test": "node app/tst/test.js"
+  }
+}

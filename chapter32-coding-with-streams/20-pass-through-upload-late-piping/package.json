@@ -1,0 +1,42 @@
+{
+  "name": "ndps",
+  "version": "0.1.0",
+  "description": "Illustrating Node.js advanced techniques and patterns",
+  "type": "module",
+  "main": "main.mjs",
+  "engines": {
+    "node": ">=14.15.1",
+    "npm": ">=6.14.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {},
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "7.16.0"
+  },
+  "dependencies": {
+    "axios": "0.21.1"
+  },
+  "scripts": {
+    "reset": "rm -rf node_modules && rm -f package-lock.json && npm install",
+    "prestart-server": "npm run lint",
+    "start-server": "node app/src/server.js",
+    "upload-image": "node app/src/upload-cli.js",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "pretest": "npm run lint",
+    "test": "tap --no-esm --bail app/test/",
+    "test-debug": "tap --no-esm --bail --only app/test/",
+    "predebug": "npm run lint",
+    "debug": "node --inspect-brk app/src/main.js http://www.example.com",
+    "debug-test": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/tst/nth-test.js",
+    "freshen-deps": "./scripts/freshen.sh"
+  }
+}

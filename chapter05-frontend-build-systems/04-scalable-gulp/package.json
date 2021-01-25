@@ -1,0 +1,49 @@
+{
+  "name": "03-gulp-tasks",
+  "version": "0.0.1",
+  "description": "Creating frontend tasks with Gulp",
+  "engines": {
+    "node": "6.9.5",
+    "npm": "3.10.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/ProAngularJS-Repo.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.12.2",
+    "gulp": "3.9.1",
+    "gulp-clean": "0.3.2",
+    "gulp-eslint": "3.0.1",
+    "gulp-help": "1.6.1",
+    "gulp-watch": "4.3.11"
+  },
+  "dependencies": {
+    "body-parser": "1.16.1",
+    "express": "4.14.1",
+    "js-yaml": "3.8.1",
+    "log4js": "1.1.0",
+    "nconf": "0.8.4",
+    "sqlite3": "3.1.8"
+  },
+  "scripts": {
+    "start": "node build/index.js",
+    "lint:client": "eslint src/public/js/",
+    "lint:server": "eslint src/ --ignore-pattern src/public/js/",
+    "lint": "eslint src/",
+    "clean": "rm -rf build/",
+    "copy": "cp -r src/ build/",
+    "build": "npm run lint",
+    "prebuild": "npm run clean",
+    "postbuild": "npm run copy",
+    "serve": "node build/index.js",
+    "debug": "node --inspect --debug-brk build/index.js",
+    "dev": "nodemon --ext html,css,js,json,yml,png --watch src/ --watch .eslintrc.yml --exec 'npm run build && npm run serve'"
+  }
+}

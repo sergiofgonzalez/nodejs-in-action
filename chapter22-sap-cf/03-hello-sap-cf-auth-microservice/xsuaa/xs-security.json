@@ -1,0 +1,12 @@
+{
+  "xsappname": "sap-cf-microservice",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    { "name": "$XSAPPNAME.Display", "description": "Display Users" },
+    { "name": "$XSAPPNAME.Update", "description": "Update Users" }
+  ],
+  "role-templates": [
+    { "name": "ViewerRoleTemplate", "description": "View Users", "scope-references": [ "$XSAPPNAME.Display" ] },
+    { "name": "ManagerRoleTemplate", "description": "Maintain Users", "scope-references": [ "$XSAPPNAME.Display", "$XSAPPNAME.Update" ] }
+  ]
+}

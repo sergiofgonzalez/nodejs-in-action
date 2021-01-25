@@ -1,0 +1,19 @@
+#
+## Application Properties
+#
+
+logger:
+  format: "dev" #":date[iso] :method :url :status :response-time msec"
+
+server:
+  port: 5000
+  public: "public"
+
+app:
+  entriesPerPage: 3
+
+ERROR_ROUTE: true
+
+db:
+  host: localhost
+  port: 6379

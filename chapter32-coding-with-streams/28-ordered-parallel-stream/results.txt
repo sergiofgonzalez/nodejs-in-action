@@ -1,0 +1,6 @@
+https://loige.co is up
+https://mario.fyi is up
+https://developer.mozilla.org is down
+https://www.example.com is up
+https://github.com is up
+https://thiswillbedownasitdoesnotexist.com is down

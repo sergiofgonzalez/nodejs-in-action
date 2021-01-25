@@ -1,0 +1,34 @@
+/*
+  Error Page Styling
+*/
+
+@font-face {
+  font-family: "Pixelated";
+  src: url("/fonts/LCD_Solid.woff"),
+       url("/fonts/LCD_Solid.ttf");
+}
+
+h1#errTitle {
+  font-family: "Pixelated", sans-serif;
+}
+
+#errPanel {
+  border: 1px solid black;
+  background-color: white;
+}
+
+#errDesc {
+  font-family: "Pixelated", sans-serif;
+}
+
+
+/*
+  Bootstrap starter
+*/
+body {
+  padding-top: 5rem;
+}
+
+.container {
+  padding: 1.5rem 1.5rem;
+}

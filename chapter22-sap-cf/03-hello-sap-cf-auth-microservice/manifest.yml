@@ -1,0 +1,17 @@
+---
+applications:
+
+- name: sap-cf-microservice
+  buildpacks:
+    - nodejs_buildpack
+  
+  instances: 1
+  memory: 128M
+  disk_quota: 250M
+
+  services:
+  - sap-cf-microservice-xsuaa
+
+  env:
+    OPTIMIZE_MEMORY: true # --sets max_old_space_size based on the available memory of the instance
+    xsuaa-instance: sap-cf-microservice-xsuaa

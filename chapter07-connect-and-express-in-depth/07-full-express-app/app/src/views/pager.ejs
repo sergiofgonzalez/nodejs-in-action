@@ -1,0 +1,27 @@
+
+<div class="container">
+  <nav class="fixed-bottom" aria-label="shoutbox pagination">
+    <ul class="pagination pagination-lg justify-content-center"> 
+      <% if (page.count > 1) { %>
+        <% if (page.number) { %>
+          <li class="page-item">
+            <a class="page-link" href="/<%= page.number - 1 %>">&laquo; Previous</a>
+          </li>          
+        <% } else { %>
+          <li class="page-item disabled">
+            <a class="page-link" href="/<%= page.number - 1 %>">&laquo; Previous</a>
+          </li>        
+        <% } %>
+        <% if (page.number < page.count -1) { %>
+          <li class="page-item">
+            <a class="page-link" href="/<%= page.number + 1 %>">Next &raquo;</a>
+          </li>        
+        <% } else { %>
+          <li class="page-item disabled">
+            <a class="page-link" href="/<%= page.number + 1 %>">Next &raquo;</a>
+          </li>        
+        <% } %> 
+      <% } %>
+    </ul>
+  </nav>
+</div>

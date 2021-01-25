@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Error!</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <!-- Font Awesome for the icons -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+
+  </head>
+  <body>
+    <!-- Have a look at the console while running this -->
+    <div id="errPanel" class="jumbotron">
+      <h1 id="errTitle" class="display-3">
+        <img src="/images/bomb.png" alt="bomb icon">
+        Sorry, an error occurred.
+      </h1>
+      <p id="errDesc" class="lead">        
+        <%= message %>
+        <%= error.status %>
+      </p>
+      <p><a href="/" class="btn btn-primary btn-lg"><span class="fa fa-home"></span>&nbsp;&nbsp;Take me home</a></p>
+      <hr class="my-4">
+      <div class="card">
+        <div class="card-block">
+          <h4 class="card-title">Detailed Error Information</h4>
+          <h6 class="card-subtitle mb-2 text-muted">additional information on the previous error</h6>
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Error Field</th>
+                <th>Contents</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Timestamp</td>
+                <td><%= error.timestamp %></td>
+              </tr>
+              <tr>
+                <td>Message</td>
+                <td><%= message %></td>
+              </tr>              
+              <tr>
+                <td>Error Status</td>
+                <td><%= error.status %></td>
+              </tr>                            
+              <tr>
+                <td>Operation</td>
+                <td><%= error.method %>&nbsp;<%= error.url %></td>
+              </tr>                                          
+              <tr>
+                <td>Error Stack</td>
+                <td><%= error.stack %></td>
+              </tr>                                          
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

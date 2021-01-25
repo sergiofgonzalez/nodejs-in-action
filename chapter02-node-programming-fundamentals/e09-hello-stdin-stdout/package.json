@@ -1,0 +1,36 @@
+{
+  "name": "e09-hello-stdin-stdout",
+  "version": "0.0.1",
+  "description": "Introducing how to handle stdin and stdout in Node.js",
+  "main": "index.js",
+  "engines": {
+    "node": "8.1.0",
+    "npm": "5.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {},
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.19.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "setup": "rm -rf node_modules && rm -f package-lock.json && rm -rf .nyc_output coverage && npm install",
+    "prestart": "npm run lint",
+    "start": "echo to run the app use something like 'cat package.json | node ./app/src/index.js'",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "echo to run the app use something like 'cat package.json | node ./app/src/index.js'",
+    "dev": "node_modules/.bin/nodemon --ext js,json,yml --watch app/src --watch .eslintrc.yml --exec 'npm start'",
+    "pretest": "./node_modules/.bin/eslint app/tst/",
+    "test": "echo sorry, no tests available"
+  }
+}

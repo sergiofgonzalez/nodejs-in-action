@@ -1,0 +1,33 @@
+{
+  "name": "02-hello-gulp",
+  "version": "0.0.1",
+  "description": "Using NPM to run babel and uglifyJS to transpile to ES5 and minify client side JavaScript",
+  "engines": {
+    "node": "6.9.2",
+    "npm": "3.10.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-es2015": "6.22.0",
+    "babel-preset-react": "6.22.0",
+    "eslint": "3.13.0",
+    "gulp": "3.9.1",
+    "gulp-babel": "6.1.2",
+    "gulp-concat": "2.6.1",
+    "gulp-sourcemaps": "2.4.0",
+    "gulp-watch": "4.3.11",
+    "react": "15.4.2",
+    "react-dom": "15.4.2"
+  },
+  "dependencies": {},
+  "scripts": {}
+}

@@ -1,0 +1,47 @@
+{
+  "name": "03-hello-kraken",
+  "version": "0.0.1",
+  "description": "Introducing Kraken, the HTTP server library",
+  "main": "server.js",
+  "engines": {
+    "node": "7.7.4",
+    "npm": "4.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.19.0",
+    "generator-kraken": "2.2.3",
+    "nodemon": "1.11.0",
+    "yo": "1.8.5"
+  },
+  "dependencies": {
+    "construx": "1.0.1",
+    "construx-copier": "1.0.0",
+    "construx-dustjs": "1.1.0",
+    "dust-makara-helpers": "4.1.2",
+    "express": "4.15.2",
+    "kraken-js": "2.1.0",
+    "makara": "2.0.3",
+    "save": "2.3.0"
+  },
+  "scripts": {
+    "setup": "rm -rf node_modules && npm install",
+    "prestart": "npm run lint",
+    "start": "node app/src/$npm_package_main",
+    "lint": "eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "node --inspect-brk=${npm_config_debugHost:-127.0.0.1} app/src/$npm_package_main",
+    "dev": "node_modules/.bin/nodemon --ext js,json,yml --watch app/src --watch .eslintrc.yml --exec 'npm start'",
+    "pretest": "./node_modules/.bin/eslint app/tst/",
+    "test": "node app/tst/test.js"
+  }
+}

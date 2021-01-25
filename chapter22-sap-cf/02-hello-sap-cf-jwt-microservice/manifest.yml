@@ -1,0 +1,16 @@
+---
+applications:
+
+- name: sap-cf-microservice
+  buildpacks:
+    - nodejs_buildpack
+  
+  instances: 1
+  memory: 128M
+  disk_quota: 250M
+
+  services:
+  - sap-cf-microservice-xsuaa
+
+  env:
+    xsuaa-instance: sap-cf-microservice-xsuaa

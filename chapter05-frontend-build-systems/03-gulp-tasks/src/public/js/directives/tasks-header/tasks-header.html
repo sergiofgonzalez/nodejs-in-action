@@ -1,0 +1,6 @@
+<h1>
+  {{toDoCtrl.todoInfo.user}}'s To Do List
+  <span class="tag" ng-hide="toDoCtrl.getPendingTasks().length === 0" ng-class="toDoCtrl.getWarningLevelClass()">
+    {{toDoCtrl.getPendingTasks().length}}
+  </span>
+</h1>

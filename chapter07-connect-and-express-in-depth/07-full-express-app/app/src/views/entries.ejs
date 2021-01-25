@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title><%= title %></title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <!-- Font Awesome for the icons -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+
+  </head>
+  <body>
+    <!-- In progress:
+      Only the front page when there are no messages
+    -->
+    <% include menu %>
+    <% if (entries.length === 0) { %>
+      <div class="container">
+        <div class="front-page">
+          <h1>Welcome to Shoutbox!</h1>
+          <p class="lead">
+          <% if (!locals.user) { %>
+            <a href="/login" style="color: black">Login<a> or <a href="/register" style="color: black">Register</a> to start sharing your thoughts.<br>
+          <% } else { %>
+            Start <a href="/post" style="color: black">posting<a> your thoughts.<br>          
+          <% } %> 
+            <strong>There are no entries available</strong>
+          </p>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="container">
+        <% entries.forEach(entry => { %>
+          <div class="card">
+            <div class="card-block">
+              <h4 class="card-title"><%= entry.title %></h4>
+              <h6 class="card-subtitle mb-2 text-muted">by <%= entry.username %></h6>
+              <p class="card-text"><%= entry.body %></p>
+            </div>
+          </div>
+          <% }) %>
+    <% } %>
+      </div>
+    <% include pager %>
+  </body>
+</html>

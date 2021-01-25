@@ -1,0 +1,32 @@
+{
+  "name": "31-ecmascript6-async-await-flows",
+  "version": "0.0.1",
+  "description": "ES6 async-await: synchronizing async code",
+  "engines": {
+    "node": "7.7.2",
+    "npm": "4.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "6.8.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "prestart": "npm run lint",
+    "start": "node app/src/index.js",
+    "lint": "eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "node --inspect-brk=${npm_config_debugHost:-127.0.0.1} app/src/index.js",
+    "dev": "nodemon --ext js,json,yml --watch app/src --watch .eslintrc.yml --exec 'npm start'",
+    "test": "echo $npm_config_debugHost $npm_package_config_debugHost"    
+  }
+}

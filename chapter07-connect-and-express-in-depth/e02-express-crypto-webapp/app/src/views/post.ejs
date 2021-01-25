@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title><%= title %></title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <!-- Font Awesome for the icons -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+  </head>
+  <body>
+    <% include menu %>    
+    <div class="container">
+      <h1><%= title %></h1>
+      <p>Enter the value on the field below and click on the button with the action to process.</p>
+      <% include messages %>
+      <form action="/" method="POST">
+        <div class="form-group">
+          <label for="entryValueInput">Value</label>
+          <input type="text" name="entry[value]" class="form-control" id="entryValueInput" placeholder="Type the value to process here">
+        </div>
+        <button type="submit" class="btn btn-primary" name="encrypt">Encrypt</button>
+        <button type="submit" class="btn btn-secondary" name="decrypt">Decrypt</button>
+      </form>
+    </div>
+    <div class="container">
+      <div class="card">
+        <div class="card-header">
+          <%= action %>
+        </div>              
+        <div class="card-block">
+          <p class="card-text"><%= result %></p>
+        </div>
+      </div>
+      <div class="card-footer text-muted">
+        Length: <%= result.length %> 
+      </div> 
+    </div>
+  </body>
+</html>

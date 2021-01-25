@@ -1,0 +1,31 @@
+{
+  "name": "29-ecmascript6-generators-return",
+  "version": "0.0.1",
+  "description": "ES6 generator functions: returning from generator functions",
+  "engines": {
+    "node": "6.10.10",
+    "npm": "3.10.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "6.8.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "prestart": "npm run lint",
+    "start": "node app/src/index.js",
+    "lint": "eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "node --inspect --debug-brk app/src/index.js",
+    "dev": "nodemon --ext js,json,yml --watch app/src --watch .eslintrc.yml --exec 'npm start'"
+  }
+}

@@ -1,0 +1,45 @@
+openapi: 3.0.0
+
+info:
+  title: Pet Store API
+  description: Pet Store example API specification
+  version: 1.0.0
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:5050/api/v1.0
+
+paths:
+  /pets:
+    get:
+      summary: List all pets
+      operationId: listPets
+      tags:
+        - pets
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: a paged array of pets
+          headers:
+            x-next:
+              description: a link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pets"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"

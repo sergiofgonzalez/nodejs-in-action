@@ -1,0 +1,33 @@
+{
+  "name": "01-hello-babel-uglify",
+  "version": "0.0.1",
+  "description": "Using NPM to run babel and uglifyJS to transpile to ES5 and minify client side JavaScript",
+  "engines": {
+    "node": "6.9.2",
+    "npm": "3.10.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "6.22.2",
+    "babel-preset-es2015": "6.22.0",
+    "eslint": "3.13.0",
+    "uglifyjs": "2.4.10"
+  },
+  "dependencies": {},
+  "scripts": {
+    "clean": "rm -rf build",
+    "prebabel": "mkdir -p build",
+    "babel": "./node_modules/.bin/babel src/public/browser.js --out-file build/browser.js",
+    "uglify": "./node_modules/.bin/uglifyjs build/browser.js -o build/browser.min.js",
+    "build": "npm run babel && npm run uglify"
+  }
+}

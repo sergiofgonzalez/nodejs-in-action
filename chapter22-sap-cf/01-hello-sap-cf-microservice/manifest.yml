@@ -1,0 +1,13 @@
+---
+applications:
+
+- name: sap-cf-microservice
+  buildpacks:
+    - nodejs_buildpack
+  
+  instances: 1
+  memory: 128M
+  disk_quota: 250M
+
+  env:
+    

@@ -1,0 +1,41 @@
+{
+  "name": "e03-hello-cls-hooked-context-module",
+  "version": "0.0.1",
+  "description": "Grokking cls-hooked package",
+  "main": "index.js",
+  "engines": {
+    "node": "13.x.x",
+    "npm": "6.13.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {
+    "debugModules": "*"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "6.8.0"
+  },
+  "dependencies": {
+    "cls-hooked": "4.2.2"
+  },
+  "scripts": {
+    "prestart": "npm run lint",
+    "start": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node app/src/${npm_package_main}",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "pretest": "npm run lint",
+    "test": "tap app/tst/*.js --bail --coverage-report=lcov",
+    "test-one": "tap app/tst/bubble-sort.js",
+    "predebug": "npm run lint",
+    "debug": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/src/${npm_package_main}",
+    "debug-test": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/tst/nth-test.js",
+    "freshen-deps": "./scripts/freshen.sh"
+  }
+}

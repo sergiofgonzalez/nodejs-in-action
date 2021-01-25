@@ -1,0 +1,29 @@
+env:
+  es6: true     # needed to bring the globals such as Promise into scope
+  browser: true
+
+parser: "babel-eslint"          # optional chaining does not not work with the default parser
+
+parserOptions:
+  ecmaVersion: 2020
+  sourceType: module
+  
+extends: 
+  - 'eslint:recommended'
+rules:
+  indent: 
+    - error
+    - 2
+    - SwitchCase: 1
+      ignoreComments: true
+  linebreak-style:
+    - off
+  no-console:
+    - off
+  quotes:
+    - error
+    - single
+    - allowTemplateLiterals: true    
+  semi:
+    - error
+    - always

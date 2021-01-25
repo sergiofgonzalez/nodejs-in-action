@@ -1,0 +1,11 @@
+lsoa_code,borough,major_category,minor_category,value,year,month
+E01001116,Croydon,Burglary,Burglary in Other Buildings,0,2016,11
+E01001646,Greenwich,Violence Against the Person,Other violence,0,2016,11
+E01000677,Bromley,Violence Against the Person,Other violence,0,2015,5
+E01003774,Redbridge,Burglary,Burglary in Other Buildings,0,2016,3
+E01004563,Wandsworth,Robbery,Personal Property,0,2008,6
+E01001320,Ealing,Theft and Handling,Other Theft,0,2012,5
+E01001342,Ealing,Violence Against the Person,Offensive Weapon,0,2010,7
+E01002633,Hounslow,Robbery,Personal Property,0,2013,4
+E01003496,Sutton,Criminal Damage,Criminal Damage To Other Building,0,2013,9
+E01004177,Sutton,Theft and Handling,Theft/Taking of Pedal Cycle,1,2016,8

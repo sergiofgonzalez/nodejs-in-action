@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Hello fetch!</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+
+  </head>
+  <body>
+    <!-- Have a look at the console while running this -->
+    <div class="jumbotron">
+      <h1 class="display-3">Hello <code>fetch</code>!</h1>
+      <p class="lead">
+        Introducing <code>fetch</code> as a better alternative to <code class="strike-through">XMLHttpRequest</code>.
+      </p>
+      <hr class="my-4">
+        <p class="lead">
+          On the server side, we're using <strong><%= currentFramework %></strong> HTTP server framework
+          instead of <strong><%= oldFramework %></strong>.
+        </p>
+        <img class="img-fluid" alt="image will be loaded here">
+        <p>
+          <button type="submit" class="btn btn-primary" id="load-btn">Load image</button>
+          <button type="submit" class="btn btn-secondary" id="unload-btn">Unload image</button>
+          <button type="submit" class="btn btn-info" id="info-btn">Get information</button>
+          <button type="submit" class="btn btn-success" id="send-btn">Send information</button>
+          <button type="submit" class="btn btn-danger" id="error-btn">Force Fake Error</button>
+        </p>
+        <div class="alert alert-danger" id="error-alert" style="display:none">
+        </div>
+        <p>
+          <div id="subform">
+            <div class="container-fluid">
+              <div class="form-group">
+                <label for="inputEmail">Email Address</label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+              </div>
+              <button type="submit" class="btn btn-primary" id="submit-form-btn">Submit</button>
+            </div>
+          </div>
+        </p>
+      </div>
+    </div>
+    <div class="alert alert-info" id="infobox">
+    </div>
+    <script src="javascript/infobox-logging.js"></script>
+    <script src="javascript/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "name": "e01-fs-key-value-db-promises",
+  "version": "0.0.1",
+  "description": "creating a promises-based key/value datastore with append only file",
+  "main": "index.js",
+  "engines": {
+    "node": "8.1.2",
+    "npm": "5.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {},
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.19.0",
+    "tap": "10.5.2"
+  },
+  "dependencies": {},
+  "scripts": {
+    "setup": "rm -rf node_modules && rm -f package-lock.json && rm -rf .nyc_output coverage && npm install",
+    "prestart": "npm run lint",
+    "start": "DEBUG=${npm_package_config_debugModules:-$npm_package_name} node app/src/$npm_package_main",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "DEBUG=${npm_package_config_debugModules:-$npm_package_name} node --inspect-brk=${npm_config_debugHost:-127.0.0.1} app/src/$npm_package_main",
+    "dev": "node_modules/.bin/nodemon --ext js,json,yml --watch app/src --watch .eslintrc.yml --exec 'npm start'",
+    "pretest": "./node_modules/.bin/eslint app/tst/",
+    "test": "./node_modules/.bin/tap app/tst/*.js",
+    "test-coverage": "./node_modules/.bin/tap app/tst/*.js --cov",
+    "test-coverage-html": "./node_modules/.bin/tap app/tst/*-tap.js --cov --coverage-report=lcov"
+  }
+}

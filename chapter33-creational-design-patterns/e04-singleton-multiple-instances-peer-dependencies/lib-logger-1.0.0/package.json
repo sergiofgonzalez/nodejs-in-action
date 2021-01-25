@@ -1,0 +1,34 @@
+{
+  "name": "@test/logger",
+  "version": "1.0.0",
+  "description": "Illustrating caveats of the singleton pattern",
+  "type": "module",
+  "main": "logger.js",
+  "engines": {
+    "node": ">=14.15.1",
+    "npm": ">=6.14.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {},
+  "license": "MIT",
+  "devDependencies": {},
+  "scripts": {
+    "reset": "rm -rf node_modules && rm -f package-lock.json && npm install",
+    "prestart": "npm run lint",
+    "start": "node app/src/main.js",
+    "lint": "node_modules/.bin/eslint ./index.js",
+    "pretest": "npm run lint",
+    "test": "tap --no-esm --bail app/test/",
+    "test-debug": "tap --no-esm --bail --only app/test/",
+    "predebug": "npm run lint",
+    "freshen-deps": "./scripts/freshen.sh"
+  }
+}

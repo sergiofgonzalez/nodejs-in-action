@@ -1,0 +1,48 @@
+{
+  "name": "01-hello-openapi",
+  "version": "0.0.1",
+  "description": "Express based Node.js",
+  "main": "index.js",
+  "engines": {
+    "node": "10.x.x",
+    "npm": "6.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {
+    "debugModules": "sap-microservice:*"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "5.12.0"
+  },
+  "dependencies": {
+    "debug": "4.1.0",
+    "express": "4.16.3",
+    "helmet": "3.15.0",
+    "js-yaml": "3.12.0",
+    "morgan": "1.9.1",
+    "nconf": "0.10.0"
+  },
+  "scripts": {
+    "setup": "rm -rf node_modules && rm -f package-lock.json && rm -rf .nyc_output coverage && npm install",
+    "prestart": "npm run lint",
+    "start": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node app/src/bin/www",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk=${npm_config_debugHost:-127.0.0.1} app/src/bin/www",
+    "dev": "node_modules/.bin/nodemon --ext js,json,yml, --watch app/src --watch .eslintrc.yml --exec 'npm start'",
+    "pretest": "./node_modules/.bin/eslint app/tst/",
+    "test-native": "node app/tst/countstream.js",
+    "test-tap": "tap app/tst/*-tap.js",
+    "test-coverage": "tap app/tst/*-tap.js --cov",
+    "test-coverage-html": "tap app/tst/*-tap.js --cov --coverage-report=lcov"
+  }
+}

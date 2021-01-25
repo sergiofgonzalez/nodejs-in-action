@@ -1,0 +1,43 @@
+{
+  "name": "ydkjs",
+  "version": "0.0.1",
+  "description": "You don't know JS examples",
+  "main": "index.js",
+  "engines": {
+    "node": "13.x.x",
+    "npm": "6.13.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {},
+  "license": "MIT",
+  "devDependencies": {
+    "0x": "4.9.1",
+    "eslint": "6.8.0",
+    "tap": "14.10.6"
+  },
+  "dependencies": {
+    "express": "4.17.1",
+    "fast-levenshtein": "2.0.6"
+  },
+  "scripts": {
+    "prestart": "npm run lint",
+    "start": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node app/src/${npm_package_main}",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "pretest": "npm run lint",
+    "test": "tap --bail app/tst/",
+    "predebug": "npm run lint",
+    "debug": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/src/${npm_package_main}",
+    "debug-test": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/tst/nth-test.js",
+    "freshen-deps": "./scripts/freshen.sh",
+    "profile": "./node_modules/.bin/0x app/src/${npm_package_main}",
+    "profile-interactive": "./node_modules/.bin/0x -o app/src/${npm_package_main}"
+  }
+}

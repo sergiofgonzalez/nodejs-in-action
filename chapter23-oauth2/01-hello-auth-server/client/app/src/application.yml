@@ -1,0 +1,27 @@
+#
+## Application Properties
+#
+
+logger:
+  format: ":date[iso] :method :url :status :response-time msec :res[content-length] bytes"
+
+server:
+  port: 9000
+  public: "public"    # location of static resources
+
+oauth:
+  clients:
+    - client_name: "Client #1"
+      client_id: "oauth-client-1"
+      client_secret: "oauth-client-secret-1"
+      redirect_uris: 
+        - "http://localhost:9000/callback"
+      scope: "foo bar"
+      logo_uri: "/images/bomb.png" # Internet URI will also work
+
+  auth-server:
+    authorization-endpoint: "http://localhost:9001/authorize"
+    token-endpoint: "http://localhost:9001/token"
+
+  protected-resource: "http://localhost:9002/resource"
+

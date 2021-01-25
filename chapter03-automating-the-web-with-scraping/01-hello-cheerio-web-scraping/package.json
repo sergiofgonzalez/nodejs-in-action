@@ -1,0 +1,36 @@
+{
+  "name": "01-hello-cheerio-web-scraping",
+  "version": "0.0.1",
+  "description": "Simple web scraping using cheerio",
+  "engines": {
+    "node": "6.9.2",
+    "npm": "3.10.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.13.0"
+  },
+  "dependencies": {
+    "cheerio": "0.22.0"
+  },
+  "scripts": {
+    "start": "node build/index.js",
+    "lint": "eslint public/src/",
+    "clean": "rm -rf build/",
+    "copy": "cp -r public/src/ build/ && cp -r public/rsrc build/rsrc/",
+    "build": "npm run lint",
+    "prebuild": "npm run clean",
+    "postbuild": "npm run copy",
+    "debug": "node --inspect --debug-brk build/index.js",
+    "dev": "nodemon --ext js,json,yml --watch public/src --watch .eslintrc.yml --exec 'npm run build --silent && npm start --silent'"
+  }
+}

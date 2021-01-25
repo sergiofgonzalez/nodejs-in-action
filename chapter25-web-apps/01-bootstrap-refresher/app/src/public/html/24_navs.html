@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/styles1.css">
+
+    <title>Web Apps &mdash; Bootstrap Refresher</title>
+  </head>
+  <body>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active">Components</li>
+        <li class="breadcrumb-item active" aria-current="page">Navs</li>
+      </ol>
+    </nav>
+    <h1>Bootstrap Refresher &raquo; Components: Navs</h1>
+
+    <!-- Intro -->
+    <div class="container">
+      <h2>Navs</h2>
+      <p>
+        Use the nav component to add navigation capabilities to your site
+      </p>
+    </div>
+
+    <!-- Basic -->
+    <div class="container">
+      <h2>Base Nav <small class="text-muted"> note that <code>.active</code> class is not reflected</small></h2>
+      <ul class="nav">
+        <li class="nav-item"><a class="nav-link active" href="#">Active</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+        <li class="nav-item"><a class="nav-link disabled" href="#">Disabled</a></li>
+      </ul>
+    </div>
+    <!-- end: basic-->
+
+    <!-- Alt Basic -->
+    <div class="container">
+      <h2>Alternative Base Nav <small class="text-muted"> using <code>&lt;nav&gt;</code></small></h2>
+      <nav class="nav">
+        <a class="nav-link active" href="#">Active</a>
+        <a class="nav-link" href="#">Link 1</a>
+        <a class="nav-link" href="#">Link 2</a>
+        <a class="nav-link" href="#">Disabled Link</a>
+      </nav>
+    </div>
+    <!-- end: Alt basic-->
+
+    <!-- Horizontal alignment -->
+    <div class="container">
+      <h2>Horizontal Alignment on Nav</h2>
+      <ul class="nav justify-content-center">
+        <li class="nav-item"><a class="nav-link active" href="#">Active Link</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 2</a></li>
+        <li class="nav-item"><a class="nav-link disabled" href="#">Disabled Link</a></li>
+      </ul>
+    </div>
+    <!-- end: Horizontal alignment-->
+
+    <!-- Right alignment -->
+    <div class="container">
+      <h2>Horizontal Alignment on Nav</h2>
+      <ul class="nav justify-content-end">
+        <li class="nav-item"><a class="nav-link active" href="#">Active Link</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 2</a></li>
+        <li class="nav-item"><a class="nav-link disabled" href="#">Disabled Link</a></li>
+      </ul>
+    </div>
+    <!-- end: Right alignment-->
+
+    <!-- Vertical alignment -->
+    <div class="container">
+      <h2>Vertical Alignment on Nav <small class="text-muted">using flebox utils</small></h2>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link active" href="#">Active Link</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 2</a></li>
+        <li class="nav-item"><a class="nav-link disabled" href="#">Disabled Link</a></li>
+      </ul>
+    </div>
+    <!-- end: Vertical alignment-->
+
+    <!-- Vertical alignment alt -->
+    <div class="container">
+      <h2>Vertical Alignment on Nav (alt)</h2>
+      <nav class="nav flex-column">
+        <a class="nav-link active" href="#">Active Link</a>
+        <a class="nav-link" href="#">Link 1</a>
+        <a class="nav-link" href="#">Link 2</a>
+        <a class="nav-link disabled" href="#">Disabled Link</a>
+      </nav>
+    </div>
+    <!-- end: Vertical alignment alt -->
+
+    <!-- Nav Tabs -->
+    <div class="container">
+      <h2>Tabs <small class="text-muted">this requires JavaScript</small></h2>
+      <ul class="nav nav-tabs">
+        <li class="nav-item"><a class="nav-link active" href="#">Active Link</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 2</a></li>
+        <li class="nav-item"><a class="nav-link disabled" href="#">Disabled Link</a></li>
+      </ul>
+    </div>
+    <!-- end: Nav Tabs-->
+
+    <!-- Nav Pills -->
+    <div class="container">
+      <h2>Pills <small class="text-muted">this requires JavaScript</small></h2>
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a class="nav-link active" href="#">Active Link</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 2</a></li>
+        <li class="nav-item"><a class="nav-link disabled" href="#">Disabled Link</a></li>
+      </ul>
+    </div>
+    <!-- end: Nav Pills -->
+
+    <!-- Fill and Justify -->
+    <div class="container">
+      <h2>Pills <small class="text-muted">that extend the full available width</small></h2>
+      <ul class="nav nav-pills nav-fill">
+        <li class="nav-item"><a class="nav-link active" href="#">Active Link</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link 2</a></li>
+        <li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled Link</a></li>
+      </ul>
+    </div>
+    <!-- end: Fill and Justify -->
+
+    <!-- Fill and Justify (alt) -->
+    <div class="container">
+      <h2>Pills (alt) <small class="text-muted">that extend the full available width</small></h2>
+      <nav class="nav nav-pills nav-fill">
+        <a class="nav-item nav-link active" href="#">Active Link</a>
+        <a class="nav-item nav-link" href="#">Link 1</a>
+        <a class="nav-item nav-link" href="#">Link 2</a>
+        <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled Link</a></li>
+      </nav>
+    </div>
+    <!-- end: Fill and Justify (alt) -->
+
+    <!-- Responsive navs -->
+    <div class="container">
+      <h2>Responsive Nav Pills  <small class="text-muted">that get stacked on smaller screen sizes</small></h2>
+      <nav class="nav nav-pills flex-column flex-sm-row">
+        <a class="flex-sm-fill text-sm-center nav-link active" href="#">Active</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="#">Longer nav link</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="#">Link</a>
+        <a class="flex-sm-fill text-sm-center nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </nav>
+    </div>
+    <!-- end: responsive navs -->
+
+    <!-- Tabs with dropdowns -->
+    <div class="container">
+      <h2>Tabs with dropdowns</h2>
+      <ul class="nav nav-tabs">
+        <li class="nav-item"><a class="nav-link active" href="#">Active</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Yet another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated action</a>
+          </div>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+        <li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled Link</a></li>
+      </ul>
+    </div>
+    <!-- end: tabs with dropdowns -->
+
+    <!-- Pills with dropdowns -->
+    <div class="container">
+      <h2>Tabs with dropdowns</h2>
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a class="nav-link active" href="#">Active</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Yet another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated action</a>
+          </div>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+        <li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled Link</a></li>
+      </ul>
+    </div>
+    <!-- end: Pills with dropdowns -->
+
+    <!-- Tabbable Panes -->
+    <div class="container">
+      <h2>Tabbable Pane <small class="text-muted">note that it uses JavaScript</small></h2>
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">Content for Home</div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Content for Profile</div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Content for Contact</div>
+      </div>
+    </div>
+    <!-- end: Tabbable Panes -->
+
+    <!-- Tabbable Panes (alt) -->
+    <div class="container">
+      <h2>Tabbable Pane (alt) <small class="text-muted">note that it uses JavaScript</small></h2>
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
+          <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+          <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">Home Content.</div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">Profile Content.</div>
+        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">Contact Content.</div>
+      </div>
+    </div>
+    <!-- end: Tabbable Panes (alt) -->
+
+    <!-- Vertical Tabbable Panes -->
+    <div class="container">
+      <h2>Vertical Tabbable Pane <small class="text-muted">note that it uses JavaScript</small></h2>
+      <div class="row">
+        <div class="col-3">
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
+            <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+            <a class="nav-link" id="v-pills-contact-tab" data-toggle="pill" href="#v-pills-contact" role="tab" aria-controls="v-pills-contact" aria-selected="false">Contact</a>
+          </div>
+        </div>
+        <div class="col-9">
+          <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">Home content.</div>
+            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">Profile content.</div>
+            <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">Contact content.</div>
+          </div>
+        </div>
+      </div> <!-- row -->
+    </div>
+    <!-- end: Vertical Tabbable Panes -->
+
+
+    <!-- Bootstrap JavaScript for behavior -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

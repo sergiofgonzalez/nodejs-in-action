@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/styles1.css">
+
+    <title>Web Apps &mdash; Bootstrap Refresher</title>
+  </head>
+  <body>
+    <h1>Bootstrap Refresher &raquo; Grid System</h1>
+
+
+    <div class="container">
+      <h2>Three equal-width columns</h2>
+      <div class="row">
+        <div class="col-sm make-visible">One of three columns</div>
+        <div class="col-sm make-visible">One of three columns</div>
+        <div class="col-sm make-visible">One of three columns</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Four equal-width columns</h2>
+      <div class="row">
+        <div class="col-sm make-visible">One of four columns</div>
+        <div class="col-sm make-visible">One of four columns</div>
+        <div class="col-sm make-visible">One of four columns</div>
+        <div class="col-sm make-visible">One of four columns</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Three different-width columns with column classes</h2>
+      <div class="row">
+        <div class="col-sm-2 make-visible"><code>.col-sm-2</code></div>
+        <div class="col-sm-6 make-visible"><code>.col-sm-6</code></div>
+        <div class="col-sm-4 make-visible"><code>.col-sm-4</code></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Variable width content</h2>
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-2 make-visible">1 of 3</div>
+        <div class="col-md-auto make-visible">Variable width content</div>
+        <div class="col col-lg-2 make-visible">3 of 3</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Controlling how columns will stack on small screens</h2>
+      <h3>Example 1: This will eventually stack when resized</h3>
+      <div class="row">
+        <div class="col-md-8 make-visible">.col-md-8</div>
+        <div class="col-md-4 make-visible">.col-md-4</div>
+      </div>
+      <h3>Example 2: This will never stack when resized</h3>
+      <div class="row">
+        <div class="col-6 make-visible">.col-6</div>
+        <div class="col-6 make-visible">.col-6</div>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <h2>Vertical Alignment (not reflecting)</h2>
+      <h3><code>.align-items-start</code></h3>
+      <div class="row align-items-start">
+        <div class="col make-visible">One of three</div>
+        <div class="col make-visible">One of three</div>
+        <div class="col make-visible">One of three</div>
+      </div>
+      <h3><code>.align-items-center</code></h3>
+      <div class="row align-items-center">
+        <div class="col make-visible">One of three</div>
+        <div class="col make-visible">One of three</div>
+        <div class="col make-visible">One of three</div>
+      </div>
+      <h3><code>.align-items-end</code></h3>
+      <div class="row align-items-end">
+        <div class="col make-visible">One of three</div>
+        <div class="col make-visible">One of three</div>
+        <div class="col make-visible">One of three</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Vertical Alignment with .align-self-* (not reflecting)</h2>
+      <div class="row">
+        <div class="col align-self-start make-visible">One of three columns</div>
+        <div class="col align-self-center make-visible">One of three columns</div>
+        <div class="col align-self-end make-visible">One of three columns</div>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <h2>Horizontal Alignment</h2>
+      <h3><code>.justify-content-start</code></h3>
+      <div class="row justify-content-start">
+        <div class="col-4 make-visible">One of two columns</div>
+        <div class="col-4 make-visible">One of two columns</div>
+      </div>
+      <h3><code>.justify-content-center</code></h3>
+      <div class="row justify-content-center">
+        <div class="col-4 make-visible">One of two columns</div>
+        <div class="col-4 make-visible">One of two columns</div>
+      </div>
+      <h3><code>.justify-content-end</code></h3>
+      <div class="row justify-content-end">
+        <div class="col-4 make-visible">One of two columns</div>
+        <div class="col-4 make-visible">One of two columns</div>
+      </div>
+      <h3><code>.justify-content-around</code></h3>
+      <div class="row justify-content-around">
+        <div class="col-4 make-visible">One of two columns</div>
+        <div class="col-4 make-visible">One of two columns</div>
+      </div>
+      <h3><code>.justify-content-between</code></h3>
+      <div class="row justify-content-between">
+        <div class="col-4 make-visible">One of two columns</div>
+        <div class="col-4 make-visible">One of two columns</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Offsetting columns with classes</h2>
+      <div class="row">
+        <div class="col-md-4 make-visible">.cold-md-4</div>
+        <div class="col-md-4 offset-md-4 make-visible">.col-md-4 .offset-md-4</div>
+      </div>
+      <h2>Offsetting columns with margins</h2>
+      <div class="row">
+        <div class="col-md-4 make-visible">.cold-md-4</div>
+        <div class="col-md-4 ml-auto make-visible">.col-md-4 .ml-auto</div>
+      </div>
+    </div>
+
+  </body>
+</html>

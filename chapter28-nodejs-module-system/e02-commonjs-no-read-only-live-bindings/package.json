@@ -1,0 +1,37 @@
+{
+  "name": "ndps",
+  "version": "0.1.0",
+  "description": "Illustrating Node.js advanced techniques and patterns",
+  "main": "index.js",
+  "engines": {
+    "node": ">15.1.0",
+    "npm": ">7.0.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {},
+  "license": "MIT",
+  "dependencies": {
+    "eslint": "7.13.0"
+  },
+  "scripts": {
+    "reset": "rm -rf node_modules && rm -f package-lock.json && npm install",
+    "start": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node app/src/${npm_package_main}",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "pretest": "npm run lint",
+    "test": "tap app/test/ --bail --coverage-report=lcov",
+    "test-one": "tap app/tst/bubble-sort.js",
+    "predebug": "npm run lint",
+    "debug": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/src/${npm_package_main}",
+    "debug-test": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/tst/nth-test.js",
+    "freshen-deps": "./scripts/freshen.sh",
+    "show-main": "echo $npm_package_main"
+  }
+}

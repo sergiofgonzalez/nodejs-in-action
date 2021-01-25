@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/styles1.css">
+
+    <title>Web Apps &mdash; Bootstrap Refresher</title>
+  </head>
+  <body>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active">Components</li>
+        <li class="breadcrumb-item active" aria-current="page">Input Group</li>
+      </ol>
+    </nav>
+    <h1>Bootstrap Refresher &raquo; Components: Input Group</h1>
+
+    <div class="container">
+      <h2>Input Group</h2>
+      <p class="text-muted">
+        Use the <code>.input-group-*</code> to easily extend form controls by adding
+        text, buttons or button groups on either side of textual inputs.
+      </p>
+    </div>
+
+
+    <!-- Basic Example -->
+    <div class="container">
+      <h2>Basic Example <small class="text-muted">add-on's or buttons on either side of an input</small></h2>
+      <!-- Input group with an @ addon prepending the field-->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basci-addon1">@</span>
+        </div>
+        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+      </div>
+
+      <!-- Input group with trailing addon -->
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Recipient's Username" aria-label="Recipient's Username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <span class="input-group-text" id="basci-addon2">@example.com</span>
+        </div>
+      </div>
+
+      <!-- Input group with both heading and trailing add-on -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">$</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Amount to the nearest euro">
+        <div class="input-group-append">
+          <span class="input-group-text">.00</span>
+        </div>
+      </div>
+
+      <!-- It can be applied to textareas too -->
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">With textarea</span>
+        </div>
+        <textarea class="form-control" aria-label="With textarea"></textarea>
+      </div>
+
+      <!-- and support different sizing: note that the lack of margin with prev textarea! -->
+      <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputgroup-sizing-sm">small</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputgroup-sizing-sm">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputgroup-sizing-default">default</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputgroup-sizing-default">
+      </div>
+
+      <div class="input-group input-group-lg mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputgroup-sizing-large">Large</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputgroup-sizing-large">
+      </div>
+      <!-- end sizing -->
+
+    </div>
+    <!-- end: Basic Example -->
+
+    <!-- Checkboxes and radios -->
+    <div class="container">
+      <h2>Checkboxes and Radios <small class="text-muted">prepending checkboxes and radios</small></h2>
+
+      <!-- Prepending checkbox -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" aria-label="Checkbox for following text input">
+          </div>
+        </div>
+        <input type="text" class="form-control" aria-label="Text input with checkbox">
+      </div>
+
+      <!-- Prepending radio -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="radio" aria-label="Radio button for following text input">
+          </div>
+        </div>
+        <input type="text" class="form-control" aria-label="Text input with radio button">
+      </div>
+    </div>
+    <!-- end: checkboxes and radios -->
+
+    <!-- Multiple Inputs -->
+    <div class="container">
+      <h2>Multiple Inputs <small class="text-muted">add-on prepending side-to-side inputs</small></h2>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">First and Last Name</span>
+        </div>
+        <input type="text" aria-label="First name" class="form-control">
+        <input type="text" aria-label="Last name" class="form-control">
+      </div>
+    </div>
+    <!-- Multiple inputs end -->
+
+    <!-- Multiple Add-ons -->
+    <div class="container">
+      <h2>Multiple Add-ons <small class="text-muted">sets of add-ons heading or trailing an input</small></h2>
+      <!-- prepending addons -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">$</span>
+          <span class="input-group-text">0.00</span>
+        </div>
+        <input type="text" class="form-control" aria-label="euro amount">
+      </div>
+
+      <!-- appending addons -->
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" aria-label="euro amount">
+        <div class="input-group-prepend">
+          <span class="input-group-text">$</span>
+          <span class="input-group-text">0.00</span>
+        </div>
+      </div>
+    </div>
+    <!-- end: multiple add-ons -->
+
+    <!-- Button addons -->
+    <div class="container">
+      <h2>Button addons</h2>
+      <!-- Button prepended to an input text field-->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon1">Button</button>
+        </div>
+        <input type="text" class="form-control" aria-describedby="button-addon1">
+      </div>
+
+      <!-- Button apended to an input text field-->
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" aria-describedby="button-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+        </div>
+      </div>
+
+      <!-- Several buttons prepended -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend" id="button-addon3">
+          <button class="btn btn-outline-secondary" type="button">Button</button>
+          <button class="btn btn-outline-secondary" type="button">Another Button</button>
+        </div>
+        <input type="text" class="form-control" aria-describedby="button-addon3">
+      </div>
+
+      <!-- Several buttons appended -->
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" aria-describedby="button-addon4">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-outline-secondary" type="button">Button</button>
+          <button class="btn btn-outline-secondary" type="button">Another Button</button>
+        </div>
+      </div>
+
+    </div>
+    <!-- end: button addons-->
+
+    <!-- Dropdowns -->
+    <div class="container">
+      <h2>Button Dropdowns</h2>
+
+      <!-- Dropdown prepended -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action 1</a>
+            <a class="dropdown-item" href="#">Action 2</a>
+            <a class="dropdown-item" href="#">Action 3</a>
+            <div role="separator" class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Action A</a>
+          </div>
+        </div>
+        <input type="text" class="form-control" aria-label="Text input with dropdown button">
+      </div>
+
+      <!-- Dropdown appended -->
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" aria-label="Text input with dropdown button">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action 1</a>
+            <a class="dropdown-item" href="#">Action 2</a>
+            <a class="dropdown-item" href="#">Action 3</a>
+            <div role="separator" class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Action A</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end dropdowns -->
+
+    <!-- Segmented buttons -->
+    <div class="container">
+      <h2>Segmented buttons</h2>
+
+      <!-- Segmented buttons prepended -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <button type="button" class="btn btn-outline-secondary">Action</button>
+          <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action 1</a>
+            <a class="dropdown-item" href="#">Action 2</a>
+            <a class="dropdown-item" href="#">Action 3</a>
+            <div role="separator" class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Action A</a>
+          </div>
+        </div>
+        <input type="text" class="form-control" aria-label="Text input with dropdown button">
+      </div>
+
+      <!-- Segmented button appended -->
+      <div class="input-group mb-3">
+        <div class="input-group">
+          <input type="text" class="form-control" aria-label="Text input with dropdown button">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary">Action</button>
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Action 1</a>
+              <a class="dropdown-item" href="#">Action 2</a>
+              <a class="dropdown-item" href="#">Action 3</a>
+              <div role="separator" class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Action A</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Segmented buttons end-->
+
+    <!-- Custom forms -->
+    <div class="container">
+      <h2>Segmented buttons<small class="text-muted">examples with Bootstrap custom form components</small></h2>
+
+      <!-- Custom Select Prepend -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Options</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01">
+          <option selected>Choose...</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+      </div>
+
+      <!-- Custom Select append -->
+      <div class="input-group mb-3">
+        <select class="custom-select" id="inputGroupSelect02">
+          <option selected>Choose...</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect02">Options</label>
+        </div>
+      </div>
+
+      <!-- Custom Select prepend with button -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <button class="btn btn-outline-secondary" type="button">Button
+        </div>
+        <select class="custom-select" id="inputGroupSelect03">
+          <option selected>Choose...</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+      </div>
+
+      <!-- Custom Select append with button -->
+      <div class="input-group mb-3">
+        <select class="custom-select" id="inputGroupSelect04">
+          <option selected>Choose...</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button">Button
+        </div>
+      </div>
+
+      <!-- Custom file input Prepend -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+        </div>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+          <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+        </div>
+      </div>
+
+      <!-- Custom file input Prepend -->
+      <div class="input-group mb-3">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="inputGroupFile02" aria-describedby="inputGroupFileAddon02">
+          <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+        </div>
+        <div class="input-group-append">
+          <span class="input-group-text" id="inputGroupFileAddon02">Upload</span>
+        </div>
+      </div>
+
+
+      <!-- Custom file input Prepend with button -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon03">Button</button>
+        </div>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03">
+          <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+        </div>
+      </div>
+
+      <!-- Custom file input Append with button -->
+      <div class="input-group mb-3">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+          <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+        </div>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
+        </div>
+      </div>
+
+    </div>
+    <!-- custom forms end -->
+
+    <!-- Bootstrap JavaScript for behavior -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

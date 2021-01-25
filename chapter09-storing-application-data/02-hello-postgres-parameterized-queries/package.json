@@ -1,0 +1,38 @@
+{
+  "name": "02-hello-postgres-parameterized-queries",
+  "version": "0.0.1",
+  "description": "Interacting with Postgres using parameterized queries",
+  "main": "index.js",
+  "engines": {
+    "node": "7.10.0",
+    "npm": "4.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.19.0",
+    "nodemon": "1.11.0"
+  },
+  "dependencies": {
+    "pg": "7.6.1"
+  },
+  "scripts": {
+    "setup": "rm -rf node_modules && npm install",
+    "prestart": "npm run lint",
+    "start": "node app/src/$npm_package_main",
+    "lint": "eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "node --inspect-brk=${npm_config_debugHost:-127.0.0.1} app/src/$npm_package_main",
+    "dev": "node_modules/.bin/nodemon --ext js,json,yml --watch app/src --watch .eslintrc.yml --exec 'npm start'",
+    "pretest": "./node_modules/.bin/eslint app/tst/",
+    "test": "node app/tst/test.js"
+  }
+}

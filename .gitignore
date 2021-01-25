@@ -1,0 +1,11 @@
+node_modules
+build
+*.log
+.vscode
+*.sqlite
+.nyc_output
+coverage
+*.pem
+**/scripts/bkp/
+*.0x
+.clinic

@@ -1,0 +1,25 @@
+{
+  "name": "config",
+  "version": "0.0.0",
+  "description": "Opinionated waterfall configuration with support for YAML properties",
+  "engines": {
+    "node": "6.9.2",
+    "npm": "3.10.9"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.13.0"
+  },
+  "dependencies": {
+    "js-yaml": "3.7.0",
+    "nconf": "0.8.4"
+  },
+  "config": {
+    "PROPERTIES_FILENAME": "application.yml"
+  }
+}

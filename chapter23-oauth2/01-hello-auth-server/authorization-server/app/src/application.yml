@@ -1,0 +1,37 @@
+#
+## Application Properties
+#
+
+logger:
+  format: ":date[iso] :method :url :status :response-time msec :res[content-length] bytes"
+
+server:
+  port: 9001
+  public: "public"    # location of static resources
+
+token-store:
+  path: "tokens.db"
+  read-only: false
+
+oauth:
+  auth-server:
+    authorization-endpoint: "http://localhost:9001/authorize"
+    token-endpoint: "http://localhost:9001/token"
+
+  clients:
+    - client_name: "Client #1"
+      client_id: "oauth-client-1"
+      client_secret: "oauth-client-secret-1"
+      redirect_uris: 
+        - "http://localhost:9000/callback"
+      scope: "foo bar"
+      logo_uri: "/images/bomb.png" # Internet URI will also work
+
+    - client_name: "Client #2"
+      client_id: "oauth-client-2"
+      client_secret: "oauth-client-secret-2"
+      redirect_uris: 
+        - "http://localhost:9000/callback"
+        - "http://localhost:9000/callback2"
+      scope: "foo bar"
+      logo_uri: "/images/bomb2.png" # Internet URI will also work

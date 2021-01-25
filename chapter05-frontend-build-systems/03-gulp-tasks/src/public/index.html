@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" ng-app="todoApp">
+
+<head <meta charset="utf8">
+  <title>To Do List App &mdash; v1 (inline model)</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  
+  <!-- This is recommended in Bootstrap 4 website -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <!-- Bootstrap 4 CSS via CDN -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi"
+    crossorigin="anonymous">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/styles1.css">
+
+  <!-- Font Awesome for the icons -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- AngularJS framework via CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+
+  <!-- AngularJS app -->
+  <script src="js/app.js"></script>
+  <script src="js/directives/tasks-header/header.js"></script>
+  <script src="js/directives/new-task-form/newTaskForm.js"></script>
+</head>
+
+<body ng-controller="ToDoCtrl as toDoCtrl">
+  <header class="container">
+    <tasks-header></tasks-header>
+    <new-task-form></new-task-form>
+  </header>
+  <section class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Done</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr ng-repeat="item in toDoCtrl.todoInfo.items | filterByCheckedStatus:toDoCtrl.showCompleted | orderBy: 'action'">
+            <td>{{item.action}}</td><td>{{item.done}}</td>
+            <td><input type="checkbox" ng-model="item.done" ng-click="toDoCtrl.updateTaskStatus({action: item.action, done: item.done})"></td>
+          </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="container-fluid">
+    <label for="showCompletedCheckbox">
+      <input type="checkbox" ng-model="toDoCtrl.showCompleted">
+      Show also completed tasks
+    </label>
+
+  </section>
+
+
+
+  <!-- static footer -->
+  <footer class="footer">
+    <small> with <span class="fa fa-heart" id="redheart"></span> from sergiofgonzalez</small>
+  </footer>
+</body>
+
+</html>

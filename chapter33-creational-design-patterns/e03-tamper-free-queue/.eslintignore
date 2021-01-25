@@ -1,0 +1,4 @@
+# Queue.js uses private fields as described in http://nodejsdp.link/tc39-private-fields
+# which is yet in stage 3
+app/src/lib/Queue.js
+app/src/lib/Queue_v1.js

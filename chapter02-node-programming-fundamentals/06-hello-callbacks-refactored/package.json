@@ -1,0 +1,34 @@
+{
+  "name": "06-hello-callbacks-refactored",
+  "version": "0.0.1",
+  "description": "Exploring callback mechanism in Node.js",
+  "engines": {
+    "node": "6.9.2",
+    "npm": "3.10.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "3.13.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "start": "node build/index.js",
+    "lint": "eslint public/src/",
+    "clean": "rm -rf build/",
+    "copy": "cp -r public/src/ build/",
+    "build": "npm run lint --silent",
+    "prebuild": "npm run clean --silent",
+    "postbuild": "npm run copy --silent",
+    "debug": "node --inspect --debug-brk build/index.js",
+    "dev": "nodemon --ext js,json,yml --watch public/src --watch .eslintrc.yml --exec 'npm run build --silent && npm start --silent'"
+  }
+}

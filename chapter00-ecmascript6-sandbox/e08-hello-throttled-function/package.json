@@ -1,0 +1,40 @@
+{
+  "name": "e08-hello-throttled-function",
+  "version": "0.0.1",
+  "description": "Simple implementation of throttle wrapper",
+  "main": "index.js",
+  "engines": {
+    "node": "10.x.x",
+    "npm": "6.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {
+    "debugModules": ""
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "5.12.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "setup": "rm -rf node_modules && rm -f package-lock.json && rm -rf .nyc_output coverage && npm install",
+    "prestart": "npm run lint",
+    "start": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node app/src/$npm_package_main",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "predebug": "npm run lint",
+    "debug": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk=${npm_config_debugHost:-127.0.0.1} app/src/$npm_package_main",
+    "pretest": "./node_modules/.bin/eslint app/tst/",
+    "test-native": "node app/tst/countstream.js",
+    "test-tap": "tap app/tst/*-tap.js",
+    "test-coverage": "tap app/tst/*-tap.js --cov",
+    "test-coverage-html": "tap app/tst/*-tap.js --cov --coverage-report=lcov"
+  }
+}

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/styles1.css">
+
+    <title>Web Apps &mdash; Bootstrap Refresher</title>
+  </head>
+  <body>
+    <h1>Bootstrap Refresher &raquo; Images</h1>
+
+
+    <div class="container">
+      <h2>Responsive Images</h2>
+      <img src="/images/IMG_1958.jpg" class="img-fluid" alt="Responsive Pizza Pie">
+    </div>
+
+    <div class="container">
+      <h2>Image Thumbnail (note the 1px border appearance)</h2>
+      <img src="/images/IMG_1958_thumbnail.jpg" class="img-thumbnail">
+    </div>
+
+    <div class="container">
+      <h2>Aligning Images</h2>
+      <img src="/images/IMG_1958_thumbnail.jpg" class="rounded float-left" alt="Pizza Pie floating left">
+      <img src="/images/IMG_1958_thumbnail.jpg" class="rounded float-right" alt="Pizza Pie floating right">
+      <img src="/images/IMG_1958_thumbnail.jpg" class="rounded mx-auto d-block" alt="Pizza Pie centered">
+      <div class="text-center">
+        <img src="/images/IMG_1958_thumbnail.jpg" class="rounded" alt="Pizza Pie centered">
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>The <code>&lt;picture&gt;</code> element (resize the screen to see the effect)</h2>
+      <picture>
+        <source srcset="/images/IMG_1958.jpg" media="(min-width: 800px)">
+        <img src="/images/IMG_1958_thumbnail.jpg" class="img-fluid img-thumbnail">
+      </picture>
+    </div>
+  </body>
+</html>

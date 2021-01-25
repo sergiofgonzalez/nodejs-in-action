@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title><%= title %></title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+
+  </head>
+  <body>
+    <% include menu %>
+    <div class="container">    
+      <h1><%= title %></h1>
+      <p>Fill in the form below to sign up!</p>
+      <% include messages %>    
+      <form action="/register" method="POST">
+        <div class="form-group">
+          <label for="usernameInput">Username</label>
+          <input type="text" name="user[name]" class="form-control" id="usernameInput" placeholder="Enter a username">
+          <small class="form-text text-muted">Enter the username with which you want to be known amongst shoutbox users</small>
+        </div>
+        <div class="form-group">
+          <label for="passwordInput">Password</label>
+          <input type="password" name="user[pass]" class="form-control" id="passwordInput" placeholder="Enter a password">
+          <small class="form-text text-muted">The password will be securely encrypted and stored in our servers</small>
+        </div>      
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
