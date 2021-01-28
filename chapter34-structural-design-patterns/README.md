@@ -7,7 +7,7 @@
 + The **Proxy** pattern
 + The **Decorator** pattern
 + The **Adapter** pattern
-+ Exploring *reactive programming (RP)* concepts
++ Introducing the basis of *reactive programming (RP)* concepts
 + Introducing *LevelDB* for Node.js ecosystem
 
 ### Proxy
@@ -573,23 +573,286 @@ Note that the original object is mutated, which is discouraged, but in contrast,
 | :------- |
 | See [09 &mdash; *Decorator* pattern: using *monkey patching* (object augmentation)](09-decorator-monkey-patching) for a runnable example. |
 
-##### Decorating with the Proxy
+##### Decorating with the Proxy object
+
+It's possible to implement object decoration using the `Proxy`object:
+
+```javascript
+
+export const enhancedCalculatorHandler = {
+  get(target, property) {
+    /* new method */
+    if (property === 'add') {
+      return function add() {
+        const addend2 = target.getValue();
+        const addend1 = target.getValue();
+        const result = addend1 + addend2;
+        target.putValue(result);
+        return result;
+      };
+    } else {
+      /* modified method */
+      if (property === 'divide') {
+        return function () {
+          const divisor = target.getValue();
+          if (divisor === 0) {
+            throw new Error('Division by 0');
+          }
+          // delegate if not dividing by zero
+          return target.divide();
+        };
+      }
+    }
+
+    /* delegated methods */
+    return target[property];
+  }
+};
+```
+
+The implementation requires no explanation, with the `Proxy` object providing a very elegant way to add methods, augment existing ones and delegate to the ones we preserve as is:
+
+```javascript
+import { StackCalculator } from './lib/stack-calculator.js';
+import { enhancedCalculatorHandler } from './lib/enhanced-calculator-handler.js';
+
+const calculator = new StackCalculator();
+const enhancedCalculator = new Proxy(calculator, enhancedCalculatorHandler);
+```
+
+| EXAMPLE: |
+| :------- |
+| See [10 &mdash; *Decorator* pattern: using `Proxy` object](chapter34-structural-design-patterns/10-decorator-proxy-object) for an example. |
+
+
+| NOTE: |
+| :---- |
+| The same advantages and disadvantages that exist for the different implementation techniques for proxies apply to the *Decorator* implementation techniques: *Composition* is simple and safe, *Monkey-patching* is succinct but it mutates the *Component* object, and the *Proxy* object provides a very elegant way to implement *Decorators*. |
 
 #### Decorating a LevelUP database
 
-##### Introducing a LevelUP
+In the next section we'll deal with [`LevelUP`](https://www.npmjs.com/package/levelup) module &mdash; a Node.js wrapper around Google's *LevelDB*.
 
-##### Implementing a LevelUP
+*LevelDB* is a key-value store originally built to implement IndexedDB in the Chrome browser. It is a very minimalist yet extensible database which makes it a perfect fit for Node.js purposes.
+
+`LevelUP` has evolved from a simple *LevelDB* wrapper to support several kinds of backends, from in-memory stores to other NoSQL database such as Riak and Redis, to web storage endinges such as IndexedDB and `localStorage`, allowing us to use the same API both on the server and the client.
+
+The vast ecosystem of plugins have made this database to provide complete database products on top of it (like [PouchDB](https://www.npmjs.com/package/pouchdb), a clone of CouchDB), or a graph database that works both on Node.js database and the browser. You can learn more about the vast *LevelUP* ecosystem in https://github.com/Level/awesome.
+
+
+##### Implementing a LevelUP plugin
+
+In the next example, we are going to create a *LevelUP* plugin using the *Decorator* pattern implemented with the *object augmentation (monkey-patching)* technique.
+
+For convenience, we are going to use the [`level`](https://www.npmjs.com/package/level) package which bundles both `LevelUP` and the default adapter called `leveldown`, which uses *LevelDB* as the backend.
+
+The idea is to build a plugin for *LevelUP* that will allow us to receive notifications every time an object with a certain pattern is saved into the database. For example, if we subscribe to a pattern such as `{ a: 1 }`, we want to receive a notification when objects such as `{ a: 1, b: 3}` or `{ a: 1, c: x }` are saved into the database.
+
+In order to do that, let's build our plugin by creating a new module called `level-subscribe.js`:
+
+```javascript
+export function levelSubscribe(db) {
+  db.subscribe = (pattern, listener) => {
+    db.on('put', (key, val) => {
+      /* array.every() checks whether all elements in the array pass the test */
+      const match = Object.keys(pattern).every(k => (pattern[k] === val[k]));
+      if (match) {
+        listener(key, val);
+      }
+    });
+  };
+  return db;
+}
+```
+
+The implementation consists in defining a `levelSubscribe(...)` function that will return a decorated `db` object that we receive as argument:
++ We decorate the `db` object received as argument with a `subscribe()` method that is attached directly on the instance (thus, monkey-patching/object augmentation technique).
++ We listen for any `'put'` events emitted from the `db` object when objects are recorded on the LevelUP database.
++ We validate that all the patterns sent to the `db.subscribe(...)` method are found in the object to be recorded, and if the condition is satisfied, then we invoke the `listener(...)` with the record that has been stored so that further actions can be carried out.
+
+Usage is quite straightforward:
+
+```javascript
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import level from 'level';
+import { levelSubscribe } from './lib/level-subscribe.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const dbPath = join(__dirname, 'db');
+const db = level(dbPath, { valueEncoding: 'json' });
+levelSubscribe(db);
+
+db.subscribe({ doctype: 'tweet', language: 'en' }, (key, val) => console.log(val));
+
+db.put('1', { doctype: 'tweet', text: 'Hi', language: 'en' });
+db.put('2', { doctype: 'company', name: 'XYZ corp' });
+```
+
+Firs we initialize our *LevelUP* database, by selecting the directory where files backing the database are going to be stored, and the default encoding scheme for the contents.
+
+Then, we attach our plugin calling `levelSubscribe(db)` &mdash; this will monkey-patch the original `db` object, adding the `subscribe(...)` method tht is not part of the original object-
+
+Then, we register a listener for the object with pattern `doctype: 'tweet', language: 'en'`. All the objects matching those properties will be sent to the listener which just prints the value of the object in the console.
+
+Finally, we save a couple of records in the DB: one that will trigger the subscription mechanism, and one that won't.
 
 #### In the wild
 
+Despite simple, the real-world applications of the *Decorator* pattern make it a very useful and powerful pattern.
+
+You can find many *LevelUP* plugins that leverage the same pattern:
++ [`level-inverted-index`](https://github.com/dominictarr/level-inverted-index) &mdash; which adds support for inverted indexes to a *LevelUP* database, to be able to perform efficient text searches across the values.
++ [`levelplus`](https://github.com/eugeneware/levelplus) &mdash; which adds support for atomic updates to a *LevelUP* database.
+
+Also, you will find many other modules that make use of the *Decorator* outside of the *LevelUP* plugin ecosystem:
++ [`json-socket`](https://www.npmjs.com/package/json-socket) &mdash; facilitates sending JSON data over TCP by decorating `net.Socket`.
++ [`fastify`](https://www.fastify.io/) &mdash; web appliction framework that exposes an API to decorate a server instance with additional functionality or configuration.
+
 ### The line between proxy and decorator
+
+The previous sections have elaborated about the definition and implementation of the *Proxy* and *Decorator* pattern. It should be clear by now that the boundaries between them are mostly conceptual:
++ *Proxy* pattern is used to control access to a concrete or virtual object. It does not change the original interface, so you should be able to pass a proxy instance where the original object was expected.
++ *Decorator* pattern is used to enhance an existing object with new behavior
 
 ### Adapter
 
-### Summary
+The **Adapter** pattern allows us to access the functionality of an object using a different interface.
+
+> The **Adapter** pattern is used to take the interface of an object (the *adaptee*) and make it compatible with another interface that is expected by a given client.
+
+![Adapter](images/adapter.png)
+
+The *Adapter* is essentially a wrapper for the *adaptee* that exposes a different interface. Note that the mapping between the *adapter* methods and the *adaptee* methods do not have to be a one-to-one, and you'd typically find composition of one or more method invocations.
+
+The most common technique for implementing the *Adapter* pattern is the object composition.
+
+#### Using *LevelUP* through the filesystem API
+In this section, we are going to build an adapter around the *LevelUP* API, transforming it into an interface that is compatible with the core `fs` module.
+
+That is, we will make sure that every call to `readFile(...)` and `writeFile(...)` gets adapted to calls to `db.get(...)` and `db.put(...)`.  At the end, we will be able to use *LevelUP* database as a storage backend for simple filesystem operations.
+
+We will start by creating the `fs-adapter.js` first, which has to expose the interface we want to support, which happens to be the one `fs` module exposes to read and write files:
+
+```javascript
+import { resolve } from 'path';
+
+export function createFSAdapter(db) {
+  return ({
+    readFile(filename, options, callback) {
+
+    },
+    writeFile(filename, contents, options, callback) {
+
+    }
+  });
+}
+```
+
+In the second step, we need to implement the first of the adapter methods `readFile(...)` in which we need to ensure that it is compatible with the one from the `fs` module, and that it invokes the correct methods on the *adaptee* side:
+
+```javascript
+readFile(filename, options, callback) {
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
+  } else if (typeof options === 'string') {
+    options = { encoding: options };
+  }
+
+  db.get(resolve(filename),
+    { valueEncoding: options.encoding },
+    (err, value) => {
+      if (err) {
+        if (err.type === 'NotFoundError') {
+          err = new Error(`ENOENT, open '${ filename }`);
+          err.code = 'ENOENT';
+          err.errno = 34;
+          err.path = filename;
+        }
+        return callback && callback(err);
+      }
+      callback && callback(null, value);
+    }
+  );
+}
+```
+
+You can see in the code above that the actual adaptation to `db.get()` is simple, and most of the extra work is related to ensuring that the behavior of the new function matches as closely as possible the original `readFile()` behavior.
+
+The interesting part is that when we received a `readFile(...)` invocation in the *Adapter*, we invoke `db.get()` using the `filename` as the key, and retrieve the associated value from the database using the `valueEncoding` passed. With the retrieved value (if any), we invoke the callback. Otherwise, we return an `ENOENT` error as `fs.readFile()` would do.
+
+Next step consists in doing the same with `writeFile(...)`:
+
+```javascript
+writeFile(filename, contents, options, callback) {
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
+  } else if (typeof options === 'string') {
+    options = { encoding: options };
+  }
+
+  db.put(resolve(filename),
+    contents,
+    { valueEncoding: options.encoding },
+    callback
+  );
+}
+```
+
+We follow the same approach as before. We try to mimic the relevant `fs.writeFile(...)` (at least with respect to the behavior we want to cover, although we're omitting basic behavior such as controlling `options.mode` for the rewrites).
+
+The easiest part is to test it, as it just uses the `fs` API:
+
+```javascript
+/* eslint-disable no-unused-vars */
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import level from 'level';
+import { createFSAdapter } from './lib/fs-adapter.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const db = level(join(__dirname, 'db'), { valueEncoding: 'binary' });
+
+const fs = createFSAdapter(db);
+
+// test 1: read, then write same file
+fs.writeFile('file.txt', 'Hello!', () => {
+  fs.readFile('file.txt', { encoding: 'utf8' }, (err, res) => {
+    if (err) {
+      return console.error(err);
+    }
+    console.log(res);
+  });
+});
+
+// test 2: try to read missing file
+fs.readFile('missing.txt', { encoding: 'utf8' }, (err, res) => {
+  console.error(err);
+});
+```
+
+#### In the wild
+The *Adapter* pattern is widely used in the Node.js ecosystem.
+
+Some of the examples are the *LevelUP* plugins that allow to replicate the internal *LevelUP* API, and ORMs and database abstraction libraries that use the adapter pattern to make the API compatible across different databases.
+
 
 ### You know you've mastered this chapter when...
++ You're comfortable understanding the structural design patterns: *Proxy*, *Decorator* and *Adapter*, and understand that those are ones of the most widely used in the Node.js ecosystem.
+
++ You understand when it is appropriate to use the *Proxy* pattern to control access to existing objects, and how it pays an important role for many modern paradigms such as reactive programming.
++ You're comfortable with the *Change Observer* pattern.
++ You are familiar with the different techniques to implement the *Proxy* pattern and can recognize its pros and cons: *Composition*, *Object augmentation/Monkey-patching* and the native *Proxy* object.
+
++ You understand when it is appropriate to use the *Decorator* pattern to add functionality to existing objects, and you're aware that the techniques to implement it are the same ones we have for the *Proxy* pattern, as both differ only conceptually.
+
++ You understand when it is appropriate to use the *Adapter* pattern to wrap an existing object and expose its functionality through a different interface.
+
++ You're familiar with *LevelUP* and its ecosystem, and understand the circumstances in which it might become a very valuable tool (for example when you need something like SQLite but for NoSQL purposes).
+
 
 ### Patterns Cheat Sheet
 
@@ -631,6 +894,9 @@ Illustrates how to implement the *Decorator* pattern using object composition. I
 
 #### [09 &mdash; *Decorator* pattern: using *monkey patching* (object augmentation)](09-decorator-monkey-patching)
 Illustrates how to implement the *Decorator* pattern using object augmentation (monkey-patching). In the example, a new method `add()` is exposed and the behavior of `divide()` is slightly changed.
+
+#### [10 &mdash; *Decorator* pattern: using `Proxy` object](chapter34-structural-design-patterns/10-decorator-proxy-object)
+Illustrates how to implement the *Decorator* pattern using the native `Proxy` object. In the example, a new method `add()` is exposed and the behavior of `divide()` is slightly changed.
 
 #### Exercise 1: [Color Console Factory](./e01-color-console-factory/)
 Create a class called `ColorConsole` that has just one empty method called `log()`. Then, create three subclasses: `RedConsole`, `BlueConsole`, and `GreenConsole`. The `log()` method of every `ColorConsole` subclass will accept a string as input and will print that string to the console using the color that gives the name to the class.

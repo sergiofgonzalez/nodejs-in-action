@@ -2091,6 +2091,10 @@ Build a client and a server to transfer files over TCP. Extra points if you add 
 #### Example 4: [Animations with Readable streams](./e04-animations-readable-streams)
 Did you know that you can create amazing terminal animations with just `Readable` streams? To understand what we are talking, run `curl parrot.live` in your terminal and see what happens. Hint: if you need some help with figuring out how to implement this, you can check out the actual source code by accessing its URL through your browser.
 
+#### Example 5: [Parsing form encoded data from HTTP request](./e05-parsing-form-encoded-data)
+Build a server that is able to accept and parse HTTP POST requests with form data using the low-level `http` method.
+
+
 #### To Do
 
 [ ] Review stream related examples in this project

@@ -5,5 +5,5 @@ This section is a collection of assorted documentation and samples on functional
 
 ## [Part 0: Fundamentals](part00-fundamentals/)
 
-### [Section 1: Intro to Abstract Data Types and Algorithms](part01-intro-to-adt-and-algorithms)
+### [Section 1: Intro to Abstract Data Types and Algorithms](section01-intro-to-adt-and-algorithms)
 
