@@ -1,5 +1,5 @@
 # Part 4: Node.js avanced patterns and techniques
-## Chapter 33 &mdash; Creational design patterns
+## Chapter 34 &mdash; Structural design patterns
 ### Exercise 2: Timestamped logs
 Create a *proxy* for the ``console` object that enhances every logging function (`log()`, `error()`, `debug()` and `info()`) by prepending the current timestamp to the message you want to print in logs (e.g. console.log(`hello`) shoud print '2021-01-30T10:45:46.723Z hello') in the console.
 

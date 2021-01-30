@@ -922,6 +922,9 @@ Write a proxy for your favorite HTTP client library that caches the response of 
 #### Exercise 2: [Timestamped logs](./e02-timestamped-logs/)
 Create a *proxy* for the ``console` object that enhances every logging function (`log()`, `error()`, `debug()` and `info()`) by prepending the current timestamp to the message you want to print in logs (e.g. console.log(`hello`) shoud print '2021-01-30T10:45:46.723Z hello') in the console.
 
+#### Exercise 3: [Colored console output](./e03-colored-console-output)
+Write a *decorator* for the `console` object that adds the methods: `red(message)`, `yellow(message)`, `green(message)`. These methods should behave like `console.log(message)` except that they will print the message in red, yellow and green respectively. For simplicity, use the [ansi-styles](https://www.npmjs.com/package/ansi-styles) package.
+
 ### ToDo
 
 [ ] Review https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy to understand of the capabilities of the `Proxy` object.

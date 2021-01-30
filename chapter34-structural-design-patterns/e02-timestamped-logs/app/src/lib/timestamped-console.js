@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 export function createTimestampedConsole(console) {
   /* Explicit monkey-patched */
   console.log = getTimestampedFunction(console.log);

@@ -1,5 +1,5 @@
 # Part 4: Node.js avanced patterns and techniques
-## Chapter 33 &mdash; Creational design patterns
+## Chapter 34 &mdash; Structural design patterns
 ### Exercise 1: HTTP client cache
 Write a proxy for your favorite HTTP client library that caches the response of a given HTTP request, so that if you make the same request again, the response is immediately returned from the local cache, rather than being fetched from the remote URL.
 
