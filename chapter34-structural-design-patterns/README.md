@@ -11,7 +11,7 @@
 + Introducing *LevelDB* for Node.js ecosystem
 
 ### Proxy
-> A **Proxy** is an object that controls access to another object, called the *subject*. A *proxy* intercepts all or some of the operations that are meant to be executed on the *subject*, augmenting or complementing their behavior.
+> A **Proxy** is an object that controls access to another object, called the *subject*. A *proxy* intercepts all or some of the operations that are meant to be executed on the *subject*, augmenting or complementing its behavior.
 
 The *proxy* and the subject have an identical interface, and this allows us to swap one for the other transparently.
 
@@ -698,6 +698,10 @@ Then, we register a listener for the object with pattern `doctype: 'tweet', lang
 
 Finally, we save a couple of records in the DB: one that will trigger the subscription mechanism, and one that won't.
 
+| EXAMPLE: |
+| :------- |
+| See [11 &mdash; *Decorator* pattern: creating a `LevelUP` plugin using object augmentation (monkey-patching)](11-decorator-level-up-plugin-monkey-patching) for a runnable example. |
+
 #### In the wild
 
 Despite simple, the real-world applications of the *Decorator* pattern make it a very useful and powerful pattern.
@@ -834,6 +838,10 @@ fs.readFile('missing.txt', { encoding: 'utf8' }, (err, res) => {
 });
 ```
 
+| EXAMPLE: |
+| :------- |
+| See [12 &mdash; *Adapter* pattern: creating a `LevelUP` adapter so that it works with the `fs` API](12-adapter-level-up-fs-api) for a runnable example. |
+
 #### In the wild
 The *Adapter* pattern is widely used in the Node.js ecosystem.
 
@@ -862,8 +870,12 @@ Some of the examples are the *LevelUP* plugins that allow to replicate the inter
 | Creational | [**Builder**](#builder) | Simplifies the creation (or invocation) of complex objects (or functions) by providing a fluent interface which which allows you to build (or invoke) the object (or function) step by step. | `const db = new Db().setName(dbName).build()` |Greatly simplifies *DX*, as the fluent interface is simple to read and self-documenting.<br>The implementation consists in encapsulating parameter setting related login into setter methods. |
 | Creational | [**Revealing Constructor**](#revealing-constructor) | Expose certain private functionality of an object to the consumer only at the time of creation, making them completely inaccessible once the object is created. | `const db = new Database((dbConfig) => {...})` | The pattern consists in defining a constructor which accepts as argument a function that will receive the private properties that will be accessible during creation.<br>This pattern provides strong guarantees regarding encapsulation and information hiding. |
 | Creational | [**Singleton**](#singleton) | Enforces the presence of only once instance of a class and centralizes access to it. | `export const db = new Database(dbName)` |This pattern are great for sharing stateful information and synchronizing access to a resources.<br>You must be aware that multiple incompatible versions of a module might end up creating multiple *singleton instances* (one per incompatible version). |
-| Dependency Wiring | [**Singleton dependencies**](#singleton-dependencies) | Leverages the module system to provide the dependencies ofa  module as *Singletons*, which ensures the correct wiring even for stateful dependencies. | `import { db } from 'db.js'` | Very simple to implement, but creates tight coupling between a module and its dependencies. |
+| Dependency Wiring | [**Singleton dependencies**](#singleton-dependencies) | Leverages the module system to provide the dependencies of a  module as *Singletons*, which ensures the correct wiring even for stateful dependencies. | `import { db } from 'db.js'` | Very simple to implement, but creates tight coupling between a module and its dependencies. |
 | Dependency Wiring | [**Dependency Injection**](#dependency-injection) | The dependencies of a component are *provided as inputs* by an external entity. | `const blog = new Blog(db)` | Provides loose coupling between components at the cost of more complex implementation and dependency graph management. |
+| Structural | [**Proxy**](#proxy) | Contols access to another object, called the *subject*, by providing an object with the same interface as the *subject* that intercepts all or some of the operations that are meant to be executed on the *subject*, augmenting or complementing its behavior. | `const proxy = new EnhancedSubject(subject)` | Several techniques available for implementing it: composition, monkey-patching and native `Proxy` object. |
+| Structural | [**Change Observer**](#change-observer-pattern-with-proxy) | Variant of [**Proxy**](#proxy) in which the *subject* notifies one or more observers of any state change in the object so that they can react to them as soon as they occur. | `const observableSubject = createObservable(subject, (...args) => { /* listener logic */ })` | Cornerstone of reactive programming |
+| Structural | [**Decorator**](#decorator) | Dynamically augment the behavior of an existing *target* object. | Same impelementation techniques available for the *Proxy* pattern can be applied to *Decorator*. |
+| Structural | [**Adapter**](#adapter) | Takes the interface on an object (the *adaptee*) and makes it compatible with another interface that is expected by the client code. | `const adapter = createAdapter(adaptee)` | It is common to find that methods exposed from the *Adapter* ends up invoking several methods in the *adaptee*. |
 
 
 ### Code, Exercises and mini-projects
@@ -898,8 +910,17 @@ Illustrates how to implement the *Decorator* pattern using object augmentation (
 #### [10 &mdash; *Decorator* pattern: using `Proxy` object](chapter34-structural-design-patterns/10-decorator-proxy-object)
 Illustrates how to implement the *Decorator* pattern using the native `Proxy` object. In the example, a new method `add()` is exposed and the behavior of `divide()` is slightly changed.
 
-#### Exercise 1: [Color Console Factory](./e01-color-console-factory/)
-Create a class called `ColorConsole` that has just one empty method called `log()`. Then, create three subclasses: `RedConsole`, `BlueConsole`, and `GreenConsole`. The `log()` method of every `ColorConsole` subclass will accept a string as input and will print that string to the console using the color that gives the name to the class.
+#### [11 &mdash; *Decorator* pattern: creating a `LevelUP` plugin using object augmentation (monkey-patching)](11-decorator-level-up-plugin-monkey-patching)
+Illustrates how to implement the *Decorator* pattern using object augmentation (monkey-patching) to create a small plugin for *LevelUP* database. In the example, we augment *LevelUP* to receive notifications when an object that satisfies a certain pattern is saved into the database.
+
+#### [12 &mdash; *Adapter* pattern: creating a `LevelUP` adapter so that it works with the `fs` API](12-adapter-level-up-fs-api)
+Illustrates how to implement the *Adapter* pattern by creating an adapter that makes *LevelUP* API compatible with the `fs` API.
+
+#### Exercise 1: [HTTP client cache](./e01-http-client-cache/)
+Write a proxy for your favorite HTTP client library that caches the response of a given HTTP request, so that if you make the same request again, the response is immediately returned from the local cache, rather than being fetched from the remote URL.
+
+#### Exercise 2: [Timestamped logs](./e02-timestamped-logs/)
+Create a *proxy* for the ``console` object that enhances every logging function (`log()`, `error()`, `debug()` and `info()`) by prepending the current timestamp to the message you want to print in logs (e.g. console.log(`hello`) shoud print '2021-01-30T10:45:46.723Z hello') in the console.
 
 ### ToDo
 

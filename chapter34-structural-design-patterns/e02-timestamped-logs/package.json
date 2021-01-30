@@ -34,5 +34,7 @@
     "debug": "node --inspect-brk app/src/main.js http://www.example.com",
     "debug-test": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/tst/nth-test.js",
     "freshen-deps": "./scripts/freshen.sh"
+  },
+  "dependencies": {
   }
 }
