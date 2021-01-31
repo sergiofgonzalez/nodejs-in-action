@@ -925,20 +925,18 @@ Create a *proxy* for the ``console` object that enhances every logging function 
 #### Exercise 3: [Colored console output](./e03-colored-console-output)
 Write a *decorator* for the `console` object that adds the methods: `red(message)`, `yellow(message)`, `green(message)`. These methods should behave like `console.log(message)` except that they will print the message in red, yellow and green respectively. For simplicity, use the [ansi-styles](https://www.npmjs.com/package/ansi-styles) package.
 
+#### Exercise 4: [Virtual File System](./e04-virtual-file-system)
+Modify our [Level DB filesystem adapter](12-adapter-level-up-fs-api) to write the file data in memory rather than in LevelDB.
+
+#### Exercise 5: [The lazy buffer](./e05-lazy-buffer)
+Implement a `createLazyBuffer(size)` *factory function* that generates a virtual proxy for a `Buffer` of the given size. The *proxy* instance should instantiate a `Buffer` object (effectively allocating the given amount of memory) only when `write()` is being invoked for the first time. If no attempt to write into the buffer is made, no `Buffer` instance should be created.
+
+#### Exercise 6: [`Proxy` in action](./e06-proxy-in-action)
+Reviews the capabilities of the `Proxy` object.
+
 ### ToDo
 
-[ ] Review https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy to understand of the capabilities of the `Proxy` object.
-
-[ ] Profiler using `Proxy`
-
-[ ] Investigate lazy initialization with proxies
-
-[ ] Include the **Observer pattern** in the cheat sheet:
-The **Observer** pattern is another fundamental pattern in the asynchronous world of Node.js. It is the ideal solution for modeling the reactive pattern of Node.js and a perfect complement for callbacks.
-
-> The **Observer** pattern defines an object (called *subject*) that can notify a set of *observers* (or *listeners*) when a change in state occurs.
-
-While the **Callback** pattern when used in a *CPS* style propagate the result of an operation to a single *listener*; the **Observer** can actually notify multiple *observers*.
+[ ] Profiler using `Proxy`: can it be used with a function
 
 [ ] Review https://www.reactivemanifesto.org/
 
