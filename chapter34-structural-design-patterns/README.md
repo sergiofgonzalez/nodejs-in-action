@@ -934,9 +934,10 @@ Implement a `createLazyBuffer(size)` *factory function* that generates a virtual
 #### Exercise 6: [`Proxy` in action](./e06-proxy-in-action)
 Reviews the capabilities of the `Proxy` object.
 
-### ToDo
+#### Exercise 7: [Function profiler using `Proxy`](./e07-function-profiler-proxy)
+Illustrates how to use the native `Proxy` object to intercept calls to a function and show that the function has been called, and report how much time it took to execute.
 
-[ ] Profiler using `Proxy`: can it be used with a function
+### ToDo
 
 [ ] Review https://www.reactivemanifesto.org/
 
