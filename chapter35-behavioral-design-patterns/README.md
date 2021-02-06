@@ -363,12 +363,140 @@ As a consequence, the *Template* pattern is suitable when you want to create pre
 #### A configuration manager template
 In this section, we will implement the same example described in the [Strategy](#example-multi-format-configuration-objects) section. We will build an object called `ConfigTemplate` that holds a set of configuration parameters used by an application. The `ConfigTemplate` object should provide a simple interface to access these parameters, but also a way to import and export the configuration using persistent storage, such as a file. Also, we want to be able to support different formats to store the configuration such as JSON, INI or YAML.
 
-345
+```javascript
+import { promises as fs } from 'fs';
+import objectPath from 'object-path';
 
+export class ConfigTemplate {
+  async load(file) {
+    console.log(`INFO: ConfigTemplate: Deserializing from ${ file }`);
+    this.data = this._deserialize(await fs.readFile(file, 'utf-8'));
+  }
+
+  async save(file) {
+    console.log(`INFO: ConfigTemplate: Serializing to ${ file }`);
+    await fs.writeFile(file, this._serialize(this.data));
+  }
+
+  get(path) {
+    return objectPath.get(this.data, path);
+  }
+
+  set(path, value) {
+    return objectPath.set(this.data, path, value);
+  }
+
+  _serialize() {
+    throw new Error(`_serialize() must be implemented`);
+  }
+
+  _deserialize() {
+    throw new Error(`_deserialize() must be implemented`);
+  }
+}
+```
+
+The `ConfigTemplate` class implements the common parts of the configuration management logic, namely setting and getting properties, plus the skeleton of the methods for loading and saving the configuration to disk. However, the details for loading and saving are delegated to `_serialize()` and `_deserialized()` which are not implemented. Those are the *templateMethods*, which will allow the creation of concrete classes for dealing with different formats such as JSON, INI, etc.
+
+| NOTE: |
+| :---- |
+| As there is no support for abstract methods in JavaScript classes, we simply create *stubs* that will throw an exception if directly called. |
+
+Let's now create the concrete class for dealing with JSON config files:
+
+```javascript
+import { ConfigTemplate } from './config-template.js';
+
+export class JsonConfig extends ConfigTemplate {
+
+  _deserialize(data) {
+    return JSON.parse(data);
+  }
+
+  _serialize(data) {
+    return JSON.stringify(data, null, ' ');
+  }
+}
+```
+
+And another for dealing with INI format:
+
+```javascript
+import { ConfigTemplate } from './config-template.js';
+import ini from 'ini';
+
+export class IniConfig extends ConfigTemplate {
+
+  _deserialize(data) {
+    return ini.parse(data);
+  }
+
+  _serialize(data) {
+    return ini.stringify(data, null, ' ');
+  }
+}
+```
+
+And we can test the functionality of the `ConfigTemplate` and its concrete classes with the following code:
+
+```javascript
+import { JsonConfig } from './lib/json-config.js';
+import { IniConfig } from './lib/ini-config.js';
+
+async function main() {
+  /* INI */
+  const iniConfig = new IniConfig();
+  await iniConfig.load(`samples/conf.ini`);
+  console.log(iniConfig.get(`greeting`));
+  iniConfig.set('book.nodejs', 'design patterns');
+  await iniConfig.save(`samples/conf_mod.ini`);
+
+  /* JSON */
+  const jsonConfig = new JsonConfig();
+  await jsonConfig.load(`samples/conf.json`);
+  console.log(jsonConfig.get(`greeting`));
+  jsonConfig.set('book.nodejs', 'design patterns');
+  await jsonConfig.save(`samples/conf_mod.json`);
+}
+
+main()
+  .then(() => console.log(`Done!!!`))
+  .catch((err) => console.error(`ERROR: ${ err.message }`));
+```
+
+Note how the functionality provided by implementation based on the *Strategy* pattern matches exactly the functionality of this example that uses the *Template* pattern.
+
+The difference lies in the fact that when using the *Template* the different behavior is *baked into* the class itself, rather than being chosen at runtime.
 
 #### In the wild
+The *Template* pattern is very commonly used in JavaScript when using inheritance. For example, we used it when we were extending different stream classes to implement our custom streams in [Chapter 32: Coding with Streams](../chapter32-coding-with-streams).
 
 ### Iterator
+
+#### The iterator protocol
+
+#### The iterable protocol
+
+#### Iterators and iterables as a native JavaScript interface
+
+#### Generators
+348
+
+##### Generators in theory
+
+##### A simple generator function
+
+##### Controlling a generator iterator
+
+##### How to use generators in place of iterators
+
+#### Async iterators
+
+#### Async generators
+
+#### Async iterators and Node.js streams
+
+#### In the wild
 
 ### Middleware
 

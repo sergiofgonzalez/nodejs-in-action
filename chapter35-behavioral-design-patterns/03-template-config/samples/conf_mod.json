@@ -1,0 +1,6 @@
+{
+ "greeting": "Hello to Jason Isaacs",
+ "book": {
+  "nodejs": "design patterns"
+ }
+}
