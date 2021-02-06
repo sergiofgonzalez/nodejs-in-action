@@ -122,6 +122,10 @@ async function main() {
 }
 ```
 
+| EXAMPLE: |
+| :------- |
+| See [01 &mdash; *Strategy* pattern](01-strategy-config) for a runnable example. |
+
 The previous example showed us one of the possible alternatives that we had for selecting a strategy, but there are others such as:
 + creating two different strategy families: one specialized in serialization and another in deserialization.
 + dynamically selecting the strategy: we could have implemented a mechanism to dynamically select the strategy based on the extension of the file provided.
@@ -136,9 +140,233 @@ function context(strategy) { ... }
 [Passport](https://github.com/jaredhanson/passport) ia a well-known authentication framework for Node.js, which allows a web server to suppoert different authentication schemes. *Passport* uses the *Strategy* pattern to separate the common logic used during authentication process from the parts that change.
 
 ### State
-337
+The **State** pattern is a specialization of the *Strategy* pattern where the strategy changes depending on the state of the context.
+
+In contrast to the *Strategy* pattern behavior, in which the *strategy* remains unchanged once selected (based on a config property, input parameter...), in the **State** pattern, the strategy, which is called the *state* is dynamic and can change during the lifetime of the *context*, allowing its behavior to adapt depending on its internal state.
+
+![State](images/state.png)
+
+The diagram shows how a *context* object transitions through three states (A, B, and C), and how at each different context state, a different strategy is selected.
+
+> The **State** pattern allows a component to adapt its behavior dynamically depending on its internal state.
+
+Let's consider an example consisting of a hotel booking system, and an object called `Reservation` that models a room reservation.
++ When the reservation is created, the user can confirm (using `confirm()`) the reservation. The user cannot cancel it (using `cancel()`) because it's still not confirmed, but they can delete the reservation before confirming it (using `delete()`).
++ Once the reservation is confirmed, the `confirm()` method should throw an exception. However, it should be possible to cancel it. Deleting the reservation should not be allowed for internal housekeeping purposes.
++ On the day before the reservation, the user should not be allowed to either confirm, cancel or delete.
+
+The following diagram depicts the expected behavior in terms of the *State* pattern:
+
+![State diagram](images/state_diagram.png)
+
+The way to solve this problem is to apply the *State* pattern with three strategies, each one implementing the same interface (`confirm()`, `cancel()`, and `delete()`) with the three different behaviors corresponding to the three states.
+
+The switch from one behavior to another would simply require the activation of a different strategy (state object) on each state change.
+
+| NOTE: |
+| :---- |
+| The *state transition* can be initiated and controlled by the context object, by client code, or by the *state* object itself. The last option usually provides the best results in terms of flexibility and decoupling, as the context does not have to know about all the possible states and how to transition between them.
+
+#### Implementing a basic failsafe socket
+In this section, we we will build a TCP client socket that does not fail when the connection with the server is lost. Instead, we will queue all the data sent during the time in which the server is offline and then try to send it again as soon as the connection is reestablished.
+
+The socket will be leveraged in the context of a simple monitoring system, where a set of machines sends some statistics about the resource utilization at regular intervals. Thus, the failsafe implementation will be useful when the server that collects the statistics goes down, as our socket will queue the data until it becomes available again.
+
+Let's start by creating the *context* object. This is the object that contains the common logic for all the *states*:
+
+```javascript
+import { OfflineState } from './states/offline-state.js';
+import { OnlineState } from './states/online-state.js';
+
+export class FailsafeSocket {
+
+  constructor(options) {
+    this.options = options;
+    this.queue = [];
+    this.currentState = null;
+    this.socket = null;
+    this.states = {
+      offline: new OfflineState(this),
+      online: new OnlineState(this)
+    };
+    this.changeState('offline');
+  }
+
+  changeState(state) {
+    console.log(`INFO: FailsafeSocket: Activating state: ${ state }`);
+    this.currentState = this.states[state];
+    this.currentState.activate();
+  }
+
+  send(data) {
+    this.currentState.send(data);
+  }
+}
+```
+
++ The `constructor(...)` initializes the different properties we will need: the queue that will contain the data that cannot be sent, the underlying socket, the object that will reference the two different *states* (online/offline) of the *context*, and a property that references the currently active *state*. We will initialize the `FailsafeSocket` instances as `'offline'`.
+
++ The `changeState(...)` method is responsible for transitioning from one state to another. It simply switches the `currentState` instance property and invokes `active(...)` on the target *state*.
+
++ The `send(...)` method is responsible for sending the data. This is the main piece that leverages the different behavior depending on the state, and therefore, we delegate the actual send to the currently active state. Ultimately, the *state* will behave differently if we are in online or offline mode.
+
+As a summary, we know that the *state* will be a class exposing:
++ a constructor to build the *state* instance
++ an `activate(...)` method that will be called to notify the *state* that it is the currently enabled mode on the *context*
++ a `send(...)` method which will be called to either send over a TCP socket/enqueue the data.
+
+Let's have a look at the offline *state* first:
+
+```javascript
+import jsonOverTcp from 'json-over-tcp-2';
+
+export class OfflineState {
+  constructor(failsafeSocket) {
+    this.failsafeSocket = failsafeSocket;
+  }
+
+  send(data) {
+    this.failsafeSocket.queue.push(data);
+  }
+
+  activate() {
+    const retry = () => {
+      setTimeout(() => this.activate(), 1000);
+    };
+
+    console.log(`INFO: OfflineState: Trying to connect...`);
+    this.failsafeSocket.socket = jsonOverTcp.connect(
+      this.failsafeSocket.options,
+      () => {
+        console.log(`INFO: OfflineState: Connection established!`);
+        this.failsafeSocket.socket.removeListener('error', retry);
+        this.failsafeSocket.changeState('online');
+      }
+    );
+    this.failsafeSocket.socket.once('error', retry);
+  }
+}
+```
+
+This is how the offline mode works:
+
++ We use a library [json-over-tcp-2(jot)](https://www.npmjs.com/package/json-over-tcp-2) that will help with the serialization of JSON objects over TCP.
+
++ The `send(...)` method in offline mode simply pushes the data received into the *context* queue.
+
++ The `activate()` method will attempt to connect over TCP using the `json-over-tcp-2` socket. If the operation fails, it will register an scheduled task to retry after one second. If it succeeds, it will *unschedule* the retry task, and transition the *context* state to `'online'`.
+
+Let's have a look now at the online mode implementation:
+
+```javascript
+export class OnlineState {
+  constructor(failsafeSocket) {
+    this.failsafeSocket = failsafeSocket;
+    this.hasDisconnected = false;
+  }
+
+  send(data) {
+    this.failsafeSocket.queue.push(data);
+    this._safeWrite(data);
+  }
+
+  _safeWrite(data) {
+    this.failsafeSocket.socket.write(data, err => {
+      if (!this.hasDisconnected && !err) {
+        this.failsafeSocket.queue.shift();
+      } else {
+        const error = this.hasDisconnected ? new Error('Unexpected disconnection') : err;
+        this._handleError(error);
+      }
+    });
+  }
+
+  activate() {
+    this.hasDisconnected = false;
+    for (const data of this.failsafeSocket.queue) {
+      this._safeWrite(data);
+    }
+
+    this.failsafeSocket.socket.once('error', error => {
+      this._handleError(error);
+    });
+  }
+
+  _handleError(err) {
+    console.error(`ERROR: OnlineState: ${ err.message }: switching to offline mode`);
+    this.hasDisconnected = true;
+    this.failsafeSocket.changeState('offline');
+  }
+}
+```
+
+Thus, in the online mode:
+
++ `send(...)` queues the data and then immediately tries to write it directly into the socket, as we assume we're online. It performs the actual write using an internal `_safeWrite()` method.
+
++ `_safeWrite(...)` tries to write the data into the underlying socket (which is *writable stream*). If no errors are returned, and the socket didn't disconnect in the meantime, we assume that the data was sent successfully and therefore we remove it from the queue using `shift()`.
+
++ `activate()` flushes any data that was queue while the socket was offline, and starts listening for any error event. When this happens, we transition from online to offline mode by directly invoking the *context* object `changeState(...)` method.
+
+| NOTE: |
+| :---- |
+| The implementation is slightly different for `OnlineState` with regards to the error management, as it was verified that certain error conditions do not trigger the `'error'` event listener. Thus, `_safeWrite(...)` includes an else condition that handles any error received in the callback. |
+
+Now, in order to test it end to end we need a server:
+
+```javascript
+import jsonOverTcp from 'json-over-tcp-2';
+
+const server = jsonOverTcp.createServer({ port: 5000 });
+server.on('connection', socket => {
+  socket.on('data', (data) => {
+    console.log(`INFO: server: data received from the client: ${ data }`);
+  });
+});
+
+server.listen(5000, () => console.log(`INFO: server: TCP server started and listening on port 5000`));
+```
+
+And a client that will instantiate a `FailsafeSocket` object to report some metrics:
+
+```javascript
+import { FailsafeSocket } from './lib/fail-safe-socket.js';
+
+const failsafeSocket = new FailsafeSocket({ port: 5000 });
+
+setInterval(() => {
+  failsafeSocket.send(process.memoryUsage());
+}, 2500);
+```
+| EXAMPLE: |
+| :------- |
+| See [02 &mdash; *State* pattern: Failsafe socket](02-state-failsafe-socket) for a runnable example. |
 
 ### Template
+
+The *Template* pattern has a lot in common with the *Strategy* pattern.
+
+> The **Template** pattern defines an abstract class that implements the skeleton (representing the common parts) of a component, where some of its steps are left undefined. Subclasses can then *fill* the gaps by implementing the missing parts called *template methods*.
+
+The intent of this pattern is to make it possible to define a family of classes that are all variations of a family of components.
+
+![Template](images/template.png)
+
+The diagram above depicts the structure of the *Template* pattern with three concrete classes that extend the *Template* class and provide an implementation of the abstract methods.
+
+As we don't have abstract classes in JavaScript, we can opt for assigning a function that always throws an exception, or leave the method undefined.
+
+The purpose of the *Template* and *Strategy* pattern is very similar, with the main difference being the way in which the variable parts are wired to the fixed part. While the *Strategy* let us change the variable parts at runtime, with the *Template* the component is determined at development time, when the concrete class is defined, because it uses inheritance.
+
+As a consequence, the *Template* pattern is suitable when you want to create prepackaged variations of a component.
+
+#### A configuration manager template
+In this section, we will implement the same example described in the [Strategy](#example-multi-format-configuration-objects) section. We will build an object called `ConfigTemplate` that holds a set of configuration parameters used by an application. The `ConfigTemplate` object should provide a simple interface to access these parameters, but also a way to import and export the configuration using persistent storage, such as a file. Also, we want to be able to support different formats to store the configuration such as JSON, INI or YAML.
+
+345
+
+
+#### In the wild
 
 ### Iterator
 
@@ -168,8 +396,11 @@ function context(strategy) { ... }
 
 ### Code, Exercises and mini-projects
 
-#### [01 &mdash; *Proxy* pattern: Object composition](01-proxy-object-composition)
-Illustrates how to implement a *proxy* using object composition with classes.
+#### [01 &mdash; *Strategy* pattern](01-strategy-config)
+Illustrates how to implement the *Strategy* pattern by creating a config that supports different types of formats.
+
+#### [02 &mdash; *State* pattern: Failsafe socket](02-state-failsafe-socket)
+Illustrates how to implement the *State* pattern by creating Failsafe socket implementation that handles gracefully disruption in the communication as two states.
 
 #### Exercise 1: [HTTP client cache](./e01-http-client-cache/)
 Write a proxy for your favorite HTTP client library that caches the response of a given HTTP request, so that if you make the same request again, the response is immediately returned from the local cache, rather than being fetched from the remote URL.
