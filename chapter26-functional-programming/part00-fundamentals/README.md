@@ -7,3 +7,6 @@ This section is a collection of assorted documentation and samples on functional
 
 ### [Section 1: Intro to Abstract Data Types and Algorithms](section01-intro-to-adt-and-algorithms)
 
+### [Section 2: Lists: sequential representation](section02-sequential-lists)
+
+

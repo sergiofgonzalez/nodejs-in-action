@@ -464,6 +464,10 @@ main()
   .catch((err) => console.error(`ERROR: ${ err.message }`));
 ```
 
+| EXAMPLE: |
+| :------- |
+| See [03 &mdash; *Template* pattern: Config](03-template-config) for a runnable example. |
+
 Note how the functionality provided by implementation based on the *Strategy* pattern matches exactly the functionality of this example that uses the *Template* pattern.
 
 The difference lies in the fact that when using the *Template* the different behavior is *baked into* the class itself, rather than being chosen at runtime.
@@ -473,14 +477,217 @@ The *Template* pattern is very commonly used in JavaScript when using inheritanc
 
 ### Iterator
 
+The **Iterator** pattern is a fundamental pattern that it is built (in one way or another) into most of the programming languages. It was included in JavaScript in ES2015.
+
+> The **Iterator** pattern defines a common interface to iterate over the elements produced or retrieved in sequence, such as the elements of a container (e.g. array or tree data structure), event emitters, or streams. The **Iterator** allows us to decouple the implementation of the traversal algorithm from the way we consume the elements of the traversal operation.
+
+Usually, the algorithm is different depending on the actual structure of the data (think in the different between iterating over an array with a loop or traversing a tree using a more complex tree traversal). The *Iterator* pattern hides the details about the algorithm being used, or the structure or the data and provide a common interface for iterating any type of container.
+
 #### The iterator protocol
+In JavaScript, the *Iterator* pattern is implemented through *protocols* rather than through formal constructs such as inheritance.
+
+In practice, this means that the interaction between the implementer and the consumer of the *Iterator* pattern will communicate using interfaces and objects whose shape is agreed in advance.
+
+The starting point for implementing the *Iterator* pattern is the *iterator protocol*, which defines the interface for producing a sequence of values.
+
+> We'll call *iterator* an object implement a `next()` method having the following behavior: each time the method is called, the function returns the next element in the iteration through an object, called the *iterator result* having two properties &mdash; `done` and `value`:
+
++ `done` is set to true when the iteration is complete. That is, when there are no more elements to return. Otherwise, `done` must be `undefined` or `false`.
++ `value` contains the current element of the iteration and it can be left `undefined` if `done` is `true`. If `value` is set even when `done` is `true`, then it is said that `value` contains the *return value* of the iteration: a value which is not part of the elements being iterated, but that is related to the iteration itself as a whole (e.g. the time spent iterating over the elements, or the average value of the items iterated if those are numbers).
+
+As an example, let's implement the *iterator* protocol on a factory function `createAlphabetIterator()` which creates an iterator that allows us to traverse all the letters of the English alphabet:
+
+```javascript
+const A_CHAR_CODE = 65;
+const Z_CHAR_CODE = 90;
+
+export function createAlphabetIterator() {
+  let currCode = A_CHAR_CODE;
+
+  return {
+    next() {
+      const currChar = String.fromCodePoint(currCode);
+      if (currCode > Z_CHAR_CODE) {
+        return { done: true };
+      }
+
+      currCode++;
+      return { value: currChar, done: false };
+    }
+  };
+}
+```
+
+Note how we are following the *iterator protocol* to the letter: at each invocation of the `next()` method we simply increment a number representing the letter's character code, convert it to a character, and then return it using the expect object shape.
+
+| NOTE: |
+| :------- |
+| Note that it's not a requirement for an iterator to ever return `done: true`. Those iterators are called *infinite*. Examples are iterators that return random numbers or numbers in mathematical series such as Fibonacci. |
+
+Iterators are often stateful objects (as in the example above), as they might need to maintain the current position in the iteration. In the example above it is done using *closures* but there are other ways to do it, such as keeping the state within the iterator itself.
+
+Iterators can also be stateless objects (e.g. *iterator* that returns a random number).
+
+Let's see how we can consume the iterator we have just built:
+
+```javascript
+import { createAlphabetIterator } from './lib/alphabet-iterator.js';
+
+const iterator = createAlphabetIterator();
+
+let iterationResult = iterator.next();
+while (!iterationResult.done) {
+  console.log(iterationResult.value);
+  iterationResult = iterator.next();
+}
+```
+
+| EXAMPLE: |
+| :------- |
+| See [04 &mdash; *Iterator* pattern: Alphabet traversal](04-iterator-alphabet) for a runnable example. |
+
+
+Obviously, JavaScript provides much more convenient and elegant ways to consume iterators, but the previous one will work too.
+
+| NOTE: |
+| :------- |
+| *Iterators* can optionally specify two additional methods: `return([value])` and `throw(error)`. The first is by convention used to signal to the iterator that the consumer has stopped the iteration before its completion, while the second is used to communicate to the *iterator* that an error condition has occurred. Those methods are rarely used by built-in iterators. |
 
 #### The iterable protocol
 
+The *iterable protocol* defines a standardized way for an object to return an iterator. Such object are called *iterables*. Usually, an *iterable* is a container of elements, such as a data structure, but it can also represent a set of elements such as a `Directory` object which would allow us to iterate over the files in a directory.
+
+In JavaScript, we can define an *iterable* by making sure it implements the *@@iterator method*, or in other words, a method accessible through the built-in symbol `Symbol.iterator`.
+
+| NOTE: |
+| :------- |
+| The *@@name* convention indicates a *well-known* symbol according to the ES6 specification. See [ES6: Well-known symbols](https://262.ecma-international.org/6.0/#sec-well-known-symbols) for more details. |
+
+
+Such an *@@iterator* method should return an *iterator* object, which can be used to iterate over the elements represented by the *iterable*.
+
+```javascript
+class MyIterable {
+  ...
+  [Symbol.iterator]() {
+    /* return an iterator */
+  }
+}
+```
+
+To show how this works, let's build a class that let us traverse a bidimensional matrix:
+
+```javascript
+export class Matrix {
+  constructor(inMatrix) {
+    this.data = inMatrix;
+  }
+
+  get(row, column) {
+    if (row >= this.data.length || column >= this.data[row].length) {
+      throw new RangeError('Out of bounds');
+    }
+    return this.data[row][column];
+  }
+
+  set(row, column, value) {
+    if (row >= this.data.length || column >= this.data[row].length) {
+      throw new RangeError('Out of bounds');
+    }
+    this.data[row][column] = value;
+  }
+
+  [Symbol.iterator]() {
+    let nextRow = 0;
+    let nextCol = 0;
+    return {
+      /* note that `next() : { ... }` will not bind `this` correctly */
+      next: () => {
+        if (nextRow === this.data.length) {
+          return { done: true };
+        }
+
+        const currVal = this.data[nextRow][nextCol];
+        if (nextCol === this.data[nextRow].length - 1) {
+          nextRow++;
+          nextCol = 0;
+        } else {
+          nextCol++;
+        }
+        return { value: currVal };
+      }
+    };
+  }
+}
+```
+
+The class contains basic methods for initializing the matrix elements, and also for setting and getting individual elements. On top of that, the class exposes the *@@iterator* method, which implements the *iterable protocol*. The method returns an *iterator* which is compliant with the *iterator* protocol. The *iterator* logic will let us traverse the elements of the matrix in the usual way matrices are traversed.
+
+Let's see our `Matrix` class in action:
+
+```javascript
+import { Matrix } from './lib/matrix.js';
+
+const matrix2x2 = new Matrix([
+  [1, 2],
+  [3, 4]
+]);
+
+const iterator = matrix2x2[Symbol.iterator]();
+let iterationResult = iterator.next();
+while (!iterationResult.done) {
+  console.log(iterationResult.value);
+  iterationResult = iterator.next();
+}
+```
+
+| EXAMPLE: |
+| :------- |
+| See [05 &mdash; *Iterable* protocol: Bidimensional matrix](05-iterable-matrix) for a runnable example. |
+
+Again, there are more convenient and elegant ways to consume iterators, as we will see in the next section.
+
 #### Iterators and iterables as a native JavaScript interface
+Having a standardized interface allows 3rd party code, as well as the language itself to be modeled around the two protocols to provide certain capabilities such as native APIs and other syntax constructs.
+
+The most obvious syntax construct accepting an *iterable* is the *for...of* loop, meaning we can simply do:
+
+```javascript
+for (const element of matrix2x2) {
+  console.log(element);
+}
+```
+
+But it will also work with the spread operator:
+
+```javascript
+const flattenedMatrix = [...matrix2x2];
+```
+
+and with destructuring:
+
+```javascript
+const [a11, a12, a21, a22] = matrix2x2;
+```
+
+Additionally, the following JavaScript built-in APIs accept iterables:
++ `Map([iterable])` &mdash; [MDN: Map constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/Map)
++ `WeakMap([iterable])` &mdash; [MDN: WeakMap constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap/WeakMap)
++ `Set([iterable])` &mdash; [MDN: Set constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set)
++ `WeakSet([iterable])` &mdash; [MDN: WeakSet constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet/WeakSet)
++ `Promise.all(iterable)` &mdash; [MDN: Promise.all()](https://developer.mozilla.org/en-USdocs/Web/JavaScript/Reference/Global_Objects/Promise/all)
++ `Promise.race(iterable)` &mdash; [MDN: Promise.race()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)
++ `Array.from(iterable)` &mdash; [MDN: Array.from()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
+
+On the Node.js side, one notable API that accepts iterable is `stream.Readable.from(iterable, [options])`, the method that we used to create a *Readable stream* from an array (see [Node.js: `Readable.from()`](https://nodejs.org/api/stream.html#stream_stream_readable_from_iterable_options)).
+
+Note that this means that we would pass a custom *iterable* like the one we created in the previous section to any of these APIs and it would work in the same way as if we passed a native array.
+
+As you can see, all these notable mentions require an iterator and not an iterable:
+
+Do the exercise on 
 
 #### Generators
-348
 
 ##### Generators in theory
 
@@ -530,11 +737,16 @@ Illustrates how to implement the *Strategy* pattern by creating a config that su
 #### [02 &mdash; *State* pattern: Failsafe socket](02-state-failsafe-socket)
 Illustrates how to implement the *State* pattern by creating Failsafe socket implementation that handles gracefully disruption in the communication as two states.
 
+#### [03 &mdash; *Template* pattern: Config](03-template-config)
+Illustrates how to implement the *Template* pattern by creating a configuration object that supports different types of formats (JSON, INI, ...).
+
+#### [04 &mdash; *Iterator* pattern: Alphabet traversal](04-iterator-alphabet)
+Illustrates how to implement the *iterator protocol* by creating a function that creates an *Iterator* that allows us to traverse all the letters of the English alphabet.
+
+#### [05 &mdash; *Iterable* protocol: Bidimensional matrix](05-iterable-matrix)
+Illustrates how to implement the *iterable protocol* by creating a class that let us manage the elements of a bidimensional matrix.
+
 #### Exercise 1: [HTTP client cache](./e01-http-client-cache/)
 Write a proxy for your favorite HTTP client library that caches the response of a given HTTP request, so that if you make the same request again, the response is immediately returned from the local cache, rather than being fetched from the remote URL.
 
 ### ToDo
-
-[ ] Review https://www.reactivemanifesto.org/
-
-[ ] Review https://loopback.io/index.html capabilities
