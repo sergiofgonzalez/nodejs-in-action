@@ -683,21 +683,199 @@ On the Node.js side, one notable API that accepts iterable is `stream.Readable.f
 
 Note that this means that we would pass a custom *iterable* like the one we created in the previous section to any of these APIs and it would work in the same way as if we passed a native array.
 
-As you can see, all these notable mentions require an iterator and not an iterable:
+| EXAMPLE: |
+| :------- |
+| See [06 &mdash; *Iterable* protocol: Notable APIs](06-iterable-notable-apis) for a runnable example. |
 
-Do the exercise on 
+As you can see, all these notable mentions require an *iterable* and not an iterator. A possible solution when you have an *iterator* but would like to use an API that require an *iterable* is to implement the *@@iterator* method in the iterator object itself, which will simply return the iterator object itself:
+
+```javascript
+const alphabetIterable = {
+  [Symbol.iterator]() {
+    return createAlphabetIterator();
+  }
+};
+
+for (const letter of alphabetIterable) {
+  console.log(letter);
+}
+```
+
+| NOTE: |
+| :---- |
+| The following line ensures that an array does not contain duplicates: `const uniqArray = Array.from(new Set(arrayWithDuplicates))`. |
+
 
 #### Generators
 
+*Generators* (also known as *semicoroutines*) were introduced as a syntax construct in ES2015.
+
+There are a generalization of standard functions, in which you can define different entry points instead of a single one: a *generator* can be *suspended* using the `yield` statement, and then resumed at a later point at that point.
+
+That feature makes *generators* well suited to implement *iterators*.
+
 ##### Generators in theory
+
+To define a *generator function*, we need to use the `function*` declaration:
+
+```javascript
+function* myGenerator() {
+  // generator body
+}
+```
+
+Invoking a generator function will not execute the body immediately. Instead, it will return a *generator object*, which is both an *iterator* and an *iterable*.
+
+Invoking `next()` on the *generator object* will start or resume the execution of the generator until the `yield` instruction is invoked or the generator returns (either implicitly or explicitly).
+
+Within the generator, using the keyword `yield` followed by a value `x` is equivalent to returning `{done: false, value: x}` from the iterator, while returning `x` is equivalent to returning `{done: true, value: x}`.
 
 ##### A simple generator function
 
+Let's create a simple iterator that yield two names of fruits and return a season:
+
+```javascript
+function* fruitGenerator() {
+  yield 'peach';
+  yield 'watermelon';
+  return 'summer';
+}
+
+const fruitGeneratorObj = fruitGenerator();
+
+console.log(fruitGeneratorObj.next()); // { value: 'peach', done: false }
+console.log(fruitGeneratorObj.next()); // { value: 'watermelon', done: false }
+console.log(fruitGeneratorObj.next()); // { value: 'summer', done: true }
+
+/* extra invocation after iterator in generator object is done */
+console.log(fruitGeneratorObj.next()); // { value: undefined, done: true }
+```
+
+This works as follows:
++ Invoking the *generator function* returns a *generator object*
++ Invoking `next()` for the first time makes the generator to execute until the first `yield` statement. After that, the generator will be put in *pause* and the client code will receive `{ value: 'peach', done: false }`.
++ Invoking `next()` for the second time makes the generator to resume from the line where it paused until the next `yield`statement. Again, the generator will pause there and client code will receive `{ value: 'peach', done: false }`.
++ Invoking `next()` for the third time will make the generator advance until the `return` statement as there are no more `yield`. The generator will finish there and the client code will receive: `{ value: 'summer', done: true }`.
++ Although no reason to be called again, as we already received the signal that the iterator is done, if we call it again we get: `{ value: undefined, done: true }`.
+
+Since a generator function is both an *iterator* and an *iterable* we can do:
+
+```javascript
+for (const fruit of fruitGenerator()) {
+  console.log(fruit);
+}
+
+const fruits = [...fruitGenerator()];
+console.log(fruits);
+
+const [fruitOne, ...other] = fruitGenerator();
+console.log(fruitOne);
+```
+
+| EXAMPLE: |
+| :------- |
+| See [07 &mdash; *Generators*](07-generator-fruits) for a runnable example. |
+
 ##### Controlling a generator iterator
+Generator objects feature more functionalities than standard iterators. In particular, the `next(...)` method of the generator functions accept an argument that is not part of the *iterator protocol*.
+
+That argument will be passed as the return value of the `yield` instruction.
+
+```javascript
+function* twoWayGenerator() {
+  const what = yield null;
+  yield `Hello, ${ what }!`;
+}
+
+const twoWay = twoWayGenerator();
+twoWay.next();
+console.log(twoWay.next('world!')); // 'Hello, world!'
+```
+
+Note that the protocol needs a little bit of explanation:
++ The first time the `next()` is called makes the execution body of the generator to move to the first `yield` statement. `null` is returned.
++ When `next('world')` is invoked, the generator resumes from the point it was put in pause, receiving the parameter sent. The execution continues until the next `yield` statement, and this time the statement yields the string which is printed in the console.
+
+Another couple of extra features are the optional `throw()` and `return()` iterator methods.
+
+`throw()` lets you communicate with a generator from the client code by sending an exception that is thrown at the point of the last `yield`. In turn, the generator can *catch* the exception and return the canonical iterator object with the `done` and `value` properties.
+
+```javascript
+function* throwTwoWayGenenerator() {
+  try {
+    const what = yield null;
+    yield `Hello, ${ what }!`;
+  } catch (err) {
+    yield `Error received in the generator: ${ err.message }`;
+  }
+}
+
+const twoWayException = throwTwoWayGenenerator();
+twoWayException.next(); // nothing happens
+console.log(twoWayException.throw(new Error('Boom!'))); // { value: 'Error received in the generator: Boom!', done: false }
+```
+
+return(arg)` forces the generator to terminate and returns an object `{done: true, value: arg }`.
+
+```javascript
+function* returnTwoWayGenenerator() {
+  const what = yield null;
+  yield `Hello, ${ what }!`;
+}
+
+const returnGenerator = returnTwoWayGenenerator();
+returnGenerator.next();
+console.log(returnGenerator.return('forcing return!'));
+```
+| EXAMPLE: |
+| :------- |
+| See [08 &mdash; *Generators*: extra capabilities](08-generator-extra-capabilities) for a runnable example. |
 
 ##### How to use generators in place of iterators
 
+Generators are also iterators. This means that generator functions can be used to implement the *@@iterator* method of iterable objects.
+
+```javascript
+export class Matrix {
+  constructor(inMatrix) {
+    this.data = inMatrix;
+  }
+
+  *[Symbol.iterator]() {
+    let nextRow = 0;
+    let nextCol = 0;
+    while (nextRow !== this.data.length) {
+      yield this.data[nextRow][nextCol];
+
+      if (nextCol === this.data[nextRow].length - 1) {
+        nextRow++;
+        nextCol = 0;
+      } else {
+        nextCol++;
+      }
+    }
+  }
+}
+```
+
+
+
+Note that the *@@iterator** has been implemented with a generator function, and that has let us simplify the code a bit:
++ the variables we used to maintain the state are regular local variables (no need for closures). This is possible because when a generator is invoked, its local state is preserved between reentries.
++ We use a standard loop to iterate over the elements of the matrix. This is clearly more readable than returning a `next()` function that implements a single iteration of the loop.
+
+| EXAMPLE: |
+| :------- |
+| See [09 &mdash; *Generators* in place of *iterators*](09-generator-iterator) for a runnable example. |
+
+In summary, generators are excellent alternatives to writing iterators from scratch, as they improve the readability of the iteration routine while maintaining all of their capabilities.
+
+| NOTE: |
+| :---- |
+| The *generator delegation* is another example of a JavaScript syntax that accepts an iterable as an argument. The instruction `yield* iterable` can be used within a generator function to yield yield each element of the generator one by one. See [10 &mdash; *Generator delegation*](10-generator-delegation) for an example. |
+
 #### Async iterators
+360
 
 #### Async generators
 
@@ -745,6 +923,21 @@ Illustrates how to implement the *iterator protocol* by creating a function that
 
 #### [05 &mdash; *Iterable* protocol: Bidimensional matrix](05-iterable-matrix)
 Illustrates how to implement the *iterable protocol* by creating a class that let us manage the elements of a bidimensional matrix.
+
+#### [06 &mdash; *Iterable* protocol: Notable APIs](06-iterable-notable-apis)
+Illustrates how you can pass custom *iterables* to native JavaScript and Node.js APIs that accept *iterables*.
+
+#### [07 &mdash; *Generators*](07-generator-fruits)
+Simple example that illustrates how to create a generator function that yields two fruit names and returns their ripening season.
+
+#### [08 &mdash; *Generators*: extra capabilities](08-generator-extra-capabilities)
+Illustrates the extra bidirectional capabilities present in generators that are not available in *iterators*: passing values in `next()` and the `throw()` and `return()` methods.
+
+#### [09 &mdash; *Generators* in place of *iterators*](09-generator-iterator)
+Illustrates how to use a *generator* function in place of an iterator.
+
+#### [10 &mdash; *Generator delegation*](10-generator-delegation)
+Illustrates the *generator delegation* syntax that allows a generator to use `yield* iterable` to delegate to another iterable within a generator function.
 
 #### Exercise 1: [HTTP client cache](./e01-http-client-cache/)
 Write a proxy for your favorite HTTP client library that caches the response of a given HTTP request, so that if you make the same request again, the response is immediately returned from the local cache, rather than being fetched from the remote URL.

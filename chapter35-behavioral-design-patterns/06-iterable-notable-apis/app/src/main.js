@@ -1,7 +1,9 @@
 import { Matrix } from './lib/matrix.js';
 import { MatrixKeyValue } from './lib/matrix-key-value.js';
 import { DelayedRandomInt } from './lib/delayed-random-int.js';
-// import { createAlphabetIterator } from './lib/alphabet-iterator.js';
+import { Readable } from 'stream';
+import { MatrixStr } from './lib/matrix-str.js';
+import { createAlphabetIterator } from './lib/alphabet-iterator.js';
 
 const matrix2x2 = new Matrix([
   [1, 2],
@@ -65,3 +67,40 @@ Promise.race(new DelayedRandomInt(10))
 
 
 /* Some notable JavaScript APIs that accept iterables: Array.from */
+const matrixArray = Array.from(matrix2x2);
+console.log(matrixArray);
+
+/* Some notable Node.js APIs that accept iterables: Readable.from */
+const matrix3x3Str = new MatrixStr([
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9]
+]);
+
+Readable.from(matrix3x3Str)
+  .pipe(process.stdout);
+
+/*
+  All these APIs require an iterable and not an iterator.
+  In order to fix this, you just need to implement the
+  @@iterator in the *iterator* object itself
+*/
+
+// this fails
+try {
+  for (const letter of createAlphabetIterator()) {
+    console.log(letter);
+  }
+} catch (err) {
+  console.error(`ERROR: ${ err.message }`);
+}
+
+const alphabetIterable = {
+  [Symbol.iterator]() {
+    return createAlphabetIterator();
+  }
+};
+
+for (const letter of alphabetIterable) {
+  console.log(letter);
+}
