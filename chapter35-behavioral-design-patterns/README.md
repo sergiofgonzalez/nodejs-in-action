@@ -875,15 +875,201 @@ In summary, generators are excellent alternatives to writing iterators from scra
 | The *generator delegation* is another example of a JavaScript syntax that accepts an iterable as an argument. The instruction `yield* iterable` can be used within a generator function to yield yield each element of the generator one by one. See [10 &mdash; *Generator delegation*](10-generator-delegation) for an example. |
 
 #### Async iterators
-360
+In JavaScript, and especially in Node.js, it's very common to have iterations over items that require an asynchronous operation to be produced.
+
+Examples are:
++ iterating over the requests received by an HTTP server
++ iterating over the results of an SQL query
++ iterating over the elements of a paginated REST API
+
+In those situations, it would be ideal to return a promise from the `next()` method of an iterator, and be able to use the *async/await* construct.
+
+*Async iterators* are iterators returning a promise. Similarly, *async iterables* are objects that implement an *@@asyncIterator* method, that is, a method accesible through the `Symbol.asyncIterator` key, which returns an async iterator.
+
+*Async iterables* can be looped using the *for await...of* syntax, which can only be used inside an async function. That construct let us implement a sequential asynchronous execution flow on top of the *Iterator* pattern.
+
+Essentially, *for await...of* is syntactic sugar for the following loop:
+
+```javascript
+const asyncIterator = iterable[Symbol.asyncIterator]();
+let iterationResult = await asyncIterator.next();
+while (!iterationResult.done) {
+  console.log(iterationResult.value);
+  iterationResult = await asyncIteratior.next();
+}
+```
+
+The *for await...of* syntax can also be used to iterate over a simple iterable (and not only async iterables), as an array of promises. It will also work if not all the elements (or none) of the iterator are promises.
+
+As an example, the following code takes a list of URLs as input and allows us to iterate over their availability (up/down).
+
+```javascript
+import superagent from 'superagent';
+
+export class CheckUrls {
+  constructor(urls) {
+    this.urls = urls;
+  }
+
+  [Symbol.asyncIterator]() {
+    const urlsIterator = this.urls[Symbol.iterator]();
+
+    return {
+      async next() {
+        const iteratorResult = urlsIterator.next();
+        if (iteratorResult.done) {
+          return { done: true };
+        }
+
+        const url = iteratorResult.value;
+        try {
+          const checkResult = await superagent
+            .head(url)
+            .redirects(2);
+          return { done: false, value: `${ url } is up, status: ${ checkResult.status }` };
+        } catch (err) {
+          return { done: false, value: `${ url } is down, error: ${ err.message }` };
+        }
+      }
+    };
+  }
+}
+```
+
+Let's analyze the relevant points from the previous code:
++ The `CheckUrls` constructor takes as input an *iterable* or URLs.
++ In our *@@asyncIterator* method, we obtain the *iterator* for the list of URLs (`this.urls`) by invoking is *@@iterable* method.
++ We return a `next()` function from our *@@asyncIterator*, which is tagged as `async`. This means that it will always returns a promise (as requested by the *async iterable protocol*).
++ In the implementation of the `next()` method, we use the `urlsIterator` to go to the next URL in the list, unless there are no more to probe.
++ For checking the availability of the URL we use the `HEAD` HTTP method and use `await` to asynchronously get the result.
+
+
+In order to use the recently defined *async iterator* we just have to do:
+
+```javascript
+import { CheckUrls } from './lib/check-urls.js';
+
+async function main() {
+  const checkUrls = new CheckUrls([
+    'https://nodejsdesignpatterns.com',
+    'https://example.com',
+    'https://this-web-does-not-exist.com'
+  ]);
+
+  for await (const status of checkUrls) {
+    console.log(status);
+  }
+}
+
+main();
+```
+
+| EXAMPLE: |
+| :------- |
+| See [11 &mdash; *Async Iterators*: URL checker](11-async-iterator-check-urls) for a runnable example. |
+
+
+As you can see, the *for await...of* syntax let us iterate over an *async iterable* in a very intuitive way.
+
+| NOTE: |
+| :---- |
+| Both *for await...of* and *for...of* loop will call the optional `return()` method of the iterator if the loop is prematurely interrupted with a `break`, `return`, or an exception. This can be done to perform any necessary cleanup tasks that would otherwise be performed when the iteration completes. |
 
 #### Async generators
+You can define an *async generator function* by prepending the keyword `async` to the generator function definition:
+
+```javascript
+async function* asyncGeneratorFunction() {
+  // ...async generator function body...
+}
+```
+
+*Async generators* let you use the `await` instruction within their body and the return value of their `next()` method is a promise that resolves to an object having the canonical `done` and `value` properties. This way, *async generator objects* are also valid *async iterators*. They are also valid async iterables, so they can be used in *for await...of* loops.
+
+Let's reimplement the URL checker from the previous section to demonstrate how the readability of the solution is greatly improved by using *async generator functions*.
+
+```javascript
+import superagent from 'superagent';
+
+export class CheckUrls {
+  constructor(urls) {
+    this.urls = urls;
+  }
+
+  async *[Symbol.asyncIterator]() {
+    for (const url of this.urls) {
+      try {
+        const checkResult = await superagent
+          .head(url)
+          .redirects(2);
+        yield `${ url } is up, status: ${ checkResult.status }`;
+      } catch (err) {
+        yield `${ url } is down, error: ${ err.message }`;
+      }
+    }
+  }
+}
+```
+
+| EXAMPLE: |
+| :------- |
+| See [12 &mdash; *Async Generators*: URL checker](12-async-generator-check-urls) for a runnable example. |
+
+Note how the *ugliness* of the [11 &mdash; *Async Iterators*: URL checker](11-async-iterator-check-urls) example is completely gone and readability and conciseness improves when using *async generator functions* to implement *async iterators*.
 
 #### Async iterators and Node.js streams
+Node.js streams and *async iterators* are very similar in purpose and behavior. In fact, *async iterators* can be seen as a stream construct, used to process the data of an asynchronous resource composed by several elements, piece by piece.
+
+In turn, `stream.Readable` implements the *@@asyncIterator* method, making it async iterable and giving us the opportunity to use the *for await...of* constructor to read data from a stream.
+
+In the following example, we demonstrate how to read from `stdin` and pipe it into the `split()` transform stream which will emit a new chunk each time it finds a newline character. Then, we iterate over the emitted chunks using a *for await...of* loop:
+
+```javascript
+import split from 'split2';
+
+async function main() {
+  const stream = process.stdin.pipe(split());
+
+  for await (const line of stream) {
+    console.log(`STREAM: ${ line }`);
+  }
+}
+
+
+main();
+```
+
+| EXAMPLE: |
+| :------- |
+| See [13 &mdash; *Async Iterators* and Node.js streams](13-async-iterator-streams) for a runnable example. |
+
+
+As you can see streams and async iterators are closely related and using one or the other greatly depends on the specific use case. When trying to decide which one you should use take into account:
++ streams are *push*-based, meaning that data is pushed into the internal buffers by the stream, and then consumed from the buffers. By contrasts, async iterators are *pull*-based, meaning that data is only retrieved/produced on demand by the consumer.
++ streams are better suited to process binary data since they natively provide internal buffering and backpressure.
++ streams can be composed using `pipe()` and similar methods, while async iterators do not provide any composition method out of the box.
+
+| NOTE: |
+| :---- |
+| It is possible to iterate over an `EventEmitter` using the utility function `events.on(emitter, eventName)`, which returns all the events matching the specified `eventName`. |
 
 #### In the wild
+In many places *async iterators* are gaining popularity over streams.
+
+For example, the packages [`@databases/pg`](https://www.npmjs.com/package/@databases/pg), [`@databases/mysql`](https://www.npmjs.com/package/@databases/mysql) and [`@databases/sqlite`](https://www.npmjs.com/package/@databases/sqlite) provude a function called `queryStream()` which returns an *async iterable* which can be used to easily iterate over the results of a query:
+
+```javascript
+for await (const record of db.queryStream(sql`SELECT * FROM my_table`)) {
+  /* ...process record... */
+}
+```
+
+| NOTE: |
+| :---- |
+| The example above uses *tagged template literals* to create SQL queries. Additional information in tagged templates can be found in [Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) article on MDN. |
 
 ### Middleware
+~366
 
 ### Command
 
@@ -939,7 +1125,22 @@ Illustrates how to use a *generator* function in place of an iterator.
 #### [10 &mdash; *Generator delegation*](10-generator-delegation)
 Illustrates the *generator delegation* syntax that allows a generator to use `yield* iterable` to delegate to another iterable within a generator function.
 
+#### [11 &mdash; *Async Iterators*: URL checker](11-async-iterator-check-urls)
+Illustrates the how to build and use *async iterators* by creating an example that takes a list of URLs as input and iterates over their availability.
+
+#### [12 &mdash; *Async Generators*: URL checker](12-async-generator-check-urls)
+Illustrates the how to build an *async generator function*. In the example, we create an app that takes a list of URLs as input and iterates over their availability.
+
+#### [13 &mdash; *Async Iterators* and Node.js streams](13-async-iterator-streams)
+Illustrates how to take advantage of the fact that Node.js `stream.Readable` implements *@@asyncIterator** method.
+
 #### Exercise 1: [HTTP client cache](./e01-http-client-cache/)
 Write a proxy for your favorite HTTP client library that caches the response of a given HTTP request, so that if you make the same request again, the response is immediately returned from the local cache, rather than being fetched from the remote URL.
 
 ### ToDo
+
+[ ] Explore how to iterate over an `EventEmitter` using `events.on(emitter, eventName)`.
+
+[ ] Learn about tagged template literals https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+
+[ ] Give a try to @databases/* drivers: https://www.atdatabases.org/
