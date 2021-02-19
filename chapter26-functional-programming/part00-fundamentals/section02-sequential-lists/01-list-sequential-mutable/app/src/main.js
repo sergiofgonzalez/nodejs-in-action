@@ -4,30 +4,30 @@ const seqList = createSequentialList();
 
 console.log(seqList.isEmpty());
 
-seqList.insert('one', 0);
-seqList.insert('three', 1);
-seqList.traverse((item) => {
+seqList.insert({ item: 'one', pos: 0 });
+seqList.insert({ item: 'three', pos: 1 });
+seqList.traverse(({ index, item }) => {
+  console.log(`${ index }:`, item);
+  return item;
+});
+console.log(`=======================`);
+
+seqList.insert({ item: 'two', pos: 1 });
+seqList.traverse(({ item }) => {
   console.log(item);
   return item;
 });
 console.log(`=======================`);
 
-seqList.insert('two', 1);
-seqList.traverse((item) => {
-  console.log(item);
-  return item;
-});
-console.log(`=======================`);
-
-seqList.insert('zero', 2);
-seqList.traverse((item) => {
+seqList.insert({ item: 'zero', pos: 2});
+seqList.traverse(({ item }) => {
   console.log(item);
   return item;
 });
 console.log(`=======================`);
 
 seqList.remove(3);
-seqList.traverse((item) => {
+seqList.traverse(({ item }) => {
   console.log(item);
   return item;
 });

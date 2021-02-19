@@ -33,11 +33,94 @@ The *regular* **List** should support the following operations:
 | :------- |
 | The **List** described in the section above is a mutable one. Typically, you should prefer immutable data types. |
 
+##### Implementing the *List* operations
 
+We can rely as much as possible on JavaScript arrays to provide the implementation for the sequential list.
 
+First of all, we need to provide the implementation for the *factory* function:
 
+```javascript
+export function createSequentialList() {
+  return new SequentialList();
+}
 
-#### Implementing the *List* operations
+class SequentialList {
+  constructor() {
+    this.items = [];
+  }
+  ...
+```
+
+We will therefore instantiate the `SequentialList` class, hidden the implementation of the class behind the factory function `createSequentialList()`. The backing implementation for the sequential list is a JavaScript array.
+
+Next is the `isEmpty()` function. This becomes a very simple implementation (O(1)) if we rely on the `length` property of the backing array.
+
+```javascript
+isEmpty() {
+  return this.items.length === 0;
+}
+```
+
+After that, we implement the `insert(...)` operation. Again, it becomes very simple if we rely on the `splice()` method that let us add a certain element *in place*.
+
+```javascript
+insert({ item, pos }) {
+  if (pos < 0 || pos > this.items.length) {
+    throw new RangeError(`pos ${ pos } is out of bounds for inserting`);
+  }
+  this.items.splice(pos, 0, item);
+}
+```
+
+Similarly, the `remove()` method is also implemented using `splice()`, but this time it removes the element in the given position.
+
+```javascript
+remove(pos) {
+  if (pos < 0 || pos >= this.items.length) {
+    throw new RangeError(`pos ${ pos } is out of bounds for removing`);
+  }
+  this.items.splice(pos, 1);
+}
+```
+
+The `length` method is implemented as a getter that returns the length of the backing array:
+
+```javascript
+get length() {
+  return this.items.length;
+}
+```
+
+Finally, the `traverse()` method that let us apply a function to each of the elements of the array *in-place*:
+
+```javascript
+traverse(operationFn) {
+  for (let i = 0; i < this.items.length; i++) {
+    this.items[i] = operationFn({ item: this.items[i], index: i });
+  }
+}
+```
+| EXAMPLE: |
+| :------- |
+| See [01 &mdash; **List**: Implementing a mutable, sequential list](01-list-sequential-mutable) for a runnable example. |
 
 #### The *Stack* ADT
 
+> A *Stack* is a sorted collection of elements. The order of the elements is given by the order in which they were inserted. The element that was pushed more recently is known as the *top* of the stack. The insertion and removal of elements into a *stack* is always done from the *top* of the stack, so this structure is known as *LIFO (last-in, first out)*.
+
+A *Stack* support the following methods:
+
++ `createStack()` &mdash; initializes and returns a new stack
++ `isEmpty()` &mdash; returns true if the stack holds no elements, false otherwise
++ `push(elem)` &mdash; inserts the given element at the top of the stack
++ `pop(elem)` &mdash; removes and returns the element at the top of the stack
++ `peek()` &mdash; returns the element at the top of the stack without removing it
+
+##### Implementing the *Stack* operations
+
+
+
+#### Code, Exercises and mini-projects
+
+##### [01 &mdash; **List**: Implementing a mutable, sequential list](01-list-sequential-mutable)
+Illustrates how to implement a *mutable* list using a sequential representation backed by a JavaScript array.

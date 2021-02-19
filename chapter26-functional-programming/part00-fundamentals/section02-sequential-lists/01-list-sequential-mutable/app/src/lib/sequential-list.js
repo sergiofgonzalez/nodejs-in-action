@@ -12,11 +12,11 @@ class SequentialList {
     return this.items.length === 0;
   }
 
-  insert(elem, pos) {
+  insert({ item, pos }) {
     if (pos < 0 || pos > this.items.length) {
       throw new RangeError(`pos ${ pos } is out of bounds for inserting`);
     }
-    this.items.splice(pos, 0, elem);
+    this.items.splice(pos, 0, item);
   }
 
   remove(pos) {
@@ -32,7 +32,7 @@ class SequentialList {
 
   traverse(operationFn) {
     for (let i = 0; i < this.items.length; i++) {
-      this.items[i] = operationFn(this.items[i], i);
+      this.items[i] = operationFn({ item: this.items[i], index: i });
     }
   }
 }

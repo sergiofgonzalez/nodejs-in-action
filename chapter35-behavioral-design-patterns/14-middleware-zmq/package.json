@@ -25,7 +25,8 @@
   "scripts": {
     "reset": "rm -rf node_modules && rm -f package-lock.json && npm install",
     "prestart": "npm run lint",
-    "start": "node app/src/main.js",
+    "start-server": "node app/src/server.js",
+    "start-client": "node app/src/client.js",
     "lint": "node_modules/.bin/eslint app/src/",
     "pretest": "npm run lint",
     "test": "tap --no-esm --bail app/test/",
@@ -36,6 +37,5 @@
     "freshen-deps": "./scripts/freshen.sh"
   },
   "dependencies": {
-    "split2": "3.2.2"
   }
 }

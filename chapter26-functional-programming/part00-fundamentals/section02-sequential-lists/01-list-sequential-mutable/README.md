@@ -3,4 +3,4 @@
 ### Part 0: Fundamentals
 #### Section 2: Sequential Lists
 ##### 01 &mdash; **List**: Implementing a mutable, sequential list
-> Illustrates how to implement a *mutable* list using a sequential representation.
+> Illustrates how to implement a *mutable* list using a sequential representation backed by a JavaScript array.

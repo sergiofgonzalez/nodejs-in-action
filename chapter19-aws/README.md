@@ -5,3 +5,9 @@
 A collection of Node.js apps and libraries used in the past.
 
 ## [Section 1: Intro to AWS](01-intro-to-aws)
+Basic concepts about AWS and the cloud
+
+## [Section 2: A Deployment Example &mdash; Wordpress on AWS](02-deploy-wordpress)
+Designing an architecture for a highly-available deployment on AWS
+
+## [Section 3: Using EC2](03-ec2)

@@ -1,6 +1,6 @@
 # Chapter 19 &mdash; Interacting with Amazon Web Services
 ## Section 1: Intro to AWS
-> TBD
+> basic concepts about AWS and the cloud
 
 ### Summary
 + Overview of AWS

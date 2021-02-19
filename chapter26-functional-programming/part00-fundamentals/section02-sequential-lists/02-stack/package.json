@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Illustrating Node.js advanced techniques and patterns",
   "type": "module",
-  "main": "main.js",
+  "main": "main.mjs",
   "engines": {
     "node": ">=14.15.4",
     "npm": ">=7.5.1"
@@ -20,7 +20,8 @@
   "config": {},
   "license": "MIT",
   "devDependencies": {
-    "eslint": "7.19.0"
+    "eslint": "7.19.0",
+    "tap": "14.11.0"
   },
   "scripts": {
     "reset": "rm -rf node_modules && rm -f package-lock.json && npm install",
@@ -34,8 +35,5 @@
     "debug": "node --inspect-brk app/src/main.js",
     "debug-test": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/tst/nth-test.js",
     "freshen-deps": "./scripts/freshen.sh"
-  },
-  "dependencies": {
-    "split2": "3.2.2"
   }
 }

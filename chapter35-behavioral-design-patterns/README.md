@@ -1069,9 +1069,285 @@ for await (const record of db.queryStream(sql`SELECT * FROM my_table`)) {
 | The example above uses *tagged template literals* to create SQL queries. Additional information in tagged templates can be found in [Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) article on MDN. |
 
 ### Middleware
-~366
+
+The **Middleware** pattern is one of the most distinctive Node.js patterns. However, it is also one of the terms that tend to create more confusion, as it has nothing to do with what is known as middleware on other contexts such as abstractions over lower-level mechanisms such as memory management, etc.
+
+#### Middleware in Express
+
+[Express](https://expressjs.com/) popularized the term middleware in Node.js and gave it an specific definition:
+> A *Middleware* represents a set of services, typically functions, that are organized in a pipeline and are responsible for processing incoming HTTP requests and relative responses.
+
+In *Express*, the *Middleware* pattern is an effective strategy for allowing developers to easily create and distribute new features that can be easily added to an application, in a way that let the platform take a minimalist approach.
+
+An *Express middleware* has the following signature:
+
+```javascript
+function (req, res, next) { ... }
+```
+
+where `req` is the incoming request, `res` is the corresponding response object, and `next` is the callback to be invoked when the current middleware has completed its tasks, and that in turn triggers the next middleware in the pipeline.
+
+Examples of tasks that are typically carried out by Express middleware are:
+* Parsing/materializing the body of the request
+* Decompressing/Compressing requests and responses
+* Producing access logs
+* Managing user sessions
+* Managing encrypted cookies
+* Providing CSRF protection
+
+Note how these tasks are *cross-cutting* concerns in web applications that do not have to do with the actual business logic associated to request processing. Essentially, these tasks are *"software in the middle"*.
+
+#### Middleware as a pattern
+
+The *Middleware* pattern can be considered the Node.js incarnation of the *Chain of Responsibility* and the *Intercepting Filter* design patterns.
+
+In more generic terms, the *Middleware* pattern also represents a processing pipeline, very similar to the one used for steams.
+
+> The *Middleware* pattern is a set of processing units, filters, and handlers, under the form of functions, that are connected to form an asynchronous sequence in order to perform preprocessing and postprocessing of any kind of data.
+
+| NOTE: |
+| :---- |
+| More information on the *Intercepting Filter* pattern can be be found at https://en.wikipedia.org/wiki/Intercepting_filter_pattern. Information on the *Chain of Responsibility* pattern is available in https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern. |
+
+The following diagram illustrates the components of the *Middleware* pattern:
+
+![Middleware Pattern](images/middleware_pattern.png)
+
+The most essential component of the pattern is the *Middleware Manager*, which is responsible for organizing and executing the middleware functions. The most important implementation details of the pattern are:
+* New middleware can be registered by invoking the `use()` function (whose name is just a convention). Typically, new middleware can only be applied at the end of the pipeline, but that is not an strict rule.
+* When new data is received for processing, the registered middleware is invoked in an asynchronous sequential execution flow. Each unit in the pipeline receives the result of the execution of the previous unit as input.
+* Each piece of middleware can decide to stop further processing of the data. This can be achieved invoking a special dedicate function to stop processing, or by not invoking the callback, or by propagating an error.
+In general, an error situation triggers the execution of another sequence of middleware especially dedicated to handling errors.
+
+There is no strict rule about how data should be processed and propagated in the pipeline, and therefore the following two strategies are available:
++ Augmenting the data received as input with additional properties or functions
++ Maintaining the immutability of the data and always returns fresh objects as the result of processing.
+
+
+#### Creating a middleware framework for ZeroMQ
+
+As an example to demonstrate the *Middleware* pattern, we will build a middleware framework around the [ZeroMQ](https://zeromq.org/) messaging library.
+
+ZeroMQ provides a simple interface for exchanging atomic messages across the network using a variety of protocols. It is often chosen to build complex distributed systems for how easy it is to build a custom messaging infrastructure based on it its basic set of abstractions.
+
+ZeroMQ only supports strings and binary buffers for the messages. Therefore, any encoding or custom formatting of the data has to be implemented by the users of the library.
+
+In the example, we will build a middleware infrastructure to abstract the preprocessing and postprocessing of the data passing through a ZeroMQ socket, so that we can transparently work with JSON objects and compress those messages over the wire.
+
+##### The Middleware Manager
+
+The first step towards toward building a middleware infrastructure around ZeroMQ is to create a component that is responsible for executing the middleware pipeline when a new message is received or sent &mdash; the *Middleware manager*:
+
+```javascript
+export class ZmqMiddlewareManager {
+  constructor(socket) {
+    this.socket = socket;
+    this.inboundMiddleware = [];
+    this.outboundMiddleware = [];
+
+    this.handleIncomingMessages()
+      .catch(err => console.error(`ERROR: ZmqMiddlewareManager:`, err.message));
+  }
+
+  async handleIncomingMessages() {
+    for await (const [message] of this.socket) {
+      await this
+        .executeMiddleware(this.inboundMiddleware, message)
+        .catch(err => console.error(`ERROR: ZmqMiddlewareManager: Error while processeing the message`, err));
+    }
+  }
+
+  async send(message) {
+    const finalMessage = await this
+      .executeMiddleware(this.outboundMiddleware, message);
+    return this.socket.send(finalMessage);
+  }
+
+  use(middleware) {
+    if (middleware.inbound) {
+      this.inboundMiddleware.push(middleware.inbound);
+    }
+    if (middleware.outbound) {
+      this.outboundMiddleware.unshift(middleware.outbound);
+    }
+  }
+
+  async executeMiddleware(middlewares, initialMessage) {
+    let message = initialMessage;
+    for await (const middlewareFunc of middlewares) {
+      message = await middlewareFunc.call(this, message);
+    }
+    return message;
+  }
+}
+```
+
+Let's go over the implementation details:
+
++ We define the constructor that accepts a ZeroMQ socket as an argument. Inside the constructor, we create two empty lists that will contain our middleware functions, one for inbound messages (the ones we receive), and another one for the outbound messages (the ones we send). Right after that we immediately start processing the messages coming from the socket using the `handleIncomingMessages()` method.
+
++ In `handleIncomingMessages()` method, we use the ZeroMQ socket as an *async iterable*, and with a *for...await of* loop we process any incoming messages and passed them down one by one to the `inboundMiddleware` list of middlewares.
+
++ In `send()` method, we do the same thing but four outbound messages. Effectively, we pass the message received as argument down the `outboundMiddleware` pipeline. The result of the processing is stored in the `finalMessage` variable, and then sent throuvh the socket.
+
++ In `use()` method we give the client code the capability to append middleware functions to the internal pipeline. Note that in this implementation each middleware to register contains two properties `inbound` and `outbound` to append middleware to the list of inbound and outbound middleware respectively. Note that while the inbound middleware is pushed to the end of the list using `push()`, the outbound middleware is inserted in the beginning of the list using `shift()`. This is because in general, complementaty inbound/outbound middleware functions need to be executed in inverted order. For example, if you want to serialize, encrypt and compress an outbound message, it means you will want to decompress, decrypt and deserialize inbound messages.
+
++ `executeMiddleware(...)` represents the core of our *Middleware manager* as its responsibility consists in executing the middleware functions. Each function is the `middleware` array received as input is executed one after the other, and the result of the execution of a middleware function is passed to the next. Note that we are using `await` on each result returned by each middleware function to ensure that it works well both for middleware return values synchronously or promises asynchronously. Finally, the result of the last middleware function is returned back to the caller.
+
+| NOTE: |
+| :---- |
+| The example does not support error handling middleware, but it can be easily added just by accepting an extra `errorMiddleware` function when registering the middleware, and keeping track of those in the *Middleware manager*. |
+
+
+##### Implementing the middleware to process messages
+
+With the *Middleware Manager* in place, we can create our first pair of middleware functions to demonstrate how to process inbound and outbound messages.
+
+Let's start by creating a simple middleware that deserializes input messages and serializes outbound JSON messages:
+
+```javascript
+export const jsonMiddleware = function () {
+  return {
+    inbound(message) {
+      return JSON.parse(message.toString());
+    },
+    outbound(message) {
+      return Buffer.from(JSON.stringify(message));
+    }
+  };
+};
+```
+
+We create a function that return a literal object with two functions that implement the deserialization of messages with `JSON.parse(...)` and the serialization of outbound messages with `JSON.stringify()`. Before sending the message, we also wrap the serialized JSON message into a *buffer*.
+
+| NOTE: |
+| :---- |
+| `jsonMiddleware` functions are synchronous. |
+
+Similarly, let's implement the compression middleware using `zlib`.
+
+```javascript
+import { inflateRaw, deflateRaw } from 'zlib';
+import { promisify } from 'util';
+
+const inflateRawAsync = promisify(inflateRaw);
+const deflateRawAsync = promisify(deflateRaw);
+
+export const zlibMiddleware = function () {
+  return {
+    inbound(message) {
+      return inflateRawAsync(Buffer.from(message));
+    },
+    outbound(message) {
+      return deflateRawAsync(message);
+    }
+  };
+};
+```
+
+In this case, we return a literal object that returns two asynchronous functions. As we made sure that our *Middleware manager* is able to handle both synchronous and asynchronous middleware functions.
+
+##### Using the ZeroMQ middleware framework
+We will build a very simple distributed application based on *ZeroMQ*. The client will be sending a *ping* to a server, which will echo back the message received.
+
+The strategy we will use is the *Request/Reply messaging pattern* using the *req/rep* socket pair provided by *ZeroMQ*. We will then wrap the sockets with our `ZmqMiddlewareManager` to get all the advantages from the middleware infrastructure that we build.
+
+##### The server
+Let's start by implementing the server-side of the application:
+
+```javascript
+import zeromq from 'zeromq';
+import { ZmqMiddlewareManager } from './lib/zmq-middleware-manager.js';
+import { jsonMiddleware } from './lib/middlewares/json-middleware.js';
+import { zlibMiddleware } from './lib/middlewares/zlib-middleware.js';
+
+async function main() {
+  const socket = new zeromq.Reply();
+  await socket.bind('tcp://127.0.0.1:5000');
+
+  const zmqm = new ZmqMiddlewareManager(socket);
+  zmqm.use(zlibMiddleware());
+  zmqm.use(jsonMiddleware());
+  zmqm.use({
+    async inbound(message) {
+      console.log(`INFO: server: Received: `, message);
+      if (message.action === 'ping') {
+        await this.send({ action: 'pong', echo: message.echo });
+      }
+      return message;
+    }
+  });
+
+  console.log(`INFO: server started on tcp://127.0.0.1:5000`);
+}
+
+main()
+  .catch((err) => console.log(`ERROR: server: ${ err.message }`));
+```
+
++ We create a new *ZeroMQ* `Reply` socket and bind it to port 5000 on localhost.
++ We wrap *ZeroMQ* with our middleware manager and add the *zlib* and *json* middlewares. Order is important here, and we register the *zlib* middleware first, and then the *json* one which will have the effect of:
+  + inbound: uncompress first, then deserialize
+  + outbound: serialize first, then compress
++ We implement the *ping* functionality also as a middleware that only includes logic for the inbound messages. When we receive a message, we inspect its contents, and if it is a ping message we send the echo back. In any case, we return the message so that other middlewares could process it.
+
+
+##### The client
+Let's implement now the client side:
+
+```javascript
+import zeromq from 'zeromq';
+import { ZmqMiddlewareManager } from './lib/zmq-middleware-manager.js';
+import { jsonMiddleware } from './lib/middlewares/json-middleware.js';
+import { zlibMiddleware } from './lib/middlewares/zlib-middleware.js';
+
+async function main() {
+  const socket = new zeromq.Request();
+  await socket.connect('tcp://127.0.0.1:5000');
+
+  const zmqm = new ZmqMiddlewareManager(socket);
+  zmqm.use(zlibMiddleware());
+  zmqm.use(jsonMiddleware());
+  zmqm.use({
+    inbound(message) {
+      console.log(`INFO: client: echoed back: `, message);
+      return message;
+    }
+  });
+
+
+  setInterval(() => {
+    zmqm.send({ action: 'ping', echo: Date.now() })
+      .catch(err => console.error(`ERROR: client: ${ err.message }`));
+  }, 1000);
+
+  console.log(`INFO: client: connected to tcp://127.0.0.1:5000`);
+}
+
+main()
+  .catch(err => console.error(`ERROR: client: ${ err.message }`));
+```
+
+The most relevant areas around the client implementation are:
++ We create a `Request` socket and we connect to the server address.
++ We configure the *zlib* and *json* middleware in that specific order, so that messages we sent are first serialized and then compressed and messages received are first uncompressed and then deserialized.
++ We set up manually an additional inbound middleware to display in the console the message received from the server.
++ We set up a scheduled task to send pings to the server every second.
+
+| EXAMPLE: |
+| :------- |
+| See [14 &mdash; *Middleware Pattern*](14-middleware-zmq) for a runnable example. |
+
+#### In the wild
+
+[Express](https://expressjs.com/) is the most notable example of a library that makes an extensive use of the *Middleware pattern*.
+
+[Koa](https://koajs.com/) is another example that shares the same philosophy as Express with respect to the *Middleware pattern*, but uses a more modern approach to its handlings (async/await, etc.)
+
+[Middy](https://middy.js.org/) is another notable example of the *Middleware* pattern enabled to support this pattern when writing AWS Lambda functions.
 
 ### Command
+376
 
 ### Summary
 
@@ -1133,6 +1409,9 @@ Illustrates the how to build an *async generator function*. In the example, we c
 
 #### [13 &mdash; *Async Iterators* and Node.js streams](13-async-iterator-streams)
 Illustrates how to take advantage of the fact that Node.js `stream.Readable` implements *@@asyncIterator** method.
+
+#### [14 &mdash; *Middleware Pattern*](14-middleware-zmq)
+Illustrates how to create a middleware infrastructure (from scratch) for *ZeroMQ* framework
 
 #### Exercise 1: [HTTP client cache](./e01-http-client-cache/)
 Write a proxy for your favorite HTTP client library that caches the response of a given HTTP request, so that if you make the same request again, the response is immediately returned from the local cache, rather than being fetched from the remote URL.
