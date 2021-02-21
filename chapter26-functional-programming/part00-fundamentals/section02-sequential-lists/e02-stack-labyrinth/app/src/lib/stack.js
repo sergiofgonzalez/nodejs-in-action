@@ -1,3 +1,5 @@
+import util from 'util';
+
 export function createStack() {
   return new Stack();
 }
@@ -28,5 +30,14 @@ class Stack {
       throw new Error(`Cannot peek on empty stack`);
     }
     return this.items[this.items.length - 1];
+  }
+
+  toString() {
+    const repr = this.items.reduce((acc, item, index) => {
+      const stackIndex = this.items.length - 1 - index;
+      return acc + `\n${ stackIndex }: ${ util.inspect(this.items[index]) }`;
+    }, '');
+
+    return repr;
   }
 }
