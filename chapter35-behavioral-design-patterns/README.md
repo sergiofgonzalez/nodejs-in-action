@@ -479,7 +479,7 @@ The *Template* pattern is very commonly used in JavaScript when using inheritanc
 
 The **Iterator** pattern is a fundamental pattern that it is built (in one way or another) into most of the programming languages. It was included in JavaScript in ES2015.
 
-> The **Iterator** pattern defines a common interface to iterate over the elements produced or retrieved in sequence, such as the elements of a container (e.g. array or tree data structure), event emitters, or streams. The **Iterator** allows us to decouple the implementation of the traversal algorithm from the way we consume the elements of the traversal operation.
+> The **Iterator** pattern defines a common interface to iterate over elements produced or retrieved in sequence, such as the elements of a container (e.g. array or tree data structure), event emitter, or stream. The **Iterator** allows us to decouple the implementation of the traversal algorithm from the way we consume the elements of the traversal operation.
 
 Usually, the algorithm is different depending on the actual structure of the data (think in the different between iterating over an array with a loop or traversing a tree using a more complex tree traversal). The *Iterator* pattern hides the details about the algorithm being used, or the structure or the data and provide a common interface for iterating any type of container.
 
@@ -858,8 +858,6 @@ export class Matrix {
 }
 ```
 
-
-
 Note that the *@@iterator** has been implemented with a generator function, and that has let us simplify the code a bit:
 + the variables we used to maintain the state are regular local variables (no need for closures). This is possible because when a generator is invoked, its local state is preserved between reentries.
 + We use a standard loop to iterate over the elements of the matrix. This is clearly more readable than returning a `next()` function that implements a single iteration of the loop.
@@ -1075,7 +1073,7 @@ The **Middleware** pattern is one of the most distinctive Node.js patterns. Howe
 #### Middleware in Express
 
 [Express](https://expressjs.com/) popularized the term middleware in Node.js and gave it an specific definition:
-> A *Middleware* represents a set of services, typically functions, that are organized in a pipeline and are responsible for processing incoming HTTP requests and relative responses.
+> A *Middleware* represents a set of services, typically functions, that are organized in a pipeline and are responsible for processing incoming HTTP requests and corresponding responses.
 
 In *Express*, the *Middleware* pattern is an effective strategy for allowing developers to easily create and distribute new features that can be easily added to an application, in a way that let the platform take a minimalist approach.
 
@@ -1347,12 +1345,308 @@ The most relevant areas around the client implementation are:
 [Middy](https://middy.js.org/) is another notable example of the *Middleware* pattern enabled to support this pattern when writing AWS Lambda functions.
 
 ### Command
-376
 
-### Summary
+In its most generic form, the **Command pattern** is an object that encapsulates the necessary information to perform an action at a later time.
+
+> A *Command* is an object representing the intention to perform a method invocation. The actual invocation, which will happen at a later time, is delegated to another component.
+
+The pattern is built around four major components:
+
+![Command Pattern](images/command_pattern.png)
+
+
++ **Command** is the object encapsulating the information necessary to invoke a method or function.
++ **Client** is the component that creates the command and provides it to the *invoker*.
++ **Invoker** is the component responsible for executing the command on the target.
++ **Target (or receiver)** is the subject of the invocation. It can be a standalone function or a method of an object.
+
+| NOTE: |
+| :---- |
+| The implementation of the four components depend a lot on the way we want to implement the pattern. |
+
+The common use cases for the *Command* pattern are:
++ schedule a command to be executed at a later time.
++ serialize a command to be sent over the network (to distribute jobs across remote machines, transmit commands from the browser to the server, RPC...).
++ keep a history of all the operations executed on a system.
++ Commands are an important part of some algorithms for data synchronization and conflict resolution.
++ Commands scheduled for execution at a later time are subject of being canceled. They are also useful to be reverted, brining the state of the application to the point before the command was executed.
++ Commands can be grouped together to create *atomic transactions* or to implement a mechanism whereby all the operations in the group are executed at the same time.
++ Different kinds of transformations can be performed on a set of commands such as duplicate removal, joining, splitting, or applying complex algorithms such as *operational transformation (OT)*, which is the base for today's real-time collaboration software, such as collaborative text editing.
+
+#### The *Task* pattern
+
+As described before, there are several ways to implement the *Command* pattern, with the **Task** pattern being the most basic and trivial implementation.
+
+In order to represent an object representing a potential invocation of a standalone method or function is to use a *closure* around a function definition or *bound function*:
+
+```javascript
+function createTask(target, ...args) {
+  return () => {
+    target(...args);
+  };
+}
+```
+
+which can be written most of the times as:
+
+```javascript
+const task = target.bind(null, ...args);
+```
+
+| NOTE: |
+| :---- |
+| We have already used this pattern quite a few times already to schedule and control the execution of tasks. |
+
+| EXAMPLE: |
+| :------- |
+| See [15 &mdash; *Command Pattern*: simple Task](15-command-task) for a runnable for this approach. |
+
+#### A more complex *Command*
+If we want to do more than just wrapping a method invocation for later invocation we need to do a more complex implementation of the *Command* pattern.
+
+In particular, let's suppose we want to support serialization and *undo* capabilities.
+
+We will begin with the implementation of the *target* component (the one we want to invoke through a *command*). This will be *status update service* that can receive messages in a Twitter-like fashion:
+
+```javascript
+const statusUpdates = new Map();
+
+export const statusUpdateService = {
+  postUpdate(status) {
+    const id = Math.floor(Math.random() * 1000000);
+    statusUpdates.set(id, status);
+    console.log(`Status posted: ${ status } with id=${ id }`);
+    return id;
+  },
+  destroyUpdate(id) {
+    statusUpdates.delete(id);
+    console.log(`Status removed: ${ id }`);
+  }
+};
+```
+
+Now, let's implement a factory function that creates a *command* to represent the posting of a new status update:
+
+```javascript
+export function createPostStatusCmd(service, status) {
+  let postId = null;
+
+  // The Command
+  return {
+    run() {
+      postId = service.postUpdate(status);
+    },
+    undo() {
+      if (postId) {
+        service.destroyUpdate(postId);
+        postId = null;
+      }
+    },
+    serialize() {
+      return { type: 'status', action: 'post', status: status };
+    }
+  };
+}
+```
+
+The preceding code is a *factory* that produces commands to model "*post status*" intentions.
+
+Each command implements the following three functionalities:
+
++ A `run()` method that when invoked will trigger the action. The action consists in posting a new status update in the target service.
+
++ An `undo()` method that reverts the effects of the post operation. This will consists of invoking `destroyUpdate()` on the target service.
+
++ A `serialize()` method that builds a JavaScript object subject of being serialized, and that would let us reconstruct the original *command object.*
+
+
+Now, we can build the *invoker*.
+
+```javascript
+import superagent, { serialize } from 'superagent';
+
+// The Invoker
+export class Invoker {
+  constructor() {
+    this.history = [];
+  }
+
+  run(cmd) {
+    this.history.push(cmd);
+    cmd.run();
+    console.log('Command executed:', cmd.serialize());
+  }
+
+  delay(cmd, delay) {
+    setTimeout(() => {
+      console.log(`Scheduling command for delayed execution: `, cmd.serialize());
+      this.run(cmd);
+    }, delay);
+  }
+
+  undo() {
+    const cmd = this.history.pop();
+    cmd.undo();
+    console.log(`Command undone: `, cmd.serialize());
+  }
+
+  async runRemotely(cmd) {
+    await superagent
+      .post('http://localhost:3000/cmd')
+      .send({ json: cmd.serialize() });
+
+    console.log(`Command executed remotely:`, cmd.serialize());
+  }
+}
+```
+
++ The `run(...)` method is the basic functionality of our *Invoker*. It is responsible for saving the command into the `history` instance variable and then triggering the execution of the command using `cmd.run()`. `cmd.serialize()` is used to display the information in the console.
+
++ The `delay(...)` method adds a new functionality that consists in scheduling the execution of the command for a later time.
+
++ The `undo(...)` command reverts the latest command.
+
++ `runRemotely(...)` allows the execution of the command on a remote server that is listening for commands at `http://localhost:3000/cmd`.
+
+
+Now, we can implement the *client* from the *Command* pattern perspective, that uses the capabilities exposed from the *Invoker*:
+
+```javascript
+import { createPostStatusCmd } from './lib/create-post-status-cmd.js';
+import { statusUpdateService } from './lib/status-update-service.js';
+import { Invoker } from './lib/invoker.js';
+
+const invoker = new Invoker();
+
+const command = createPostStatusCmd(statusUpdateService, 'Hi!');
+
+// Execute immediately, using the command
+invoker.run(command);
+
+// Revert
+invoker.undo(command);
+
+// Schedule the message to be executed in 2 seconds from now
+invoker.delay(command, 2000);
+
+// Run the command on a remote server
+invoker.runRemotely(command);
+```
+
+And we can also very easily implement a remote server that receives the command in the body of the HTTP request and process it:
+
+```javascript
+import http from 'http';
+import { createPostStatusCmd } from './lib/create-post-status-cmd.js';
+import { statusUpdateService } from './lib/status-update-service.js';
+import { Invoker } from './lib/invoker.js';
+
+
+const server = http.createServer((req, res) => {
+  if (req.method === 'POST' && req.url === '/cmd') {
+    let requestBody = '';
+    req
+      .on('data', (chunk) => {
+        requestBody += chunk.toString();
+      })
+      .on('end', () => {
+        let statusMessage;
+        try {
+          statusMessage = JSON.parse(requestBody)?.json?.status;
+        } catch (err) {
+          res
+            .writeHead(400, 'Unrecognized format')
+            .end();
+        }
+
+        try {
+          const invoker = new Invoker();
+          const command = createPostStatusCmd(statusUpdateService, statusMessage);
+          invoker.run(command);
+          res
+            .writeHead('200')
+            .end();
+
+        } catch (err) {
+          res
+            .writeHead(500, 'Could not post status received remotely')
+            .end();
+        }
+      });
+  } else {
+    res.writeHead(404);
+    res.end();
+  }
+});
+
+server.listen(3000, () => {
+  console.log(`INFO: remote-server: Server listening on port 3000`);
+});
+```
+| EXAMPLE: |
+| :------- |
+| See [16 &mdash; *Command Pattern*: complex use case](16-command-complex) for a runnable example. |
+
+Please be aware of how much additional code we had to add to wrap a simple method invocation into a method. As a general guideline, a full-fledge implementation of the *Command* pattern should be used only when strictly needed. In most of the cases, the simpler *Task* pattern will suffice.
+
+
 
 ### You know you've mastered this chapter when...
 
++ You are aware that the *Strategy*, the *State*, and the *Template* patterns are closely related.
+
++ You're comfortable identifying the *Strategy* pattern as the one whole lets you extract the common parts of a family of closely related components into a component called the *context* which allows us to define different *strategy* objects to implement specific behaviors.
+
++ You understand that the *State* pattern is a variation of the *Strategy* pattern where the strategies are used to model the behavior of a component under different states.
+
++ You are aware that the *Template* pattern is the *static* version of the *Strategy* pattern, as the different behaviors are implemented using inheritance and therefore, cannot be changed dynamically.
+
++ You understand that the *Iterator* pattern defines a common interface to iterate over the elements produced or retrieved in sequence, such as the elements of a container, event emitter, or a stream.
+
++ You understand that the *Iterator* pattern in JavaScript is implemented as a protocol rather than using inheritance: an *iterator* in JavaScript is an object that implements a method `next()` that each time that it is called return the next eelement in the iteration wrapped in an object with two properties: `done` and `value`.
+
++ You are aware of the `return([value])` and `throw(error)` optional methods that you can find in iterators to signal that the iteration has finished before its completion or that an error has been found while iterating (respectively).
+
++ You're familiar with the *iterable* protocol, that defines a standard way for an object to return an iterator. An *iterable* object is an object that implements such standard method that return an iterator and it is denoted as *@@iterator*.
+  + You understand that the syntax *@@name* denotes a well-known ES6 symbol and it is the same as `Symbol.name`.
+  + The *@@iterator* method that should return an iterator object can be accessed as `Symbol.iterator`, which means that an iterable should define a method denoted as `[Symbol.iterator]() { ...returns an iterator... }`
+
++ You're comfortable using the native JavaScript interfaces to interact with *iterables*:
+  + *for...of* loops
+  + The *spread* operator: `[...iterable]`
+  + Destructuring: `const [elem1, elem2, ...rest] = iterable`
+
++ You're aware of the different JavaScript and Node.js built-in APIs that accept iterables.
+
++ You're comfortable with the concept of *generators*:
+  + you're familiar with their syntax: `function* genFunc() { ... }`
+  + you understand that calling a generator function returns a generator object that exposes a `next()` method
+  + you understand the logic of pausing/resuming using `yield`
+  + you understand that returning from a generator function finishes the iteration
+  + You are aware that the `next()` function of generators provide extra functionality like accepting parameters to build *two-way* generators that communicate with the client code
+  + You are aware that the generator functions also expose a `throw()` and `return()` methods so that the client code can communicate errors found while using the generator or that the iteration has completed before reaching the `return`.
+
++ You understand that *async iterators* are needed to iterate over *containers* that return elements asynchronously, such as HTTP servers, SQL queries, etc.
+
++ You understand that *async iterators* are iterators that return a promise, and that *async iterables* are objects that return an iterator through the *@@asyncIterator* method.
+
++ You're comfortable using the *for await...of* construct to interact with *async iterables*.
+
++ You're comfortable with the concept of *async generators* and its syntax.
+
++ You're aware that *async iterators* and *stream* are very similar concepts in purpose and behavior and know the rules that dictate which one to use:
+  + streams are *push-based* (data is pushed into the internal buffer of the stream, and then consumed by the client code from the buffer), while async iterators are *pull-based* (data is only produced on demand by the consumer of the async iterator).
+  + streams excel when dealing with binary data and backpressure management
+  + streams can be composed
+  + async iterators are very easy to reason with
+
++ You are comfortable using JavaScript *Iterators* in Node.js and understand the *iterable* and *iterator* protocols. You are also comfortable with *generator functions* and understand how much they simplify the implementation of the *iterator* protocol.
+
++ You are comfortable using *async iterators* and are familiar with the *for...await of* construct. You recognize the use cases on which they apply. You are also familiar with the concept of *async generator functions* and how they help in the implementation of *async iterators*.
+
++ You're comfortable with the *Middleware* pattern, very distinctive of the Node.js ecosystem. You are familiar with their components and their use and implementation.
+
++ You understand the *Command* pattern and the use cases on which it can be applied. You understand how easy can be implemented with the *Task* pattern, and how the *Command* pattern can be implemented more thoroughly where needed to support pretty advanced use cases.
 
 ### Patterns Cheat Sheet
 
@@ -1368,6 +1662,13 @@ The most relevant areas around the client implementation are:
 | Structural | [**Change Observer**](#change-observer-pattern-with-proxy) | Variant of [**Proxy**](#proxy) in which the *subject* notifies one or more observers of any state change in the object so that they can react to them as soon as they occur. | `const observableSubject = createObservable(subject, (...args) => { /* listener logic */ })` | Cornerstone of reactive programming |
 | Structural | [**Decorator**](#decorator) | Dynamically augment the behavior of an existing *target* object. | Same impelementation techniques available for the *Proxy* pattern can be applied to *Decorator*. |
 | Structural | [**Adapter**](#adapter) | Takes the interface on an object (the *adaptee*) and makes it compatible with another interface that is expected by the client code. | `const adapter = createAdapter(adaptee)` | It is common to find that methods exposed from the *Adapter* ends up invoking several methods in the *adaptee*. |
+| Behavioral | [**Strategy**](#strategy) | Enables an object (the *context*), to support variations in its logic by extracting the variable parts into separate interchangeable objects called *strategies*. | `const context = new Context(activeStrategy)` | Strategies are usually a part of a family of solutions, all of them implementing the same interface. |
+| Behavioral | [**State**](#state) | Allows a component to adapt its behavior dynamically depending on its internal state | n/a | Specialization of the *Strategy* pattern where the strategy changes automatically depending on the state of the context. |
+| Behavioral | [**Template**](#template) | Defines an abstract class that implements the skeleton (representing the common parts) of a component, where some of its steps are left undefined. Subclasses can then fill the gaps by implementing the missing parts known as *template methods*. | n/a | The difference between the *Template* and the *Strategy* pattern is that in the *Template* the different behavior is *baked into* the class itself, rather than chosen at runtime. |
+| Behavioral | [**Iterator**](#Iterator) | Defines a common interface to iterate over elements produced or retrieved in sequence, such as the elements of a container (e.g. array or tree data structure), so that the implementation of the traversal algorithm is decoupled from the way in which the elements of the traversal operation are consumed. | `function createIter() { return { next() { ... } }; }` | In JavaScript the *Iterator* pattern is implemented through a protocol: an *iterator* is an object that implements a `next()` method that each time that the method is called returns the next element in the iteration wrapped in an object with the properties `done` and `value`.  |
+| Behavioral | [**Async Iterator**](#async-iterator) | An *Async Iterator* is an *iterator* that returns a promise through its `next()` function. | n/a | Async iterators can be looped using *for await...of* syntax. |
+| Middleware | [**Middleware**](#middleware) | Represents a set of services, typically functions that are organized in a pipeline and are responsible for processing incoming HTTP requests and corresponding responses. | `function (req, res, next) { ... }` | The most essential component of the pattern is the *Middleware Manager*, responsible for organizing and executing the middleware functions. |
+| Behavioral | [**Command**](#command) | Object representing the intention to perform a method invocation. The actual invocation, which will happen at a later time, is delegated to another component different from the one that created the *command* object. | const task = target.bind(null, ...args); | In its simplest form, a *closure* or a *bound function* serves as a valid implementation. If more sophisticated functionality is needed, the code can become quite complex to simply wrap a method invocation. |
 
 ### Code, Exercises and mini-projects
 
@@ -1413,8 +1714,15 @@ Illustrates how to take advantage of the fact that Node.js `stream.Readable` imp
 #### [14 &mdash; *Middleware Pattern*](14-middleware-zmq)
 Illustrates how to create a middleware infrastructure (from scratch) for *ZeroMQ* framework
 
-#### Exercise 1: [HTTP client cache](./e01-http-client-cache/)
-Write a proxy for your favorite HTTP client library that caches the response of a given HTTP request, so that if you make the same request again, the response is immediately returned from the local cache, rather than being fetched from the remote URL.
+#### [15 &mdash; *Command Pattern*: simple Task](15-command-task)
+Illustrates the easiest and most basic implementation of the *Command* pattern consisting in creating an object that represents an invocation with a *closure* or using `Function.prototype.bind(...)`.
+
+#### [16 &mdash; *Command Pattern*: complex use case](16-command-complex)
+Illustrates a more complex use case involving the *Command pattern* in which we use the pattern to support advanced techniques such as *undo*, *serialization* and *remote execution*.
+
+#### Exercise 1: [Logging with *Strategy*](./e01-strategy-logging/)
+Implement a logging component having the methods: `debug()`, `info()`, `warn()`, and `error()`. The logging component should also accept a strategy that defines where the log messages are sent. For example, we might have a `ConsoleStrategy` to send the messages to the console, a `FileStrategy` to send the messages to a file, and a `RemoteStrategy` to send the messages to a remote server through HTTP requests.
+
 
 ### ToDo
 
@@ -1423,3 +1731,5 @@ Write a proxy for your favorite HTTP client library that caches the response of 
 [ ] Learn about tagged template literals https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
 
 [ ] Give a try to @databases/* drivers: https://www.atdatabases.org/
+
+[ ] Explore Operational Transformation http://nodejsdp.link/operational-transformation

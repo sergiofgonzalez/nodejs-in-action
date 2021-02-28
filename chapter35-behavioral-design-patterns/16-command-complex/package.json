@@ -20,12 +20,12 @@
   "config": {},
   "license": "MIT",
   "devDependencies": {
-    "eslint": "7.19.0"
+    "eslint": "7.20.0"
   },
   "scripts": {
     "reset": "rm -rf node_modules && rm -f package-lock.json && npm install",
     "prestart": "npm run lint",
-    "start-server": "node app/src/server.js",
+    "start-server": "node app/src/remote-status-update-server.js",
     "start-client": "node app/src/client.js",
     "lint": "node_modules/.bin/eslint app/src/",
     "pretest": "npm run lint",
@@ -37,6 +37,6 @@
     "freshen-deps": "./scripts/freshen.sh"
   },
   "dependencies": {
-    "zeromq": "6.0.0-beta.6"
+    "superagent": "6.1.0"
   }
 }

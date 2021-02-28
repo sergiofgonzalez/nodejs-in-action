@@ -11,3 +11,6 @@ Basic concepts about AWS and the cloud
 Designing an architecture for a highly-available deployment on AWS
 
 ## [Section 3: Using EC2](03-ec2)
+First steps with VMs in AWS.
+
+## [Section 4: Programming your infrastructure](04-programming-infra)

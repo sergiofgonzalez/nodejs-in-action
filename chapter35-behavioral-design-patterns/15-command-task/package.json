@@ -20,13 +20,12 @@
   "config": {},
   "license": "MIT",
   "devDependencies": {
-    "eslint": "7.19.0"
+    "eslint": "7.20.0"
   },
   "scripts": {
     "reset": "rm -rf node_modules && rm -f package-lock.json && npm install",
     "prestart": "npm run lint",
-    "start-server": "node app/src/server.js",
-    "start-client": "node app/src/client.js",
+    "start": "node app/src/main.js",
     "lint": "node_modules/.bin/eslint app/src/",
     "pretest": "npm run lint",
     "test": "tap --no-esm --bail app/test/",
@@ -35,8 +34,5 @@
     "debug": "node --inspect-brk app/src/main.js",
     "debug-test": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/tst/nth-test.js",
     "freshen-deps": "./scripts/freshen.sh"
-  },
-  "dependencies": {
-    "zeromq": "6.0.0-beta.6"
   }
 }
