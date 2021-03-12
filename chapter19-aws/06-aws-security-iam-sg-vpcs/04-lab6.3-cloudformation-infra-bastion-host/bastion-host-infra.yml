@@ -1,0 +1,130 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: |
+  CloudFormation template that launches an infrastructure
+  consisting in two EC2 instances that are *fronted* by a
+  third EC2 instance known as the bastion host. The bastion
+  host is configured to be accessible only from a given IP
+  address, and the other two EC2 instance will only be
+  available for SSH from the bastion host.
+
+Parameters:
+
+  KeyName:
+    Description: 'Key Pair name'
+    Type: 'AWS::EC2::KeyPair::KeyName'
+
+  VPC:
+    Description: 'VPC ID where the instances will be placed'
+    Type: 'AWS::EC2::VPC::Id'
+
+  Subnet:
+    Description: 'Subnet ID where the instances will be placed'
+    Type: 'AWS::EC2::Subnet::Id'
+
+  IpForBastionSSHAccess:
+    Description: 'Public IP address with SSH access to the bastion'
+    Type: String
+    AllowedPattern: '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$'
+    ConstraintDescription: 'Enter a valid IPv4 address'
+
+Mappings:
+  RegionToAMIMap:
+    # Including only three regions for demonstration purposes
+    'us-east-1':
+      AMI: 'ami-0915bcb5fa77e4892'
+
+    'eu-central-1':
+      AMI: 'ami-02f9ea74050d6f812'
+
+    'ap-southeast-1':
+      AMI: 'ami-0d06583a13678c938'
+
+Resources:
+  SecurityGroupBastionHost:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: 'Security Group allowing SSH traffic from a given IP address'
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: 'Bastion-Host-Security-Group'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: !Sub '${IpForBastionSSHAccess}/32'
+
+  SecurityGroupVM:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: 'Security Group allowing SSH traffic only from bastion host'
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: 'VM-Security-Group'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          SourceSecurityGroupId: !Ref SecurityGroupBastionHost
+
+      SecurityGroupEgress:
+        # hack to deny all outbound traffic from instances using this SG
+        - IpProtocol: tcp
+          FromPort: '1'
+          ToPort: '1'
+          CidrIp: '0.0.0.0/32'
+
+  BastionHost:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !FindInMap [RegionToAMIMap, !Ref 'AWS::Region', AMI]
+      InstanceType: 't2.micro'
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !Ref SecurityGroupBastionHost
+      SubnetId: !Ref Subnet
+      Tags:
+        - Key: Name
+          Value: 'Bastion Host'
+
+  # You have to explicitly create the 2 instances :O
+  VM1:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !FindInMap [RegionToAMIMap, !Ref 'AWS::Region', AMI]
+      InstanceType: 't2.micro'
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !Ref SecurityGroupVM
+      SubnetId: !Ref Subnet
+      Tags:
+        - Key: Name
+          Value: 'VM1'
+
+  VM2:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !FindInMap [RegionToAMIMap, !Ref 'AWS::Region', AMI]
+      InstanceType: 't2.micro'
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !Ref SecurityGroupVM
+      SubnetId: !Ref Subnet
+      Tags:
+        - Key: Name
+          Value: 'VM2'
+
+Outputs:
+  BastionHostPublicName:
+    Value: !Sub ${BastionHost.PublicDnsName}
+    Description: 'Bastion host public DNS name to connect via SSH with user ec2-user'
+
+  VM1PublicName:
+    Value: !Sub ${VM1.PublicDnsName}
+    Description: 'VM1 public DNS name to connect via SSH from bastion with user ec2-user'
+
+  VM2PublicName:
+    Value: !Sub ${VM2.PublicDnsName}
+    Description: 'VM2 public DNS name to connect via SSH from bastion with user ec2-user'

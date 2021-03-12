@@ -246,8 +246,9 @@ The first task is to launch an EC2 instance in the same way we did for [Lab 3.2]
 Then you need to install and start the Apache HTTP server:
 
 ```bash
-$ sudo yum install http -y
+$ sudo yum install httpd -y
 ...
+$ sudo systemctl start httpd
 $ sudo systemctl status httpd
 ```
 
@@ -316,4 +317,4 @@ eth1 ...
 
 | AWS Service | Category | Description |
 | :---------- | :------- | :---------- |
-| Amazon EC2 | Compute | Web service that provides secure, resizable compute capacity in the cloud.<br><small>It is designed to make web-scale computing easier for developers.<br>Amazon EC2 changes the economonics of computing by allowing you to pay only for capacity that you actually use.<br>Amazon EC2 provides devs and sysadmins the tools to build failure resilient applications and isolate themselves from common failure scenarions.</small> |
+| Amazon EC2 | Compute | Web service that provides secure, resizable compute capacity in the cloud.<br><small>It is designed to make web-scale computing easier for developers.<br>Amazon EC2 changes the economonics of computing by allowing you to pay only for capacity that you actually use.<br>Amazon EC2 provides devs and sysadmins the tools to build failure resilient applications and isolate themselves from common failure scenarios.</small> |

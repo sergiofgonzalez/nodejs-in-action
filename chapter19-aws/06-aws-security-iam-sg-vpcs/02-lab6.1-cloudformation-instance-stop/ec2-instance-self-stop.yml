@@ -1,0 +1,110 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: |
+  CloudFormation template that launches an EC2 instance that
+  will stop itself after a certain number of minutes.
+  The instance has to be attached with an inline IAM role
+  that grants the instance permission to stop itself
+
+Parameters:
+  KeyName:
+    Description: 'Key Pair name'
+    Type: 'AWS::EC2::KeyPair::KeyName'
+  VPC:
+    Description: 'VPC ID where the instance will be placed'
+    Type: 'AWS::EC2::VPC::Id'
+  Subnet:
+    Description: 'Subnet ID where the instance will be placed'
+    Type: 'AWS::EC2::Subnet::Id'
+  Lifetime:
+    Description: 'Lifetime in minutes (2-59)'
+    Type: Number
+    Default: '2'
+    MinValue: '2'
+    MaxValue: '59'
+
+Mappings:
+  RegionToAMIMap:
+    # Including only three regions for demonstration purposes
+    'us-east-1':
+      AMI: 'ami-0915bcb5fa77e4892'
+
+    'eu-central-1':
+      AMI: 'ami-02f9ea74050d6f812'
+
+    'ap-southeast-1':
+      AMI: 'ami-0d06583a13678c938'
+
+Resources:
+  SecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: 'Self stopping instance Security group'
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - CidrIp: '0.0.0.0/0'
+          FromPort: 22
+          ToPort: 22
+          IpProtocol: tcp
+      Tags:
+        - Key: Name
+          Value: 'Security Group for self-stopping instance'
+
+  # this is needed to attach an inline role to the EC2 instance
+  InstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Roles:
+        - !Ref Role
+
+  Role:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - 'ec2.amazonaws.com'
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: ec2PolicyToStopItself
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              # Sid is an optional identifier, must be unique in the JSON policy
+              - Sid: 1
+                Effect: Allow
+                Action:
+                  - 'ec2:StopInstances'
+                Resource:
+                  - '*'
+                Condition:
+                  StringEquals:
+                    'ec2:ResourceTag/aws:cloudformation:stack-id': !Ref 'AWS::StackId'
+  Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      IamInstanceProfile: !Ref InstanceProfile
+      ImageId: !FindInMap [RegionToAMIMap, !Ref 'AWS::Region', AMI]
+      InstanceType: 't2.micro'
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !Ref SecurityGroup
+      SubnetId: !Ref Subnet
+      UserData:
+        'Fn::Base64': !Sub |
+          #!/bin/bash -ex
+          INSTANCE_ID="$(curl --silent http://169.254.169.254/latest/meta-data/instance-id)"
+          echo "aws ec2 stop-instances --instance-ids $INSTANCE_ID --region ${AWS::Region}" | at now + ${Lifetime} minutes
+
+      Tags:
+        - Key: Name
+          Value: !Sub 'EC2 instance that will self stop after ${Lifetime} minutes'
+
+Outputs:
+  InstancePublicName:
+    Value: !Sub ${Instance.PublicDnsName}
+    Description: 'Public DNS name of the instance to connect with ec2-user'

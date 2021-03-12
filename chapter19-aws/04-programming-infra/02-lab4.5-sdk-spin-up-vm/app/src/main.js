@@ -97,7 +97,6 @@ async function getFirstSubnet(vpcId) {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
 async function getSecurityGroup(vpcId) {
   const params = {
     Filters: [

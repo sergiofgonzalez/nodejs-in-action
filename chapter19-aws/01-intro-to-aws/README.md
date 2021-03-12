@@ -72,10 +72,14 @@ There are over 60 *Availability Zones* in more than 20 *AWS Regions* around the 
 | Cloud Computing | Cloud computing is a model for enabling ubiquitous, convenient, on-demand network access to a shared pool of configurable computing resources (such as networks, VMs, storage, applications, and services) that can be rapidly provisioned and released with minimal management effort or service provider interaction. |
 | *Elastic IP* | A static IPv4 address that can be attached to a machine so that it public address is preserved when stopping and starting an *EC2* instance. |
 | Hypervisor | The software component responsible for isolating the guests running on a host machine from each other, and for scheduling requests to the hardware, by providing a virtual platform to the guest software. |
+| Stack | The realization of a *CloudFormation* template. |
+| Template | (*CloudFormation*) A file written in JSON/YAML format that describes the state of a particular infrastructure solution. |
 | Virtual appliance | an image of a virtual machine containing an OS and preconfigured software. |
 
 ### AWS Services
 
 | AWS Service | Category | Description |
 | :---------- | :------- | :---------- |
-| Amazon EC2 | Compute | Web service that provides secure, resizable compute capacity in the cloud.<br><small>It is designed to make web-scale computing easier for developers.<br>Amazon EC2 changes the economonics of computing by allowing you to pay only for capacity that you actually use.<br>Amazon EC2 provides devs and sysadmins the tools to build failure resilient applications and isolate themselves from common failure scenarions.</small> |
+| AWS CloudFormation | Management and Governance | Gives developers and system admins an easy way to create and manage a collection of related AWS resources.<br>The service supports provisioning, updating, and deletion in an orderly and predictable fashion.<br>*AWS CloudFormation* is the *IaC* solution for AWS. |
+| Amazon EC2 | Compute | Web service that provides secure, resizable compute capacity in the cloud.<br><small>It is designed to make web-scale computing easier for developers.<br>Amazon EC2 changes the economonics of computing by allowing you to pay only for capacity that you actually use.<br>Amazon EC2 provides devs and sysadmins the tools to build failure resilient applications and isolate themselves from common failure scenarios.</small> |
+| AWS IAM | Security, Identity, and Compliance | *AWS Identity and Access Management (IAM)* enables you to securely control access to AWS services and resources for your users.<br>Using *AWS IAM* you can create and manage AWS users and groups, and use permissions to allow and deny their access to AWS resources. |
