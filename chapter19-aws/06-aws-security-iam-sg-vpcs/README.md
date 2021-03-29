@@ -1,12 +1,12 @@
 # Chapter 19 &mdash; Interacting with Amazon Web Services
 ## Section 6: Security concepts in AWS: IAM, security groups, and VPCs
-> TBD
+> understanding AWS security model
 
 ### Summary
 + AWS Security Model
 + IAM: users and roles
 + Security Groups to control inbound/outbound traffic
-+ Basic network design: Private and Public Networks in AWS
++ Security and network design: private and public subnets in AWS
 
 ### Intro
 
@@ -288,7 +288,7 @@ There are two types of policies:
   + *AWS managed policy* &mdash; a policy maintained by AWS. Those are policies that grant admin rights, read-only rights, power user rights, etc.
   + *Customer managed policy* &mdash; a policy maintained by yoursef that represents reusable roles in your organizations (e.g. sysadmin roles, DevOps engineers role, Software devs roles, etc.)
 
-+ Inline policy &mdash; a policy that belongs to a certain *IAM role*, *IAM user*, or *IAM group*. An *inline policy* isn't a *standalone object* and therefore, cannot exist without the *IAM role*, *IAM user* or *IAM group* that is attached to.
++ *Inline policy* &mdash; a policy that belongs to a certain *IAM role*, *IAM user*, or *IAM group*. An *inline policy* isn't a *standalone object* and therefore, cannot exist without the *IAM role*, *IAM user* or *IAM group* that is attached to.
 
 | NOTE: |
 | :---- |
@@ -381,7 +381,7 @@ InstanceProfile:
 | See [02 &mdash; CloudFormation: Instance that stops itself](02-lab6.1-cloudformation-instance-stop) for the complete YAML code. |
 
 ### Controlling the network traffic in AWS
-You only want traffict to enter or leave a particular machine if it has to do so. Typically, you setup a firewall to control ingoing (also called inbound or ingress) and outgoing (also called outbound or egress) traffic.
+You only want traffic to enter or leave a particular machine if it has to do so. Typically, you setup a firewall to control ingoing (also called inbound or ingress) and outgoing (also called outbound or egress) traffic.
 
 The same applies to resources on AWS. You are given tools to open only the ports that must be accessible and close down all other ports.
 
@@ -547,9 +547,9 @@ For a simple scenario that spins up an *EC2 instance* attached with security gro
 
 For a more complicated scenario involving several instances and a bastion host please see: [04 &mdash; CloudFormation: Infrastructure with bastion host](04-lab6.3-cloudformation-infra-bastion-host)
 
-##### A few basic notes about networking
+##### Networking basics in AWS
 
-The next section will deal with all the details about networking, but in the meantime it is importanto to understand the difference between public and private IP addresses and the CIDR notation.
+The next section will deal with all the details about networking, but in the meantime it is importanto to understand the difference between public and private IP addresses and the *CIDR notation*.
 
 On your home network, you will be assigned an IP address that most likely will start with `192.168.0.*`. All the devices within your local network will be assigned an IP address that follows that pattern (phones, tablets, SmartTV sets, Videogame consoles...). Those are known as *private IP addresses*.
 
@@ -574,7 +574,7 @@ An you are not bound either to binary boundaries such as 8, 16, 24, 32, although
 
 #### The *bastion host* (*jumpbox*) concept
 
-The concept of a *bastion host* for SSH access (also known as *jumpbox*) consists in setting up one virtual machine, the *bastion host*, that can be access via SSH from the internet, typically from a small set of specific source IP addresses.
+The concept of a *bastion host* for SSH access (also known as *jumpbox*) consists in setting up one virtual machine, the *bastion host*, that can be accessed via SSH from the internet, typically from a small set of specific source IP addresses.
 
 The rest of VMs of the infrastructure are configured to be accessed via SSH only from the bastion host.
 
@@ -710,8 +710,11 @@ In order to create it, you just need to give it a name, and as a second step, at
 #### Defining the public bastion host subnet
 
 The *bastion host subnet* will use the range `10.0.1.0/24`. We will place the *bastion host EC2 instance* in that *subnet* that we should configure as publicly accessible and satisfying the following connectivity requirements:
+
 + The *bastion host* must be accessible via SSH only from a certain set of IP addresses (e.g. my IP address)
+
 + The *bastion host* must be able to access the *proxy server subnet* in `10.0.2.0/24`.
+
 + The *bastion host* must be able to access the *web server subnet* in `10.0.3.0/24`.
 
 As such we need to:
@@ -738,7 +741,7 @@ As such we need to:
 | my-route-table-for-public-subnet-bastion-host | `10.0.0.0/16` (default) | local |
 | my-route-table-for-public-subnet-bastion-host | `0.0.0.0/0` | my-igw |
 
-These routes ensure that there is a route for the *bastion host public subnet* to communicate with the resources within the *VPC*, while the rest of the elements outside of the *VPC* should communicate through the *IGW*.
+These routes ensure that there is a route for the *bastion host public subnet* to communicate with the resources within the *VPC*, while allowing the *bastion host* to communicate outside of the *VPC* through the *IGW*.
 
 
 + Create a *Network ACL* for this subnet that will define the traffic rules for this subnet:
@@ -759,36 +762,37 @@ These routes ensure that there is a route for the *bastion host public subnet* t
 
 | NOTE: |
 | :---- |
-| Inbound/Outbound TCP traffic on ports 1024-65535 are known as ephemeral ports and are used to support TCP communications on addition to the well-known ports. |
+| Inbound/Outbound TCP traffic on ports 1024-65535 are known as ephemeral ports and are used to support TCP communications in addition to the well-known ports. |
 
-Current Inbound ruleset
+The following tables summarize the *Network ACL rules for the *bastion host public subnet*:
+
 | Rule # | In/out | Type | Protocol | Port(s) | Source | Allow/Deny | Description |
 | :----- | :----- | :--- | :------- | :------ | :----- | :--------- | :---------- |
 | 100 | Inbound | SSH | TCP | 22 | `${my-ip-address}/32` | Allow | Enable inbound SSH |
 | 200 | Inbound | Custom TCP | TCP | 1024-65535 | 0.0.0.0/0 | Allow | Enable Internet connectivity |
 | * | Inbound | All Traffic | All | 0.0.0.0/0 | Deny | Disable all other traffic |
 
-Current Outbound ruleset
+
 | Rule # | In/out | Type | Protocol | Port(s) | Source | Allow/Deny | Description |
 | :----- | :----- | :--- | :------- | :------ | :----- | :--------- | :---------- |
-| 100 | Outbound | SSH | TCP | 22 | 10.0.0.0/16 | Allow | Allow outbound SSH |
+| 100 | Outbound | SSH | TCP | 22 | 10.0.0.0/16 | Allow | Allow outbound SSH in the VPC |
 | 200 | Outbound | Custom TCP | TCP | 1024-65535 | 0.0.0.0/0 | Allow | Required for Inbound SSH |
-| 300 | Outbound | HTTP | TCP | 80 | 0.0.0.0/0 | Allow | Required if HTTP allowed |
-| 400 | Outbound | HTTPS | TCP | 443 | 0.0.0.0/0 | Allow | Required if HTTPS allowed |
+| 300 | Outbound | HTTP | TCP | 80 | 0.0.0.0/0 | Allow | Required if HTTP allowed from bastion |
+| 400 | Outbound | HTTPS | TCP | 443 | 0.0.0.0/0 | Allow | Required if HTTPS allowed from bastion |
 | * | Outbound | All Traffic | All | 0.0.0.0/0 | Deny | Disable all other traffic |
 
-Note that rules 300 and 400 are only required if you want to allow the *bastion host* to connect to the Internet, or to use `curl` or *AWS CLI*. A pure bastion might not need to have that.
+Note that rules 300 and 400 are only required if you want to allow the *bastion host* to connect to the Internet, using HTTP/HTTPS (e.g. `curl` or *AWS CLI*). A pure bastion might not need to have that.
 
 #### Stage 1: Validation
 
 ![VPC Design: Stage 1](./images/VPC_design_stage_1.png)
 
 At this point we have created:
-  + A VPC to isolate our application in the IP address space `10.0.0.0/16`.
-  + An Internet Gateway in our newly created VPC.
-  + A subnet where we will place our bastion host in the IP address space `10.0.1.0/24`. This subnet is defined in the specific availablity zone `us-east-1a`.
-  + A *Route table* associated to this subnet that defines a route from this subnet to any IP address (`0.0.0.0/0`) through the *Internet Gateway*, on top of the defaul local route the VPC `10.0.0.0/16`.
-  + A *Network ACL* that will allow us to connect from a particular private IP address to the bastion host via SSH. It should also allow the bastion host to connect via SSH to any IP address of the VPC.
+  + A *VPC* to isolate our application in the IP address space `10.0.0.0/16`.
+  + An *Internet Gateway (IGW)* in our newly created *VPC*.
+  + A *subnet* where we will place our bastion host in the IP address space `10.0.1.0/24`. This *subnet* is defined in the specific availablity zone `us-east-1a`.
+  + A *Route table* associated to this *subnet* that defines a route from this *subnet* to any IP address (`0.0.0.0/0`) through the *Internet Gateway*, on top of the defaul local route the VPC `10.0.0.0/16`.
+  + A *Network ACL* that will allow us to connect from a particular private IP address to the *bastion host* via SSH. It should also allow the *bastion host* to connect via SSH to any IP address of the VPC.
   + (Optionally) We might want to allow the bastion host to have access to the Internet, which will require a few extra entries in the *Network ACL*.
 
 As a result, if we launch an *EC2 instance* in this subnet we will be able to perform the following checks:
@@ -797,7 +801,6 @@ As a result, if we launch an *EC2 instance* in this subnet we will be able to pe
 [X] Bastion host is accessible through SSH from my public IP address
 [X] Bastion host cannot be accessed from other public IP address, even if security group allows all traffic from anywhere
 [X] (Optionally) Bastion host can connect to the Internet using HTTP (e.g. can *curl* or run `aws` commands). Note that to use `aws` commands the instance needs to be associated with an *IAM role*.
-
 
 Note that we will not be able to validate that the *bastion host* can SSH into other VPC resources (proxy server and web server instance) just yet.
 
@@ -820,7 +823,7 @@ Another difference is that you have to explicitly define the priorities of your 
 
 #### Defining the proxy servers subnet
 
-The *proxy servers subnet* will also be a public subnet like the one we defined for the bastion host, but this one use the IP address space `10.0.2.0/24`. We will place the *proxy servers* in that *subnet* that we should configure as publicly accessible via HTTP and HTTPS, but only allowing SSH connections from the bastion host.
+The *proxy servers subnet* will also be a public subnet like the one we defined for the bastion host, but this one uses the IP address space `10.0.2.0/24`. We will place the *proxy servers* in that *subnet* that we should configure as publicly accessible via HTTP and HTTPS, but only allowing SSH connections from the bastion host.
 
 In summary:
 + The *proxy servers* must be accessible via SSH only from the *bastion host subnet*
@@ -847,25 +850,26 @@ The actions to perform are:
 | my-route-table-for-public-subnet-proxy | `10.0.0.0/16` (default) | local |
 | my-route-table-for-public-subnet-proxy | `0.0.0.0/0` | my-igw |
 
-These routes ensure that there is a route for the *bastion host public subnet* to communicate with the resources within the *VPC*, while the rest of the elements outside of the *VPC* should communicate through the *IGW*.
+These routes ensure that there is a route for the *proxy servers public subnet* to communicate with the resources within the *VPC*, while allowing the proxy servers to communicate outside of the *VPC* through the *IGW*.
 
 
 + Create a *Network ACL* for this subnet that will hold the traffic rules for this subnet:
 
 | ACL Name | Subnet Association(s) | VPC Association |
 | :------- | :-------------------- | :-------------- |
-| my-acl-for-public-subnet-proxy | my-public-subnet-bastion-host (`10.0.2.0/24`) | my-vpc (`10.0.0.0/16`) |
+| my-acl-for-public-subnet-proxy | my-public-subnet-proxy (`10.0.2.0/24`) | my-vpc (`10.0.0.0/16`) |
 
 | NOTE: |
 | :---- |
-| At this point, review the Network ACL associations for your subnets. It might happen that the bastion host Network ACL is applied to this subnet too. If that is the case, associate the newly created *Network ACL* explicitly in the subnet definition page.<br>This happens because the first one is tagged as the default Network ACL and therefore, new subnets will be associated that Network ACL by default. |
+| At this point, review the Network ACL and Route table associations for your subnets. It might happen that the *bastion host Network ACL* and route table are applied to this subnet too. If that is the case, associate the newly created *Network ACL* and *Route table* explicitly in the subnet definition page.<br>This happens because the first one is tagged as the default Network ACL/Route Table and therefore, new subnets will be associated that *Network ACL* and *Route Table* by default. |
 
 
 | NOTE: |
 | :---- |
-| Inbound/Outbound TCP traffic on ports 1024-65535 are known as ephemeral ports and are used to support TCP communications on addition to the well-known ports. |
+| Inbound/Outbound TCP traffic on ports 1024-65535 are known as ephemeral ports and are used to support TCP communications in addition to the well-known ports. |
 
-Current Inbound ruleset
+The following tables summarize the *Network ACL* inbound and outbound rules:
+
 | Rule # | In/out | Type | Protocol | Port(s) | Source | Allow/Deny | Description |
 | :----- | :----- | :--- | :------- | :------ | :----- | :--------- | :---------- |
 | 100 | Inbound | SSH | TCP | 22 | 10.0.1.0/24 | Allow | Enable inbound SSH |
@@ -874,22 +878,21 @@ Current Inbound ruleset
 | 400 | Inbound | Custom TCP | TCP | 1024-65535 | 0.0.0.0/0 | Allow | Enable Internet connectivity |
 | * | Inbound | All Traffic | All | 0.0.0.0/0 | Deny | Disable all other traffic |
 
-Current Outbound ruleset
 | Rule # | In/out | Type | Protocol | Port(s) | Source | Allow/Deny | Description |
 | :----- | :----- | :--- | :------- | :------ | :----- | :--------- | :---------- |
 | 100 | Outbound | HTTP | TCP | 80 | 0.0.0.0/0 | Allow | Enable outbound HTTP |
 | 200 | Outbound | HTTPS | TCP | 443 | 0.0.0.0/0 | Allow | Enable outbound HTTPS |
-| 300 | Outbound | Custom TCP | TCP | 1024-65535 | 10.0.1.0/24 | Allow | Required for Inbound SSH |
+| 300 | Outbound | Custom TCP | TCP | 1024-65535 | 0.0.0.0/0 | Allow | Required for Inbound SSH/Inbound HTTP/HTTPS |
 | * | Outbound | All Traffic | All | 0.0.0.0/0 | Deny | Disable all other traffic |
 
 
 | NOTE: |
 | :---- |
-| You might want to only allow proxy server to have outbound communications with the web server instead of the whole internet?????? by tailoring the egress rules. |
+| You might want to only allow proxy server to have outbound communications with the web server instead of the whole internet by tailoring the egress rules. The current ruleset allows the web server to have outbound communications via HTTP/HTTPS. |
 
 #### Stage 2: Validation
 
-![VPC Design: Stage 1](./images/VPC_design_stage_2.png)
+![VPC Design: Stage 2](./images/VPC_design_stage_2.png)
 
 At this point we have created the following additional resources:
   + A subnet where we will place our proxy server in the IP address space `10.0.2.0/24`. This subnet is defined in the specific availablity zone `us-east-1a`.
@@ -905,12 +908,244 @@ As a result, if we launch an *EC2 instance* in this subnet we will be able to pe
 
 | NOTE: |
 | :---- |
-| The connection from the *bastion host* to the *proxy server* using ` ssh -J ec2-user@{bastion-host-public-ip} ec2-user@{proxy-server-public-ip} did not work the first time.<br>It was necessary to first login into the *bastion host*, then ssh explicitly into the proxy server from there (it should fail because you don't have the private key in the bastion), but the next time it worked. |
+| The connection from the *bastion host* to the *proxy server* can be performed using ` ssh -J ec2-user@{bastion-host-public-ip} ec2-user@{proxy-server-private-ip}.<br>Please note that it might be necessary to run `ssh-add path/to/private-key.pem` first. |
 
 #### Defining the web servers subnet
 
-The *web servers subnet* will be a private subnet &mdash; all the resources hosted in this subnet will not be accessible from the Internet.
+The *web servers subnet* will be a private subnet &mdash; all the resources hosted in this subnet will not be accessible from the Internet. This one will use the IP address space `10.0.3.0/24`. The resources placed in this subnet will be subject of being managed via SSH from the bastion host, and should be able to support inbound HTTP/HTTPS communications originated from the proxy server subnet. They will not be available for any other type of inbound traffic.
 
+In summary:
++ The *web servers* must be accessible via SSH only from the *bastion host subnet* (`10.0.1.0/24`).
++ The *web servers* must be accessible from the *proxy servers* when using HTTP/HTTPS `(10.0.2.0/24)`.
++ The *web servers* must be unavailable for any other type of inbound communication from the Internet. No outbound communications will be allowed from the *web servers* either-
+
+
+The actions to perform are:
++ Create a new subnet in an specific *Availability Zone*, for example `us-east-1a` with the given *CidrBlock* `10.0.3.0/24`.
+
+| Name | IPv4 CIDR | VPC Name | Availability Zone |
+| :--- | :-------- | :------- | :---------------- |
+| my-private-subnet-web | `10.0.3.0/24` | my-vpc (`10.0.0.0/16`) | `us-east-1a` |
+
+
++ Create a *route table* for the subnet that will allow us to define a route between this *subnet* and the rest of resources within the *VPC*.
+
+| Name | Subnet Association |
+| :--- | :----------------- |
+| my-route-table-for-private-subnet-web | my-private-subnet-web (`10.0.3.0/24`) |
+
+Note that creating the route table will automatically add the local route to the *VPC* so you don't have to do anything extra.
+
+| Route Table | Destination | Target |
+| :---------- | :---------- | :----- |
+| my-route-table-for-private-subnet-proxy | `10.0.0.0/16` (default) | local |
+
+
++ Create a *Network ACL* for this subnet that will hold the traffic rules for this subnet:
+
+| ACL Name | Subnet Association(s) | VPC Association |
+| :------- | :-------------------- | :-------------- |
+| my-acl-for-private-subnet-web | my-private-subnet-web (`10.0.3.0/24`) | my-vpc (`10.0.0.0/16`) |
+
+| NOTE: |
+| :---- |
+| At this point, review the Network ACL and Route table associations for your subnets. It might happen that the *bastion host Network ACL* and route table are applied to this subnet too. If that is the case, associate the newly created *Network ACL* and *Route table* explicitly in the subnet definition page.<br>This happens because the first one is tagged as the default Network ACL/Route Table and therefore, new subnets will be associated that Network ACL and Route Table by default. |
+
+
+| NOTE: |
+| :---- |
+| Inbound/Outbound TCP traffic on ports 1024-65535 are known as ephemeral ports and are used to support TCP communications on addition to the well-known ports. |
+
+The following tables summarize the inbound/outbound rules for the *web servers private subnet*:
+
+| Rule # | In/out | Type | Protocol | Port(s) | Source | Allow/Deny | Description |
+| :----- | :----- | :--- | :------- | :------ | :----- | :--------- | :---------- |
+| 100 | Inbound | SSH | TCP | 22 | 10.0.1.0/24 | Allow | Enable inbound SSH |
+| 200 | Inbound | HTTP | TCP | 80 | 10.0.2.0/24 | Allow | Enable inbound HTTP |
+| 300 | Inbound | HTTPS | TCP | 443 | 10.0.2.0/24 | Allow | Enable inbound HTTPS |
+| * | Inbound | All Traffic | All | 0.0.0.0/0 | Deny | Disable all other traffic |
+
+
+| Rule # | In/out | Type | Protocol | Port(s) | Source | Allow/Deny | Description |
+| :----- | :----- | :--- | :------- | :------ | :----- | :--------- | :---------- |
+| 100 | Outbound | Custom TCP | TCP | 1024-65535 | 10.0.0.0/16 | Allow | Required for Inbound SSH/HTTP/HTTPS |
+| * | Outbound | All Traffic | All | 0.0.0.0/0 | Deny | Disable all other traffic |
+
+
+#### Stage 3: Validation
+
+![VPC Design: Stage 3](./images/VPC_design_stage_3.png)
+
+At this point we have created the following additional resources:
+  + A subnet where we will place our web server in the IP address space `10.0.3.0/24`. This subnet is defined in the specific availablity zone `us-east-1a`.
+  + A *Route table* associated to this subnet that defines only a local route from this subnet to the resources on the VPC (`10.0.0.0/16`).
+  + A *Network ACL* that will allow us to connect to the *web server* via SSH only from the *bastion host*, and from the *proxy server* using HTTP and HTTPS.
+
+As a result, if we launch an *EC2 instance* in this subnet we will be able to perform the following checks:
+
+[X] Web server does not feature a public IP address
+[X] Web server private IP address is in the pattern 10.0.3.0/24
+[X] Web server is not accessible through SSH from my IP address
+[X] Web server is accessible through SSH when jumping from the bastion host
+[X] Web server is not accessible through HTTP from the bastion host
+[X] Web server is not accessible through HTTP from the Internet
+[X] Web server is accessible via HTTP from the proxy
+[X] Web server does not have access to the Internet
+
+Note that the machine does not have outbound Internet connectivity, and therefore, you should create the web server with an AMI that includes the necessary software (e.g. *httpd* software).
+
+| NOTE: |
+| :---- |
+| The connection from the *bastion host* to the *proxy server* can be performed using ` ssh -J ec2-user@{bastion-host-public-ip} ec2-user@{proxy-server-private-ip}.<br>Please note that it might be necessary to run `ssh-add path/to/private-key.pem` first. |
+
+#### (Optional) Enabling Internet Access from private subnets
+
+The public subnets we have defined have a route to the Internet gateway. However, our private network does not have access to the Internet, which might be required in many use cases. In those circumstances you have to use a *NAT gateway* in a public subnet, and create a route from your *private subnet* to the *NAT gateway*.
+
+> Using a *NAT gateway* allow resources in *private subnets* to reach the Internet, while preventing inbound traffic from the Internet to reach those resources.
+
+A *NAT gateway* is a managed service provided by AWS that handles network address translation. Internet traffic from your private subnet will access the Internet from the public IP address of the NAT gateway.
+
+| NOTE: |
+| :---- |
+| You have to pay for the traffic processed by a *NAT gateway* (see details at https://aws.amazon.com/vpc/pricing/, search for *NAT Gateway Pricing*).<br>When provisioning a *NAT gateway* you have to pay for each hour in which the *NAT gateway* is available and also you have to pay for each GB of traffic your *NAT gateway* processes. |
+
+In this section, we will enable a *NAT Gateway* so that our instances in the private network are allowed to access the Internet.
+
++ The first step is to follow the best practices, and create a subnet for the *NAT gateway*:
+
+| Name | IPv4 CIDR | VPC Name | Availability Zone |
+| :--- | :-------- | :------- | :---------------- |
+| my-public-subnet-nat-gw | `10.0.0.0/24` | my-vpc (`10.0.0.0/16`) | `us-east-1a` |
+
+
++ Create a *route table* for the subnet that will allow us to define a route between this *subnet* and the *IGW*.
+
+| Name | Subnet Association |
+| :--- | :----------------- |
+| my-route-table-for-public-subnet-nat-gw | my-public-subnet-nat-gw (`10.0.0.0/24`) |
+
+| Route Table | Destination | Target |
+| :---------- | :---------- | :----- |
+| my-route-table-for-public-subnet-nat-gw | `10.0.0.0/16` (default) | local |
+| my-route-table-for-public-subnet-nat-gw | `0.0.0.0/0` | my-igw |
+
+These routes ensure that there is a route for the *bastion host public subnet* to communicate with the resources within the *VPC*, while the rest of the elements outside of the *VPC* should communicate through the *IGW*.
+
+
++ Create a *Network ACL* for this subnet that will hold the traffic rules for this subnet:
+
+| ACL Name | Subnet Association(s) | VPC Association |
+| :------- | :-------------------- | :-------------- |
+| my-acl-for-public-subnet-nat-gw | my-public-subnet-nat-gw (`10.0.0.0/24`) | my-vpc (`10.0.0.0/16`) |
+
+| NOTE: |
+| :---- |
+| At this point, review the Network ACL and Route table associations for your subnets. It might happen that the *bastion host Network ACL* and route table are applied to this subnet too. If that is the case, associate the newly created *Network ACL* and *Route table* explicitly in the subnet definition page.<br>This happens because the first one is tagged as the default Network ACL/Route Table and therefore, new subnets will be associated that Network ACL and Route Table by default. |
+
+
+| NOTE: |
+| :---- |
+| Inbound/Outbound TCP traffic on ports 1024-65535 are known as ephemeral ports and are used to support TCP communications on addition to the well-known ports. |
+
+The following tables summarize the inbound/outbound rules for the *NAT gateway public subnet*:
+
+| Rule # | In/out | Type | Protocol | Port(s) | Source | Allow/Deny | Description |
+| :----- | :----- | :--- | :------- | :------ | :----- | :--------- | :---------- |
+| 100 | Inbound | HTTP | TCP | 80 | 10.0.0.0/16 | Allow | Enable inbound HTTP |
+| 200 | Inbound | HTTPS | TCP | 443 | 10.0.0.0/16 | Allow | Enable inbound HTTPS |
+| 300 | Inbound | Custom TCP | TCP | 1024-65535 | 0.0.0.0/0 | Allow | Enable Internet connectivity |
+| * | Inbound | All Traffic | All | 0.0.0.0/0 | Deny | Disable all other traffic |
+
+
+| Rule # | In/out | Type | Protocol | Port(s) | Source | Allow/Deny | Description |
+| :----- | :----- | :--- | :------- | :------ | :----- | :--------- | :---------- |
+| 100 | Outbound | HTTP | TCP | 80 | 0.0.0.0/0 | Allow | Enable outbound HTTP |
+| 200 | Outbound | HTTPS | TCP | 443 | 0.0.0.0/0 | Allow | Enable outbound HTTPS |
+| 300 | Outbound | Custom TCP | TCP | 1024-65535 | 0.0.0.0/0 | Allow | Required for Inbound SSH |
+| * | Outbound | All Traffic | All | 0.0.0.0/0 | Deny | Disable all other traffic |
+
+
+Then, we will need to provision an ElasticIP, and a NAT gateway attached to it:
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| My ElasticIP | Public IP | Public IPv4 address for NAT gateway |
+
+| Name | Elastic IP | VPC | Subnet |
+| :--- | :--------- | :-- | :----- |
+| My NAT gateway | My ElasticIP | my-vpc (`10.0.0.0/16`) | my-public-subnet-nat-gw (`10.0.0.0/24`) |
+
+Note that we know need to review the routing and Network ACL rules for the web servers to allow HTTP and HTTPS traffic.
+
+First of all, we need to add a rule to the *NAT gateway*:
+
+| Route Table | Destination | Target |
+| :---------- | :---------- | :----- |
+| my-route-table-for-public-subnet-nat-gw | `10.0.0.0/16` (default) | local |
+| my-route-table-for-private-subnet-web | `0.0.0.0/0` | my-nat-gw |
+
+The following tables illustrate the *revised* rule sets for the *web servers private subnet*:
+
+| Rule # | In/out | Type | Protocol | Port(s) | Source | Allow/Deny | Description |
+| :----- | :----- | :--- | :------- | :------ | :----- | :--------- | :---------- |
+| 100 | Inbound | SSH | TPC | 22 | 10.0.1.0/24 | Allow | Enable inbound SSH |
+| 200 | Inbound | HTTP | TPC | 80 | 10.0.2.0/24 | Allow | Enable inbound HTTP |
+| 300 | Inbound | HTTPS | TPC | 443 | 10.0.2.0/24 | Allow | Enable inbound HTTPS |
+| 400 | Inbound | Custom TCP | TCP | 1024-65535 | 0.0.0.0/0 | Allow | Enable Internet connectivity |
+| * | Inbound | All Traffic | All | 0.0.0.0/0 | Deny | Disable all other traffic |
+
+
+| Rule # | In/out | Type | Protocol | Port(s) | Source | Allow/Deny | Description |
+| :----- | :----- | :--- | :------- | :------ | :----- | :--------- | :---------- |
+| 100 | Outbound | HTTP | TCP | 80 | 0.0.0.0/0 | Allow | Enable outbound HTTP |
+| 200 | Outbound | HTTPS | TCP | 443 | 0.0.0.0/0 | Allow | Enable outbound HTTP |
+| 300 | Outbound | Custom TCP | TCP | 1024-65535 | 0.0.0.0.0/0 | Allow | Required for Inbound SSH/HTTP/HTTPS |
+| * | Outbound | All Traffic | All | 0.0.0.0/0 | Deny | Disable all other traffic |
+
+
+#### Stage 4: Validation
+
+At this point we have created the following additional resources:
+  + An *ElasticIP* that we will associate to a *NAT gateway*.
+
+  + A *NAT gateway* that will allow our resources in the private subnet to reach to the Internet, while preventing traffic from reaching our machines.
+
+  + A *public subnet* where we will place our NAT gateway to enable Internet access for our resources in the private subnet. This subnet is defined in `10.0.0.0/24` in `us-east-1a`.
+
+  + A *route table* associated to this subnet that defines a local route from this subnet to the rest of subnets on the *VPC* (`10.0.0.0/16`) and a route to the *Internet Gateway*.
+
+  + A Network ACL for the *NAT gateway* public subnet that allows HTTP/HTTPS traffic (including ephemeral ports).
+
+  + We have updated the route table for the *web servers private subnet* to enable a route to the *NAT gateway*.
+
+  + We have updated the *Network ACLs* for the *web servers private subnet* to allow them to communicate to the Internet.
+
+As a result, after all these changes, we should be able to perform the following:
+
+[X] Web server does not feature a public IP address
+[X] Web server private IP address is in the pattern 10.0.3.0/24
+[X] Web server is not accessible through SSH from my IP address
+[X] Web server is accessible through SSH when jumping from the bastion host
+[X] Web server is not accessible through HTTP from the bastion host
+[X] Web server is not accessible through HTTP from the Internet
+[X] Web server is accessible via HTTP from the proxy
+[X] Web server can communicate using HTTP/HTTPS to the Internet
+
+
+| NOTE: |
+| :---- |
+| Do not forget to delete the *NAT gateway* as you have to pay for each hour in which the *NAT gateway* is available. Also, you will need to release the *Elastic IP* once it is no longer attached to the *NAT gateway*. |
+
+#### Alternatives to *NAT gateway*
+
+Although using the *NAT gateway* is the recommended approach to enable private subnets with Internet connectivity, it is possible to enable similar capabilities using other approaches:
+
++ Enable a route to the *Internet Gateway (IGW)* in the private subnets. This will effectively transform the private subnet into a public one, so you will need to strictly restrict incoming traffic from the Internet, as you will have to enable those resources with a public IP address to be able to use the *Internet Gateway*.
+
++ If the use case requires Internet connectivity, but only to reach AWS services such as *Amazon S3* or *Amazon DynamoDB* you can use the so-called *VPC endpoints*. Also, you can consider using another service *AWS PrivateLink* which allows some services such as *Amazon Kinesis*, *AWS SSM* to expose their functionality to computing resources hosted on private subnets.
+
+> *VPC endpoints* allow your computing resources to communicate with *AWS resources* without using a *NAT gateway*.
 
 
 ### Labs
@@ -949,8 +1184,84 @@ This lab explore a more complicated scenario involving several instances attache
 | :------- |
 | See [04 &mdash; CloudFormation: Infrastructure with bastion host](04-lab6.3-cloudformation-infra-bastion-host) for a runnable example. |
 
+#### Lab 6.4: Setting up an complete network design
+
+This lab explores a more complicated scenario involving a complete network design for an application involving public and private subnets, route tables, network ACLs, and instances.
+
+Security groups are not considered.
+
+| EXAMPLE: |
+| :------- |
+| See [05 &mdash; CloudFormation: Infrastructure with VPC and subnets](05-lab6.4-cloudformation-vpc-and-subnets) for a runnable example. |
+
 ### You know you've mastered this section when...
 
++ You understand that *AWS* is a shared-responsibility environment in which *AWS* is responsible for the security of the cloud, while you're responsible for the security in the cloud. This means that you're responsible for securely configuring your AWS resources and your software running on EC2 instances, while AWS provides physical security in the data centers and provides you the necessary security and encryption mechanisms.
+
++ You understand that part of your responsibilities consists of keeping your software up-to-date. You know that this task can be automated (especially in CentOS-based systems where security patches can be easily applied using `yum -y --security update`).
+
++ You understand that is vital to apply the *principle of least privilege* in AWS.
+
++ You are familiar with the basics of AWS account security:
+  + You shouldn't be using the root account as it grants unrestricted access to all the resources.
+  + You should enable MFA in all your *IAM* users that are allowed to authenticated to the *AWS console*.
+  + Apply the *Principle of Least Privilege* to your *IAM users* and *API/CLI* keys.
+
++ You're comfortable understanding *AWS Identity and Access Management (IAM)* provides everything you need for authentication and authorization with the AWS API. Every API sent to AWS goes through *AWS IAM* to check whether the request is authenticated and authorized.
+
++ You understand the *IAM model* concepts:
+  + *users* &mdash; identify people with access to your AWS account.
+  + *groups* &mdash; collection of users.
+  + *role* &mdash; identify AWS resources with access to other AWS resources.
+  + *policy* &mdash; the document that defines the permissions of a given *user*, *group*, or *role*.
+
++ You are familiar with the way in which policies are defined, and understand that `"Action": "Deny"` takes precedence over `"Action": "Allow"`.
+
++ You are familiar with *ARN* to identify the AWS resources.
+
++ You are familiar with the different types of *IAM policies* that can be defined:
+  + *Managed policies* &mdash; policies intended to be reused in your account.
+    + *AWS Managed policies* &mdash; policies maintained by *AWS*.
+    + *Customer Managed policies* &mdash; standalone policies defined by you.
+  + *Inline policies* &mdash; a policy defined for a particular *IAM role*, *IAM user* or *IAM group* and that cannot exist without it.
+
++ You understand that *groups* are artifacts that let you organize users.
+
++ You're aware of how *Inline policies* can be defined using *CloudFormation*.
+
++ You're comfortable using the *CIDR* notation to specify IP address ranges and are able to identify private vs. public IP addresses. In a nutshell:
+  + CIDR notation is in the form `x.y.z.w/n` where `n` is the number of *fixed bytes* in the address:
+    + `0.0.0.0/0` is any IPv4 address as no byte is fixed
+    + `10.0.0.0/16` is any IPv4 address in the range `10.0.z.w`
+    + `x.y.z.w/32` represents a single IPv4 address
+  + Private IP address ranges:
+    + `10.0.0.0/8`
+    + `172.16.0.0/12`
+    + `192.168.0.0/16`
+
++ You're comfortable using *Security Groups* to filter traffic to or from AWS resources based on protocol, port, and source or destination.
+
++ You're familiar with the concept of a *bastion host* &mdash; a well-defined single point of access to your system typically used as a *jumpbox* to reach other resources within your infrastructure.
+
++ You're aware of how to use *SSH* to jump from a particular machine to a target machine using `ssh -J user@<bastion-host> user@<target-host>` and understand that you first need to add the private key to the list of known identities using `ssh-add path/to/pem`.
+
++ You're familiar with the following network concepts:
+  + *VPC*
+  + *Subnet*
+  + *Route table*
+  + *Network ACLs*
+  + *Internet Gateway*
+  + *NAT Gateway*
+
++ You understand that you should separate concerns in your network to reduce potential damage, if for example, one of your subnets is *hacked*.
+
++ You understand that backend resources should be kept in private subnets that do not allow Internet traffic to reach those resources.
+
++ You know how to create a *VPC* design consisting on a set of *public and private subnets* that cooperate within a *VPC*. You know how to create *route tables* and *network ACLs* that act as firewalls within your networks to only allow certain TCP traffic. You know how to set up an *Internet Gateway (IGW)* that allows your resources on a public subnet to hit the Internet and receive traffic from it, and also reach traffic from the Internet. You also know how to set up a *NAT gateway* that allows your resources on a *private subnet* to reach the Internet without allowing any inbound traffic.
+
++ You're aware that *Security Groups* are *smarter* than *Network ACLs*, and therefore, the latter need you to explicitly add rules for the *ephemeral ports* the TCP protocol uses to allow SSH, HTTP, HTTPS, etc.
+
++ You understand that it is recommended to always configure your *security groups*, and work with *network ACLs* to add an extra layer of security to your networking infrastructure.
 
 ### Code samples and mini-projects
 
@@ -966,9 +1277,14 @@ A *CloudFormation* instance that spins up an *EC2 instance* configured to allow 
 #### [04 &mdash; CloudFormation: Infrastructure with bastion host](04-lab6.3-cloudformation-infra-bastion-host)
 A *CloudFormation* instance that spins up an infrastructure consisting of a *bastion host* that is the only two *EC2 instances* that sit behind it. The security groups are configured according to the *Principle of Least Privilege*.
 
+#### [05 &mdash; CloudFormation: Infrastructure with VPC and subnets](05-lab6.4-cloudformation-vpc-and-subnets)
+A *CloudFormation* instance that spins up a complete network infrastructure for an application, with public and private subnets.
+
 ### Services used in this chapter
 
 | AWS Service | Category | Description |
 | :---------- | :------- | :---------- |
 | AWS CloudFormation | Management and Governance | Gives developers and system admins an easy way to create and manage a collection of related AWS resources.<br>The service supports provisioning, updating, and deletion in an orderly and predictable fashion.<br>*AWS CloudFormation* is the *IaC* solution for AWS. |
 | Amazon EC2 | Compute | Web service that provides secure, resizable compute capacity in the cloud.<br><small>It is designed to make web-scale computing easier for developers.<br>Amazon EC2 changes the economonics of computing by allowing you to pay only for capacity that you actually use.<br>Amazon EC2 provides devs and sysadmins the tools to build failure resilient applications and isolate themselves from common failure scenarios.</small> |
+| AWS IAM | Security, Identity, and Compliance | *AWS Identity and Access Management (IAM)* enables you to securely control access to AWS services and resources for your users.<br>Using *AWS IAM* you can create and manage AWS users and groups, and use permissions to allow and deny their access to AWS resources. |
+| Amazon VPC | Networking | *Amazon Virtual Private Cloud (Amazon VPC)* lets you provision a logically isolated section of the AWS Cloud where you can launch AWS resources in a virtual network that you define.<br>You can select your own IP address range, create subnets, and configure the route tables, network gateways, and network ACLs. You can use both IPv4 and IPv6 in your *VPC*. |

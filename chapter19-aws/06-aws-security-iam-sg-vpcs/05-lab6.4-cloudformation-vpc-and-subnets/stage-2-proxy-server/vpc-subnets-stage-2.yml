@@ -1,16 +1,14 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: |
-  Stage 1 for the CloudFormation template that launches an
+  Stage 2 for the CloudFormation template that launches an
   infrastructure consisting in a VPC, two public subnets and
   a private subnet. Within each subnet we create an instance
   representing the bastion host (in a public subnet), a
   proxy server (in the other public subnet), and a web
   server (in a private subnet). See the README.md file
   accompanying the project for more details. In this stage we
-  set up shop, and define the VPC, public subnet for the
-  bastion host, internet gateway, route table and network ACLs
-  for the bastion host subnet.
+  setup the public subnet for the proxy server.
 
 Parameters:
 
@@ -26,15 +24,16 @@ Parameters:
 
 Mappings:
   RegionToAMIMap:
+    # Latests Amazon Linux 2 AMIs (as of 2021-03-14)
     # Including only three regions for demonstration purposes
     'us-east-1':
-      AMI: 'ami-0915bcb5fa77e4892'
+      AMI: 'ami-038f1ca1bd58a5790'
 
     'eu-central-1':
-      AMI: 'ami-02f9ea74050d6f812'
+      AMI: 'ami-0de9f803fcac87f46'
 
     'ap-southeast-1':
-      AMI: 'ami-0d06583a13678c938'
+      AMI: 'ami-0cd4900b43e25799c'
 
 Resources:
   # We will be controlling network security with route tables
@@ -44,7 +43,7 @@ Resources:
   # This is done for illustration purposes only, in a real case
   # scenario is better to have multi-layered security approach in
   # which you have Network ACLs and Security Groups
-  SecurityGroup:
+  SecurityGroupAllowEverything:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
       GroupDescription: 'Security Group allowing all incoming and outgoing traffic'
@@ -95,20 +94,23 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: 'My Public subnet for bastion host'
+          Value: 'My public subnet for bastion host'
 
-  # Route Table for bastion host
+  # Route Table for bastion host public subnet and association
   RouteTablePublicBastionHost:
     Type: 'AWS::EC2::RouteTable'
     Properties:
       VpcId: !Ref VPC
-
+      Tags:
+        - Key: Name
+          Value: 'Route table for bastion host public subnet'
   RouteTableAssociationPublicBastionHost:
     Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:
       SubnetId: !Ref SubnetPublicBastionHost
       RouteTableId: !Ref RouteTablePublicBastionHost
 
+  # Route rules for bastion host public subnet
   RoutePublicBastionHostToInternet:
     Type: 'AWS::EC2::Route'
     Properties:
@@ -117,11 +119,14 @@ Resources:
       GatewayId: !Ref InternetGateway
     DependsOn: VPCGatewayAttachment
 
-  # Network ACL for the bastion host public subnet
+  # Network ACL for the bastion host public subnet and association
   NetworkAclPublicBastionHost:
     Type: 'AWS::EC2::NetworkAcl'
     Properties:
       VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: 'Network ACL for bastion host public subnet'
   SubnetNetworkAclAssociationPublicBastionHost:
     Type: 'AWS::EC2::SubnetNetworkAclAssociation'
     Properties:
@@ -185,7 +190,7 @@ Resources:
       CidrBlock: '0.0.0.0/0'
 
   # Optional rule to enable HTTP connectivity in the bastion
-  NetworkAclEntryOutPublicBastionHostEphemeralPorts:
+  NetworkAclEntryOutPublicBastionHostHTTP:
     Type: 'AWS::EC2::NetworkAclEntry'
     Properties:
       NetworkAclId: !Ref NetworkAclPublicBastionHost
@@ -199,7 +204,7 @@ Resources:
       CidrBlock: '0.0.0.0/0'
 
   # Optional rule to enable HTTPS connectivity in the bastion
-  NetworkAclEntryOutPublicBastionHostEphemeralPorts:
+  NetworkAclEntryOutPublicBastionHostHTTPS:
     Type: 'AWS::EC2::NetworkAclEntry'
     Properties:
       NetworkAclId: !Ref NetworkAclPublicBastionHost
@@ -211,6 +216,148 @@ Resources:
       RuleAction: 'allow'
       Egress: true
       CidrBlock: '0.0.0.0/0'
+
+  ## Stage 2: proxy server subnet
+
+  # Subnet for proxy servers
+  SubnetPublicProxy:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select [0, !GetAZs '']     # get first AZ
+      CidrBlock: '10.0.2.0/24'
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: 'My Public subnet for proxy servers'
+
+  # Route Table for proxy servers subnet and association
+  RouteTablePublicProxy:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: 'Route table for proxy server public subnet'
+  RouteTableAssociationPublicProxy:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref SubnetPublicProxy
+      RouteTableId: !Ref RouteTablePublicProxy
+
+  # Route rules for proxy servers public subnet
+  RoutePublicProxyToInternet:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref RouteTablePublicProxy
+      DestinationCidrBlock: '0.0.0.0/0'
+      GatewayId: !Ref InternetGateway
+    DependsOn: VPCGatewayAttachment
+
+  # Network ACL and association
+  NetworkAclPublicProxy:
+    Type: 'AWS::EC2::NetworkAcl'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: 'Network ACL for proxy server public subnet'
+  SubnetNetworkAclAssociationPublicProxy:
+    Type: 'AWS::EC2::SubnetNetworkAclAssociation'
+    Properties:
+      SubnetId: !Ref SubnetPublicProxy
+      NetworkAclId: !Ref NetworkAclPublicProxy
+
+  # Network ACL rules
+  NetworkAclEntryInPublicProxySSH:
+    Type: 'AWS::EC2::NetworkAclEntry'
+    Properties:
+      NetworkAclId: !Ref NetworkAclPublicProxy
+      RuleNumber: 100
+      Protocol: 6
+      PortRange:
+        From: 22
+        To: 22
+      RuleAction: 'allow'
+      Egress: false
+      CidrBlock: '10.0.1.0/24'    # allow SSH from bastion host
+
+  NetworkAclEntryInPublicProxyHTTP:
+    Type: 'AWS::EC2::NetworkAclEntry'
+    Properties:
+      NetworkAclId: !Ref NetworkAclPublicProxy
+      RuleNumber: 200
+      Protocol: 6
+      PortRange:
+        From: 80
+        To: 80
+      RuleAction: 'allow'
+      Egress: false
+      CidrBlock: '0.0.0.0/0'
+
+  NetworkAclEntryInPublicProxyHTTPS:
+    Type: 'AWS::EC2::NetworkAclEntry'
+    Properties:
+      NetworkAclId: !Ref NetworkAclPublicProxy
+      RuleNumber: 300
+      Protocol: 6
+      PortRange:
+        From: 443
+        To: 443
+      RuleAction: 'allow'
+      Egress: false
+      CidrBlock: '0.0.0.0/0'
+
+  NetworkAclEntryInPublicProxyEphemeralPorts:
+    Type: 'AWS::EC2::NetworkAclEntry'
+    Properties:
+      NetworkAclId: !Ref NetworkAclPublicProxy
+      RuleNumber: 400
+      Protocol: 6
+      PortRange:
+        From: 1024
+        To: 65535
+      RuleAction: 'allow'
+      Egress: false
+      CidrBlock: '0.0.0.0/0'
+
+  NetworkAclEntryOutPublicProxyHTTP:
+    Type: 'AWS::EC2::NetworkAclEntry'
+    Properties:
+      NetworkAclId: !Ref NetworkAclPublicProxy
+      RuleNumber: 100
+      Protocol: 6
+      PortRange:
+        From: 80
+        To: 80
+      RuleAction: 'allow'
+      Egress: true
+      CidrBlock: '0.0.0.0/0'
+
+  NetworkAclEntryOutPublicProxyHTTPS:
+    Type: 'AWS::EC2::NetworkAclEntry'
+    Properties:
+      NetworkAclId: !Ref NetworkAclPublicProxy
+      RuleNumber: 200
+      Protocol: 6
+      PortRange:
+        From: 443
+        To: 443
+      RuleAction: 'allow'
+      Egress: true
+      CidrBlock: '0.0.0.0/0'
+
+  NetworkAclEntryOutPublicProxyEphemeralPorts:
+    Type: 'AWS::EC2::NetworkAclEntry'
+    Properties:
+      NetworkAclId: !Ref NetworkAclPublicProxy
+      RuleNumber: 300
+      Protocol: 6
+      PortRange:
+        From: 1024
+        To: 65535
+      RuleAction: 'allow'
+      Egress: true
+      CidrBlock: '10.0.1.0/24'
 
   # Optional: to enable the bastion host with an IAM role
   BastionHostInstanceProfile:
@@ -252,16 +399,58 @@ Resources:
       InstanceType: 't2.micro'
       IamInstanceProfile: !Ref BastionHostInstanceProfile
       KeyName: !Ref KeyName
-      SecurityGroupIds:
-        - !Ref SecurityGroupBastionHost
-      SubnetId: !Ref Subnet
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeleteOnTermination: true
+          SubnetId: !Ref SubnetPublicBastionHost
+          DeviceIndex: '0'
+          GroupSet:
+            - !Ref SecurityGroupAllowEverything
       Tags:
         - Key: Name
           Value: 'Bastion Host'
+    DependsOn: VPCGatewayAttachment
 
+
+  # proxy server
+  ProxyServer:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !FindInMap [RegionToAMIMap, !Ref 'AWS::Region', AMI]
+      InstanceType: 't2.micro'
+      KeyName: !Ref KeyName
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeleteOnTermination: true
+          SubnetId: !Ref SubnetPublicProxy
+          DeviceIndex: 0
+          GroupSet:
+            - !Ref SecurityGroupAllowEverything
+      UserData:
+        'Fn::Base64': !Sub |
+          #!/bin/bash -x
+          bash -ex << "TRY_INSTALL_HTTPD"
+            yum -y install httpd
+            systemctl start httpd
+          TRY_INSTALL_HTTPD
+          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource ProxyServer --region ${AWS::Region}
+      Tags:
+        - Key: Name
+          Value: 'Proxy Server'
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT5M
+    DependsOn: VPCGatewayAttachment
 
 Outputs:
   BastionHostPublicName:
     Value: !Sub ${BastionHost.PublicDnsName}
     Description: 'Bastion host public DNS name to connect via SSH with user ec2-user'
 
+  ProxyServerPublicName:
+    Value: !Sub ${ProxyServer.PublicDnsName}
+    Description: 'Proxy server DNS name accessible via HTTP/HTTPS'
+
+  ProxyServerPrivateIp:
+    Value: !Sub ${ProxyServer.PrivateIp}
+    Description: 'Proxy server Private IP address accessible via SSH from bastion host only'

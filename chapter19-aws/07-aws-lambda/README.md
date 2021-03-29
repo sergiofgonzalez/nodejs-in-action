@@ -1023,4 +1023,4 @@ An example containing all the resources needed to deploy a custom *Lambda functi
 ### ToDo
 
 [ ] Investigate lambda-s3 views
-[ ] Custom runtime: Alpine + Node 15 (import?)
+[ ] Custom runtime: E.g. Alpine + Node 15 with ESM support

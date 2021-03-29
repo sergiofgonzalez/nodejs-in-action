@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 PROFILE_NAME=${1:-default}
-STACK_NAME=bastion-host-infra
+STACK_NAME="vpc-subnets-stage-2"
 
 if [[ "$PROFILE_NAME" != "default" ]]; then
     echo "INFO: using AWS profile ${PROFILE_NAME}"
