@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "sam-lambda-health-check-app"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1siqcii63mae4"
+s3_prefix = "sam-lambda-health-check-app"
+region = "us-east-1"
+profile = "awsia"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = ["LambdaHealthCheckFunction=745748850001.dkr.ecr.us-east-1.amazonaws.com/awsia/lambda-health-check"]

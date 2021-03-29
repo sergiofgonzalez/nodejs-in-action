@@ -23,7 +23,7 @@ const req = http.request(options, (res) => {
 });
 
 req.on('error', err => {
-  console.log(`ERROR: request-client: problem sending request: ${ err.message }`);
+  console.error(`ERROR: request-client: problem sending request: ${ err.message }`);
 });
 
 if (postData) {

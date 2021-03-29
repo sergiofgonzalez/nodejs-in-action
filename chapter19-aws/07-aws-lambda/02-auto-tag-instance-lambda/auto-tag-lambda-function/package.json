@@ -1,0 +1,43 @@
+{
+  "name": "auto-tag-launched-instance",
+  "version": "0.1.0",
+  "description": "Illustrating Node.js advanced techniques and patterns",
+  "main": "main.mjs",
+  "engines": {
+    "node": ">=14.16.0",
+    "npm": ">=6.14.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {},
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "7.22.0"
+  },
+  "scripts": {
+    "reset": "rm -rf node_modules && rm -f package-lock.json && npm install",
+    "prestart": "npm run lint",
+    "start": "node app/src/main.js",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "pretest": "npm run lint",
+    "test": "tap --no-esm --bail app/test/",
+    "test-debug": "tap --no-esm --bail --only app/test/",
+    "predebug": "npm run lint",
+    "debug": "node --inspect-brk app/src/main.js",
+    "debug-test": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/tst/nth-test.js",
+    "freshen-deps": "./scripts/freshen.sh",
+    "prepackage": "rm -rf node_modules && npm ci --production",
+    "package": "./scripts/package_aws_lambda.sh",
+    "clean-package": "./scripts/package_aws_lambda_clean.sh"
+  },
+  "dependencies": {
+    "@aws-sdk/client-ec2": "3.9.0"
+  }
+}

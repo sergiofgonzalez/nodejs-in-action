@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: |
+  Container based Lambda function that performs a health-check on
+  several sites.
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  LambdaHealthCheckFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+    Metadata:
+      DockerTag: latest
+      DockerContext: "."
+      Dockerfile: Dockerfile
+
+Outputs:
+  LambdaFunction:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt LambdaHealthCheckFunction.Arn
+  LambdaFunctionIamRole:
+    Description: "Implicit IAM Role created for the Lambda function"
+    Value: !GetAtt LambdaHealthCheckFunction.Arn

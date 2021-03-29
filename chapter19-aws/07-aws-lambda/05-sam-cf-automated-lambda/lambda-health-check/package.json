@@ -1,0 +1,39 @@
+{
+  "name": "ndps",
+  "version": "0.1.0",
+  "description": "Illustrating Node.js advanced techniques and patterns",
+  "main": "main.js",
+  "engines": {
+    "node": ">=14.15.4",
+    "npm": ">=7.6.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {},
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "7.19.0"
+  },
+  "scripts": {
+    "reset": "rm -rf node_modules && rm -f package-lock.json && npm install",
+    "start": "node app/src/main.js",
+    "lint": "node_modules/.bin/eslint app/src/",
+    "pretest": "npm run lint",
+    "test": "node app/test/test-main.js",
+    "test-debug": "tap --no-esm --bail --only app/test/",
+    "predebug": "npm run lint",
+    "debug": "node --inspect-brk app/src/main.js",
+    "debug-test": "DEBUG=${DEBUG:-$npm_package_config_debugModules} node --inspect-brk app/tst/nth-test.js",
+    "freshen-deps": "./scripts/freshen.sh"
+  },
+  "dependencies": {
+    "superagent": "6.1.0"
+  }
+}

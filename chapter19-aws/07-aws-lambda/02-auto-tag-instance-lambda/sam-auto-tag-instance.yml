@@ -1,0 +1,83 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: |
+  Stack to automate the setup an event triggered Lambda function that
+  is fired when EC2 instances are launched.
+
+Parameters:
+  CreateCloudTrail:
+    Description: 'Create CloudTrail (set to false if CloudTrail is already enabled in your account)'
+    Type: String
+    Default: 'true'
+    AllowedValues: ['true', 'false']
+
+Conditions:
+  MustCreateCloudTrail: !Equals [!Ref CreateCloudTrail, 'true']
+
+Resources:
+  TrailBucket:
+    Condition: MustCreateCloudTrail
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub '${AWS::StackName}-${AWS::AccountId}-cloudtrail-logs'
+
+  TrailBucketPolicy:
+    Condition: MustCreateCloudTrail
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref TrailBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AWSCloudTrailAclCheck
+            Effect: Allow
+            Principal:
+              Service: 'cloudtrail.amazonaws.com'
+            Action: 's3:GetBucketAcl'
+            Resource: !Sub 'arn:aws:s3:::${TrailBucket}'
+          - Sid: AWSCloudTrailWrite
+            Effect: Allow
+            Principal:
+              Service: 'cloudtrail.amazonaws.com'
+            Action: 's3:PutObject'
+            Resource: !Sub 'arn:aws:s3:::${TrailBucket}/AWSLogs/${AWS::AccountId}/*'
+            Condition:
+              StringEquals:
+                's3:x-amz-acl': 'bucket-owner-full-control'
+
+  Trail:
+    Condition: MustCreateCloudTrail
+    DependsOn: TrailBucketPolicy
+    Type: 'AWS::CloudTrail::Trail'
+    Properties:
+      IsLogging: true
+      IsMultiRegionTrail: false
+      S3BucketName: !Ref TrailBucket
+
+  EC2OwnerTagFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: 'app/src/index.handler'
+      Runtime: 'nodejs14.x'
+      CodeUri: './auto-tag-lambda-function'
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action: 'ec2:CreateTags'
+              Resource: '*'
+      Events:
+        CloudTrail:
+          Type: CloudWatchEvent
+          Properties:
+            Pattern:
+              detail-type:
+                - 'AWS API Call via CloudTrail'
+              source:
+                - 'aws.ec2'
+              detail:
+                eventName:
+                  - 'RunInstances'
