@@ -1,6 +1,6 @@
 # Chapter 19 &mdash; Interacting with Amazon Web Services
 ## Section 6: Security concepts in AWS: IAM, security groups, and VPCs
-> understanding AWS security model
+> understanding and practicing AWS security model
 
 ### Summary
 + AWS Security Model

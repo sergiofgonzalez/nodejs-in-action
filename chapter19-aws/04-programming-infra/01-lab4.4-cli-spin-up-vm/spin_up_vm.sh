@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 PROFILE_NAME=${1:-default}
 IMAGE_NAME='amzn2-ami-hvm-2.0.20210219.*-x86_64-gp2'
