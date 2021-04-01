@@ -14,3 +14,6 @@ An implementation of the *Simple Counter* project from *Vanilla JavaScript proje
 
 ## [04-quotes](./04-quotes/)
 An implementation of the *Reviews/Quotes* project from *Vanilla JavaScript projects* at https://www.vanillajavascriptprojects.com/.
+
+## [99-express-esm-template](./99-express-esm-template/)
+A simple, yet fully functional Express application template using *ES Modules* instead of `require`.
