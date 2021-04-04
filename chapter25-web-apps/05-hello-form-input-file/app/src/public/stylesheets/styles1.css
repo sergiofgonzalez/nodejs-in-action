@@ -1,0 +1,50 @@
+/*
+  Error Page Styling
+*/
+
+@font-face {
+  font-family: "Pixelated";
+  src: url("/fonts/LCD_Solid.ttf");
+}
+
+h1#errTitle {
+  font-family: "Pixelated", sans-serif;
+}
+
+h1#infoTitle {
+  font-family: "Pixelated", sans-serif;
+}
+
+#errPanel {
+  border: 1px solid black;
+  background-color: white;
+}
+
+#infoPanel {
+  border: 1px solid black;
+  background-color: white;
+}
+
+/* Counter Text and Counter Value Styling */
+
+body {
+  background: var(--clr-background);
+}
+/*
+  Variables
+*/
+:root {
+  --clr-background: #f1f5f8;
+  --clr-primary: #007bff
+}
+
+
+h1 {
+  font-weight: bold;
+}
+
+.elegantDivider {
+  height: 0.25rem;
+  width: 5rem;
+  background: var(--clr-primary)
+}
