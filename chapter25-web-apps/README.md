@@ -18,7 +18,11 @@ An implementation of the *Reviews/Quotes* project from *Vanilla JavaScript proje
 # [05 &mdash; Hello, form input file!](05-hello-form-input-file)
 A simple Vanilla JavaScript project that illustrates how to work with file fields.
 
+# [06 &mdash; Hello, form!](06-hello-form)
+A simple Vanilla JavaScript project that illustrates how to work with `<form>` without interacting with a server.
 
+# 07 &mdash; Hello, form file upload!
+A simple Vanilla JavaScript project with an Express backend that illustrates how to upload files to a server using `<form>`.
 
 ## [99-express-esm-template](./99-express-esm-template/)
 A simple, yet fully functional Express application template using *ES Modules* instead of `require`.
