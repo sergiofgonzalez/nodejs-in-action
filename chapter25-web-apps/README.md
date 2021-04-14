@@ -24,5 +24,9 @@ A simple Vanilla JavaScript project that illustrates how to work with `<form>` w
 # 07 &mdash; Hello, form file upload!
 A simple Vanilla JavaScript project with an Express backend that illustrates how to upload files to a server using `<form>`.
 
+# 08 &mdash; Hello, Event Propagation!
+A simple Vanilla JavaScript project that illustrates how *event propagation* (also known as *event bubbling*) works.
+
+
 ## [99-express-esm-template](./99-express-esm-template/)
 A simple, yet fully functional Express application template using *ES Modules* instead of `require`.

@@ -4,9 +4,13 @@ function buildTable(elements, tableClassName = 'table', headerClassName) {
   const table = document.createElement('table');
   table.className = tableClassName;
   table.appendChild(buildTableHeader(elements, headerClassName));
+
+  const tableBody = document.createElement('tbody');
   for (const row of elements) {
-    table.appendChild(buildTableDataRow(row));
+    tableBody.appendChild(buildTableDataRow(row));
   }
+
+  table.appendChild(tableBody);
   return table;
 }
 

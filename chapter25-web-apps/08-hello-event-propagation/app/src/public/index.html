@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <!-- OpenIconic Icons -->
+    <link rel="stylesheet" href="stylesheets/open-iconic/font/css/open-iconic-bootstrap.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+
+    <title>Hello, Event Propagation!</title>
+  </head>
+  <body>
+    <div class="container" style="height: 100vh;">
+      <div class="row align-items-center h-100">
+        <div class="col-12 mx-auto">
+          <div id="infoPanel" class="jumbotron">
+            <h1 id="infoTitle" class="display-5">
+               Hello, Event Propagation!
+            </h1>
+            <hr class="my-4">
+            <div class="alert alert-primary">
+              <p id="infoDesc" class="lead">
+                This example illustrate the rules of <i>Event Propagation</i>,
+                the <code>stopPropagation</code> method and the <code>target</code> property:
+                <table class="table table-sm">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Image</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Image_1.png</td>
+                      <td>
+                        <a href="#" class="badge badge-light"><span class="oi oi-cloud-download" title="Download Image_1.png" data-action="download" data-filename="Image_1.png"></span></a>
+                        <a href="#" class="badge badge-light"><span class="oi oi-eye" title="Preview Image_1.png" data-action="view" data-filename="Image_1.png"></span></a>
+                        <a href="#" class="badge badge-light"><span class="oi oi-delete" title="Delete Image_1.png" data-action="delete" data-filename="Image_1.png"></span></a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Image_2.png</td>
+                      <td>
+                        <a href="#" class="badge badge-light"><span class="oi oi-cloud-download" title="Download Image_2.png" data-action="download" data-filename="Image_2.png"></span></a>
+                        <a href="#" class="badge badge-light"><span class="oi oi-eye" title="Preview Image_2.png" data-action="view" data-filename="Image_2.png"></span></a>
+                        <a href="#" class="badge badge-light"><span class="oi oi-delete" title="Delete Image_2.png" data-action="delete" data-filename="Image_2.png"></span></a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Image_3.png</td>
+                      <td>
+                        <a href="#" class="badge badge-light"><span class="oi oi-cloud-download" title="Download Image_3.png" data-action="download" data-filename="Image_3.png"></span></a>
+                        <a href="#" class="badge badge-light"><span class="oi oi-eye" title="Preview Image_3.png" data-action="view" data-filename="Image_3.png"></span></a>
+                        <a href="#" class="badge badge-light"><span class="oi oi-delete" title="Delete Image_3.png" data-action="delete" data-filename="Image_3.png"></span></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </p>
+              <div class="alert alert-dark" role="alert" id="msgBox">
+                Click on an icon
+              </div>
+            </div> <!-- alert -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="javascript/app.js" type="module"></script>
+  </body>
+</html>
