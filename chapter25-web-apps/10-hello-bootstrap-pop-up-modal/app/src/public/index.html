@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <!-- OpenIconic Icons -->
+    <link rel="stylesheet" href="stylesheets/open-iconic/font/css/open-iconic-bootstrap.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+
+    <title>Hello, Bootstrap pop-up modal!</title>
+  </head>
+  <body>
+    <div class="container" style="height: 100vh;">
+      <div class="row align-items-center h-100">
+        <div class="col-12 mx-auto">
+          <div id="infoPanel" class="jumbotron">
+            <h1 id="infoTitle" class="display-5">
+              Hello, Bootstrap pop-up modal!
+            </h1>
+            <hr class="my-4">
+            <div class="alert alert-primary">
+              <p id="infoDesc" class="lead">
+                This example illustrate how to use Bootstrap v4 pop-up modal dialog
+                to display an image as a response to a button click.
+              </p>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#imgModal">Fetch and display image</button>
+            </div> <!-- alert -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal dialog on which the image is displayed -->
+    <div class="modal fade" id="imgModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div> <!-- modal header -->
+          <div class="modal-body">
+            <img class="img-fluid" alt="image will be loaded here">
+          </div> <!-- modal-body -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div> <!-- modal-footer -->
+        </div> <!-- modal-content -->
+      </div> <!-- modal-dialog -->
+    </div> <!-- modal -->
+
+
+    <!-- JavaScript -->
+
+    <!-- Bootstrap v4: jQuery and bootstrap bundles -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="javascript/app.js" type="module"></script>
+  </body>
+</html>
