@@ -27,5 +27,9 @@ A simple Vanilla JavaScript project with an Express backend that illustrates how
 # [08 &mdash; Hello, Event Propagation!](08-hello-event-propagation)
 A simple Vanilla JavaScript project that illustrates how *event propagation* (also known as *event bubbling*) works.
 
+# [09 &mdash; Hello, Object URL!](09-hello-object-url)
+> A simple Vanilla JavaScript project that illustrates how to use object URLs to display images
+
+
 ## [99-express-esm-template](./99-express-esm-template/)
 A simple, yet fully functional Express application template using *ES Modules* instead of `require`.

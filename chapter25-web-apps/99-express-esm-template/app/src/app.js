@@ -9,6 +9,7 @@ import { api } from './routes/api.js';
 import { notFound, error } from './routes/error-routes.js';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import { getCustomCspDirectives } from './lib/get-custom-csp-directives.js';
 
 /* trick to get __dirname working when using ESM */
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -31,6 +32,9 @@ app.use(requestLogger(process.env['LOGGER_REQUEST_FORMAT_IN'] || 'tiny', { immed
 app.use(requestLogger(process.env['LOGGER_REQUEST_FORMAT_OUT'] || 'tiny'));
 app.use(favicon(join(__dirname, process.env['PUBLIC_STATIC_RESOURCES_PATH'] || 'public', 'favicon.ico')));
 app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+  directives: getCustomCspDirectives()
+}));
 app.use(compression());
 app.use(express.static(join(__dirname, process.env['PUBLIC_STATIC_RESOURCES_PATH'] || 'public')));
 
@@ -40,7 +44,7 @@ app.use(routeProcessingProfiler());
 /* API */
 app.get('/health-check', api.healthCheck);
 app.get('/greeter', api.greeter);
-
+app.get('/download/images', api.download);
 
 /*
   Error Handling Routes
