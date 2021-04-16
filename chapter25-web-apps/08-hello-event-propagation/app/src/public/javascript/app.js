@@ -11,7 +11,7 @@ table.addEventListener('click', (evt) => {
   if (itemClicked.nodeType === Node.ELEMENT_NODE) {
     const { action, filename } = getActionFromClickedElement(itemClicked);
     if (action) {
-      console.log(`CLick detected on an action icon: action=${ action }, file=${ filename }`);
+      console.log(`Click detected on an action icon: action=${ action }, file=${ filename }`);
       msgBox.textContent = `Processing ${ action } for ${ filename }`;
       evt.preventDefault();
       evt.stopPropagation();

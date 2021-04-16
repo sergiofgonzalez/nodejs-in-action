@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <!-- OpenIconic Icons -->
+    <link rel="stylesheet" href="stylesheets/open-iconic/font/css/open-iconic-bootstrap.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+
+    <title>Hello, Object URLs to display images!</title>
+  </head>
+  <body>
+    <div class="container" style="height: 100vh;">
+      <div class="row align-items-center h-100">
+        <div class="col-12 mx-auto">
+          <div id="infoPanel" class="jumbotron">
+            <h1 id="infoTitle" class="display-5">
+               Hello, Object URLs to display images!
+            </h1>
+            <hr class="my-4">
+            <div class="alert alert-primary">
+              <p id="infoDesc" class="lead">
+                This example illustrate how to use <code>URL.createObjectURL()</code> and
+                <code>URL.revokeObjectURL()</code> to display images retrieved from the server
+                using <code>fetch()</code>
+              </p>
+              <div class="form-group">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="imageActionsRadio" id="imageActionsRadio1" value="loadImage">
+                  <label class="form-check-label" for="imageActionsRadio1">Fetch and display image</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="imageActionsRadio" id="imageActionsRadio2" value="unloadImage">
+                  <label class="form-check-label" for="imageActionsRadio2">Unload image</label>
+                </div>
+              </div>
+              <div class="alert alert-dark" role="alert" id="msgBox">
+                Select an action
+              </div>
+              <img class="img-fluid" alt="image will be loaded here">
+            </div> <!-- alert -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="javascript/app.js" type="module"></script>
+  </body>
+</html>
