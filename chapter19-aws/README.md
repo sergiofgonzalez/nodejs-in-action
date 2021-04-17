@@ -14,10 +14,15 @@ Designing an architecture for a highly-available deployment on AWS
 First steps with VMs in AWS.
 
 ## [Section 4: Programming your infrastructure](04-programming-infra)
-Interacting programmatically with *AWS*
+Interacting programmatically with *AWS*.
 
 ## [Section 5: Application Deployment Automation](05-app-deployment-automation)
-Application deployment automation (WIP)
+Application deployment automation (WIP).
 
 ## [Section 6: Security concepts in AWS: IAM, security groups, and VPCs](06-aws-security-iam-sg-vpcs)
-TBD
+Understanding and practicing AWS security model.
+
+## [Section 7: AWS Lambda](07-aws-lambda)
+Serverless functions on AWS.
+
+## [Section 8: Amazon S3 and Glacier](08-s3-glacier)

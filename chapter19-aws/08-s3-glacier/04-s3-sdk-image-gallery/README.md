@@ -1,8 +1,8 @@
 # Part 2: Applications
 ## Chapter 19 &mdash; Amazon Web Services
 ### Section 8: Amazon S3 and Glacier
-#### 02 &mdash; S3 SDK: Image gallery on *Amazon S3*
-> Illustrates how to use the AWS SDK for Node.js (v3) to create simple image gallery
+#### 04 &mdash; S3 SDK: Image gallery on *Amazon S3*
+> Illustrates how to use the AWS SDK for Node.js (v2) to create simple application that allows the user to upload/download/view images
 
 ##### About the example
 
@@ -18,6 +18,11 @@ You can use environment variables or the `.env` file to tailor the AWS related c
 
 + `AWS_PROFILE` &mdash; lets you specify a particular *AWS profile* so that all the interactions apply to the account represented by that profile name.
 + `BUCKET_NAME` &mdash; lets you specify the name of the *Amazon S3* bucket that will be used in the application.
+
+
+| NOTE |
+| :--- |
+| To prevent leaking the profile name and bucket name used in the examples, the following Git command was used: `git update-index --assume-unchanged .env`. |
 
 ###### Uploading documents to S3
 
