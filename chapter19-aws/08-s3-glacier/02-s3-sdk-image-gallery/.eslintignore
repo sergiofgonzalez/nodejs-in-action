@@ -1,0 +1,2 @@
+# app-state uses private class fields
+app/src/public/javascript/models/app-state.js
