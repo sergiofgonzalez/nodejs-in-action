@@ -965,7 +965,7 @@ In this mini-project, we add a few automation scripts to enhance the experience 
 + You understand the details of the *AWS Lambda* service and its serverless model:
   + No need to manage and maintain virtual machines
   + Fully managed service offering scalability and high availability
-  + Biller by request/by resource consumption
+  + Billed by request/by resource consumption
 
 + You're familiar with the development lifecycle for *AWS Lambda*.
 

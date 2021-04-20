@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- OpenIconic Icons -->
+    <!-- <link rel="stylesheet" href="stylesheets/open-iconic/font/css/open-iconic-bootstrap.css"> -->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+
+    <title>Welcome page &mdash; V1</title>
+  </head>
+  <body>
+    <div class="container" style="height: 100vh;">
+      <div class="row align-items-center h-100">
+        <div class="col-10 mx-auto">
+          <div id="infoPanel" class="jumbotron">
+            <h1 id="infoTitle" class="display-4">
+              <img src="/images/hi.png" alt="bomb-icon" height="256" width="256">
+               Welcome!
+            </h1>
+            <hr class="my-4">
+            <div class="alert alert-primary">
+              <p id="infoDesc" class="lead">
+                This is a simple frontend application hosted on Amazon S3.
+              <div class="alert alert-dark" role="alert">
+                The application consists of this page only. Any other URL will display a <a href="/non-existent">generic error</a> page.
+              </div>
+            </div> <!-- alert -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="javascript/app.js" type="module"></script>
+  </body>
+</html>

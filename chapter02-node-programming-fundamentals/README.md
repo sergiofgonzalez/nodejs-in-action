@@ -68,7 +68,7 @@ A very simple example illustrating when to use `exports.method = ...` vs. `modul
 An introduction about how to use `util.promisify` to convert callback-based functions to Promises.
 
 ## [e06-hello-require-module-groups](e06-hello-require-module-groups/)
-An example illustrating how to group related modules and load them in a single `require`. 
+An example illustrating how to group related modules and load them in a single `require`.
 
 ## [e07-hello-require-module-groups-package](e07-hello-require-module-groups-package/)
 An example illustrating how to group related modules and load them in a single `require` in a very flexible using using a `package.json`.
@@ -114,3 +114,6 @@ Illustrates `papaparse` CSV parsing capabilities
 
 ## [e21-node-events](e21-node-events)
 A refresher on Node.js `EventEmitter` class and its methods.
+
+# [e22 &mdash; Hello, pino!](e22-hello-pino)
+Playing with [pino](https://github.com/pinojs/pino) Node.js logger.

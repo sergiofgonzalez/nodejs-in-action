@@ -18,3 +18,15 @@ An example of a Lambda function using the *nodejs14x* runtime and the `serverles
 
 ## [06-lambda-outbound-internet](./06-lambda-outbound-internet/)
 An example of a Lambda function using the *nodejs14x* runtime that sends outbound HTTP HEAD request to a list of external sites to validate if outbound connectivity to the public internet works from the Lambda function.
+
+## [07 &mdash; AWS S3 Attachment URL](07-s3-attachment-url)
+Obtain a signed S3 url that provides a limited time public access to a file.
+
+## [08 &mdash; *AWS Elasticsearch* concepts](08-aws-elasticsearch-concepts)
+A few entry-level concepts about *Elasticsearch* and *AWS Elasticsearch* service. The directory does not include any source code.
+
+## [09 &mdash; *Amazon SageMaker* Concepts](09-sage-maker-concepts)
+A few concepts on *Amazon SageMaker*.
+
+## [10 &mdash; *AWS Glue* Concepts](10-glue-concepts)
+A few entry-level definitions about *AWS Glue*.

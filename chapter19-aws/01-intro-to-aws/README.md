@@ -73,6 +73,7 @@ There are over 60 *Availability Zones* in more than 20 *AWS Regions* around the 
 | *AWS Region* | A physical location in the world where AWS have multiple *Availability Zones*.<br> Each *AWS Region* is designed to be completely isolated from other *AWS Regions*. |
 | *AWS shared responsibility* | The security model for *AWS Cloud* in which *AWS* is responsible for *security of the cloud* while you're responsible for *security in the cloud*. |
 | Cloud Computing | Cloud computing is a model for enabling ubiquitous, convenient, on-demand network access to a shared pool of configurable computing resources (such as networks, VMs, storage, applications, and services) that can be rapidly provisioned and released with minimal management effort or service provider interaction. |
+| Edge location | Endpoints for AWS that are used for caching contents. |
 | *Elastic IP* | A static IPv4 address that can be attached to a machine so that it public address is preserved when stopping and starting an *EC2* instance. |
 | Hypervisor | The software component responsible for isolating the guests running on a host machine from each other, and for scheduling requests to the hardware, by providing a virtual platform to the guest software. |
 | IAM user | Identifies people (human users) with access to your AWS account. |
