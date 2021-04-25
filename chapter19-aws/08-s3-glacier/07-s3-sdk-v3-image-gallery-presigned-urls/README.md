@@ -303,6 +303,10 @@ logger.error({ err }, `HeadObjectCommand failed for reading mimeType: file=${ fi
 
 The pino logger is configured with `info` level by default. As I didn't create any lib I included the `level` setting based on a global argument.
 
+Note that [`pino`](https://github.com/pinojs) being a JSON logger, it is not very friendly for humans. However, installing the [`pino-pretty`](https://github.com/pinojs/pino-pretty) module as a *dev dependency* and adding an NPM task `"start-pino-pretty"` renders beautifully the JSON log lines [`pino`](https://github.com/pinojs) produces.
+
+[`pino-pretty`](https://github.com/pinojs/pino-pretty) reads the information of the `.pino-prettyrc` to configure the rules that dictate how the log lines will look.
+
 ###### Minor frontend enhancements: spinner and alert box
 
 A spinner and an alert box were added. The visibility is controlled mostly from JavaScript doing:
