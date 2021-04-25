@@ -408,6 +408,17 @@ The following factors are considered:
 
 + Data Transfer Out &mdash; the price also depends on the amount of data transferred out of your *Amazon CloudFront's edge locations*.
 
+### *Amazon S3* presigned URLs
+
+All objects in *Amazon S3* are private by default. However, the object owner can optionally share objects with others by creating a presigned URL, to grant a time-limited permission access to download or upload an object.
+
+A presigned URL for an existing object will be useful to grant permission to others to download the object. A presigned URL for a non-existent object will be usefult to allow a user to upload a specific object to a bucket in your account. In both cases, the users won't need to have have AWS security credentials or permissions.
+
+| NOTE: |
+| :---- |
+| If an object with the same key that is specified in the presigned URL already exists in the bucket, *Amazon S3* will replace the contents of the existing object with the uploaded object. |
+
+
 
 ### Additional considerations when using *Amazon S3*
 
@@ -451,6 +462,12 @@ Illustrates how to use the AWS SDK for Node.js (v2) to create simple application
 #### [05 &mdash; S3: Hosting an static website in S3](05-s3-static-site)
 Illustrates how to host an static website in S3 using AWS CLI commands.
 
+#### [06 &mdash; S3 SDK: Presigned URLS to download/upload objects](06-s3-sdk-presigned-urls)
+Illustrates how to use the AWS SDK for Node.js (v3) to create *presigned URLs* to be able to download/upload objects without AWS credentials.
+
+#### [07 &mdash; S3 SDK v3: Image gallery on *Amazon S3* with presigned S3 urls](chapter19-aws/08-s3-glacier/07-s3-sdk-v3-image-gallery-presigned-urls)
+Illustrates how to use the AWS SDK for Node.js (v3) to create a simple application that allows the user to upload/download/view images using *Amazon S3* presigned URLs.
+
 ### Services used in this chapter
 
 | AWS Service | Category | Description |
@@ -462,8 +479,8 @@ Illustrates how to host an static website in S3 using AWS CLI commands.
 
 ### ToDo
 
-- [ ] Presigning
-- [ ] Transform gallery to use presigned requests
-- [ ] Investigate abort upload
-- [ ] Investigate HTTPS websites
-- [ ] CloudFormation template for static website?
+- [x] Presigning
+- [X] Transform gallery to use presigned requests
+- [ ] Investigate abort upload (https://aws.amazon.com/blogs/developer/abortcontroller-in-modular-aws-sdk-for-javascript/)
+- [ ] Investigate S3 static websites with HTTPS
+- [ ] CloudFormation template for static website

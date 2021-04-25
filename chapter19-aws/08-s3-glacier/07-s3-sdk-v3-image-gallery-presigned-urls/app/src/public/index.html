@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <!-- OpenIconic Icons -->
+    <link rel="stylesheet" href="stylesheets/open-iconic/font/css/open-iconic-bootstrap.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+
+    <!-- -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="connect-src: 'self' https://*.s3.us-east-1.amazonaws.com"> -->
+
+    <title>Simple S3 Gallery</title>
+  </head>
+  <body>
+    <div class="container" style="height: 100vh;">
+      <div class="row align-items-center">
+        <div class="col-10 mx-auto h-50">
+          <h1>Simple S3 Gallery</h1>
+
+          <form action="/upload" method="POST" enctype="multipart/form-data">
+            <!-- File input textfield -->
+            <div class="form-group">
+              <label for="inputFile">Select an image file to upload</label>
+              <input type="file" class="form-control-file" id="inputFile" name="inputFile" accept="image/*">
+              <span class="badge badge-primary" id="fileInfo">(none)</span>
+            </div>
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              <span class="spinner-border spinner-border-sm" id="spinner" role="status" aria-hidden="true" style="display: none; visibility: hidden;"></span>
+              <span id="submitBtnLabel">Upload</span>
+            </button>
+
+            <div class="alert alert-warning" role="alert"  id="msgBox" style="display: none; visibility: hidden;"></div>
+          </form>
+        </div>
+      </div> <!-- row -->
+
+      <div class="row align-items-center h-50">
+        <div class="col-10 mx-auto">
+          <div id="uploadedFilesTable"></div>
+        </div>
+      </div>
+    </div> <!-- container -->
+
+    <!-- Modal dialog on which the image is displayed -->
+    <div class="modal fade" id="imgModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">(Modal title)</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div> <!-- modal header -->
+          <div class="modal-body">
+            <img class="img-fluid" alt="image will be loaded here" id="imgPlaceholder">
+          </div> <!-- modal-body -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div> <!-- modal-footer -->
+        </div> <!-- modal-content -->
+      </div> <!-- modal-dialog -->
+    </div> <!-- modal -->
+
+
+    <!-- JavaScript -->
+
+    <!-- Bootstrap v4: jQuery and bootstrap bundles -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <!-- Polyfill for JS streams (used by stream-server) -->
+    <script src="https://cdn.jsdelivr.net/npm/web-streams-polyfill@2.0.2/dist/ponyfill.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="javascript/app.js" type="module"></script>
+  </body>
+</html>

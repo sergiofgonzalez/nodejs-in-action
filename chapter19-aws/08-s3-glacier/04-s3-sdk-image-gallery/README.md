@@ -20,7 +20,7 @@ You can use environment variables or the `.env` file to tailor the AWS related c
 + `BUCKET_NAME` &mdash; lets you specify the name of the *Amazon S3* bucket that will be used in the application.
 
 
-| NOTE |
+| NOTE: |
 | :--- |
 | To prevent leaking the profile name and bucket name used in the examples, the following Git command was used: `git update-index --assume-unchanged .env`. |
 
