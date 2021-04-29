@@ -1,0 +1,26 @@
+/*
+  Error Page Styling
+*/
+
+@font-face {
+  font-family: "Pixelated";
+  src: url("/fonts/LCD_Solid.ttf");
+}
+
+h1#errTitle {
+  font-family: "Pixelated", sans-serif;
+}
+
+h1#infoTitle {
+  font-family: "Pixelated", sans-serif;
+}
+
+#errPanel {
+  border: 1px solid black;
+  background-color: white;
+}
+
+#infoPanel {
+  border: 1px solid black;
+  background-color: white;
+}

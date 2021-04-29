@@ -430,10 +430,16 @@ The way browsers parse HTML is very permissive and you will find that even HTML 
 
 You can use the [Markup Validation Service](https://validator.w3.org/) from *W3C* to validate your HTML documents.
 
-## Examples
+## Examples, Exercises and mini-projects
 
 ### [01 &mdash; Setting *Boolean* attributes from JavaScript](01-boolean-attrs-js)
 Illustrates how to set boolean values from JavaScript, and how it is different from the approach you'd use in plain HTML.
 
 ### [02 &mdash; Sections of an HTML document](02-html-sections)
 An HTML document, with no associated CSS in which all the main sections are considered: header, main, navigation bar, main content, sidebar and footer.
+
+### [e01 &mdash; Marking up a letter](e01-marking-up-a-letter)
+An exercise from [MDN: HTML basics](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter) illustrating how to mark up a letter in HTML.
+
+### [e02 &mdash; Structuring a page of content(e02-structuring-a-page-of-content)]
+Another exercise from [MDN: HTML basics](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Structuring_a_page_of_content) illustrating how to structure a page of content using the appropriate structural semantics.

@@ -1,9 +1,11 @@
-# 03 &mdash; Marking up a letter
-> An HTML document, with no associated CSS in which all the main sections are considered: header, main, navigation bar, main content, sidebar and footer.
+# e01 &mdash; Marking up a letter
+> An exercise from [MDN: HTML basics](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter) illustrating how to mark up a letter in HTML.
 
 ## Description
 
 For this example, you need to mark up a letter that needs to be hosted on a university intranet. The letter is a response from a research fellow to a prospectve PhD student concerning their application to the university.
+
+Save the [text contents of the letter](https://github.com/mdn/learning-area/blob/master/html/introduction-to-html/marking-up-a-letter-start/letter-text.txt) and start marking up the different sections according to the details below.
 
 ### Rules
 + You'll have to use the appropriate document structure elements: `<html>`, `<head>`, `<body>`.
