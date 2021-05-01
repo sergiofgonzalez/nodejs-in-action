@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- OpenIconic Icons -->
+    <link rel="stylesheet" href="stylesheets/open-iconic/font/css/open-iconic-bootstrap.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="stylesheets/styles1.css">
+
+    <title><%= errMessage %></title>
+  </head>
+  <body>
+    <div class="container" style="height: 100vh;">
+      <div class="row align-items-center h-100">
+        <div class="col-10 mx-auto">
+          <div id="errPanel" class="jumbotron">
+            <h1 id="errTitle" class="display-4">
+              <img src="/images/bomb.png" alt="bomb-icon">
+               <%= errMessage %>
+            </h1>
+            <hr class="my-4">
+            <p id="errDesc" class="lead">
+              <%= errDetailedMessage %>
+            </p>
+            <p><a href="/" class="btn btn-primary btn-lg"><span class="oi oi-home"></span> Take Me Home</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!-- Required for HTML responsive images -->
+    <meta name="viewport" content="width=device-width">
+    <title>Hello, responsive images!</title>
+  </head>
+
+  <body>
+      <header>
+        <h1>Hello, responsive images!</h1>
+
+        <!-- The instructions say: nav menu within the header -->
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="not-responsive.html">Not-responsive HTML page</a></li>
+            <li><span>Responsive HTML page<span></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>
+        <section>
+          <h2>Image 1: Lamp bear</h2>
+          <img srcset="images/bear_480w.jpg 480w,
+                       images/bear_800w.jpg 800w"
+               sizes="(max-width: 600px) 480px,
+                      800px"
+               src="images/bear_800w.jpg" alt="Lamp bear at Hamad International airport" title="Lamp Bear">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a
+            diam lectus. Set sit amet ipsum mauris. Maecenas congue ligula as
+            quam viverra nec consectetur ant hendrerit. Donec et mollis dolor.
+            Praesent et diam eget libero egestas mattis sit amet vitae augue.
+            Nam tincidunt congue enim, ut porta lorem lacinia consectetur.
+          </p>
+        </section>
+
+        <section>
+          <h2>Image 2: Diet Coke</h2>
+          <img srcset="images/diet-coke-480w.jpg,
+                       images/diet-coke-800w.jpg 2x">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a
+            diam lectus. Set sit amet ipsum mauris. Maecenas congue ligula as
+            quam viverra nec consectetur ant hendrerit. Donec et mollis dolor.
+            Praesent et diam eget libero egestas mattis sit amet vitae augue.
+            Nam tincidunt congue enim, ut porta lorem lacinia consectetur.
+          </p>
+        </section>
+
+        <section>
+          <h2>Image 3: Sculpture</h2>
+          <picture>
+            <source media="(max-width: 799px)" srcset="images/egyptian-480w.jpg">
+            <source media="(min-width: 800px)" srcset="images/greek-800w.jpg">
+            <img src="images/greek-800w.jpg" alt="Greek Sculpture" title="Greek Sculpture">
+          </picture>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a
+            diam lectus. Set sit amet ipsum mauris. Maecenas congue ligula as
+            quam viverra nec consectetur ant hendrerit. Donec et mollis dolor.
+            Praesent et diam eget libero egestas mattis sit amet vitae augue.
+            Nam tincidunt congue enim, ut porta lorem lacinia consectetur.
+          </p>
+        </section>
+      </main>
+  </body>
+</html>

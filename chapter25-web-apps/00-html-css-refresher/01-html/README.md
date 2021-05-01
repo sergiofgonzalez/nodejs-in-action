@@ -430,6 +430,399 @@ The way browsers parse HTML is very permissive and you will find that even HTML 
 
 You can use the [Markup Validation Service](https://validator.w3.org/) from *W3C* to validate your HTML documents.
 
+### Images in HTML
+
+Images in HTML are marked up with the `<img>` element.
+Use the following attributes:
+
++ `alt` &mdash; use the *alternative text* attribute to provide a textual description of the image for use in situations where the image cannot be seen or displayed.
+
++ `width` and `height` &mdash; use these attributes to specify the widht and height of the image in a number of ways.<br>It is a good practice to set these values to the original size of the image, so that the browser can reserve the space the image will take when the whole page is displayed.
+
++ `title` &mdash; as with links, you can add a title to provide a title for the image.<br>Most browsers will use that information and display a tooltip when the user hovers the mouse over the image.
+
+```html
+<img src="images/dino.jpg"
+     alt="The head and torso of a dinosau skeleton.
+          It has a large head with long sharp teeth."
+     width="400"
+     height="341"
+     title="A T-Rex on display in a museum">
+```
+
+To annotate images you can use the `<figure>` and `<figcaption>` semantic elements:
+
+```html
+<figure>
+  <img src="images/dino.jpg"
+     alt="The head and torso of a dinosau skeleton.
+          It has a large head with long sharp teeth."
+     width="400"
+     height="341">
+  <figcaption>A T-Rex on display in a museum</figcaption>
+</figure>
+```
+
+| NOTE: |
+| :---- |
+| A figure doesn't have to be an image. It can be several images, a code snippet, audio, video, equiations, a table... |
+
+### CSS background images
+
+As a side node, you can also use CSS to embed images into webpages with the `background-image` property:
+
+```css
+p {
+  background-image: url("images/dino.jpg")
+}
+```
+
+The resulting embedded image will be easier to position and control than with HTML, but CSS should be used *for decoration only* and not to for images with semantic value.
+
+That is, if the image has meaning int terms of your content, use an HTML image; if it's purely for decoration, use the CSS background image approach.
+
+### Video and audio content
+
+The HTML5 specification added the `<video>` and `<audio>` elements, along with some JavaScript APIs to control them.
+
+The `<video>` element allows you to embed a video with the following markup:
+
+```html
+<video src="rabbit320.webm" controls>
+  <p>
+    Your browser does not support HTML5 video.
+    Here's a <a href="rabbit320.webm">link</a> to the video instead.
+  </p>
+</video>
+```
+
+The paragraph inside the `<video>` is called the *fallback content*, and will be displayed if the browser does not support the given content.
+
+Alternatively, you can use the following mark up that uses several formats:
+
+```html
+<video controls>
+  <source src="rabbit320.mp4" type="video/mp4">
+  <source src="rabbit320.webm" type="video/webm">
+  <p>
+    Your browser does not support HTML5 video.
+    Here's a <a href="rabbit320.webm">link</a> to the video instead.
+  </p>
+</video>
+```
+
+There are a number of additional features you can include in the `<video>` element:
+
+```html
+<video controls width="400" height="400" autoplay loop muted preload="auto" poster="poster.png">
+...
+</video>
+```
+
++ `autoplay` &mdash; makes the audio or video to start playing right away, while the rest of page might still be loading. Using `autoplay` is discouraged.
++ `loop` &mdash; makes the video (or audio) start playing again when it finishes.
++ `muted` &mdash; causes the media to start playing with the sound turned off.
++ `poster` &mdash; URL of an image that will be displayed before the video is played.
++ `preload` &mdash; used for buffering large files. It can get three values: `'none'` (does not buffer the file), `'auto'` (buffers the media file), and `'metadata'` (buffers only the media metadata).
+
+The `<audio>` element works just like the video:
+
+```html
+<audio controls>
+  <source src="viper.mp3" type="audio/mp3">
+  <source src="viper.ogg" type="audio/ogg">
+  <p>
+    Your browser does not support HTML5 audio.
+    Here's a <a href="viper.mp3">link</a> to the audio instead.
+  <p>
+</audio>
+```
+#### Displaying audio/video text tracks
+
+HTML5 supports displaying captions and subtitles using the *WebVTT* format:
+
+```
+WEBVTT
+
+1
+00:00:22.230 --> 00:00:24.606
+This is the first subtitle.
+
+2
+00:00:30.739 --> 00:00:34.074
+This is the second.
+
+...
+```
+
+WebVTT files (saved with extension `.vtt`) can be linked to videos:
+
+```html
+  <source src="rabbit320.mp4" type="video/mp4">
+  <source src="rabbit320.webm" type="video/webm">
+  <track kind="subtitles" src="subtitles_en.vtt" srclang="en" label="English subtitles">
+  <p>
+    Your browser does not support HTML5 video.
+    Here's a <a href="rabbit320.webm">link</a> to the video instead.
+  </p>
+```
+
+### Embedding content using `<iframe>`s
+
+`<iframe>` elements are designed to allow you to embed other web documents into the current document.
+
+That is good solution for incorporating 3rd party content into your website without having to implement your own version of (such as video, maps, advertising banners...)
+
+```html
+<!-- Embedding youtube video-->
+<iframe
+  width="560" height="315"
+  src="https://www.youtube.com/embed/G21ijx_AmUA"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen>
+</iframe>
+
+<!-- Embedding googlemaps -->
+<iframe
+  src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d12142.139214900979!2d-3.7130504!3d40.4634321!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2ses!4v1619763162190!5m2!1sen!2ses"
+  width="600" height="450" style="border:0;"
+  allowfullscreen="" loading="lazy">
+</iframe>
+```
+
+There are some serious security concerns to consider with `<iframe>` that you should know about, but that doesn't mean that you shouldn't use them in your websites when you have a use case for them.
+
+The essential template and attributes for the `<iframe>` are:
+
+```html
+<iframe src="https://developer.mozilla.org/en-US/docs/Glossary"
+  width="100%" height="500" frameborder="0"
+  allowfullscreen sandbox>
+  <p>
+    <a href="/en-US/docs/Glossary">
+      Fallback link for browsers that don't support iframes
+    </a>
+  </p>
+</iframe>
+```
+
++ `allowfullscreen` &mdash; if set the `<iframe>` is able to be placed in fullscreen mode using the [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
+
++ `frameborder` &mdash; if set to 1, tells the browsers to draw a border between this frame and other frames, which is the default behavior. 0 removes the border. It is recommended to use CSS `border: none`.
+
++ `src` &mdash; path pointing to the URL of the document to be embedded.
+
++ `sandbox` &mdash; this attribute requests heightened security settings (which prevents the `<iframe>` content to do evil things).
+
+| NOTE: |
+| :---- |
+| To improve speed, it's a good idea to set the iframe's `src` attribute with JavaScript after the main content is done with loading. |
+
+| EXAMPLE: |
+| :------- |
+| See [03 &mdash; Hello, `<iframe>`](03-hello-iframe) for a runnable example. |
+
+### Security concerns using `<iframe>`
+
+This sections provides awareness on the security concerns that you will be exposed when using `<iframe>`.
+
+> *Clickjacking* is a common iframe attack where hackers embed an invisible iframe into your document (or embed your document into their own malicious website) and use it to capture users' interactions.<br>It is a common way to mislead users to steal sensitive data.
+
+A few security mechanisms have been developed for making `<iframe>`s more secure, and there are also best practices to consider.
+
+For example, when this snippet in placed into a web page it won't work:
+
+```html
+<iframe src="https://developer.mozilla.org/en-US/docs/Glossary"
+  width="100%" height="500" frameborder="0"
+  allowfullscreen sandbox>
+  <p>
+    <a href="/en-US/docs/Glossary">
+      Fallback link for browsers that don't support iframes
+    </a>
+  </p>
+</iframe>
+```
+
+The link is correct, but nothing will be displayed on the page, and the *developer's console* will warn you about the issue:
+
+![MDN iframe CSP problem](images/mdn_iframe_csp_issue.png)
+
+This can be solved by adding a `frame-src` CSP directive to your server:
+
+```javascript
+'frame-src': 'https://developer.mozilla.org/'
+```
+
+| NOTE: |
+| :---- |
+| *Content Security Policy (CSP)* provides a set of HTTP headers designed to improve the security of your HTML document. |
+
+But even when that issue is solved you'll get another one:
+
+![MDN iframe X-Frame-Options problems](images/mdn_iframe_x-frame-options-issue.png)
+
+This is because the developers that built MDN have included a setting on the server to disallow them from being embedded inside an `<iframe>`.
+
+| NOTE: |
+| :---- |
+| The Express server hosting our examples is configured with `X-Frame-Options: SAMEORIGIN`. This ensures that the page will only be able to be embedded in other websites on the same domain. |
+
+Additionally, HTTPS prevents emebedded content from accessing content in your parent document, and vice versa.
+
+> Never embed 3rd party content through HTTP. All reputable companies that make content available for embedding via `<iframe>`s will make it available via HTTPS.
+
+Ultimately, make sure to always use the `sandbox` attribute. Sanboxed content won't be able to execute JavaScript, submit forms, popup windows, etc. If absolutely required, permissions can be added one by one inside the `sandboxed=""` attributes.
+
+> Never add both `sandboxed="allow-scripts allow-same-origin"` as that can be used to bypass the *Same-Origin* policy that stop sites from executing untrusted scripts, and therefore can be used to turn off sandboxing altogether.
+
+| NOTE: |
+| :---- |
+| The *Same-Origin* policy is a critical security mechanism that restricts how a document or script loaded from one origin can interact with a resource from another origin. It helps isolate potentially malicious documents, reducing possible attack vectors. |
+
+
+### Embedding content using `<embed>` and `<object>`
+
+The `<embed>` and `<object>` elements are used for embedded multiple types of external content like PDF, SVG, etc.
+
+Those elements are not very popular these days.
+
+### Vector graphics with the `<svg>` element
+
+SVG is an XML-based language for describing vector images.
+
+```xml
+<svg version="1.1"
+  baseProfile="full"
+  width="300" height="200"
+  xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="black" />
+  <circle cx="150" cy="100" r="90" fill="blue" />
+</svg>
+```
+
+You can easily embed an SVG image in an HTML document using `<img>` as if it was a *raster* image:
+
+```html
+<img src="triangle.svg"
+  alt="triangle equilateral"
+  height="87" width="100">
+```
+
+Note that when using this approach, you cannot manipulate the image with JavaScript, control the content from the CSS you're applying to the page (including re-styling the image with CSS pseudoclasses like `:focus`).
+
+
+Alternatively, you can include the *SVG* inline in your html:
+
+```html
+<svg width="300" height="200">
+  <rect width="100%" height="100%" fill="green" />
+</svg>
+```
+
+Finally, an *SVG* can also be included in an `<iframe>`:
+
+```html
+<iframe src="triangle.svg" width="500" height="500" sandbox>
+  <img src="triangle.png" alt="Triangle with three unequal sides">
+</iframe>
+```
+
+However, this last method is discouraged.
+
+### Responsive images
+
+Responsive images are images that work well on devices with differing screen sizes, resolutions, and other such features.
+
+| NOTE: |
+| :---- |
+| Responsive images are just one part of responsive design, a CSS topic, but this section deals with what HTML provides for responsive design for images. |
+
+The first topic to addres is to deal with resolution switching &mdash; we want to display identical image content, just larger or smaller depending on the device.
+
+This can be achieved using two new attributes of the `<img>` element: `srcset` and `sizes`:
+
+```html
+<img srcset="elva-fairy-480w.jpg 480w,
+             elva-fairy-800w.jpg 800w"
+     sizes="(max-width: 600px) 480px,
+           800px"
+     src="elva-fairy-800w.jpg"
+     alt="Elva dressed as a fairy">
+```
+
+Each value of `srcset` contains a comma separated list of directives, with each directive made up of three subparts:
+1. image filename (such as `elva-fairy-480w.jpg`)
+2. a space
+3. the image *real* width in pixels expressed as `<number>w`.
+
+`sizes` defines a set of media conditions (i.e. screen widths) and gives directions about what image size would be best to choose when certain media conditions are met:
+1. media condition (such as `(max-width: 600px)`, which indicates if viewport width is 600 pixels or less)
+2. a space
+3. the width of the slot the image will fill when the media condition is met (in this example, `480px`).
+
+When you don't include a media condition, such as `800px`, means the fallback value when none of the media conditions are met.
+
+| NOTE: |
+| :---- |
+| For the slot width, you can provide an absolute width expressed in `px` or `em`, or a length relative to the view port `vw`, but not percentages. |
+
+The browser in turn when examining an `<img srcset="...">` will:
+1. Look at the device width.
+2. Identify within the `sizes` section what media condition is met.
+3. Look at the slot size given to that media query.
+4. Load the image referenced in the `srcset` list that has the same size as the slot, or if there isn't one, the first image that is bigger than the chosen slot size.
+
+Let's reexamine what will happen then for:
+
+```html
+<img srcset="elva-fairy-480w.jpg 480w,
+             elva-fairy-800w.jpg 800w"
+     sizes="(max-width: 600px) 480px,
+           800px"
+     src="elva-fairy-800w.jpg"
+     alt="Elva dressed as a fairy">
+```
+
+on a 480 pixels screen.
+
+> The browser will have a look at the viewport size (480px), and will examine the sizes. As the `max-width: 600px` condition is met, it will read the slot size, which is exactly 480px. Then the browser will examine the `srcset` and will select the image that is tagged with `480w` which happens to be `elva-fairy-480w.jpg`.
+
+
+| NOTE: |
+| :---- |
+| When working with responsive images you will note in the head *meta* directive like `<meta name="viewport" content="width=device-width">`.<br>This forces mobile browsers to adapt their real viewport width for loading web pages, as some mobile browsers lie about their viewport width and instead scale them. |
+
+Additionally, you can allow the browser to choose an appropriate resolution for your image using the following syntax with *x-descriptors* instead of sizes:
+
+```html
+<img srcset="elva-fairy-320w.jpg,
+             elva-fairy-480w.jpg 1.5x,
+             elva-fairy-640w.jpg 2x"
+     src="elva-fairy-640w.jpg"
+     alt="...">
+```
+
+In this case, the browser will work out the resolution of the display and will serve the most appropriate image referenced in the `srcset`. If a low res display (one device pixel representing each CSS pixel), it will show `elva-fairy-320w.jpg`. In a hi-res display where you have two device pixels per CSS pixel or more the `elva-fairy-640w.jpg` will be shown.
+
+Another desired responsive behavior has to do with wanting to change the image displayed to suit different display sizes: you might want to show a landscape picture on a desktop browser and a portrait on a mobile display. This can be done with the `<picture>` element:
+
+```html
+<picture>
+  <source media="(max-width: 799px)" srcset="elva-480w-close-portrait.jpg">
+  <source media="(min-width: 800px)" srcset="elva-800w.jpg">
+  <img src="elva-800w.jpg" alt="...">
+</picture>
+```
+
+As in the previous example, the browser will examine the *media queries* and apply the one that is met first. If the viewport is 799 pixels or less, the close portrait will be displayed, otherwise, the 800 pixels wide image will be shown.
+
+| NOTE: |
+| :---- |
+| Using different images depending on the viewport size is known as *art direction*. |
+
 ## Examples, Exercises and mini-projects
 
 ### [01 &mdash; Setting *Boolean* attributes from JavaScript](01-boolean-attrs-js)
@@ -438,8 +831,14 @@ Illustrates how to set boolean values from JavaScript, and how it is different f
 ### [02 &mdash; Sections of an HTML document](02-html-sections)
 An HTML document, with no associated CSS in which all the main sections are considered: header, main, navigation bar, main content, sidebar and footer.
 
+### [03 &mdash; Hello, `<iframe>`](03-hello-iframe)
+Illustrates how to embed content on a web page using `<iframe>`.
+
 ### [e01 &mdash; Marking up a letter](e01-marking-up-a-letter)
 An exercise from [MDN: HTML basics](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter) illustrating how to mark up a letter in HTML.
 
 ### [e02 &mdash; Structuring a page of content(e02-structuring-a-page-of-content)]
 Another exercise from [MDN: HTML basics](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Structuring_a_page_of_content) illustrating how to structure a page of content using the appropriate structural semantics.
+
+### [e03 &mdash; HTML responsive images](03-hello-responsive-images-html)
+Illustrates how to use HTML capabilities for responsive images using media queries and `<picture>` element for *art direction*.

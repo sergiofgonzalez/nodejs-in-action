@@ -1,4 +1,4 @@
-# e02 &mdash; Structung a page of content
+# e02 &mdash; Structuring a page of content
 > Another exercise from [MDN: HTML basics](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Structuring_a_page_of_content) illustrating how to structure a page of content using the appropriate structural semantics.
 
 ## Description
