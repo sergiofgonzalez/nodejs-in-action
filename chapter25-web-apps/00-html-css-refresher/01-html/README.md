@@ -823,6 +823,158 @@ As in the previous example, the browser will examine the *media queries* and app
 | :---- |
 | Using different images depending on the viewport size is known as *art direction*. |
 
+| EXAMPLE: |
+| :------- |
+| See [e04 &mdash; Adding media to a splash page](e04-adding-media-to-splash-page) for an example summarizing several techniques involving embedding external media with `<iframe>`s, and responsive images with HTML. |
+
+### HTML tables
+
+#### Using `colspan` and `rowspan` in HTML tables
+
+The attributes `colspan` and `rowspan` let us span individual cells to span across several columns and rows.
+
+```html
+<table>
+  <tr>
+    <th colspan="2">Animals</th>
+  </tr>
+  <tr>
+    <th rowspan="2">Horse</th>
+  <tr>
+</table>
+```
+
+#### Providing common styling to columns
+
+You can use `<colgroup>` and `<col>` elements to provide styling to the columns of a table:
+
+```html
+<table>
+  <colgroup>
+    <col>
+    <col style="background-color: yellow">
+  </colgroup>
+  <tr>
+    <th>Data 1</th> <!-- Default styling -->
+    <th>Data 2</th> <!-- styled with yellow backgroun -->
+  </tr>
+  <tr>
+    <td>Robots</td> <!-- Default styling -->
+    <td>Jazz</td> <!-- styled with yellow backgroun -->
+  </tr>
+</table>
+```
+
+Using this method you can style columns using a few properties such as `border`, `background`, `width`, and `visibility`.
+
+Note that we need to specify a `<col>` element for each of the columns of the table, even if we don't style it. If we wanted to style both columns in the same way, we could've done:
+
+```html
+<colgroup>
+  <col style="background-color: yellow" span="2">
+</colgroup>
+```
+
+#### Adding a caption to an HTML table
+
+You can add a caption to a table by putting a `<caption>` element nested right below the `<table>` element:
+
+```html
+<table>
+  <caption>Dinosaurs</caption>
+  ...
+</table>
+```
+
+#### Adding structure to an HTML table with `<thead>`, `<tfoot>`, and `<tbody>`
+
+The elements `<thead>`, `<tfoot>`, and `<tbody>` are used to mark up the header, footer, and body sections of a table.
+
+Adding those elements will make the styling and layout easier using CSS.
+
++ `<thead>` &mdash; used to mark up the header of the table. If `<col>` and `<colgroup>` are used, `<thead>` should come just below those.
+
++ `<tbody>` &mdash; used to mark up the section of the table that isn't the header or the footer.
+
++ `<tfooter>` &mdash; used to mark up the section of the table that is the footer (for example, a final row with subtotals). The `<tfooter>` can be placed right at the bottom of the table, or just below the header and it will still be rendered at the bottom of the table.
+
+| EXAMPLE: |
+| :------- |
+| See [04 &mdash; Adding structure mark up to an HTML table](04-html-table-structure) for an example on HTML structural mark up. |
+
+#### Nested tables
+
+You can nest a table inside another table just by adding the complete `<table>` related markup within an existing `<table>`.
+
+Although this technique is typically discouraged, it might become useful if you want to incorporate existing information.
+
+```html
+<table id="table1">
+  <tr>
+    <th>title1</th>
+    <th>title2</th>
+    <th>title3</th>
+  </tr>
+  <tr>
+    <td id="nested">
+      <table id="table2">
+        <tr>
+          <td>cell1</td>
+          <td>cell2</td>
+          <td>cell3</td>
+        </tr>
+      </table>
+    </td>
+    <td>cell2</td>
+    <td>cell3</td>
+  </tr>
+</table>
+```
+
+#### Additional markup for accesibility in HTML tables
+
+HTML markup is challenging for screenreaders. As a result, it is recommended to use additional attributes that will help those screenreaders understand what is the table structure.
+
+The `scope` attribute can be added to the `<th>` element to tell screenreader what cells the header is a heder for:
+
+```html
+<thead>
+  <tr>
+    <th scope="col">Purchase</th> <!-- This is header for the column -->
+    ...
+  </tr>
+  <tr>
+    <th scope="row">Haircut</th> <!-- This is a header cell for the row -->
+    ...
+  </tr>
+</thead>
+```
+
+| NOTE: |
+| :---- |
+| `<scope>` can also have the values `colgroup` and `rowgroup` for cells that sit over the top of multiple columns or rows. |
+
+Alternatively, you can add a unique `id` to each `<th>` element, and add a `headers` attribute to each `<td>` element.
+
+```html
+<thead>
+  <tr>
+    <th id="date">Date</th>
+    <th id="location">Location</th>
+    ...
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <th id="haircut">Haircut</th>
+    <td headers="location haircut">Hairdresser</td>
+    <td headers="date haircut">12/09</td>
+    ...
+  </tr>
+  ...
+</tbody>
+```
+
 ## Examples, Exercises and mini-projects
 
 ### [01 &mdash; Setting *Boolean* attributes from JavaScript](01-boolean-attrs-js)
@@ -834,6 +986,9 @@ An HTML document, with no associated CSS in which all the main sections are cons
 ### [03 &mdash; Hello, `<iframe>`](03-hello-iframe)
 Illustrates how to embed content on a web page using `<iframe>`.
 
+### [04 &mdash; Adding structure mark up to an HTML table](04-html-table-structure)
+Illustrates how to add structural markup (`<thead>`, `<tbody>` and `<tfooter>`) to an HTML table.
+
 ### [e01 &mdash; Marking up a letter](e01-marking-up-a-letter)
 An exercise from [MDN: HTML basics](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter) illustrating how to mark up a letter in HTML.
 
@@ -842,3 +997,6 @@ Another exercise from [MDN: HTML basics](https://developer.mozilla.org/en-US/doc
 
 ### [e03 &mdash; HTML responsive images](03-hello-responsive-images-html)
 Illustrates how to use HTML capabilities for responsive images using media queries and `<picture>` element for *art direction*.
+
+### [e04 &mdash; Adding media to a splash page](e04-adding-media-to-splash-page)
+Illustrates several techniques related to adding media with `<iframe>` and responsive images to an already prepared splash page.

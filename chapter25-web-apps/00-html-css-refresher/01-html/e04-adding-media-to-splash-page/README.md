@@ -30,6 +30,10 @@ Inside the `<article>` element embed the YouTube video found at https://www.yout
 
 Adjust the video to be 400px wide.
 
+| NOTE: |
+| :---- |
+| You will have to update the CSP directives to allow embedding a video from YouTube in an `<iframe>`. |
+
 ### 3. Adding responsive images to the further info links
 
 Inside the `<div>` with the class `further-info` there are `<a>` elements &mdash; each one linking to a Mozilla-related page.
