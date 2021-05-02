@@ -975,6 +975,10 @@ Alternatively, you can add a unique `id` to each `<th>` element, and add a `head
 </tbody>
 ```
 
+| EXAMPLE: |
+| :------- |
+| See [e05 &mdash; Creating a complex HTML table](e05-creating-complex-table) for an example illustrating how to use most of the elements of an HTML table. |
+
 ## Examples, Exercises and mini-projects
 
 ### [01 &mdash; Setting *Boolean* attributes from JavaScript](01-boolean-attrs-js)
@@ -1000,3 +1004,6 @@ Illustrates how to use HTML capabilities for responsive images using media queri
 
 ### [e04 &mdash; Adding media to a splash page](e04-adding-media-to-splash-page)
 Illustrates several techniques related to adding media with `<iframe>` and responsive images to an already prepared splash page.
+
+### [e05 &mdash; Creating a complex HTML table](e05-creating-complex-table)
+Illustrates how to create a complete HTML table from scratch using raw data.
