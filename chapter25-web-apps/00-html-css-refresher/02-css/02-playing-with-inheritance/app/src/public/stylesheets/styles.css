@@ -1,0 +1,19 @@
+/* all elements within body will be styled in green */
+body {
+  color: green;
+}
+
+/* this selector targets a elements within element with class="my-class-1" */
+.my-class-1 a {
+  color: inherit;
+}
+
+/* this selector targets a elements within element with class="my-class-2" */
+.my-class-2 a {
+  color: initial;
+}
+
+/* this selector targets a elements within element with class="my-class-3" */
+.my-class-3 a {
+  color: unset;
+}

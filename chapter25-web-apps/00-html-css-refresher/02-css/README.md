@@ -476,11 +476,86 @@ The fact that the browser does not crash when it finds an error can be utilized 
 
 Because of the cascade rule, for browsers that support `calc()` will use the 2nd option, while the older browsers will just ignore the 2nd without crashing.
 
+| EXAMPLE: |
+| :------- |
+| See [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css) for an exercise on the basics of CSS so far. |
+
+### More on conflicting rules
+
+At some point, you will find that the CSS you thought should be applied to an element is not working. Usually, the problem is that you have created two rules which could potentially applied to the same element, and therefore the *cascade* and *specificity* rules will be applied.
+
+Additionally, you should be aware of the concept of *inheritance*, which means that some *CSS* properties by default inherit values set on the current element's parent elements, and some don't.
+
+> **Cascade** &mdash; with two rules that have the same specificity are applied to an element, the one that comes last in the CSS is the one that will be used.
+
+For example:
+
+```css
+h1 {
+  color: red;
+}
+
+h1 {
+  color: blue;
+}
+```
+
+The `<h1>` elements will be styled in blue.
+
+> **Specificity** &mdash; specificity is a measure of how the browser decide which rule applies if multiple rules have different selectors, but could still apply to the same element. For example, an element selector is less specific than a class selector, as it will only apply to the elements with that class.
+
+For example:
+
+```css
+.main-heading {
+  color: red;
+}
+
+h1 {
+  color: blue;
+}
+```
+
+The HTML markup `<h1 class="main-heading">What color am I?</h1>` will be styled in red, even when it appears before the `<h1>` rule because it is more specific.
+
+> **Inheritance** &mdash; some CSS property values set on parent elements are inherited by their child elements, and some aren't. For example, if you set a `color` and `font-family` on an element, every element inside it will also be styled with that color and font, unless you apply different color and font values directly to them. Properties such as `width` are not inherited.
+
+For example:
+
+```css
+body {
+  color: blue;
+}
+
+span {
+  color: black;
+}
+```
+
+```html
+<p>
+  As the body has been set to have a color of blue, this will be blue, except for
+  this <span>black span</span> which has been specifically set to be black.
+<p>
+```
+
+| NOTE: |
+| :---- |
+| The information about whether a property is inherited or not can be found in each reference page for a property in [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color#formal_definition). |
+
+CSS provides four special universal property values for controlling inheritance. Every CSS property accepts these values:
++ `inherit` &mdash; sets the property value applied to a selected element to be the same as that of its parent element.
++ `initial` &mdash; sets the property value applied to a selected element to the initial value of that property.
++ `unset` &mdash; resets the property to its natural value, which means that if the property is naturally inherited, it acts like `inherit`, otherwise, it acts like `initial`.
+
+
 ## Examples, Exercises and mini-projects
 
 ### [01 &mdash; Hello, CSS!](01-hello-css)
 Illustrates how to apply CSS to a simple HTML document, and a few assorted rules practising selectors.
 
+### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
+An exercise illustrating how to style a simple text document using basic CSS.
 
 ## CSS properties cheatsheet
 

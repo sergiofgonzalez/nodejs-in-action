@@ -1,4 +1,4 @@
-# e02 &mdash; Styling a document with basic CSS
+# e01 &mdash; Styling a document with basic CSS
 > An exercise illustrating how to style a simple text document using basic CSS.
 
 ## Description
