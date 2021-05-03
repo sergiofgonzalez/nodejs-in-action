@@ -1,0 +1,74 @@
+/* this targets all <h1> elements */
+h1 {
+  color: red;
+}
+
+/* this targets <p> and <li> elements */
+p, li {
+  color: green;
+}
+
+li {
+  list-style-type: none;  /* this removes the bullet point */
+}
+
+/* this targets class="special" */
+/* Commented
+.special {
+  color: orange;
+  font-weight: bold;
+}
+*/
+
+/* this targets li elements with class="special" */
+/* Commented
+li.special {
+  color: orange;
+  font-weight: bold;
+}
+*/
+
+/* this targets li or p elements with class="special" */
+li.special,
+span.special {
+  color: orange;
+  font-weight: bold;
+}
+
+/* this targets em elements inside li element */
+li em {
+  color: rebeccapurple;
+}
+
+/* this targets a p element coming directly after an h1, and not other <p> */
+h1 + p {
+  font-size: 200%;
+}
+
+/* this styles links based on their state */
+
+/* style unvisited links in pink */
+a:link {
+  color: pink;
+}
+
+/* style visited links in green */
+a:visited {
+  color: green;
+}
+
+/* remove underline when hovering over links */
+a:hover {
+  text-decoration: none;
+}
+
+/*
+  this targets any element with class="special" situated on the first <p> after a <h1>
+  inside the body
+*/
+
+body h1 + p .special {
+  color: yellow;
+  background-color: black;
+  padding: 5px;
+}
