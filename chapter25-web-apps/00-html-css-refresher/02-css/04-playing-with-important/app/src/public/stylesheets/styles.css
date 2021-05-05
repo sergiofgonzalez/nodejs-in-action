@@ -1,0 +1,15 @@
+#winning {
+  background-color: red;
+  border: 1px solid black;
+}
+
+.better {
+  background-color: gray;
+  border: none !important;
+}
+
+p {
+  background-color: blue;
+  color: white;
+  padding: 5px;
+}

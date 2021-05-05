@@ -17,3 +17,12 @@ body {
 .my-class-3 a {
   color: unset;
 }
+
+blockquote {
+  background-color: red;
+  border: 5px solid green;
+}
+
+.fix-this {
+  all: initial;  /* you can try with `unset` (which will inherit) and `initial` */
+}

@@ -1,0 +1,123 @@
+/*
+  Set element's background-color to red for:
+    any <a> element
+    within an element with id="outer"
+
+  Specificity value: 0 + 1 * 100 + 0 * 10 + 1 = 0101
+*/
+#outer a {
+  background-color: red;
+}
+
+/*
+  Set element's background-color to blue for:
+    any <a> element
+    within an element with id="inner"
+    within an element with id ="outer"
+    (note that nothing is said about <ul> and <li>, that is
+     you don't need to give the whole exact path)
+
+  Specificity value: 0 + 2 * 100 + 0 * 10 + 1 = 0201
+*/
+#outer #inner a {
+  background-color: blue;
+}
+
+/*
+  Set element's text color to yellow for:
+    any <a> element
+    within a <li> element
+    within an <ul> element
+    within a <div> element
+    within any element with id="outer"
+
+  Specificity value: 0 + 1 * 100 + 0 * 10 + 4 * 1 = 0104
+*/
+#outer div ul li a {
+  color: yellow;
+}
+
+/*
+  Set text color to white for
+    any <a> element
+    within an element with class="nav"
+    within an <ul> element
+    within a <div>
+    within any element with id="outer"
+
+  Specificity value: 0 + 1 * 100 + 1 * 10 + 3 * 1 = 0113
+*/
+#outer div ul .nav a {
+  color: white;
+}
+
+/*
+  Set the element's border to 10px solid black for:
+    an <a> element while hovering (:hover is a pseudo-class)
+    within the 2nd <li> element   (:nth-child( is a pseudo-class)
+    within a div
+    within a div
+
+  Specificity value: 0 + 0 * 100 + 2 * 10 + 4 * 1 = 0024
+*/
+div div li:nth-child(2) a:hover {
+  border: 10px solid black;
+}
+
+/*
+  Set the element's border to 10px dashed black for:
+    an <a> element while hovering (:hover is a pseudo-class)
+    within the 2nd <li> element   (:nth-child( is a pseudo-class)
+    within a div
+
+  Specificity value: 0 + 0 * 100 + 2 * 10 + 3 * 1 = 0023
+*/
+div li:nth-child(2) a:hover {
+  border: 10px dashed black;
+}
+
+/*
+  Set the element's border to 10px double black for:
+    an <a> element, while hovering (:hover is a pseudo-class)
+    for the 2nd child of an element with class="nav"
+    within a div
+    within a div
+
+  Specificity value: 0 + 0 * 100 + 3 * 10 + 3 * 1 = 0033
+*/
+div div .nav:nth-child(2) a:hover {
+  border: 10px double black;
+}
+
+/*
+  Generic styling for <a>
+
+  no clashing with previous rules
+*/
+a {
+  display: inline-block;
+  line-height: 40px;
+  font-size: 20px;
+  text-decoration: none;
+  text-align: center;
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+/*
+  Generic styling for <ul>
+
+  no clashing with previous rules
+*/
+ul {
+  padding: 0;
+}
+
+/*
+  Generic styling for <li>
+
+  no clashing with previous rules
+*/
+li {
+  list-style-type: none;
+}

@@ -22,6 +22,8 @@ We then have a set of curly braces that group one or more declarations in the fo
 
 The *CSS properties* have different allowable values depending on the property being specified. For example, `color` can take various *color values*. `font-size` property can take various *size units* as a value.
 
+![Parts of CSS rule definition](images/parts-of-css-rule-definition.png)
+
 A CSS stylesheet can contain many rules, one after the other, all of them following the same general syntax:
 
 ```css
@@ -518,6 +520,8 @@ h1 {
 
 The HTML markup `<h1 class="main-heading">What color am I?</h1>` will be styled in red, even when it appears before the `<h1>` rule because it is more specific.
 
+#### More on inheritance
+
 > **Inheritance** &mdash; some CSS property values set on parent elements are inherited by their child elements, and some aren't. For example, if you set a `color` and `font-family` on an element, every element inside it will also be styled with that color and font, unless you apply different color and font values directly to them. Properties such as `width` are not inherited.
 
 For example:
@@ -548,11 +552,207 @@ CSS provides four special universal property values for controlling inheritance.
 + `initial` &mdash; sets the property value applied to a selected element to the initial value of that property.
 + `unset` &mdash; resets the property to its natural value, which means that if the property is naturally inherited, it acts like `inherit`, otherwise, it acts like `initial`.
 
+The CSS shorthand property `all` can be used to apply one of these inheritance values to almost all properties at once. Its value can be any of `inherit`, `initial`, `unset` or `revert` (this one with limited browser support).
+
+For example you can do:
+
+```css
+blockquote {
+  background-color: red;
+  border: 2px solid green;
+}
+
+.fix-this {
+  all: unset;
+}
+```
+
+on a piece of HTML like:
+
+```html
+<blockquote>
+  <p>This block is styled<p>
+</blockquote>
+
+<blockquote class="fix-this">
+  <p>This block uses the natural style values<p>
+</blockquote>
+```
+| EXAMPLE: |
+| :------- |
+| See [02 &mdash; Playing with inheritance](02-playing-with-inheritance) for a runnable example on which you can test inheritance rules and values. |
+
+#### More on cascade and specificity
+
+The *cascade rules* dictate which CSS rules apply when more than one thing could style an element.
+
+In increasing order of importance (so that later rules overrule earlier ones) we have:
+1. Source order
+2. Specificity
+3. Importance
+
+##### Source order
+
+If you have more than one rule, with exactly the same weight, the one comes last in the CSS will win.
+
+##### Specificity
+
+Rules with higher specificity will overrules more generic rules. It must be notes that although specificity is defined at the *selector level*, it won't be the whole rule that gets overwritten, but rather, only the properties that are the same.
+
+> It is common practice to define generic styles for the basic elements, and then create classes for those that we want to style differently. The characteristics defined in the generic styles that are not overwritten by the more specific rules won't be overwritten.
+
+For example:
+
+```css
+/* generic styles */
+h2 {
+  font-size: 2em;
+  color: #000;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* specific styles that override generic ones */
+.small {
+  font-size: 1em;
+}
+
+.bright {
+  color: rebeccapurple;
+}
+```
+
+```html
+<h2>Heading with no class</h2>
+<h2 class="small">Heading with class of small</h2>
+<h2 class="bright">Heading with class of bright</h2>
+```
+
+The 2nd and 3rd line will still *inherit* some of the properties of the generic style:
++ line 2 will have the same `color` and `font-family` from the generic style, only font-size will be different.
++ line 3 will have the same `font-size` and `font-family` from the generic style, only `color` will be different.
+
+The browsers calculate specificity by awarding a value in points for the different types of selectors. This can be thought of as thousands, hundreds, tens, and ones, that are computed as four single digits in four columns:
+
+| Selector | Thousands | Hundreds | Tens | Ones | Total specificity |
+| :------- | :-------- | :------- | :--- | :--- | :---------------- |
+| <selector> | points_1 | points_2 | points_3 | points_4 | (points_1 * 1000) + (points_2 * 100) + (points_3 * 10) + points_4 |
+
++ Thousands &mdash; score one in this column for declarations inside a `style` attribute.
++ Hundreds &mdash; score one in this column for each ID selector contained inside the overall selector.
++ Tens &mdash; score one in this column for each class selector, attribute selector, or pseudo-class contained inside the overall selector.
++ Ones &mdash; score one in this column for each element selector, or pseudo-element contained inside the overall selector.
+
+| NOTE: |
+| :---- |
+| The universal selector (`*`), combinators (`+`, `>`, `~`, `''` ) and negation pseudo-class (`:not`) have no effect on specificity.
+
+For example:
+
+| Selector | Thousands | Hundreds | Tens | Ones | Total specificity |
+| :------- | :-------- | :------- | :--- | :--- | :---------------- |
+| h1 | 0 | 0 | 0 | 1 | 1 |
+| h1 + p::first-letter | 0 | 0 | 0 | 3 | 3 |
+| li > a[href*="en-US"] > .inline-warning | 0 | 0 | 2 | 2 | 22 |
+| #identifier | 0 | 1 | 0 | 0 | 100 |
+| rule inside an element's style attribute | 1 | 0 | 0 | 0 | 1000 |
+
+| EXAMPLE: |
+| :------- |
+| See [03 &mdash; Playing with specificity](03-playing-with-specificity) for a runnable example on which you can play with the cascade and specificity rules. |
+
+
+| NOTE: |
+| :---- |
+| It is important to understand that the specificity value given in this section is just an illustration. In reality, any id selector will win over a selector that includes any number of classes. |
+
+##### Importance
+
+You can use `!important` declaration to override the normal rules of the cascade for a particular property and value.
+
+For example:
+
+```css
+#winning {
+  background-color: red;
+  border: 1px solid black;
+}
+
+.better {
+  background-color: gray;
+  border: none !important;
+}
+
+p {
+  background-color: blue;
+  color: white;
+  padding: 5px;
+}
+```
+
+```hmtl
+<p class="better">This is a paragraph</p>
+<p class="better" id="winning">One selector to rule them all</p>
+```
+
+This will render the following image:
+
+![Using important](images/using-important.png)
+
+The generic styling used in the `p {...}` ruleset for color and padding is applied to both paragraphs.
+
+Then, for the `background-color` and `border` we have to compute the specificity. For the first `<p class="better">` the declarations of the `.better { ... }` rule will win, and therefore will display the text with gray background and non border.
+
+However, for the second `<p class="better" id="winning">, the `#winning { ... }` rule will win as it is more specific. Therefore, it should show the background in red with 1px solid border in black.
+
+![Not using important](images/without-important.png)
+
+As `!important` is used in the `.better { ... }` rule definition, the border will not be displayed for the second `<p>`, as `!important` overrules any other cascade rule.
+
+| NOTE: |
+| :---- |
+| Using `!important` is discouraged as it makes debugging CSS problems really difficult. It should be used only in situations in which you can't override a particular style declaration (e.g. you don't have access to the core CSS modules). |
+
+### CSS selectors in depth
+
+CSS selectors are used to target the HTML elements on a web page that we want to style.
+
+The element or elements which are selected by the selector are referred to as the *subject* of the selector.
+
+If you have more than one thing that uses the same CSS, then the individual selectors you can combine them into a *selector list*.
+
+For example, the following rules:
+
+```css
+h1 {
+  color: blue;
+}
+
+.special {
+  color: blue;
+}
+```
+can be combined into a selector list:
+
+```css
+/* set text color to blue for <h1> or elements with class="special" */
+h1,
+.special {
+  color: blue;
+}
+```
+
+
 
 ## Examples, Exercises and mini-projects
 
 ### [01 &mdash; Hello, CSS!](01-hello-css)
 Illustrates how to apply CSS to a simple HTML document, and a few assorted rules practising selectors.
+
+### [02 &mdash; Playing with inheritance](02-playing-with-inheritance)
+Practising inheritance rules and property values.
+
+### [03 &mdash; Playing with specificity](03-playing-with-specificity)
+Practising cascade and specificity rules.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
@@ -576,6 +776,23 @@ An exercise illustrating how to style a simple text document using basic CSS.
 | [text-decoration](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration) | Shorthand CSS property that sets the appearance of decorative lines on text.<br>It is a shorthand for `text-decoration-line`, `text-decoration-color`, `text-decoration-style` and the `text-decoration-thickness`. | `text-decoration: underline;`<br>`text-decoration: underline dotted;`<br>`text-decoration: underline dotted red;` |
 | [transform](https://developer.mozilla.org/en-US/docs/Web/CSS/transform) | Lets you rotate, scale, skew, or translate an element. | `transform: rotate(0.5turn)`<br>`transform: rotate(0.5turn)`<br>`transform: translate(120px, 50%)`<br> |
 | [width](https://developer.mozilla.org/en-US/docs/Web/CSS/width) | Sets the element's width. | `width: 150px`<br>`width: 20em;`<br>`width: 75%`<br>`width: auto` |
+
+## CSS selectors cheatsheet
+
+| Selector expression | Meaning |
+| :------------------ | :------ |
+| h1 { ... }          | `<h1>` elements. |
+| p,<br>li { ... }    | `<p>` and `<li>` elements. |
+| .special { ... }    | Elements with `class="special"`. |
+| li.special { ... }  | `<li class="special">` elements. |
+| li.special,<br>span.special { ... } | `<li class="special">` and `<span class="special">` elements. |
+| li em { ... } | `<em>` elements wrapped inside `<li>` elements.<br>This is called the *descendant combinator. |
+| article p span { ... } | `<span>` wrapped inside `<p>` wrapped inside `<article>`. |
+| h1 + p { ... } | `<p>` that comes directly after a `<h1>` at the same hierarchy level.<br>This is called the *adjacent sibling combinator. |
+| .my-class-1 a { ... } | `<a>` elements wrapped into any element with `class="my-class-1"`. |
+| h1 + ul + p { ... } | first `<p>` in first `<ul>` coming after `<h1>`. |
+| body h1 + p .special { ... } | Any element with `class="special"` inside the first `<p>` coming after the `<h1>` in the `<body>`. |
+| a:link { ... } | `<a>` element in *unvisited state*. |
 
 
 
