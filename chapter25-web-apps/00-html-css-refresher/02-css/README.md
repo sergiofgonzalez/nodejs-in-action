@@ -708,6 +708,10 @@ However, for the second `<p class="better" id="winning">, the `#winning { ... }`
 
 As `!important` is used in the `.better { ... }` rule definition, the border will not be displayed for the second `<p>`, as `!important` overrules any other cascade rule.
 
+| EXAMPLE: |
+| :------- |
+| See [04 &mdash; Playing with !important](04-playing-with-important) for a runnable example on which you can practise the effect of `!important`. |
+
 | NOTE: |
 | :---- |
 | Using `!important` is discouraged as it makes debugging CSS problems really difficult. It should be used only in situations in which you can't override a particular style declaration (e.g. you don't have access to the core CSS modules). |
@@ -741,7 +745,91 @@ h1,
 }
 ```
 
+There are different groupings of selectors:
 
+#### Type, class, and ID selectors
+
+This grouping includes the following types of selectors:
+
+```css
+/* element type selector */
+h1 { ... }
+
+/* class selector */
+.box { ... }
+
+/* ID selector */
+#unique { ... }
+```
+
+#### Attribute selector
+
+Lets you target elements based on the presence of a certain attribute on an element:
+
+```css
+a[title] { ... }
+```
+
+Or even based on the presence of an attribute with a particular value:
+
+```css
+a[href="https://www.example.com"] { ... }
+```
+
+#### Pseudo-classes and peudo-elements
+
+This group of selectors include pseudo-classes that style an element when it is on a certain state (e.g. a link in the state when you're hovering over it):
+
+```css
+a:hover { ... }
+```
+
+It also includes pseudo-elements, which select a certain part of an element, rather than the element itself.
+For example `::first-line` selects the first line of text inside an element:
+
+```css
+p::first-line { ... }
+```
+
+#### Combinators
+
+Combine other selectors in order to target elements within our documents.
+
+For example, `article > p` uses the *child combinator* `>`, that targets paragraphs that are direct children of a `<p>`:
+
+```css
+article > p { ... }
+```
+
+There are found combinators:
+
+```css
+/*
+  descendant combinator
+    (targets <p> within <article>)
+*/
+article p { ... }
+
+/*
+  child combinator
+    (targets <p> that are direct children of <article>)
+*/
+article > p { ... }
+
+/*
+  adjacent sibling combinator
+    (targets <p> that come immediately after <article> at
+     the same hierarchy level)
+*/
+article + p { ... }
+
+/*
+  general sibling combinator
+    (targets any <p> that come after <article>, not
+     necessarily immediate)
+*/
+article ~ p { ... }
+```
 
 ## Examples, Exercises and mini-projects
 
@@ -753,6 +841,12 @@ Practising inheritance rules and property values.
 
 ### [03 &mdash; Playing with specificity](03-playing-with-specificity)
 Practising cascade and specificity rules.
+
+### [04 &mdash; Playing with !important](04-playing-with-important)
+Practising the effect of `!important` on CSS declarations
+
+### [05 &mdash; Playing with selector lists](05-selector-lists)
+Refactoring existing CSS code with *selector lists*.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
@@ -782,17 +876,23 @@ An exercise illustrating how to style a simple text document using basic CSS.
 | Selector expression | Meaning |
 | :------------------ | :------ |
 | h1 { ... }          | `<h1>` elements. |
-| p,<br>li { ... }    | `<p>` and `<li>` elements. |
 | .special { ... }    | Elements with `class="special"`. |
+| #unique { ... } | element with id="unique". |
+| p,<br>li { ... }    | `<p>` or `<li>` elements. |
 | li.special { ... }  | `<li class="special">` elements. |
 | li.special,<br>span.special { ... } | `<li class="special">` and `<span class="special">` elements. |
-| li em { ... } | `<em>` elements wrapped inside `<li>` elements.<br>This is called the *descendant combinator. |
+| li em { ... } | `<em>` elements wrapped inside `<li>` elements.<br>This is called the *descendant combinator*. |
 | article p span { ... } | `<span>` wrapped inside `<p>` wrapped inside `<article>`. |
-| h1 + p { ... } | `<p>` that comes directly after a `<h1>` at the same hierarchy level.<br>This is called the *adjacent sibling combinator. |
+| h1 + p { ... } | `<p>` that comes directly after a `<h1>` at the same hierarchy level.<br>This is called the *adjacent sibling combinator (adjacent sibling combinator). |
 | .my-class-1 a { ... } | `<a>` elements wrapped into any element with `class="my-class-1"`. |
 | h1 + ul + p { ... } | first `<p>` in first `<ul>` coming after `<h1>`. |
 | body h1 + p .special { ... } | Any element with `class="special"` inside the first `<p>` coming after the `<h1>` in the `<body>`. |
-| a:link { ... } | `<a>` element in *unvisited state*. |
+| a[title] { ... } | Any `<a>` element with the attribute `title`. |
+| a[href="https://example.com"] { ... } | Any `<a>` element with the attribute `href` and value `https://example.com`. |
+| a:link { ... } | `<a>` element in *unvisited state* (pseudo-class). |
+| p:first-line { ... } | first line of text in a `<p>` (pseudo-element). |
+| article > p { ... } | `<p>` elements that are direct children of `<article>` (child combinator). |
+| article ~ p { ... } | `<p>` elements within `<article>` (but not necessarily immediately after `<article>`)<br>This is called the *general sibling combinator*. |
 
 
 
