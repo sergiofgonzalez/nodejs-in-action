@@ -951,6 +951,9 @@ Refactoring existing CSS code with *selector lists*.
 ### [06 &mdash; Playing with type, class, and ID selectors](06-playing-with-element-type-class-id-selectors)
 Practising selectors involving types, classes and ids.
 
+### [07 &mdash; Playing with attribute selectors](07-playing-with-attribute-selectors)
+Practising the different variants of attribute selectors.
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
 
@@ -992,6 +995,12 @@ An exercise illustrating how to style a simple text document using basic CSS.
 | body h1 + p .special { ... } | Any element with `class="special"` inside the first `<p>` coming after the `<h1>` in the `<body>`. |
 | a[title] { ... } | Any `<a>` element with the attribute `title`. |
 | a[href="https://example.com"] { ... } | Any `<a>` element with the attribute `href` and value `https://example.com`. |
+| a[href="https://example.com" i] { ... } | Any `<a>` element with the attribute `href` and value `https://example.com` using a case-insensitive search. |
+| a[class~="special"] | Any `<a>` element with the attribute `class` and value that is exactly `"special"` or contains `"special"` in a space-separated list. |
+| li[class^="box-"] | Any `<li>` element with the attribute `class` and value that begins with `"box-"`. |
+| li[class$="-box"] | Any `<li>` element with the attribute `class` and value that ends with `"-box"`. |
+| li[class$*="box"] | Any `<li>` element with the attribute `class` and value that contains `"box"` in any position. |
+| div[lang|="zh"] { ... } | Any `<div>` with the attribute `lang` and value that is exactly `"zh"` or is `"zh-*"`. |
 | a:link { ... } | `<a>` element in *unvisited state* (pseudo-class). |
 | p:first-line { ... } | first line of text in a `<p>` (pseudo-element). |
 | article > p { ... } | `<p>` elements that are direct children of `<article>` (child combinator). |
@@ -1000,10 +1009,3 @@ An exercise illustrating how to style a simple text document using basic CSS.
 | article *:first-child { ... } | any descendant of `<article>` that are the first child of their parent, including direct children. |
 | .notebox.danger { ... } | any element with `class="notebox danger". |
 | h1#unique { ... } | `<h1>` elements with `id="unique"`. |
-
-
-
-
-
-
-
