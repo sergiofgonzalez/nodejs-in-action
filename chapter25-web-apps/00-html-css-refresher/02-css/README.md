@@ -747,6 +747,40 @@ h1,
 
 There are different groupings of selectors:
 
++ [Type, class, and ID selectors](#type-class-and-id-selectors)
++ [Attribute selectors](#attribute-selectors)
++ [Pseudo-classes and pseudo-elements](#pseudo-classes-and-pseudo-elements)
++ [Combinators](#combinators)
+
+Additionally, there is a special selector called *universal selector* (denoted by a `*`). It selects everything in the document (or inside the parent element if it is being chained together with another element and a descendant combinator).
+
+For example, we can remove the margins in all elements defining the following CSS rule:
+
+```css
+* {
+  margin: 0;
+}
+```
+
+It is also use to make selectors easier to read and more obvious in terms of what they are doing.
+
+For example, to select any descendant elements of `<article>` that are the first child of their parent, including direct children, we could use the `:first-child` pseudo class.
+
+```css
+article :first-child {
+  font-weight: bold;
+}
+```
+
+However, it is less prone to confusion with `article:first-child` if we do:
+
+```css
+article *:first-child {
+  font-weight: bold;
+}
+```
+
+
 #### Type, class, and ID selectors
 
 This grouping includes the following types of selectors:
@@ -758,11 +792,28 @@ h1 { ... }
 /* class selector */
 .box { ... }
 
+/* class selector on specific element type */
+span.highlight { ... }
+
+/* class selector for elements with more than one class */
+.notebox.danger { ... }
+
 /* ID selector */
 #unique { ... }
+
+/* ID selector if element type match */
+h1#unique { ... }
 ```
 
-#### Attribute selector
+| NOTE: |
+| :---- |
+| As a good practice, it is preferable to add a class to an element to style it, rather than style it via an ID. |
+
+| EXAMPLE: |
+| :------- |
+| See [06 &mdash; Playing with type, class, and ID selectors](06-playing-with-element-type-class-id-selectors) for a runnable example on which you can practice type, class and id selectors. |
+
+#### Attribute selectors
 
 Lets you target elements based on the presence of a certain attribute on an element:
 
@@ -776,7 +827,56 @@ Or even based on the presence of an attribute with a particular value:
 a[href="https://www.example.com"] { ... }
 ```
 
-#### Pseudo-classes and peudo-elements
+Let's see all the possibilities with examples:
+
+```css
+/* match <a> elements with title attributte */
+a[title] { ... }
+
+/* match <a> elements with href attribute set to https://example.com */
+a[href="https://example.com"] { ... }
+
+/*
+  match <p> elements with class attribute equal to,
+  or containing "special" delimited by spaces
+*/
+p[class~="special"] { ... }
+
+/*
+  match <div> elements with a lang attribute that is exactly "zh"
+  or begins with "zh" followed by a hyphen
+*/
+div[lang|="zh"] { ... }
+
+/*
+  match <li> elements with a class attribute
+  whose value begins with "box-"
+*/
+li[class^="box-"]
+
+/*
+  match <li> elements with a class attribute
+  whose value ends with "-box"
+*/
+li[class$="-box"]
+
+/*
+  match <li> elements with a class attribute
+  whose value contains with "box" anywhere within the string
+*/
+li[class*="box"]
+```
+
+Matches are always case-sensitive. If you would like to make the searches insensitive, you can use the `i` modifier before the closing bracket as in:
+
+```css
+/* will match <li> elements with either class="a*" or class="A*" */
+li[class^="a" i]
+```
+
+
+
+#### Pseudo-classes and pseudo-elements
 
 This group of selectors include pseudo-classes that style an element when it is on a certain state (e.g. a link in the state when you're hovering over it):
 
@@ -848,6 +948,9 @@ Practising the effect of `!important` on CSS declarations
 ### [05 &mdash; Playing with selector lists](05-selector-lists)
 Refactoring existing CSS code with *selector lists*.
 
+### [06 &mdash; Playing with type, class, and ID selectors](06-playing-with-element-type-class-id-selectors)
+Practising selectors involving types, classes and ids.
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
 
@@ -893,6 +996,10 @@ An exercise illustrating how to style a simple text document using basic CSS.
 | p:first-line { ... } | first line of text in a `<p>` (pseudo-element). |
 | article > p { ... } | `<p>` elements that are direct children of `<article>` (child combinator). |
 | article ~ p { ... } | `<p>` elements within `<article>` (but not necessarily immediately after `<article>`)<br>This is called the *general sibling combinator*. |
+| * { ... } | any element.<br>This is called *universal selector*. |
+| article *:first-child { ... } | any descendant of `<article>` that are the first child of their parent, including direct children. |
+| .notebox.danger { ... } | any element with `class="notebox danger". |
+| h1#unique { ... } | `<h1>` elements with `id="unique"`. |
 
 
 

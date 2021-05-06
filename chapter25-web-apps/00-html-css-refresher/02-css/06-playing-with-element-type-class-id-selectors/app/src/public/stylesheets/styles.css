@@ -1,0 +1,49 @@
+/*
+
+ with text in `rebeccapurple` color.
+*/
+
+span {
+  background-color: yellow;
+}
+
+em,
+strong {
+  background-color: rebeccapurple;
+}
+
+* {
+  margin: 0;
+}
+
+.highlight {
+  background-color: pink;
+}
+
+h2.highlight {
+  background-color: salmon;
+}
+
+.notebox {
+  border: 4px solid gray;
+  padding: .5em;
+  margin: 5px;
+}
+
+.notebox.warning {
+  border-color: orange;
+  font-weight: bold;
+}
+
+.notebox.danger {
+  border-color: red;
+  font-weight: bolder;
+}
+
+#one {
+  background-color: green;
+}
+
+h2#two {
+  color: rebeccapurple;
+}
