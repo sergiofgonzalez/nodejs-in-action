@@ -1,0 +1,44 @@
+article p:first-child {
+  font-size: 120%;
+  font-weight: bold;
+}
+
+a:link,
+a:visited {
+  color: rebeccapurple;
+  font-weight: bold;
+}
+
+a:hover {
+  color: pink;
+}
+
+article p::first-line {
+  color: gray;
+}
+
+article p:first-child::first-line {
+  background-color: greenyellow;
+}
+
+p::before {
+  content: "📺"
+}
+
+p::after {
+  content: "👍"
+}
+
+.box {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 20px;
+}
+
+.box::before {
+  content: "";
+  display: block;
+  width: 200px;
+  height: 100px;
+  background-color: blue;
+}

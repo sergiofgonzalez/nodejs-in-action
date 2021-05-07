@@ -874,26 +874,102 @@ Matches are always case-sensitive. If you would like to make the searches insens
 li[class^="a" i]
 ```
 
-
-
 #### Pseudo-classes and pseudo-elements
 
-This group of selectors include pseudo-classes that style an element when it is on a certain state (e.g. a link in the state when you're hovering over it):
+This group of selectors include pseudo-classes that style an element when it is on a certain state (e.g. a link in the state when you're hovering over it, or an element that happens to be the first element of their type).
+
+##### Pseudo-classes
+
+Pseudo-classes are keywords that start with a colon as in `:hover` or `:first-child`.
+
+
+For example, the following rule will style the first `<p>` element found within an article.
+
+```css
+article p:first-child {
+  font-size: 120%;
+  font-weight: bold;
+}
+```
+
+| NOTE: |
+| :---- |
+| Other similar pseudo-classes are `:last-child`, `:only-child` and `:invalid` (input that failed to validte). |
+
+
+Other type of pseudo-classes are the *user-action pseudo classes*, that apply when the user interacts with an element in some particular way like:
++ `:hover` &mdash; applies when the user moves the mouse over an element.
++ `:focus` &mdash; applies when the user focuses on an element using keyboard controls.
+
 
 ```css
 a:hover { ... }
 ```
 
-It also includes pseudo-elements, which select a certain part of an element, rather than the element itself.
-For example `::first-line` selects the first line of text inside an element:
+##### pseudo-elements
+
+Pseudo-elements, which select a certain part of an element, rather than the whole element itself. That is, they act as if you would add a new HTML element into the markup.
+For example `::first-line` selects the first line of text inside an element, that would be the same as wrapping the first line of text in a `<span>`.
 
 ```css
 p::first-line { ... }
 ```
 
+It is possible to combine pseudo-classes and pseudo-elements:
+
+```css
+article p:first-child::first-line {
+  font-size: 120%;
+  font-weight: bold;
+}
+```
+
+There are a couple of special pseudo-elements that let you add content before and after a given element using CSS and the `content` property:
+
+```css
+.box::before {
+  content: "This should show before the box content"
+}
+
+.box::after {
+  content: "This should show after the box content"
+}
+```
+
+| NOTE: |
+| :---- |
+| Adding text content using `::before` and `::after` is discouraged for accesibility reasons. However, a valid usage is to insert an icon before or after an element as in `content: " ➥". |
+
+Those pseudo-elements can also be used to insert an empty string that can then be styles just like any element on the page.
+
+In the following example, we create a 100x100 pixels purple square right before a `<p>` element.
+
+```css
+.box::before {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 100px;
+  background-color: rebeccapurple;
+  border: 1px solid black;
+}
+```
+
+```html
+<p class="box">Contents in the box.</p>
+```
+
+> [MDN: pseudo-classes reference](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements#pseudo-classes)
+
+> [MDN: pseudo-elements reference](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements#pseudo-elements)
+
+| EXAMPLE: |
+| :------- |
+| See [08 &mdash; Playing with pseudo-classes and pseudo-elements](08-playing-with-pseudo-classes-and-pseudo-elements) for a runnable example on which you can practise with pseudo-classes and pseudo-elements. |
+
 #### Combinators
 
-Combine other selectors in order to target elements within our documents.
+Combine other selectors in order to target elements within our documents based on their relationship.
 
 For example, `article > p` uses the *child combinator* `>`, that targets paragraphs that are direct children of a `<p>`:
 
@@ -911,10 +987,23 @@ There are found combinators:
 article p { ... }
 
 /*
+  descendant combinator
+    (targets <p> within elements with class="box")
+*/
+.box p { ... }
+
+
+/*
   child combinator
     (targets <p> that are direct children of <article>)
 */
 article > p { ... }
+
+/*
+  child combinator
+    (targets <li> that are direct children of <ul>)
+*/
+ul > li { ... }
 
 /*
   adjacent sibling combinator
@@ -924,12 +1013,42 @@ article > p { ... }
 article + p { ... }
 
 /*
+  adjacent sibling combinator
+    (targets <img> that come immediately after <p> at
+     the same hierarchy level)
+*/
+p + img { ... }
+
+/*
   general sibling combinator
     (targets any <p> that come after <article>, not
      necessarily immediate)
 */
 article ~ p { ... }
+
+/*
+  general sibling combinator
+    (targets any <image> that come after <p>, not
+     necessarily immediate)
+*/
+p ~ image { ... }
 ```
+
+You can combine any of the selectors with combinators to target specific parts of your document. For example:
+
+```css
+/*
+  target <li> elements with a class attribute with value "a"
+  that are direct children of an <ul>
+*/
+ul > li[class="a"] { .. }
+```
+
+| EXAMPLE: |
+| :------- |
+| See [e02 &mdash; Practising selectors](e02-practising-selectors) for a runnable example on which you can practice the different ways to target elements on a page. |
+
+### The box model
 
 ## Examples, Exercises and mini-projects
 
@@ -954,8 +1073,14 @@ Practising selectors involving types, classes and ids.
 ### [07 &mdash; Playing with attribute selectors](07-playing-with-attribute-selectors)
 Practising the different variants of attribute selectors.
 
+### [08 &mdash; Playing with pseudo-classes and pseudo-elements](08-playing-with-pseudo-classes-and-pseudo-elements)
+Practising selectors with pseudo-classes and pseudo-elements
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
+
+### [e02 &mdash; Practising selectors](e02-practising-selectors)
+An exercise practising all the different ways to write selectors.
 
 ## CSS properties cheatsheet
 
@@ -967,6 +1092,8 @@ An exercise illustrating how to style a simple text document using basic CSS.
 | [border](https://developer.mozilla.org/en-US/docs/Web/CSS/border) | Sets an element's border. | `border: solid`<br>`border: dashed red`<br>`border: 2px solid black`<br>`border: 4mm ridge rgba(170, 50, 220, .6` |
 | [border-bottom](https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom) | Shorthand CSS property that sets an element's bottom border.<br>It sets the values of `border-bottom-width`, `border-bottom-style` and `border-bottom-color`. | `border-bottom: solid`<br>`border-bottom: dashed red`<br>`border-bottom: thick double #32a1ce` |
 | [color](https://developer.mozilla.org/en-US/docs/Web/CSS/color) | Sets the foreground color value of an element's text and text decorations and sets the `currentcolor` value. | `color: brown`<br>`color: initial`<br>`color: rgb(214, 122, 127)` |
+| [content](https://developer.mozilla.org/en-US/docs/Web/CSS/content) | Replaces an element with a generated value. | `content: "this should go before the element's content". |
+| [display]() | sets whether an element is treated as a block or inline element, and the layout used for its children. | `display: block` |
 | [font](https://developer.mozilla.org/en-US/docs/Web/CSS/font) | shorthand property that sets all different properties of an element's font. | `font: 1.2em "Fira Sans", sans-serif;`<br>`font: italic 1.2em "Fira Sans", serif;`<br> |
 | [font-family](https://developer.mozilla.org/en-US/docs/Web/CSS/font-family) | Specifies a prioritized list of one or more family names and/or generic family names for the selected element. | `font-family: Georgia, serif;`<br>`font-family: "Gill Sans", sans-serif;`<br> |
 | [font-size](https://developer.mozilla.org/en-US/docs/Web/CSS/font-size) | Sets the size of the font. | `font-size: 1.2em`<br>`font-size: x-small`<br>`font-size: 12px`<br>`font-size: 80%`<br>`font-size: smaller` |
@@ -1002,10 +1129,33 @@ An exercise illustrating how to style a simple text document using basic CSS.
 | li[class$*="box"] | Any `<li>` element with the attribute `class` and value that contains `"box"` in any position. |
 | div[lang|="zh"] { ... } | Any `<div>` with the attribute `lang` and value that is exactly `"zh"` or is `"zh-*"`. |
 | a:link { ... } | `<a>` element in *unvisited state* (pseudo-class). |
-| p:first-line { ... } | first line of text in a `<p>` (pseudo-element). |
+| p::first-line { ... } | first line of text in a `<p>` (pseudo-element). |
 | article > p { ... } | `<p>` elements that are direct children of `<article>` (child combinator). |
 | article ~ p { ... } | `<p>` elements within `<article>` (but not necessarily immediately after `<article>`)<br>This is called the *general sibling combinator*. |
 | * { ... } | any element.<br>This is called *universal selector*. |
 | article *:first-child { ... } | any descendant of `<article>` that are the first child of their parent, including direct children. |
 | .notebox.danger { ... } | any element with `class="notebox danger". |
 | h1#unique { ... } | `<h1>` elements with `id="unique"`. |
+| article p:first-child | first `<p>` element within an `<article>`. |
+| .box::before { content: "..." } | add the specified content before the elements with `class="box"`. |
+| .box::after { content: "..." } | add the specified content after the elements with `class="box"`. |
+
+### Pseudo-classes cheatsheet
+
+| Pseudo-class | Description |
+| :----------- | :---------- |
+| :first-child | selects the first child of an HTML element. |
+| :last-child  | selects the last child of an HTML element. |
+| :only-child | selects the child of an element that has no other children. |
+| :link | applies to an *unvisited link*. |
+| :visited | applies to a visited link. |
+| :hover | applies when the user moves the mouse over an element. |
+| :invalid | select an element (i.e. `<input>`) that failed to validate. |
+
+### Pseudo-element cheatsheet
+
+| Pseudo-element | Description |
+| :------------- | :---------- |
+| ::first-line   | select the first line of an element. |
+| ::before | add content before the identified element via the `content` property. |
+| ::after | add content after the identified element via the `content` property. |

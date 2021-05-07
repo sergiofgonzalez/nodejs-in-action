@@ -1,0 +1,34 @@
+/*
+  descendant combinator
+  match p within elements with class="box"
+*/
+.box p {
+  color: red;
+}
+
+/*
+  child combinator
+  match li elements that are direct children of ul
+*/
+ul > li {
+  border: 1px solid black;
+}
+
+/*
+  adjacent
+  match p coming immediately after h1
+*/
+h1 + p {
+  background-color: black;
+  color: white;
+}
+
+/*
+  sibling combinator
+  match p coming after h1, maybe not immediately after
+*/
+h2 ~ p {
+  background-color: blue;
+  color: yellow;
+  font-weight: bold;
+}
