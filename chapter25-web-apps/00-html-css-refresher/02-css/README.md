@@ -1050,6 +1050,188 @@ ul > li[class="a"] { .. }
 
 ### The box model
 
+Everything in CSS has a box around it. Understanding how this works and the terminology around it is key to be able to create complex layouts with CSS.
+
+#### Block and inline boxes
+
+In CSS there are broadly two types of boxes that dictate how the box behaves in terms of page flow, and in relation with other boxes on the page:
++ **block boxes**
+  + the box will break onto a new line.
+  + the box will extend in the inline direction to fill the space available in its container.<br>In most cases this means that the box will become as wide as its container, filling up 100% of the space available.
+  + the `width` and `height` properties will be respected.
+  + padding, margin, and border will cause other elements to be pushed away from the box (more on this later).
+  + unless explicitly changing the display type to inline, *HTML block-level elements* such as `<h1>` and `<p>` will use `block` as their outer display type by default.
+
++ **inline boxes**
+  + the box will not break onto a new line.
+  + the `width` and `height` properties will not apply.
+  + vertical padding, margins, and borders will apply but will not cause other inline boxes to move away from the box.
+  + horizontal padding, margins, and borders will apply and will cause other inline boxes to move away from the box.
+  + *HTML inline elements* such as `<span>`, `<em>`, and `<strong>` will display inline by default.
+
+Remember that:
++ **HTML Block-level elements** form a visible block on a page. A *block-level element* appears on a new line following the content that precedes it. Any content that follows a *block-level element* also appears on a new line.<br>*Block-level elements* are usually structural elements on the page, such as headings, paragraphs, lists, navigation menus, or footers.<br>*A block-level* element wouldn't be nested inside an inline element, but it might be nested inside another *block-level* element.
+
++ **Inline elements** are contained within *block-level elements*, and surround only small parts of the document's content. An *inline element* will not cause a new line to appear in the document. It is typically used with text, for example `<a>` element to create a hyperlink in some existing text, or `<em>` or `<strong>` to create emphasis on some parts of a paragraph text.
+
+#### Aside: Inner and outer display types
+
+CSS boxes have an **inner** and **outer** display types.
+
++ the **outer display type** details whether the box is block or inline.
+
++ the **inner display type** dictates how elements inside that box are laid out. By default, the elements inside a box are laid out in *normal flow*, which means that they behave just line any other block and inline elements.<br>The inner display type can be changed using values like `display: flex`.<br>If the outer display of an element is `block` but the inner display is set to `flex`, the direct children of the box will become `flex` items and will be laid out according to the rules set out in the *Flexbox spec*.
+
+| NOTE: |
+| :---- |
+| Block and inline layout is the default way that things on the web behave, that is whyc this style is known as the *normal flow*. Other layouts like `flex` and `grid` will be learned later. |
+
+#### Examples of different display types
+
+The best way to familiarize yourself with the different display types is through examples.
+
+Let's start with a simple `<p>`, a *block-level element* which will have by default an *outer display* type of `block`. The browser will render it as a block box, occupying the whole width of the container and laid out on a new line as we'd expect:
+
+![Paragraph with block outer display](images/block_outer_display.png)
+
+Let's now see a simple `<ul>` with three items. These are also *block-level* elements, which a default *outer display* of `block`. Therefore, they will be rendered also as block boxes:
+
+![list with block outer display](images/ul_block_display.png)
+
+Now, if we set the display of the `<ul>` element as `flex` will make the children elements of `<ul>` (that is the `<li>`) to behave different than in the normal flow. However, the `<ul>` itself will behave as a block (that is, will still have an outer display of `block`).
+
+![list with flex display](images/ul_with_flex_display.png)
+
+As another example, let's see a normal `<p>` that has some `<span>` elements within it. In the normal flow, the `<p>` will be rendered as a block, and the `<span>` elements as inline elements.
+
+![Paragraph with spans](images/paragraph_with_spans_normal_flow.png)
+
+If we style one of the `<span>`s with `display: block`, the outer display for that `<span>` will change and will behave like a block box.
+
+![Span with block outer display](images/span_block.png)
+
+See how a new line is inserted before and after the element, and how the space takes the whole width of the parent container (in this case the `<p>` element).
+
+
+As another example of the normal flow, we see a paragraph with `<span>`s wrapped within it whose display have not been modified. The `<p>` is displayed as a block, and the `<span>`s as inline boxes as expected:
+
+![Another paragraph with normal flow](images/example2_p_normal_flow.png)
+
+Let's see now a list whose display type is set to `inline-flex`. This will create an inline box for the list, and will apply the inner flex display so that the `<li>` items won't follow the normal flow.
+
+![List with inline-flex](images/list_inline_flex.png)
+
+See the difference with the example in which we set the `<ul>` display to `flex`. In that case, the list itself was rendered as a block and took the whole space, while in this space it just occupies the space that it needs.
+
+Something similar will happen to paragraphs on which we change their display type to `inline`. As a matter of fact, if we place them contiguous to the list we see that there is no line break:
+
+![Paragraphs with inline display](images/paragraphs_inline_display.png)
+
+| EXAMPLE: |
+| :------- |
+| See [10 &mdash; CSS box model: Examples of different display types](10-box-model-display-types) for a runnable example that illustrates the different types of displays. |
+
+#### What is the CSS Box model?
+
+The full CSS box model applies to *block boxes*; *inline boxes* only use some of the behavior defined in the model.
+
+The model defines how the different parts of a box (margin, border, padding, and content) work together to create a box that you can see on the page.
+
+To add some additional complexity 😉, there is a standard and alternate box model.
+
+##### Parts of a box
+
+The following diagram illustated the different parts that make up a block box in CSS:
+
+![Parts of a block box](images/parts_of_block_box.png)
+
++ **Content box**: the area where your content is displayed, which can be sized using properties like `width` and `height`.
+
++ **Padding box**: the area that sits around the content as white space, whose size can be controlled using `padding`.
+
++ **Border box**: the area that wraps the padding, and whose size and style can be controlled using `border`.
+
++ **Margin box**: the outermost layer that wraps the border, as whitespace between this box and other elements, and whose size can be controlled using `margin`.
+
+##### The standard CSS box model
+
+In the standard box model, if you give a box a `width` and a `height` attribute, this defines the width and height of the content box.
+
+Any padding and border is then added to the width and height to get the total size taken up by the box.
+
+As a result, if we have the following rule:
+
+```css
+.box {
+  width: 350px;
+  height: 150px;
+  margin: 10px;
+  padding: 25px;
+  border: 5px solid black;
+}
+```
+
+The space taken up by our box is illustrated in the following diagram:
+
+![CSS box model example](images/css_box_model_example.png)
+
+```
+total_width = 5 + 25 + 350 + 25 + 5 = 410px
+total_height = 5 + 25 +150 + 25 + 5 = 210px
+```
+
+Note that the margin is not counted towards the area of the box &mdash; it affects the total space that the box will take up on the page, but it is considered outside the box.
+
+
+##### The alternative CSS box model
+
+In the alternative CSS box model, the width and the height are the width and height of the visible box on the page. That is, you don't have to add up the border and padding to get the actual size.
+
+![CSS alternative box model](images/css_alternative_box_model.png)
+
+By default, browsers use the standard box model. To enable the alternative model for an element you have to use the setting `box-sizing: border-box` as seen below:
+
+```css
+.box {
+  box-sizing: border-box;
+}
+```
+
+If you want to activate the alternative box model in the whole document, you can do:
+
+```css
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+```
+
+#### Playing with box models
+
+##### Viewing the box models with DevTools
+
+#### Margins, padding, and borders
+
+##### Margin
+
+###### Margin collapsing
+
+##### Borders
+
+##### Padding
+
+#### The box model and inline boxes
+
+#### Using display: inline-block
+
+
+
+
 ## Examples, Exercises and mini-projects
 
 ### [01 &mdash; Hello, CSS!](01-hello-css)
@@ -1074,7 +1256,13 @@ Practising selectors involving types, classes and ids.
 Practising the different variants of attribute selectors.
 
 ### [08 &mdash; Playing with pseudo-classes and pseudo-elements](08-playing-with-pseudo-classes-and-pseudo-elements)
-Practising selectors with pseudo-classes and pseudo-elements
+Practising selectors with pseudo-classes and pseudo-elements.
+
+### [09 &mdash; Playing with pseudo-classes and pseudo-elements](09-playing-with-combinators)
+Practising combinators.
+
+### [10 &mdash; CSS box model: Examples of different display types](10-box-model-display-types)
+Illustrating several types of display types by example.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
@@ -1091,9 +1279,10 @@ An exercise practising all the different ways to write selectors.
 | [background-image](https://developer.mozilla.org/en-US/docs/Web/CSS/background-image) | Sets one or more background images on an element. | `background-image: url(../images/lizard.png)`<br>`background-image: url(../images/lizard.png), url(../images/star.png)`<br>`background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)), url(../images/lizard.png)` |
 | [border](https://developer.mozilla.org/en-US/docs/Web/CSS/border) | Sets an element's border. | `border: solid`<br>`border: dashed red`<br>`border: 2px solid black`<br>`border: 4mm ridge rgba(170, 50, 220, .6` |
 | [border-bottom](https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom) | Shorthand CSS property that sets an element's bottom border.<br>It sets the values of `border-bottom-width`, `border-bottom-style` and `border-bottom-color`. | `border-bottom: solid`<br>`border-bottom: dashed red`<br>`border-bottom: thick double #32a1ce` |
+| [box-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing) | Sets how the total width and height of an element is calculated. | `box-sizing: border-box`<br>`box-sizing: inherit` |
 | [color](https://developer.mozilla.org/en-US/docs/Web/CSS/color) | Sets the foreground color value of an element's text and text decorations and sets the `currentcolor` value. | `color: brown`<br>`color: initial`<br>`color: rgb(214, 122, 127)` |
 | [content](https://developer.mozilla.org/en-US/docs/Web/CSS/content) | Replaces an element with a generated value. | `content: "this should go before the element's content". |
-| [display]() | sets whether an element is treated as a block or inline element, and the layout used for its children. | `display: block` |
+| [display](https://developer.mozilla.org/en-US/docs/Web/CSS/display) | sets whether an element is treated as a block or inline element, and the layout used for its children. | `display: block`<br>`display: inline`<br>`display: flex`<br>`display: inline-flex` |
 | [font](https://developer.mozilla.org/en-US/docs/Web/CSS/font) | shorthand property that sets all different properties of an element's font. | `font: 1.2em "Fira Sans", sans-serif;`<br>`font: italic 1.2em "Fira Sans", serif;`<br> |
 | [font-family](https://developer.mozilla.org/en-US/docs/Web/CSS/font-family) | Specifies a prioritized list of one or more family names and/or generic family names for the selected element. | `font-family: Georgia, serif;`<br>`font-family: "Gill Sans", sans-serif;`<br> |
 | [font-size](https://developer.mozilla.org/en-US/docs/Web/CSS/font-size) | Sets the size of the font. | `font-size: 1.2em`<br>`font-size: x-small`<br>`font-size: 12px`<br>`font-size: 80%`<br>`font-size: smaller` |

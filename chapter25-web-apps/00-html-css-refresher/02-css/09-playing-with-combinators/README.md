@@ -1,4 +1,4 @@
-# 08 &mdash; Playing with pseudo-classes and pseudo-elements
+# 09 &mdash; Playing with pseudo-classes and pseudo-elements
 > practising combinators
 
 ## Description
