@@ -1213,23 +1213,282 @@ html {
 
 #### Playing with box models
 
-##### Viewing the box models with DevTools
+It is easy to transform from one model to the other just by taking into account the [box model parts](#parts-of-a-box).
+
+For example, for a box specified using the standard model as:
+
+```css
+.box {
+  border: 5px solid rebeccapurple;
+  background-color: lightgray;
+  padding: 40px;
+  margin: 40px;
+  width: 300px;
+  height: 150px;
+}
+```
+
+We can get the exact same box using the alternative model using:
+
+```css
+.alternative {
+  box-sizing: border-box;
+  border: 5px solid rebeccapurple;
+  background-color: lightgray;
+  padding: 40px;
+  margin: 40px;
+  width: 390px;
+  height: 240px;
+}
+```
+
+Your browser's DevTools can help you understand the box model and the different sizes of your elements in the page.
+
+For example, for the element associated with the standard box model above it will show:
+
+![DevTools: Standard box model](images/dev_tools_box_size_std.png)
+
+And for the alternative one it will show:
+![DevTools: Alternative box model](images/dev_tools_box_size_alt.png)
+
+Note how for the alternative box model it also shows `box-sizing: border-box`.
 
 #### Margins, padding, and borders
 
+The properties `margin`, `padding` and `border` are shorthands that allow us to set all the characteristics of the box at once.
+
+The following sections introduce the *longhand* properties when we want to control the different characteristics individually, and define these properties in detail.
+
 ##### Margin
+
+> Margin is an invisible space around your box. It pushes other elements away from the box. It can have positive (push away) or negative (make it closer). The margin is added after the size of the visible box has been calculated (both for the standard and alternative box model).
+
+All the margins of an element can be controlled with the `margin` element, or individually using `margin-top`, `margin-right`, `margin-bottom`, `margin-left`.
 
 ###### Margin collapsing
 
+The *margin collapsing* is the situation where you have two elements whose margin touch, with both margins being positive, and the margin is combined to become one margin which is the size of the largest individual margin.
+
+You should be aware of this situation when you are creating space with margins and don't get the space that you expect.
+
+In the image below you can see that happening:
+
+![Margin collapsing](images/margin_collapsing.png)
+
+We have two paragraphs with the following margins specified:
+
+```css
+.one {
+  margin-bottom: 50px;
+}
+
+.two {
+  margin-top: 30px;
+}
+```
+
+The margin that exists between the two paragraphs is not 50px + 30px because it has collapsed to 50px. As a result, if I make:
+
+```css
+.two {
+  margin-top: 0px;
+}
+```
+the layout won't change, because it is `margin-bottom` the one that is dictating the margin between the two elements.
+
+| EXAMPLE: |
+| :------- |
+| See [12 &mdash; Margin collapsing](margin-collapsing) for a runnable example on which you can play with margins to see the margin collapsing in action. |
+
+| NOTE: |
+| :---- |
+| The rules that dictate when margins do and do not collapse and how are somewhat complicated. You can find all the detailed information on [MDN: Mastering margin collapsing](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing).<br>For example, when setting a width and height for a container that wraps two elements whose margin should be collapsing, it won't happen. |
+
 ##### Borders
+
+> The border is drawn between the margin and the padding of a box. If you are using the standard box model, the size of the border is added to the `width` and `height` of the box. If you are using the alternative box model, the size of the border makes the content box smaller, as it takes up some of that available space (along with the padding).
+
+You can set the width, style, or color of all the four borders of an element using the `border` shorthand property.
+
+There are a huge number of longhand properties related to the border, as well:
+
++ To set the properties of each side individually you can use `border-top`, `border-right`, `border-bottom` and `border-left`.
+
++ To se the width, style, or color of all sides you can use `border-width`, `border-style`, and `border-color`.
+
++ To set the width, style, or color of a single side you can use (`{side}` being `top`, `right`, `bottom`, `left`):
+  + `border-{side}-width`
+  + `border-{side}-style`
+  + `boder-{side}-color`
+
+| EXAMPLE: |
+| :------- |
+| See [13 &mdash; Setting border properties](13-setting-border-properties for an example using *longhand* border properties. |
 
 ##### Padding
 
+> The padding sits between the border and the content area. Unlike margins, you cannot have negative amounts of padding. Any background applied to your element will display behind the padding, and it is typically used to push the content away from the border.
+
+The `padding` property sets the padding on all four sides of the box, or you can use the `padding-{side}` properties to set the padding individually.
+
+| EXAMPLE: |
+| :------- |
+| See [14 &mdash; Setting the padding](14-setting-padding) for a runnable example on which you can practice the longhand padding properties. |
+
 #### The box model and inline boxes
+
+All the properties discussed apply fully to block boxes (`display: block` like the ones created for `<p>`, `<div>`, and `<h1>`). Some of the properties, but not all, can apply to inline boxes too, such as those created by `<span>` elements.
+
+Consider the example below, in which we have applied the following CSS to the `<span>` element:
+
+```css
+span {
+  background-color: lightblue;
+  border: 1px solid blue;
+  margin: 20px;
+  padding: 20px;
+  width: 800px;
+  height: 500px;
+}
+```
+
+While `margin`, `border`, and `padding` are respected, `width` and `height` will be ignored.
+
+![Box model: inline elements](images/box_model_inline_elements.png)
+
+Note also that while the vertical margin, padding and border are respected, they do not change the relationship of the other content with the inline box, so the padding and border overlaps with other words in the paragraph. Horizontal padding, margins and border will be respected too.
+
+| EXAMPLE: |
+| :------- |
+| See [15 &mdash; Box model and inline boxes](15-box-model-and-inline-boxes) for a runnable example on which you can practise the properties applied to inline boxes. |
+
 
 #### Using display: inline-block
 
+The value `display: inline-block` provides a middle ground between `display: block` and `display: inline`.
 
+It will make the element not to break onto a new line, while respecting the `width` and `height` values.
+
+See in the image below how the `<span>` does not force the text around it to break into a new line, while we are able to set a particular width and height:
+
+![display: inline-block](images/display_inline-block.png)
+
+```css
+span {
+  display: inline-block;
+  background-color: lightblue;
+  border: 1px solid blue;
+  margin: 20px;
+  padding: 20px;
+  width: 80px;  /* respected in inline-block boxes */
+  height: 50px; /* respected in inline-block boxes */
+}
+```
+
+| EXAMPLE: |
+| :------- |
+| See [16 &mdash; Using `display: inline-block`](16-display-inline-block) for a runnable example that illustrates the use of `display: inline-block`. |
+
+This type of display is fairly frequent in navigation bars, when you want to give a link a larger hit area by adding padding, and you want the other elements to respect that padding without appearing to overlap.
+
+Let's see that with an example in which we have a nav bar with three links. The display value of the list is set to `flex` to be able to control the flow differently from the normal flow:
+
+```html
+<nav>
+  <ul class="links-list">
+    <li><a href="">Link one</a></li>
+    <li><a href="">Link two</a></li>
+    <li><a href="">Link three</a></li>
+  </ul>
+</nav>
+```
+
+```css
+ul {
+  display: flex;
+  list-style: none;
+  border: 2px solid rebeccapurple;
+  width: 300px;
+}
+
+.links-list a {
+  background-color: rgb(179, 57, 81);
+  color: #fff;
+}
+
+.links-list a:hover {
+  background-color: rgb(66, 28, 40);
+  color: #fff;
+}
+```
+
+This will be displayed as seen below:
+
+![Nav bar before adjustments](images/nav_inline_block_before.png)
+
+As the links are quite small, is quite common to add some padding to the `<a>` elements, so that they occupy more space:
+
+```css
+.links-list a {
+  background-color: rgb(179, 57, 81);
+  color: #fff;
+  padding: 1em 2em;
+  margin: 10px;
+}
+```
+
+![Nav bar with padding and margins](images/nav_inline_block_padding_margin.png)
+
+This improves the appearance and UX of the links, but we see how the links seem to have *overflown* the `<ul>` container.
+
+This can be fixed applying a display `inline-block` to the links:
+
+```css
+.links-list a {
+  background-color: rgb(179, 57, 81);
+  color: #fff;
+  padding: 1em 2em;
+  margin: 10px;
+  display: inline-block;
+}
+```
+
+![Nav bar final](images/nav_inline_block_final.png)
+
+
+In the final image we see how the padding is respected by the other elements.
+
+| EXAMPLE: |
+| :------- |
+| See [17 &mdash; Using `display: inline-block` in navigation bars](chapter25-web-apps/00-html-css-refresher/02-css/17-display-inline-block-nav-bars) for a runnable example. |
+
+### Backgrounds and borders
+
+#### Styling backgrounds in CSS
+
+##### Background colors
+
+##### Background images
+
+###### Controlling `background-repeat`
+
+###### Sizing the background image
+
+###### Positioning the background image
+
+##### Gradient backgrounds
+
+##### Multiple background images
+
+##### Background attachment
+
+##### Using the background shorthand property
+
+##### Accesibility considerations with backgrounds
+
+#### Borders
+
+##### Rounded corners
 
 
 ## Examples, Exercises and mini-projects
@@ -1264,11 +1523,35 @@ Practising combinators.
 ### [10 &mdash; CSS box model: Examples of different display types](10-box-model-display-types)
 Illustrating several types of display types by example.
 
+### [11 &mdash; CSS box model: standard and alternative models](11-box-model-std-and-alternative)
+Illustrates the differences between the standard and alternative box models.
+
+### [12 &mdash; Margin collapsing](12-margin-collapsing)
+Illustrates the margin collapsing situation, when two elements have margins that touch.
+
+### [13 &mdash; Setting border properties](13-setting-border-properties)
+Illustrates how to use the *longhand* border properties.
+
+### [14 &mdash; Setting the padding](14-setting-padding)
+Illustrates how to use the *longhand* padding properties.
+
+### [15 &mdash; Box model and inline boxes](15-box-model-and-inline-boxes)
+Illustrates how not all properties apply to *inline boxes* like the ones created for `<span>` elements.
+
+### [16 &mdash; Using `display: inline-block`](16-display-inline-block)
+Illustrates how the effect of using `display: inline-block`.
+
+### [17 &mdash; Using `display: inline-block` in navigation bars](chapter25-web-apps/00-html-css-refresher/02-css/17-display-inline-block-nav-bars)
+Illustrates how the effect of using `display: inline-block` in navigation bars, where it is found quite frequently.
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
 
 ### [e02 &mdash; Practising selectors](e02-practising-selectors)
 An exercise practising all the different ways to write selectors.
+
+### [e03 &mdash; Practising the *Box Model*](e03-practising-box-model)
+Practising the *Box Model*.
 
 ## CSS properties cheatsheet
 

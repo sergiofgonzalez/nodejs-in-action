@@ -1,0 +1,16 @@
+p {
+  border: 2px solid rebeccapurple;
+  padding: 30px;
+  width: 300px;
+  height: 75px;
+  margin: 10px;
+}
+
+span {
+  background-color: lightblue;
+  border: 1px solid blue;
+  margin: 20px;
+  padding: 20px;
+  width: 80px;  /* ignored in inline boxes */
+  height: 50px; /* ignored in inline boxes */
+}

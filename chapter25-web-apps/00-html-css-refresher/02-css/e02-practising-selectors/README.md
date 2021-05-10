@@ -3,7 +3,7 @@
 
 ## Description
 
-This is the exercise [MDN: Test your skilss: Selectors](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Selectors_Tasks)
+This is the exercise [MDN: Test your skils: Selectors](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Selectors_Tasks)
 
 It consists on a series of separate practices, on which you are given a fixed HTML document and you have to use CSS to do some changes.
 
