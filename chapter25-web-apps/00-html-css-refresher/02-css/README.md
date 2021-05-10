@@ -1464,11 +1464,45 @@ In the final image we see how the padding is respected by the other elements.
 
 ### Backgrounds and borders
 
+This section deals with all the things that can be done with background and borders such as: grandients, background images, rounded corners for elements...
+
 #### Styling backgrounds in CSS
+
+The `background` property is a shorthand for a number of background related properties.
+
+The value of this property can get complicated very fast due to the huge amount of things you can set:
 
 ##### Background colors
 
+The `background-color` property defines the background color on any any element in CSS. The property accepts any valid color.
+
+```css
+.box {
+  background-color: rebeccapurple;
+}
+```
+
+The background color will be used for coloring the content and padding box of the element up to the border box.
+
+| EXAMPLE: |
+| :------- |
+| See [18 &mdash; Practising how to style backgrounds in CSS: Example 1](18-styling-backgrounds) for a runnable example. |
+
+
 ##### Background images
+
+The `background-image` property enables the display of an image in the background of an element.
+
+```css
+.a {
+  background-image: url(/images/white_heart_small.png);
+}
+```
+
+
+By default, the image will not be scaled. As a result, you might only see a small corner of the images. Conversely, if the image is smaller than the box, it will be tiled to fill the box.
+
+Also, if you specify a background color in addition to a background image, then the image will display on top of the color.
 
 ###### Controlling `background-repeat`
 
@@ -1543,6 +1577,18 @@ Illustrates how the effect of using `display: inline-block`.
 
 ### [17 &mdash; Using `display: inline-block` in navigation bars](chapter25-web-apps/00-html-css-refresher/02-css/17-display-inline-block-nav-bars)
 Illustrates how the effect of using `display: inline-block` in navigation bars, where it is found quite frequently.
+
+### [18 &mdash; Practising how to style backgrounds in CSS](18-styling-backgrounds)
+Several examples about how to style backgrounds in CSS:
+  + background colors
+
+## Description
+
+### Exercise 1 &mdash; background colors
+
+## Description
+
+### Exercise 1 &mdash; background colors
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.

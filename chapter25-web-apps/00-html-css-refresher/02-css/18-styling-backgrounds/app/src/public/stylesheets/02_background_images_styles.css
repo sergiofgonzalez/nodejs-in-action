@@ -1,0 +1,19 @@
+.box {
+  width: 200px;
+  height: 75px;
+  border: 1px solid black;
+  margin: 10px;
+}
+
+.a {
+  background-image: url(/images/food_small.jpg);
+}
+
+.b {
+  background-image: url(/images/white_heart_small.png);
+}
+
+.c {
+  background-image: url(/images/bomb.png);
+  background-color: rebeccapurple;
+}

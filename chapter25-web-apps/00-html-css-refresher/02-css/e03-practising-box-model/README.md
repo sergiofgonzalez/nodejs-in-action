@@ -3,7 +3,7 @@
 
 ## Description
 
-This is the exercise [MDN: Test your skils: The Box Model](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Box_Model_Tasks)
+This is the exercise [MDN: Test your skills: The Box Model](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Box_Model_Tasks)
 
 It consists of a series of separate practices, on which you are given a fixed HTML document and you have to use CSS to do some changes.
 
