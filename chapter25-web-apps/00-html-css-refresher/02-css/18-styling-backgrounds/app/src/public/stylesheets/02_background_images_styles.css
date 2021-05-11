@@ -9,11 +9,28 @@
   background-image: url(/images/food_small.jpg);
 }
 
-.b {
+.b,
+.d {
   background-image: url(/images/white_heart_small.png);
 }
 
 .c {
   background-image: url(/images/bomb.png);
   background-color: rebeccapurple;
+}
+
+.d {
+  background-repeat: no-repeat;
+}
+
+.e {
+  background-image: url(/images/food_small.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;  /* orig: 100px 10em; */
+}
+
+.f {
+  background-image: url(/images/white_heart_small.png);
+  background-repeat: no-repeat;
+  background-position: 30px bottom;
 }

@@ -1505,10 +1505,93 @@ By default, the image will not be scaled. As a result, you might only see a smal
 Also, if you specify a background color in addition to a background image, then the image will display on top of the color.
 
 ###### Controlling `background-repeat`
+The `background-repeat` property is used to control the tiling behavior of images with the following values:
+
++ `no-repeat` &mdash; do not repeat
++ `repeat-x` &mdash; repeat horizontally
++ `repeat-y` &mdash; repeat vertically
++ `repeat` &mdash; repeat in both directions (default)
+
+```css
+.a {
+  background-image: url(/images/white_heart_small.png);
+  background-repeat: no-repeat;
+}
+```
 
 ###### Sizing the background image
 
+The `background-size` property that takes a length or percentage value can be used to size and image to fit inside the background box.
+
+Additionally, the property allows you to use the following keywords:
+
++ `cover` &mdash; make the image large enough to completely cover the box area while maintaining its aspect ratio. In this case it is likely that the image ends up outside the box.
+
++ `contain` &mdash; make the image large enough to fit inside the box while maintaining the aspect ratio. In this case, it is likely that the image ends up with gaps on either side or on the top and bottom of the image.
+
+```css
+.a {
+  background-image: url(/images/white_heart_small.png);
+  background-repeat: no-repeat;
+  background-size: 100px 10em;
+}
+
+.b {
+  background-image: url(/images/white_heart_small.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+```
+
 ###### Positioning the background image
+
+The `background-position` property allows you to choose the position in which the background image appears on the box it is applied to. This uses a coordinate system in which the top-left hand corner is `(0, 0)`. The default background position is `(0, 0)`.
+
+The most common `background-position` values takes two individual values that specify the position horizontally, and then vertically as in:
+
+```css
+.a {
+  background-image: url(/images/white_heart_small.png);
+  background-repeat: no-repeat;
+  background-position: top center;
+}
+```
+
+You can also use lengths and percentages:
+
+```css
+.a {
+  background-image: url(/images/white_heart_small.png);
+  background-repeat: no-repeat;
+  background-position: 20px 10%;
+}
+```
+
+And even mix those two:
+
+```css
+.a {
+  background-image: url(/images/white_heart_small.png);
+  background-repeat: no-repeat;
+  background-position: 20px center;
+}
+```
+
+It is also possible to use a 4-value syntax in order to indicate a distance from the given edges of the box. In this case you specify the margin, followed by a value:
+
+```css
+.a {
+  background-image: url(/images/white_heart_small.png);
+  background-repeat: no-repeat;
+  background-position: top 20px right 10px;
+}
+```
+
+In the previous rule, the image will be positioned 20px from the top and 10px from the right.
+
+| NOTE: |
+| :---- |
+| You can use `background-position-x` and `background-position-y` to set the different axis position values individually. |
 
 ##### Gradient backgrounds
 
