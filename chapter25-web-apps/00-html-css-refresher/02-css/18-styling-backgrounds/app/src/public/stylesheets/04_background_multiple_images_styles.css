@@ -1,0 +1,9 @@
+.wrapper {
+  border: 1px solid black;
+}
+
+.box {
+  background-image: url(/images/bomb.png), url(/images/white_heart_small.png);
+  width: 500px;
+  height: 200px;
+}

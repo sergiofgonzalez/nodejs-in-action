@@ -1470,7 +1470,9 @@ This section deals with all the things that can be done with background and bord
 
 The `background` property is a shorthand for a number of background related properties.
 
-The value of this property can get complicated very fast due to the huge amount of things you can set:
+The value of this property can get complicated very fast due to the huge amount of things you can set, and the considerations that you have to consider.
+
+It is typically better to use the *longhand* properties.
 
 ##### Background colors
 
@@ -1595,13 +1597,63 @@ In the previous rule, the image will be positioned 20px from the top and 10px fr
 
 ##### Gradient backgrounds
 
+A gradient, when used for a background works just like a background image, but it is configured differently:
+
+```css
+.a {
+  background-image: linear-gradient(105deg, rgba(0, 249, 255, 1) 39%, rgba(51, 56, 57, 1) 96%);
+}
+
+.b {
+  background-image: radial-gradient(circle, rgba(0, 249, 255, 1) 39%, rgba(51, 56, 57, 1) 96%);
+}
+
+.c {
+  background-image: radial-gradient(circle, rgba(0, 249, 255, 1) 39%, rgba(51, 56, 57, 1) 96%);
+  background-size: 100px 50px;
+}
+```
+
 ##### Multiple background images
 
-##### Background attachment
+It is possible to specify multiple images in a single `background-image` value, separating each with a comma.
+
+```css
+.a {
+  background-image: url(image1.png), url(image2.png), url(image3.png);
+  background-repeat: no-repeat, repeat-x, repeat;
+  background-position: 10px 20px, top right;
+}
+```
+
+Note that each value of the different properties will match up the values in the same position for other properties. When there are fewer properties than values, the values will cycle.
+
+In the example above, as there are three values for `background-repeat` each one of the specified values will be applied to each of the images. However, for the `background-position` as there are fewer values than images, the third image will be applied the `10px 20px` position.
+
+##### Background attachment: how images scroll
+
+The `background-attachment` property can be used to specify how the background scrolls when the page scroll.
+
+It can take the following values:
+
++ `scroll` &mdash; scroll the background as the content scrolls.
++ `fixed` &mdash; fix the background in the viewport, so that it doesn't scroll.
++ `local` &mdash; new to CSS3, similar to `scroll`.
 
 ##### Using the background shorthand property
 
-##### Accesibility considerations with backgrounds
+It is possible to use the `background` shorthand property to specify all the properties related to the background that we've seen so far.
+
+However, take into account that you will have to follow certain rules, and that the declaration can get complicated if you specify multiple images or gradients, etc.
+
+```css
+.box {
+  background:
+    linear-gradient(105deg, rgba(255,255,255,.2) 39%, rgba(51,56,57,1) 96%) center center / 400px 200px no-repeat,
+url(big-star.png) center no-repeat,
+    rebeccapurple;
+}
+```
 
 #### Borders
 
