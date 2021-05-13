@@ -1,0 +1,13 @@
+.box {
+  margin: 10px;
+  padding: 10px;
+  border: 5px solid rebeccapurple;
+}
+
+.box.circular {
+  border-radius: 15px;
+}
+
+.box.elliptical {
+  border-radius: 15px 10%;
+}

@@ -1655,9 +1655,169 @@ url(big-star.png) center no-repeat,
 }
 ```
 
+| EXAMPLE: |
+| :------- |
+| See [18 &mdash; Practising how to style backgrounds in CSS](18-styling-backgrounds) for a runnable example that illustrates all the previous concepts on styling background images and gradients. |
+
 #### Borders
 
+Typically, to add borders to an element with CSS we use the `border` shorthand property:
+
+```css
+.box {
+  border: 1px solid black.
+}
+```
+
+There are also shorthand properties to target specific sides of the box:
+
+```css
+.box {
+  border-top: 1px solid black;
+}
+```
+
+And individual properties, that also allow you to specify the side:
+
+```css
+.box-1 {
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+}
+
+.box-2 {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: black;
+}
+
+```
+
 ##### Rounded corners
+
+It is possible to round the corners on a box using the `border-radius` property, and the associated longhand properties:
+
+```css
+.box {
+  border-radius: 10px; /* set border radius on all sides */
+}
+
+.box-2 {
+  border-top-right-radius: 1em 10%; /* top right, elliptical corners (two radii) */
+}
+```
+| EXAMPLE: |
+| :------- |
+| See [19 &mdash; Using `border-radius` to style boxes with rounder corners](19-rounded-corners) for a runnable example with rounded corners. |
+
+### Handling different text directions
+
+CSS supports different directionality of content, including right-to-left and also top-to-bottom, on top of left-to-right.
+
+These capabilities are called wrting modes.
+
+#### What are writing modes?
+
+The `writing-mode` property lets you switch from one writing mode to another.
+
+| NOTE: |
+| :---- |
+| You don't need to use a right-to-left language or top-to-bottom language to use a writing mode &mdash; it can be used for creative purposes. |
+
+```css
+h1 {
+  writing-mode: vertical-rl;
+}
+```
+
+The possible values are:
++ `horizontal-tb` &mdash; top-to-bottom block flow.
++ `vertical-rl` &mdash; right-to-left block flow.
++ `vertical-lr` &mdash; left-to-right block flow.
+
+
+#### Writing modes and block and inline layout
+
+When we switch the writing mode, we change the *direction* for the block and inline elements.
+
+In `horizontal-tb`, block direction runs from top to bottom, while inline dimension foes in the direction a sentence flows.
+
+The following picture illustrates that concept:
+
+![writing modes](images/writing-modes.png)
+
+And you can see it in action in one of the exercises:
+
+![writing modes exercise](20-writing-modes/docs/images/writing-modes-exercise.png)
+
+| EXAMPLE: |
+| :------- |
+| See [20 &mdash; Using `writing-mode`](20-writing-modes) for a runnable example. |
+
+#### Logical properties and values
+
+When using writing modes, we can end up in a situation in which we would like to give our boxes a width and a height, but those values don't play well with vertical modes causing the text to overflow.
+
+See how in the image below, that sets a width for the boxes, the text flows vertically for the box with `writing-mode` set to horizontal, while it overflows for the vertical ones.
+
+![Text Overflow using physical properties](images/overflow_physical_properties.png)
+
+In order to address this problem, CSS recently develiped a set of mapped properties that replace physical properties such as `width` and `height` with logical (or flow relative) versions.
+
+For example, the width, when in horizontal mode is mapped to `inline-size`, while the height is mapped to `block-size`.
+
+When using those *logical properties* you'll get the expected results when you switch from horizontal to vertical writing modes.
+
+![Logical properties](images/logical_properties.png)
+
+| EXAMPLE: |
+| :------- |
+| See [21 &mdash; Hello, `inline-size` and `block-size` logical properties](21-hello-inline-size-block-size-logical-props) for a runnable example. |
+
+##### Logical margin, border, and padding properties
+
+In the same way that we have mappings for `width` and `height` we have mappings for margin, padding and border related properties.
+
+```
+margin-top    => margin-block-start
+padding-left  => padding-inline-start
+border-bottom => border-block-end
+...
+```
+
+You can see all the mappings in [MDN: Logical Properties and Values](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Logical_Properties).
+
+| EXAMPLE: |
+| :------- |
+| See [21 &mdash; Hello, `inline-size` and `block-size` logical properties](21-hello-inline-size-block-size-logical-props) for a runnable example on which physical and logical properties are compared. |
+
+##### Logical values
+
+Apart from the logical properties, many logical values that map to physical values such as `top`, `right`, `bottom` and `left` have been introduced (e.g. `block-start`, `inline-end`, `block-end` and `inline-start`).
+
+For example, to make an image float to the left so that the text can wrap around the image, you can use `float: left` using the physical values, and `float: inline-start` if using the logical.
+
+| EXAMPLE: |
+| :------- |
+| See [22 &mdash; Hello, logical values](22-hello-logical-values) for a runnable example. |
+
+##### Should you use physical or logical properties?
+
+Support for logical properties and values varies from browser to browser. It is expected that people will transition to logical properties as they are more resilient when using different writing modes than physical properties.
+
+### Overflowing content
+
+#### What is overflow?
+
+#### CSS tries to avoid "data loss"
+
+#### The `overflow` property
+
+#### Overflow establishes a *Block Formatting context*
+
+#### Unwanted overflow in web design
+
 
 
 ## Examples, Exercises and mini-projects
@@ -1716,8 +1876,21 @@ Illustrates how the effect of using `display: inline-block` in navigation bars, 
 ### [18 &mdash; Practising how to style backgrounds in CSS](18-styling-backgrounds)
 Several examples about how to style backgrounds in CSS:
   + background colors
+  + background images
+  + gradient backgrounds
+  + multiple background images
 
-## Description
+### [19 &mdash; Using `border-radius` to style boxes with rounder corners](19-rounded-corners)
+Illustrates how to style boxes with rounded corners.
+
+### [20 &mdash; Using `writing-mode`](20-writing-modes)
+Illustrates how to change the direction of the text using `writing-mode` property.
+
+### [21 &mdash; Hello, `inline-size` and `block-size` logical properties](21-hello-inline-size-block-size-logical-props)
+Introduces the new logical properties for width and size  `inline-size` and `block-size`.
+
+### [22 &mdash; Hello, logical values](22-hello-logical-values)
+Illustrates how to use logical values such as `inline-start` instead of their corresponding physical values such as `left`.
 
 ### Exercise 1 &mdash; background colors
 
@@ -1743,6 +1916,7 @@ Practising the *Box Model*.
 | [background-image](https://developer.mozilla.org/en-US/docs/Web/CSS/background-image) | Sets one or more background images on an element. | `background-image: url(../images/lizard.png)`<br>`background-image: url(../images/lizard.png), url(../images/star.png)`<br>`background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)), url(../images/lizard.png)` |
 | [border](https://developer.mozilla.org/en-US/docs/Web/CSS/border) | Sets an element's border. | `border: solid`<br>`border: dashed red`<br>`border: 2px solid black`<br>`border: 4mm ridge rgba(170, 50, 220, .6` |
 | [border-bottom](https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom) | Shorthand CSS property that sets an element's bottom border.<br>It sets the values of `border-bottom-width`, `border-bottom-style` and `border-bottom-color`. | `border-bottom: solid`<br>`border-bottom: dashed red`<br>`border-bottom: thick double #32a1ce` |
+| [border-radius](https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius) | rounds the corners of an element's outer border edge. A single radius is passed for circular corners and two radii for elliptical corners. | `border-radius: 10px`<br>`border-radius: 10px 2em` |
 | [box-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing) | Sets how the total width and height of an element is calculated. | `box-sizing: border-box`<br>`box-sizing: inherit` |
 | [color](https://developer.mozilla.org/en-US/docs/Web/CSS/color) | Sets the foreground color value of an element's text and text decorations and sets the `currentcolor` value. | `color: brown`<br>`color: initial`<br>`color: rgb(214, 122, 127)` |
 | [content](https://developer.mozilla.org/en-US/docs/Web/CSS/content) | Replaces an element with a generated value. | `content: "this should go before the element's content". |

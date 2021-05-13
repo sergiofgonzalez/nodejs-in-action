@@ -1,0 +1,13 @@
+.box {
+  border: 1px solid lightgray;
+  margin: 10px;
+  padding: 5px;
+  inline-size: 150px;
+  writing-mode: horizontal-tb; /* change to vertical-rl to see the effect */
+}
+
+img {
+  float: inline-start; /* maps to `left` physical property */
+  margin-inline-end: 10px;
+  margin-block-end: 10px;
+}
