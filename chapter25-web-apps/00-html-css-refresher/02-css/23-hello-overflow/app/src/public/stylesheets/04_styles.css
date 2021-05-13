@@ -1,0 +1,6 @@
+.word {
+  border: 1px solid #333333;
+  width: 100px;
+  font-size: 250%;
+  overflow-x: scroll;
+}

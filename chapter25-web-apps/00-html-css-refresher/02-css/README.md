@@ -1808,17 +1808,78 @@ Support for logical properties and values varies from browser to browser. It is 
 
 ### Overflowing content
 
-#### What is overflow?
+Everything in CSS is a box. The size of these boxes can be constrained assigning values to physical properties such as `width` and `height` (or `inline-size` and `block-size`).
+
+**Overflow** is what happens when there is too much content to fit in a box.
 
 #### CSS tries to avoid "data loss"
 
+If you're not very familiar with CSS layout development, you might not have found overflow before, as illustrated on the picture below:
+
+![Overflow](23-hello-overflow/docs/images/overflow.png)
+
+| EXAMPLE: |
+| :------- |
+| See [23 &mdash; Hello, overflow!](23-hello-overflow) for a runnable example. |
+
+Note that the situation is completely different if you don't constrain the box dimensions:
+
+![Box with no size constraints](images/no_constraints.png)
+
+Overflow can also happen when a single word is does not fix in a box.
+
+![Overflow with single word](images/overflow_single_word.png)
+
+This behavior occurs because whenever possible, CSS does not hide the content to prevent data loss. This is more relevant when the content requires some user intervention with a form, for example. *CSS*, instead of hiding the content will make everything possible to show the content event when it results in an ugly layout that overflows.
+
+When you restrict a box size, CSS trusts that you know what you are doing, and then makes you responsible for managing the overflow.
+
+| NOTE: |
+| :---- |
+| In general, restricting the block size is problematic, especially when the box contains text (e.g. user might increase the text size).<br>When you need to use a fix size for some reason, the `overflow` property will let you control how overflow behaves. |
+
 #### The `overflow` property
 
-#### Overflow establishes a *Block Formatting context*
+The `overflow` property is how you take control an element's overflow. The default value of the property is `visible`. To crop the content when it overflows you can use `hidden`.
+
+| NOTE: |
+| :---- |
+| `hidden` should be used only when *cropping* the content will cause no problems to the user. |
+
+You can also add scrollbars using `overflow: scroll`.
+
+You can adjust the existence of scrollbars in both dimensions using `overflow-x` or `overflow-y`:
+
+```css
+.box {
+  width: 100px;
+  height: 100px;
+  overflow-y: scroll;
+}
+```
+
+Alternatively, you can do:
+
+```css
+.box{
+  overflow: scroll hidden;
+}
+```
+
+which is the same as setting `overflow-x` to `scroll` and `overflow-y` to `hidden`.
+
+
+#### Overflow establishes a *Block Formatting Context*
+
+When you use an `overflow` value such as `scroll` or `auto` a *Block Formatting Context (BFC)*. This means that the box with that overflow value acquires a *self-contained* layout &mdash; the content outside the container cannot poke into the container, and nothing can spill out of that container into the surrounding layout.
 
 #### Unwanted overflow in web design
 
+Modern layout methods are aware of overflow and they work without making assumptions or depending on how much content there is on a web page.
 
+Traditionally, when those modern layouts did not existed, it was common to use fixed-height containers to align the bottoms of boxes. When that was used, it was also common to have contents overflowing from one box to another.
+
+In those cases, it is recommended to refactor the existing page to use those new CSS layouts, rather than using `hidden` or `scroll` for the `overflow` property.
 
 ## Examples, Exercises and mini-projects
 
@@ -1892,11 +1953,8 @@ Introduces the new logical properties for width and size  `inline-size` and `blo
 ### [22 &mdash; Hello, logical values](22-hello-logical-values)
 Illustrates how to use logical values such as `inline-start` instead of their corresponding physical values such as `left`.
 
-### Exercise 1 &mdash; background colors
-
-## Description
-
-### Exercise 1 &mdash; background colors
+### [23 &mdash; Hello, overflow!](23-hello-overflow)
+Illustrates a situation in which overflow occurs by constraining the size of the container box on which a large text is hosted.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
