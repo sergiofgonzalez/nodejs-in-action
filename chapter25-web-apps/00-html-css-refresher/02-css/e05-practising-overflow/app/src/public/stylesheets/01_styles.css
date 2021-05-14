@@ -1,0 +1,7 @@
+.box {
+  border: 5px solid black;
+  padding: 1em;
+  height: 200px;
+  width: 200px;
+  overflow: auto; /* show scrollbars only if needed */
+}

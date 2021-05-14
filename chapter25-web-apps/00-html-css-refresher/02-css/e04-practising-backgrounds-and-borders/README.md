@@ -1,5 +1,5 @@
 # e04 &mdash; Practising backgrounds and borders
-> examples about how to style backgrounds and borders in CSS
+> exercises about how to style backgrounds and borders in CSS
 
 ## Description
 

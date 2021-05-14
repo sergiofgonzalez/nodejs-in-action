@@ -1709,7 +1709,7 @@ It is possible to round the corners on a box using the `border-radius` property,
 ```
 | EXAMPLE: |
 | :------- |
-| See [19 &mdash; Using `border-radius` to style boxes with rounder corners](19-rounded-corners) for a runnable example with rounded corners. |
+| See [19 &mdash; Using `border-radius` to style boxes with rounder corners](19-rounded-corners) for a runnable example with rounded corners.<br>See [e04 &mdash; Practising backgrounds and borders](e04-practising-backgrounds-and-borders) for a few exercises on backgrounds and borders. |
 
 ### Handling different text directions
 
@@ -1846,7 +1846,7 @@ The `overflow` property is how you take control an element's overflow. The defau
 | :---- |
 | `hidden` should be used only when *cropping* the content will cause no problems to the user. |
 
-You can also add scrollbars using `overflow: scroll`.
+You can also add scrollbars using `overflow: scroll`. Using `overflow: auto` will show no scrollbars while there's no overflow, and then show them when there is.
 
 You can adjust the existence of scrollbars in both dimensions using `overflow-x` or `overflow-y`:
 
@@ -1880,6 +1880,130 @@ Modern layout methods are aware of overflow and they work without making assumpt
 Traditionally, when those modern layouts did not existed, it was common to use fixed-height containers to align the bottoms of boxes. When that was used, it was also common to have contents overflowing from one box to another.
 
 In those cases, it is recommended to refactor the existing page to use those new CSS layouts, rather than using `hidden` or `scroll` for the `overflow` property.
+
+| EXAMPLE: |
+| :------- |
+| See [e05 &mdash; Practising `overflow`](e05-practising-overflow) for a runnable example with a few scenarios on overflow behavior. |
+
+### CSS values and units
+
+Every property in CSS has a value type defining the set of allowed values for that property.
+
+In the CSS specs, and on the property pages on MDN, you will find value types written as [`<color>`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value) or [`<length`>](https://developer.mozilla.org/en-US/docs/Web/CSS/length) to identify that any valid color can be used as a value for that property, as listed in the corresponding reference page.
+
+
+| NOTE: |
+| :---- |
+| In CSS, the term *value type* and *data type* can be used interchangeably. |
+
+The following sections introduce the most common value types-
+
+#### Numbers, lengths, and percentages
+
+The following data types are used for numeric values:
+
+
+| Data Type | Description |
+| :-------- | :---------- |
+| [`<integer>`](https://developer.mozilla.org/en-US/docs/Web/CSS/integer) | A while number such as 1024 or -5. |
+| [`<number>`](https://developer.mozilla.org/en-US/docs/Web/CSS/number) | A decimal number, such as 0.25, 128 or -1.2. |
+| [`<dimension>`](https://developer.mozilla.org/en-US/docs/Web/CSS/dimension) | A `<number>` attached to a unit, such as 45deg, 5s, or 10px. A `<dimension>` is an umbrella category that includes `<length>`, `<angle>`, `<time>` and `<resolution>`. |
+| [`<percentage>`](https://developer.mozilla.org/en-US/docs/Web/CSS/percentage) | A `<percentage>` represents a fraction of some other value such as `50%`. A percentage value is always relative to another quantity, and this other quantity depends on the particular use case. For example, an element's length is relative to its parent element's length. |
+
+##### Lengths
+
+The `<length>` numeric value type, such as `10px` or `30em` lets you specify the length values found in CSS (relative and absolute).
+
+
+###### Absolute length units
+
+The following table lists the **absolute** length unit, not relative to anything else, ant generally considered to be of the same size.
+
+| Unit | Name | Equivalence |
+| :--- | :--- | :---------- |
+| `cm` | Centimeters | 1cm = 38px = 25/64in |
+| `mm` | Millimeters | 1mm = 1/10th of 1cm |
+| `Q`  | Quarter-millimeters | 1Q = 1/40 of 1cm |
+| `in` | Inches | 1in = 2.54cm = 96px |
+| `pc` | Picas | 1pc = 1/6th of 1in |
+| `pt` | Points | 1pt = 1/72th of 1in |
+| `px` | Pixels | 1px = 1/96 of 1in |
+
+| NOTE: |
+| :---- |
+| Except for `px` these units are typically useful when printing rather that for screen output. |
+
+###### Relative length units
+
+Relative length units are *relative* to something else, which is dependent on the context, such as the size of the parent element's font, or the size of the viewport.
+
+Mastering the use of relative units ensure that your page scales with different settings of zoom, viewports, etc.
+
+| Unit | Relative to |
+| :--- | :---------- |
+| `em` | Font size of the parent, in the case of typographical properties like `font-size`, and font size of the element itself in case of other properties like `width`. |
+| `ex` | x-height of the element's font. |
+| `ch` | The width of the glyph "0" of the element's font. |
+| `rem` | Font size of the root element. |
+| `lh` | Line height of the element. |
+| `vw` | 1% of the viewport's width. |
+| `vh` | 1% of the viewport's height. |
+| `vmin` | 1% of the viewport's smaller dimension. |
+| `vmax` | 1% of the viewport's larger dimension. |
+
+| EXAMPLE: |
+| :------- |
+| See [24 &mdash; Hello, *absolute* and *relative* lengths](24-hello-absolute-and-relative-lengths) for a runnable example. |
+
+###### ems and rems
+
+Grokking `em` and `rem` are key to understand more complex topics such as stylying text and modern CSS layouts.
+
+> `em` unit means my parent element's `font-size` in case of typography, while `rem` means the root element's `font-size`.
+
+Consider the picture below from one of the example, on which we have two identical lists, one using `em` and the other using `rem`.
+
+```css
+.ems li {
+  font-size: 1.3em;
+}
+
+.rems li {
+  font-size: 1.3rem;
+}
+```
+
+![ems and rems](25-grokking-em-and-rem/docs/images/em_and_rems.png)
+
+While in the first list, with each additional level, the text becomes 1.3 larger (because it relies on the parent element's font-size), the second one has always the same size, because it relies on the root element's font-size, which is constant.
+
+| EXAMPLE: |
+| :------- |
+| See [25 &mdash; Grokking `em` and `rem` relative length units](25-grokking-em-and-rem) for a runnable example. |
+
+##### Percentages
+
+##### Numbers
+
+#### Color
+
+##### Color keywords
+
+##### Hexadecimal RGB values
+
+##### RGB and RGBA values
+
+##### HSL and HSLA values
+
+#### Images
+
+#### Position
+
+#### Strings and identifiers
+
+#### Functions
+
+
 
 ## Examples, Exercises and mini-projects
 
@@ -1956,6 +2080,12 @@ Illustrates how to use logical values such as `inline-start` instead of their co
 ### [23 &mdash; Hello, overflow!](23-hello-overflow)
 Illustrates a situation in which overflow occurs by constraining the size of the container box on which a large text is hosted.
 
+### [24 &mdash; Hello, *absolute* and *relative* lengths](24-hello-absolute-and-relative-lengths)
+Illustrates the use of *absolute* and *relative* lengths on a simple example.
+
+### [25 &mdash; Grokking `em` and `rem` relative length units](25-grokking-em-and-rem)
+Illustrates the use of `em` and `rem` units.
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
 
@@ -1964,6 +2094,12 @@ An exercise practising all the different ways to write selectors.
 
 ### [e03 &mdash; Practising the *Box Model*](e03-practising-box-model)
 Practising the *Box Model*.
+
+### [e04 &mdash; Practising backgrounds and borders](e04-practising-backgrounds-and-borders)
+Exercises about how to style backgrounds and borders in CSS
+
+### [e05 &mdash; Practising `overflow`](e05-practising-overflow)
+Exercises on the `overflow` property and its values
 
 ## CSS properties cheatsheet
 
