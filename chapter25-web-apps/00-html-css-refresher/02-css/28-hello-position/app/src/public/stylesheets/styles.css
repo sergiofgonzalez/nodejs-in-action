@@ -1,0 +1,9 @@
+.box {
+  border: 3px solid rebeccapurple;
+  border-radius: .5em;
+  height: 300px;
+  width: 400px;
+  background-image: url(/images/bomb.png);
+  background-repeat: no-repeat;
+  background-position: 150px center;
+}

@@ -1983,25 +1983,202 @@ While in the first list, with each additional level, the text becomes 1.3 larger
 
 ##### Percentages
 
+Percentages are relative to some other value, which is dependent on the context.
+
+For example, if setting a `font-size` as a percentage, it means a percentage of the `font-size` of the parent element.
+
+In the image below, we have two percentage sized-boxes display along with two fixed size boxes. The second percentage box is wrapped within a container, so that its size is based in this parent wrapper.
+
+![Boxes](26-hello-percentages/docs/images/percentages_boxes.png)
+
+As a result, the second box from the top changes its width when the size of the viewport changes, while the 4th one is always the same.
+
+Similarly, when using percentages, we see that the font size of nested lists when the font size is given in percentages, gets changed when the level of nesting changes:
+
+![Lists](26-hello-percentages/docs/images/percentages_lists.png)
+
+
+| NOTE: |
+| :---- |
+| Many values accept a length or a percentage. You can find them in the documentation for value types that include [`<length-percentage>`](https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage) in their reference page. |
+
+
+
+| EXAMPLE: |
+| :------- |
+| See [26 &mdash; Hello, percentages!](26-hello-percentages) for a runnable example. |
+
 ##### Numbers
+
+Some value types accept numbers without any unit added to them. For example, the `opacity` property accepts a number between `0`(fully transparent) and `1` (fully opaque).
+
+```css
+.a {
+  opacity: 0.75;
+}
+```
+
+| EXAMPLE: |
+| :------- |
+| See [27 &mdash; Hello, numbers!](27-hello-numbers-opacity) for a runnable example. |
 
 #### Color
 
+In CSS, the same color values can be used everywhere in CSS where a color value is expected.
+
+The standard color system available in modern computers is 24bit, which allows for 2^8 * 2^8 * 2^8 combinations of red, green, and blue color values.
+
+
 ##### Color keywords
+
+CSS defines a few friendly names for specifying a color such as `rebeccapurple` or `fuchsia`.
+
+```css
+.a {
+  color: rebeccapurple;
+}
+```
 
 ##### Hexadecimal RGB values
 
+Colors is CSS are also commonly specified using hexadecimal values as a `#` symbol followed by three hexadecimal values identifying the values for the RGB channels.
+
+```css
+.a {
+  color: #02798b;
+}
+```
+
 ##### RGB and RGBA values
+
+CSS allows you to use the `rgb()` function that accepts three decimal arguments for the RGB channels.
+
+The `rgba()` function is a slight variation of this approach that allows you to pass an additional 4th parameter to specify the *alpha channel* of the color that controls its *opacity*. A `0` in the *alpha channel* makes the collor fully transparent, and a `1` fully opaque.
+
+```css
+.a {
+  color: rgb(27, 57, 87);
+  background-color: rgba(70, 25, 200, 0.75)
+}
+```
 
 ##### HSL and HSLA values
 
+CSSS also allows you to use the `hsl()` and `hsla()` functions to specify the color in terms of:
+
++ **hue** &mdash; the base shade of the color as a value between 0 and 360, representing the angle around a color wheel.
++ **saturation** &mdash; a value from 0% to 100% that measures how saturated the color is (0% means a shade of grey, 100% means fully saturated).
++ **lightness** &mdash; a value from 0% to 100% that measures how light the color is (0% means black, 100% means white)
++ **alpha channel** &mdash; the opacity of the color as a value between `0` (fully transparent) and `1` (fully opaque).
+
+```css
+.a {
+  background-color: hsla(188, 47%, 57%, .75)
+}
+```
+
 #### Images
+
+The `<image>` value type is used to identify where an image identify using the `url()` function or a gradient can be used.
+
+```css
+.a {
+  background-image: url(/images/food_small.png)
+}
+
+.b {
+  background-image: linear-gradient(90deg, rgba(119, 0, 255, 1) 39%, rgba(0, 212, 255, 1) 100%)
+}
+```
 
 #### Position
 
+The `<position>` value represents a set of 2D coordinates used to position an item, such as background image.
+
+It can take keywords such as `top`, `left`, `bottom`, `right`, and `center`, along with lengths that specify the offset from the top and left-hand edges of the box.
+
+```css
+.a {
+  background-position: 150px center;
+}
+```
+
+| NOTE: |
+| :---- |
+| If you only specify values for one axis, the other will default to `center`. |
+
+| EXAMPLE: |
+| :------- |
+| See [28 &mdash; Hello, position!](28-hello-position) for a runnable example. |
+
 #### Strings and identifiers
 
+Througout the different concepts section and examples we've seen places where keywords (such as `rebeccapurple`) are used as a value. These keywords are known as *identifiers* &mdash; they are not quoted, but they are treated as strings.
+
+Also, there are places where CSS allows you to use strings, as in the example below:
+
+```css
+.box {
+  background-color: lightblue; /* identifier */
+}
+
+.box::after {
+  content: "This is as string, and as such it is quoted"; /* string */
+}
+```
+
+
 #### Functions
+
+CSS allows functions to be used as value types in certain cases, such as identifying the location of an image using `url()` or specifying a color using `rgba()`.
+
+There are more functions like `calc()` that allows you to perform arbitrary computations inside your CSS as in:
+
+```css
+.a {
+  width: calc(20% + 100px);
+}
+
+```
+
+### Sizing items in CSS
+
+HTML elements have a natural size, set before they are affected by any CSS. For example, an image has a width and a height defined in the image file it is embedding into the page. This size is known as the **intrinsic size**.
+
+If you place an image on a page using `<img>` without changing its width and height, it will be displayed using that intrinsic size.
+
+An empty `<div>` has no size of its own. If you add a `<div>` with no content, and add a border, you will only see a line on the page (the collapsed border on the element). Also, as it is a block element, it will stretch to the width of the container element.
+
+As you add some more text inside the empty element, the height of the element will change &mdash; the height of the `<div>` will come from the size of the content. Again, this is known as the *intrisic size* of the element, which in this case is defined by its content.
+
+The following image illustrates this idea:
+
+![Intrinsic size of a div](29-hello-div-intrinsic-size/docs/images/intrinsic_size_div.png)
+
+The first `<div>` has its height collapsed, and the width stretches to the whole length (minus margin) of the viewport. The second one, which is wrapped in a fixed size container, also has its height collapsed, but its width stretches to the width of the container. Finally, when adding some content, we see that the `<div>` gets an intrinsic height.
+
+| EXAMPLE: |
+| :------- |
+| See [29 &mdash; Hello, intrinsic size of `<div>`!](29-hello-div-intrinsic-size) for a runnable example. |
+
+#### Setting a specific size
+
+When we use CSS to give a specific size to an element, the content of which then needs to fit into that size, we say to have set the element's **extrinsic size**.
+
+Going back to the example of the `<div>`, if we give the box a certain width and height, it will honor those values, but then, the box dimensions will not be adjusted to accommodate the contents (which might lead to overflow as see in the [Overflow](#overflowing-content) section).
+
+![Extrinsic size in divs](30-hello-div-extrinsic-size/docs/images/extrinsic_size_div.png)
+
+The picture above illustrates this situation. As the `<div>` is given a specific size, CSS will respect that size given us the responsibility to manage the content.
+
+##### Using percentages
+
+##### Percentage margins and padding
+
+#### min- and max- sizes
+
+#### viewport units
+
 
 
 
@@ -2085,6 +2262,18 @@ Illustrates the use of *absolute* and *relative* lengths on a simple example.
 
 ### [25 &mdash; Grokking `em` and `rem` relative length units](25-grokking-em-and-rem)
 Illustrates the use of `em` and `rem` units.
+
+### [26 &mdash; Hello, percentages!](26-hello-percentages)
+Illustrates the use of percentages for setting lengths and sizes
+
+### [27 &mdash; Hello, numbers!](27-hello-numbers-opacity)
+Illustrates the use of numbers for setting the `opacity` value of a box with text.
+
+### [28 &mdash; Hello, position!](28-hello-position)
+Illustrates how to use the `<position>` value type in an example.
+
+### [29 &mdash; Hello, intrinsic size of `<div>`!](29-hello-div-intrinsic-size)
+Demonstrates that the intrinsic height of a `<div>` is zero, and that its width stretches to the width of the container.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.

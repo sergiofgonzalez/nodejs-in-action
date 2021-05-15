@@ -1,0 +1,23 @@
+.box {
+  border: 5px solid blue;
+  background-color: lightblue;
+  padding: 0.5em;
+  margin: 1em;
+}
+
+.px {
+  width: 200px;
+}
+
+.percent {
+  width: 40%;
+}
+
+.wrapper {
+  width: 400px;
+  border: 5px solid rebeccapurple;
+}
+
+li {
+  font-size: 130%;
+}

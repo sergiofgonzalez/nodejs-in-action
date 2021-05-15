@@ -1,0 +1,16 @@
+.wrapper {
+  border: 2px solid black;
+  background: url(/images/food_small.jpg);
+  background-repeat: no-repeat;
+  background-position: -90px -175px;
+  width: 200px;
+  height: 200px;
+}
+
+.box {
+  border: 5px solid rebeccapurple;
+  background-color: lightblue;
+  margin: 1em;
+  padding: 0.25em;
+  opacity: 0.75;
+}
