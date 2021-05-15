@@ -1,0 +1,8 @@
+.box {
+  border: 5px solid darkblue;
+  margin: 1em;
+  width: 20vw;      /* 20% of viewport width  */
+  height: 20vh;     /* 20% of viewport height */
+  font-size: 10vh;  /* 10% of viewport height */
+}
+

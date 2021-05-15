@@ -1,0 +1,19 @@
+.box {
+  border: 5px solid darkblue;
+  width: 200px;
+  margin: 1em;
+}
+
+.width {
+  width: 100%;
+}
+
+.max {
+  max-width: 100%;
+}
+
+.minibox {
+  border: 5px solid darkblue;
+  width: 50px;
+  margin: 1em;
+}

@@ -2159,7 +2159,7 @@ The first `<div>` has its height collapsed, and the width stretches to the whole
 
 | EXAMPLE: |
 | :------- |
-| See [29 &mdash; Hello, intrinsic size of `<div>`!](29-hello-div-intrinsic-size) for a runnable example. |
+| See [29 &mdash; Hello, intrinsic size of `<div>`!](29-hello-div-intrinsic-size) for a runnable example illustrating intrinsic sizes and [30 &mdash; Hello, extrinsic size of `<div>`!](30-hello-div-extrinsic-size) for an example illustrating extrinsic sizes concepts. |
 
 #### Setting a specific size
 
@@ -2173,14 +2173,71 @@ The picture above illustrates this situation. As the `<div>` is given a specific
 
 ##### Using percentages
 
+In many situations, percentages can be used interchangeably with lengths. When using a percentage, you need to be aware what it is a percentage of.
+
+For example, in the case of a box inside another container, if you give the child box a width as a percentage, it will be calculated from the width of the parent container.
+
+```css
+.a {
+  width: 50%;
+}
+```
+
 ##### Percentage margins and padding
+
+You should be aware that if you set the margin and padding using percentage, the value is calculated from the *inline size* of the containing language &mdash; the width when working in a horizontal language. That is, it won't be the percentage of the element's height and width.
+
+For example:
+
+```css
+.a {
+  border: 5px solid black;
+  width: 300px;
+  margin: 10%;
+  padding: 10%;
+}
+```
+
 
 #### min- and max- sizes
 
+CSS allows to give an element a minimum or a maximum size. This is useful for a box that might contain a variable amount of content, and you want it to have at least a certain height (which you'd set using `min-height`).
+
+In the image belo, we set a box with `min-height`. This ensures that the box has a minimum height even when empty, but it is capable to resize when it gets some text.
+
+![min-height in box with text](31-min-max-sizes/docs/images/min-height_text_box.png)
+
+Similarly, it is common to use `max-width` to cause images to scale down if there is not enough space to display them at their intrinsic width, while ensuring they don't become larger than the given width.
+
+If you set `max-width: 100%`, and its intrinsic width is greater than the container it will become smaller than its container size, and will stop at 100% of its container size. However, if you'd use `width: 100%` on an image, and its intrinsic size was smaller than its container, the image would be stretched and become larger.
+
+in this second picture, we use the same image three times. The image in top has been given a `width: 100%` and it is in a container with a fixed width. The container width is larger than the image, and therefore, the image is stretched to the container width and appears pixelated.
+
+The image in the middle has `max-width: 100%` and therefore, does not stretch to fill the cotnainer.
+
+The image in the bottom is also set with `max-width: 100%` but is not set in a container with a fixed width, and as a result the image is scaled down to fit into the box.
+
+![max-width in box with images](31-min-max-sizes/docs/images/max-width-images.png)
+
+| NOTE: |
+| :---- |
+| Using `max-width` is a great technique to make images responsive. |
+
+| EXAMPLE: |
+| :------- |
+| See [31 &mdash; *min-* and *max-* sizes behavior](31-min-max-sizes) for a runnable example. |
+
 #### viewport units
 
+The viewport &mdash; which is the visible area of your page in the browser you are using to view a site &mdash; also has a size.
 
+CSS allows you to use units which relate to the size of the viewport: `vw` for the viewport width and `vh` for the viewport height with 1 vw/vh being 1% of the viewport width or height respectively.
 
+These units can be used to size boxes and text.
+
+| EXAMPLE: |
+| :------- |
+| See [32 &mdash; Hello, viewport units!](32-hello-viewport-units) for a runnable example. |
 
 ## Examples, Exercises and mini-projects
 
@@ -2274,6 +2331,15 @@ Illustrates how to use the `<position>` value type in an example.
 
 ### [29 &mdash; Hello, intrinsic size of `<div>`!](29-hello-div-intrinsic-size)
 Demonstrates that the intrinsic height of a `<div>` is zero, and that its width stretches to the width of the container.
+
+### [30 &mdash; Hello, extrinsic size of `<div>`!](30-hello-div-extrinsic-size)
+Demonstrates that when setting the *extrinsic* size of a `<div>` the size will not be adjusted to the contents.
+
+### [31 &mdash; *min-* and *max-* sizes behavior](31-min-max-sizes)
+Illustrates the behavior of *min-* and *max-* sizes on several examples with text and images.
+
+### [32 &mdash; Hello, viewport units!](32-hello-viewport-units)
+Illustrates how to use viewport units to size boxes and text.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
