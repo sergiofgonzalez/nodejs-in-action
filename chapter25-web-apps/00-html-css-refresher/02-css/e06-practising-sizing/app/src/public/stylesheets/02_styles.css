@@ -1,0 +1,18 @@
+* {
+  box-sizing: border-box; /* alternative box model */
+}
+
+.box {
+  border: 5px solid black;
+  min-height: 200px;
+}
+
+.inner {
+  width: 60%;
+  background-color: rebeccapurple;
+  color: white;
+  border-radius: .35em;
+  height: 200px;
+  font-size: 200%;
+  padding: 10%;
+}

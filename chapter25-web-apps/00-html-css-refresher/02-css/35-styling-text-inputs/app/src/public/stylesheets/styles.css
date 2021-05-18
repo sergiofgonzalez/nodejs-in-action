@@ -1,0 +1,28 @@
+.box {
+  border: 1px solid black;
+  padding: 0.35em;
+  margin: 1em;
+  width: 90%;
+}
+
+input[type="text"],
+input[type="email"] {
+  border: 2px solid black;
+  margin: 0 0 1em 0;
+  padding: 10px;
+  width: 90%;
+}
+
+input[type="submit"] {
+  border: 3px solid #333;
+  background-color: #999;
+  border-radius: 5px;
+  padding: 10px 2em;
+  font-weight: bold;
+  color: #fff;
+  margin: 0 3em 0 3em;
+}
+
+input[type="submit"]:hover {
+  background-color: #333;
+}

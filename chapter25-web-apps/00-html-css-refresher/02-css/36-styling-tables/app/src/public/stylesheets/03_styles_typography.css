@@ -1,0 +1,61 @@
+/* spacing */
+
+/* styling for table element */
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid purple;
+}
+
+/* spacing for first header cell (Band) */
+thead th:nth-child(1) {
+  width: 30%;
+}
+
+/* spacing for first header cell (Year formed) */
+thead th:nth-child(2) {
+  width: 20%;
+}
+
+/* spacing for first header cell (Number of albums) */
+thead th:nth-child(3) {
+  width: 15%;
+}
+
+/* spacing for first header cell (Most famous song) */
+thead th:nth-child(4) {
+  width: 35%;
+}
+
+/* cell padding headers and regular cells */
+th,
+td {
+  padding: 20px;
+}
+
+/* typography */
+html {
+  font-family: 'helvetica neue', helvetica, arial, sans-serif;
+}
+
+thead th,
+tfoot th {
+  font-family: 'Rock Salt', cursive;
+}
+
+th {
+  letter-spacing: 2px;
+}
+
+td {
+  letter-spacing: 1px;
+}
+
+tbody td {
+  text-align: center;
+}
+
+tfoot th {
+  text-align: right;
+}

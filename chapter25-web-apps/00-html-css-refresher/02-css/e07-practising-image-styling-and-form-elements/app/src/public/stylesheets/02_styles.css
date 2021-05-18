@@ -1,0 +1,38 @@
+/* reset styles for form elements */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+textarea {
+  overflow: auto;
+}
+
+.myform {
+  border: 2px solid black;
+  padding: 5px;
+}
+
+/* inputs with type="search"/"submit" wrapped into elemens with class="myform" */
+.myform input[type="search"],
+.myform input[type="submit"] {
+  padding: 10px;
+}
+
+.myform input[type="submit"] {
+  background-color: rebeccapurple;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+
+.myform input[type="submit"]:hover {
+  background-color: rgb(49, 18, 80);
+}

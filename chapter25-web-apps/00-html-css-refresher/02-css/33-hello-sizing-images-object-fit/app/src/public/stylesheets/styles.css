@@ -1,0 +1,23 @@
+.box {
+  border: 5px solid darkblue;
+  margin: 1em;
+  width: 200px;
+  height: 200px;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+}
+
+.cover {
+  object-fit: cover;
+}
+
+.contain {
+  object-fit: contain;
+}
+
+.fill {
+  object-fit: fill;
+}

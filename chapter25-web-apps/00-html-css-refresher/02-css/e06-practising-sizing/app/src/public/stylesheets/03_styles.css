@@ -1,0 +1,9 @@
+.box {
+  border: 5px solid black;
+  margin: 2em;
+  width: 200px;
+}
+
+img {
+  max-width: 100%;  /* comment to see initial status */
+}

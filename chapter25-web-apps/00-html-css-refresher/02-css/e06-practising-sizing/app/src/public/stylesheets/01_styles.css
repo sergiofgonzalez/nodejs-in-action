@@ -1,0 +1,22 @@
+.box {
+  border: 5px solid black;
+  margin: 1em;
+  padding: .35em;
+}
+
+.box1 {
+  min-height: 100px;
+}
+
+.box2 {
+  height: 100px;
+}
+
+button {
+  background-color: cornflowerblue;
+  font-size: 125%;
+  border-radius: .25em;
+  color: white;
+  margin-right: 1em;
+  margin-top: 5em;
+}

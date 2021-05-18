@@ -2237,7 +2237,498 @@ These units can be used to size boxes and text.
 
 | EXAMPLE: |
 | :------- |
-| See [32 &mdash; Hello, viewport units!](32-hello-viewport-units) for a runnable example. |
+| See [32 &mdash; Hello, viewport units!](32-hello-viewport-units) for a runnable example.<br>You can also find in [e06 &mdash; Practising sizing](e06-practising-sizing) a review of all the concepts seen in this subsection. |
+
+### Images, median, and form elements
+
+In this section we will look at how CSS treats differently images, media and form elements than regular boxes.
+
+#### Replaced elements
+
+Images and video are described as *replaced elements*. This means that CSS cannot affect the internal layout of these elements &mdash; only their position on the page amongst other elements.
+
+Certain replaced elements such as images and video have an *aspect ratio*, that is, they have a intrinsic dimension that is the one used by default.
+
+#### Sizing images
+
+If you place an image inside a box that is smaller or larger than the intrinsic dimensions of the image file in either direction, it will either appear smaller than the box, or overflow the box. CSS makes you responsible for what happens with the overflow.
+
+As an example, the picture below shows two images wrapped in 200 pixels wide boxes. The first picture is smaller than the box and it is not stretched to fill it. The second is larger than 200 pixels and overflows the box.
+
+![Sizing images](images/sizing_images.png)
+
+> Setting `max-width: 100%` in the `<img>` element CSS will enable the image to become smaller in size than the box but not larger. This technique will work too for `<video>` and `<iframe>` elements.
+
+As a result, we would get the following effect on the previous pictures:
+
+![Using max-width 100%](images/sizing_images_max_width_100.png)
+
+CSS provides some other properties you can use to adjust images inside containers. For example, `object-fit`, the replaced element can be sized to fit a box in a number of ways:
++ `object-fit: cover` &mdash; scales down the image size, while respecting the aspect ratio so that it fills the box. If the box size does not have the same aspect ratio as the image, the image might be cropped by the box.
+
++ `object-fit: contain` &mdash; scales down the image size until it is small enough to fit inside the box. This will result in a *"letterboxing"* effect if the box size does not have the same aspect ratio as the image.
+
++ `object-fit: fill` &mdash; will fill the box without respecting the aspect ratio.
+
+You can see the effect on the following picture:
+
+![object-fit](33-hello-sizing-images-object-fit/docs/images/object-fit.png)
+
+In the picture on top, `object-fit: cover` is used. As a result, it neatly fills the box respecting the aspect ration but certain parts of the image are cropped.
+
+In the picture on the middle, `object-fit: contain` ensures that the while picture is displayed, but empty space shows up to the left and right of the picture.
+
+In the picture on the bottom, the box is also filled but the aspect ratio is not preserved.
+
+Note that in the CSS we had to set the height and width of the image to 100%:
+
+```css
+.box {
+  border: 5px solid darkblue;
+  margin: 1em;
+  width: 200px;
+  height: 200px;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+}
+
+.cover {
+  object-fit: cover;
+}
+
+.contain {
+  object-fit: contain;
+}
+
+.fill {
+  object-fit: fill;
+}
+```
+
+| EXAMPLE: |
+| :------- |
+| See [33 &mdash; Hello, sizing images with `object-fit` property](33-hello-sizing-images-object-fit) for a runnable example. |
+
+#### Replaced elements in layout
+
+| NOTE: |
+| :---- |
+| We have not seen advanced CSS layout techniques yet, but the topic is discussed here for completeness. |
+
+The CSS layout techniques on replaced elements behave slightly different to other elements.
+
+For example, in a flex or grid layout elements are stretched by default to fill the entire area. However, images will not stretch and instead will be aligned to the start of the grid area or flex container.
+
+Consider the picture below where we have a two column, two row grid container which has four items in it. All the div elements stretch to fill the row and column, but the image will not stretch.
+
+To force the image to stretch you can do:
+
+```css
+img {
+  width: 100%;
+  height: 100%;
+}
+```
+
+This can be seen inthe first image, no CSS is given to the `<img>` element and as a result, we see how the `<div>`s fill out the whole space assigned to them, but not the image.
+
+![Image sizing](docs/images/images_advanced_layout.png)
+
+However, if we style the `<img>` with:
+
+```css
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+```
+
+we can obtain the same effect:
+
+![Image sizing: stretch](docs/images/images_advanced_layout_stretch.png)
+
+| EXAMPLE: |
+| :------- |
+| See [34 &mdash; Images in advanced CSS layouts](34-images-in-advanced-layouts) for a runnable example. |
+
+#### Form elements
+
+Styling form element is always a tricky issue, and we will only discuss a few basic aspects about it in this section.
+
+You may recall that many form controls are added to the page by way of the `<input>` element, and there are additional elements such as `<textarea>` for multiline text input, and elements to contain labels such as `<fieldset>` and `<legend>`.
+
+HTML5 also contains attributes to enable developers indicate which fields are required and the type of content that needs to be entered.
+
+##### Styling text input elements
+
+Elements that allow for text input such as `<input type="text">`, `<input type="email">`, etc. and `<textarea>` behave just like other boxes on your page.
+
+The default styling will differ based on the operating system and browser used (which is unfortunate).
+
+The following example shows how a simple form can be styled using the properties we have already seen: `border`, `margin`, `padding`...
+
+For example the following form:
+
+![Styling text input](35-styling-text-inputs/docs/images/styling_text_inputs.png)
+
+is styled as follows:
+
+```css
+.box {
+  border: 1px solid black;
+  padding: 0.35em;
+  margin: 1em;
+  width: 90%;
+}
+
+input[type="text"],
+input[type="email"] {
+  border: 2px solid black;
+  margin: 0 0 1em 0;
+  padding: 10px;
+  width: 90%;
+}
+
+input[type="submit"] {
+  border: 3px solid #333;
+  background-color: #999;
+  border-radius: 5px;
+  padding: 10px 2em;
+  font-weight: bold;
+  color: #fff;
+  margin: 0 3em 0 3em;
+}
+
+input[type="submit"]:hover {
+  background-color: #333;
+}
+```
+
+##### Inheritance and form elements
+
+You must be aware that in some browsers, form elements do not inherit font styling by default.
+
+As a result, if you want to ensure that your form fields use the same font defined on the body, or on the parent element, you should add:
+
+```css
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+}
+```
+
+##### Form elements and box-sizing
+
+The box sizing rules for different form widgets difer from browser to browser. As a result, it is a good practice to set margins to `0` on all elements and then add them back when styling individual controls:
+
+```css
+button,
+input,
+select,
+textarea {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+```
+
+##### Other useful settings
+
+Additionally, you should also set:
+
+```css
+textarea {
+  overflow: auto;
+}
+```
+
+to prevent showing the scroll bar in textareas that do not need them in some older browsers.
+
+##### Putting it all together into a *"reset"*
+
+As summary, we can include the following piece of CSS as a sort of *"form reset"* to provide a consistent base to work from.
+
+```css
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+textarea {
+  overflow: auto;
+}
+```
+
+| NOTE: |
+| :---- |
+| Normalizing stylesheets are used by many developers to create a set of baseline styles to use on all projects. They are intended to provide consistency across browsers and projects. You can check out [Normalize.css](https://necolas.github.io/normalize.css/) for an example. |
+
+
+| EXAMPLE: |
+| :------- |
+| See [e07 &mdash; Practising styling on images and form elements](e07-practising-image-styling-and-form-elements) for a runnable example practising the key concepts of this section. |
+
+### Styling tables
+
+This section provides some guidelines about styling HTML tables with CSS.
+
+#### A typical HTML table
+
+The markup for table in HTML will look like the following:
+
+```html
+<table>
+  <caption>A summary of the UK's most famous punk bands</caption>
+  <thead>
+    <tr>
+      <th scope="col">Band</th>
+      <th scope="col">Year formed</th>
+      <th scope="col">No. of albums</th>
+      <th scope="col">Most famous song</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">The Clash</th>
+      <td>1976</td>
+      <td>6</td>
+      <td>London Calling</td>
+    </tr>
+  ... more rows here
+    <tr>
+      ... last row ...
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th scope="row" colspan="2">Total albums</th>
+      <td colspan="2">77</td>
+    </tr>
+  </tfoot>
+</table>
+```
+
+#### Styling our table
+
+Without any styling, the table will look like the picture below:
+
+![Table without styling](images/html_table_initial_state.png)
+
+##### Spacing and layout
+
+The first step consists typically in adding some CSS similar to this one:
+
+```css
+/* spacing */
+
+/* styling for table element */
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid purple;
+}
+
+/* spacing for first header cell (Band) */
+thead th:nth-child(1) {
+  width: 30%;
+}
+
+/* spacing for first header cell (Year formed) */
+thead th:nth-child(2) {
+  width: 20%;
+}
+
+/* spacing for first header cell (Number of albums) */
+thead th:nth-child(3) {
+  width: 15%;
+}
+
+/* spacing for first header cell (Most famous song) */
+thead th:nth-child(4) {
+  width: 35%;
+}
+
+/* cell padding headers and regular cells */
+th,
+td {
+  padding: 20px;
+}
+```
+
++ `table-layout: fixed` makes the table behave a bit more predictably by default. Otherwise, table columns tend to be sized according to how much content they contain, which may produce some strange results. Using this property lets you size your columns according to the width of their headings.
++ `th:nth-child(i)` is used to size the four different headings with specific percentage widths, which will use to guide the widths of the whole column.
++ `width: 100%` means that the table will fill any container it is put in, and be responsive.
++ `border-collapse: collapse` is a standard best practice any table styling effort. This setting will turn this:
+
+![HTML table borders](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Styling_tables/no-border-collapse.png)
+
+into this:
+
+![HTML table border collapse](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Styling_tables/border-collapse.png)
+
++ `border: 3px solid rebeccapurple` will draw a border around the whole table. Having a border *rounding-up* the table content is typically a good idea.
+
++ `padding: 20px` adds some padding to the `<th>` and `<td>` elements so that they don't look so cramped.
+
+As a result, you will end up with:
+
+![HTML table with some basic spacing and layout applied](images/html_table_basic_spacing_layout.png)
+
+##### Some simple typography
+
+It is also a common task to visit [Google Fonts](https://www.google.com/fonts) and choose a font for your page.
+
+For this particular case, we will choose *Rock Salt*. You will find there how to use that font in your document.
+
+```html
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+```
+
+Then, we add the following rules after the existing ones:
+
+```css
+/* typography */
+html {
+  font-family: 'helvetica neue', helvetica, arial, sans-serif;
+}
+
+thead th,
+tfoot th {
+  font-family: 'Rock Salt', cursive;
+}
+
+th {
+  letter-spacing: 2px;
+}
+
+td {
+  letter-spacing: 1px;
+}
+
+tbody td {
+  text-align: center;
+}
+
+tfoot th {
+  text-align: right;
+}
+```
+
++ We set the global *sans-serif* font stack, and then our fancy font for the `<thead>` and `<tfoot>` elements.
+
++ Then we set `letter-spacing: npx` to help in the readability.
+
++ Then we've customized the alignment of the cells so that they look correctly aligned with the column headers.
+
+
+
+![HTML table simple typography](images/html_table_simple_typography.png)
+
+##### Graphics and colors
+
+In this section we add some colors and graphics so that the final result looks like:
+
+![HTML: colors and graphics](images/html_table_colors_and_graphics.png)
+
+The CSS consists in adding a background image to the `<thead>` and `<tfoot>` elements, and changing the color of the text in those elements to white with a `text-shadow` so it is readable.
+
+Also, we add a linear gradient to the `<th>` and `<td>` elements inside the header and footer.
+
+```css
+thead,
+tfoot {
+  background: url(/images/leopardskin.jpg);
+  color: white;
+  text-shadow: 1px 1px 1px black;
+}
+
+thead th,
+tfoot th,
+tfoot td {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+  border: 3px solid purple;
+}
+```
+
+###### Zebra striping
+
+In this section, we add some styles to add some alternate colors on the table rows.
+
+The CSS consists in using `:nth-child(odd)` and `nth-child(even)` pseudo classes. Also, we add a background image to the `<tr>` elements to provide some texture, and a background color for the older browsers that might not support `:nth-child()` selector.
+
+```css
+tbody tr:nth-child(odd) {
+  background-color: #ff33cc;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #e495e4;
+}
+
+tbody tr {
+  background-image: url(/images/noise.png);
+}
+
+table {
+  background-color: #ff33cc;
+}
+```
+
+The result after adding those styles is:
+
+![HTML table: zebra striping](images/html_table_zebra_striping.png)
+
+###### Styling the caption
+
+Finally, we add some styling to the caption, so that it is displayed below the table and align to the right:
+
+```css
+caption {
+  font-family: 'Rock Salt', cursive;
+  padding: 20px;
+  font-style: italic;
+  caption-side: bottom;
+  color: #666;
+  text-align: right;
+  letter-spacing: 1px;
+}
+```
+
+This gives us the final state of the table:
+
+![HTML table: styling the caption](images/html_table_caption.png)
+
+
+#### Table styling quick tips
+
++ Make your table markup as simple as possible, and keep things flexible (e.g. using percentages) to achieve a more responsive design.
+
++ Use `table-layout: fixed` to create a more predictable table layout, so that you can set the column widths using `width` on the `<th>` elements.
+
++ Use `border-collapse: collapse` to simplify the table elements borders.
+
++ Use `<thead>`, `<tbody>` and `<tfoot>` to break up the table into logical chunks on which you can *anchor* CSS styles.
+
++ Use zebra striping to make alternative rows easier to read.
+
++ Use `text-align` to line up your `<th>` and `<td>` to align the cells to their corresponding headings.
+
 
 ## Examples, Exercises and mini-projects
 
@@ -2341,6 +2832,15 @@ Illustrates the behavior of *min-* and *max-* sizes on several examples with tex
 ### [32 &mdash; Hello, viewport units!](32-hello-viewport-units)
 Illustrates how to use viewport units to size boxes and text.
 
+### [33 &mdash; Hello, sizing images with `object-fit` property](33-hello-sizing-images-object-fit)
+Illustrates the use of `object-fit` to adapt image sizes to their wrapping boxes.
+
+### [34 &mdash; Images in advanced CSS layouts](34-images-in-advanced-layouts)
+Illustrates how images behave differently in advanced layouts (grid, flex...) than other elements.
+
+### [35 &mdash; Styling text input](styling-text-inputs)
+Illustrates how to style a simple form with `<input>` elements.
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
 
@@ -2351,10 +2851,16 @@ An exercise practising all the different ways to write selectors.
 Practising the *Box Model*.
 
 ### [e04 &mdash; Practising backgrounds and borders](e04-practising-backgrounds-and-borders)
-Exercises about how to style backgrounds and borders in CSS
+Exercises about how to style backgrounds and borders in CSS.
 
 ### [e05 &mdash; Practising `overflow`](e05-practising-overflow)
-Exercises on the `overflow` property and its values
+Exercises on the `overflow` property and its values.
+
+### [e06 &mdash; Practising sizing](e06-practising-sizing)
+Exercises on units, value types and sizing in general.
+
+### [e07 &mdash; Practising styling on images and form elements](e07-practising-image-styling-and-form-elements)
+Exercises on images, media, and form elements.
 
 ## CSS properties cheatsheet
 
