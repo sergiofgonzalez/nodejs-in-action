@@ -1,0 +1,94 @@
+/* spacing */
+
+/* styling for table element */
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 3px solid lightgray;
+  border-bottom: 3px solid lightgray;
+}
+
+/* spacing for first header cell (Band) */
+thead th:nth-child(1) {
+  width: 30%;
+}
+
+/* spacing for first header cell (Year formed) */
+thead th:nth-child(2) {
+  width: 20%;
+}
+
+/* spacing for first header cell (Number of albums) */
+thead th:nth-child(3) {
+  width: 15%;
+}
+
+/* spacing for first header cell (Most famous song) */
+thead th:nth-child(4) {
+  width: 35%;
+}
+
+/* cell padding headers and regular cells */
+th,
+td {
+  padding: 20px;
+}
+
+/* Cell horizontal alignment */
+
+/* Alignment for first column (Band) */
+thead th:nth-child(1),
+tbody th:nth-child(1) {
+  text-align: left;
+}
+
+/* Alignment for second column (Year formed) */
+thead th:nth-child(2),
+tbody td:nth-child(2) {
+  text-align: right;
+}
+
+/* Alignment for third column (Number of albums) */
+thead th:nth-child(3),
+tbody td:nth-child(3) {
+  text-align: right;
+}
+
+/* Alignment for fourth column (Most famous song) */
+thead th:nth-child(4),
+tbody td:nth-child(4) {
+  text-align: left;
+}
+
+/* Alignment for footer */
+
+/* total label */
+tfoot th:nth-child(1) {
+  text-align: right;
+}
+
+/* total number */
+tfoot td:nth-child(2) {
+  text-align: left;
+}
+
+/* border above footer */
+tfoot {
+  border-top: 3px solid lightgray;
+}
+
+/* zebra striping */
+tbody tr:nth-child(odd) {
+  background-color: lightgray;
+}
+
+/* a few extras... */
+caption {
+  padding: 2px;
+}
+
+tfoot th,
+tfoot td {
+  padding: 10px;
+}
