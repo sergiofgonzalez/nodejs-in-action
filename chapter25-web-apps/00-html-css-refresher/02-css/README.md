@@ -3065,6 +3065,9 @@ Miniproject on fundamental CSS comprehension in which we create an online busine
 ### [e10 &mdash; Practising CSS fundamentals by creating a fancy letterheaded paper](e10-css-fundamentals-fancy-letterheaded-paper)
 Miniproject on fundamental CSS comprehension in which we create a fancy letterheaded paper.
 
+### [e11 &mdash; Practising CSS fundamentals by creating a cool-looking box](e11-css-fundamentals-cool-looking-box)
+Miniproject on fundamental CSS comprehension in which we create an eye-catching box.
+
 ## CSS properties cheatsheet
 
 | CSS property | Description | Example |
