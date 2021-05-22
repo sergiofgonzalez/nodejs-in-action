@@ -1,0 +1,70 @@
+/* || General styles */
+
+body {
+  margin: 0;
+}
+
+html {
+  font-family: 'Helvetica neue', Arial, 'sans serif';
+  font-size: 10px;
+  background-color: #ccc;
+}
+
+h2,
+p {
+  margin: 0;
+}
+
+h2 {
+  font-size: 2em;
+  padding: .5em;
+}
+
+
+/* || Card container styles */
+.card {
+  width: 35em;
+  height: 22em;
+  margin: 5em auto;
+  background-color: red;
+  border: 0.2em solid black;
+  border-radius: 1.5em;
+}
+
+/* || Card Header and Footer styles */
+.card header {
+  background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.1));
+  /* border-radius: 0 0 1.5em 1.5em;  removed as it doesn't look good on screen */
+}
+
+.card footer {
+  background-image: linear-gradient(to bottom,rgba(0,0,0,0.1), rgba(0,0,0,0));
+  /* border-radius: 1.5em 1.5em 0 0;  removed as it doesn't look good */
+}
+
+.card header,
+.card footer {
+  padding: 1em;
+}
+
+.card footer p {
+  font-size: 1.5em;
+}
+
+
+/* || Card Main content */
+article {
+  height: 12em;
+}
+
+.card article img {
+  max-height: 100%;
+  float: right;
+}
+
+article p {
+  color: whitesmoke;
+  margin: 0;
+  padding: 2em;
+}
+

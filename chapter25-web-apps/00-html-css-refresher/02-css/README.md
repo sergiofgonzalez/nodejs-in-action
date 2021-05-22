@@ -2729,6 +2729,197 @@ This gives us the final state of the table:
 
 + Use `text-align` to line up your `<th>` and `<td>` to align the cells to their corresponding headings.
 
+| EXAMPLE: |
+| :------- |
+| See [36 &mdash; Styling tables](36-styling-tables) and [e08 &mdash; Practising HTML table styling](e08-practising-html-table-styling) for runnable examples illustrating how to style HTML tables. |
+
+### Debugging CSS
+
+This section will give you some guidance on how to properly approach the resolution of CSS problems.
+
+The fundamental tool to use to debug CSS is to open your browser's DevTools.
+
+
+#### Chrome DevTools: inspecting the document
+
+On the *Elements* tab you will find information about the actual document the browser is rendering. It will contain some correction over the original HTML (e.g. if some problems were found), as well as some changes applied by JavaScript.
+
+![Inspecting the HTML document](images/Chrome_dev_tools_DOM.png)
+
+Note that therefore, the information you find in the DevTools might be somewhat different from what you have uploaded to the server. The latter can be inspected by right-clicking on the document and selecting: "View page source".
+
+#### Inspecting the applied CSS
+
+You can inspect an element on a page by right-clicking on it and selecting *Inspect*, or by selecting a certain section of the HTML document shown in the *Elements* tab.
+
+![Inspecting CSS](images/dev_tools_css_inspection.png)
+
+In that view you will be able to see:
++ The CSS properties and values applied to that element (both the ones applied to the element and the ones inherited in the boxes below).
++ The longhand properties which will be shown by expanding the information for a given property like `margin`.
+
+Note that from this view you can turn on/off individual rules to do compare how the rule is affecting the element.
+
+In the following picture, you can see how disabling the `width` property on the `<div class="box1">` element will make the box to expand to occupy most of the viewport width. You can also see the longhand properties that have been expanded from the `margin` shorthand property.
+
+![Switching off rules](images/dev_tools_switch_off_rule.png)
+
+
+#### Editing values
+
+In addition to inspecting and switching on/off rules, you will be able to edit the properties of particular elements.
+
+For example, in the picture below we're changing the color of the border of a `<div class="box1">` element.
+
+![Editing values](images/dev_tools_editing_values.png)
+
+#### Adding a new property
+
+You can also add new properties in the corresponding element. For example, in the picture below we're adding a `font-size` property to override what we were getting from the `<body>` via inheritance:
+
+![Adding properties](images/dev_tools_adding_properties.png)
+
+#### Understanding the box model
+
+DevTools also excels in explaining how the the size of the box model elements for the regular and alternative models are being computed.
+
+The example below illustrates this with two `<div>`s that are using different box models:
+
+![DevTools Box Model](images/dev_tools_box-model.png)
+
+You can see in this first picture that the 400px width is applied to the content, so that the padding and border dimensions are added to the final result.
+
+By contrast, this second picture uses the alternative box model:
+
+![DevTools Box Model alt](images/dev_tools_border-box.png)
+
+Even when using the same 400px width, the content size is greatly reduced because those 400px have to include the padding and the border, so the actual content width is 350px.
+
+#### Solving specificity issues
+
+DevTools can also help with specificity issues, as they would show you from where the rule that is being applied is coming from:
+
+![DevTools Specificity](images/dev_tools_specificity.png)
+
+
+#### Debugging problems in CSS
+
+As a rule of thumb, you should follow this process to debug a CSS problem:
++ Validate that you have valid HTML and CSS by using the corresponding [HTML validator](https://validator.w3.org/) and [CSS validator](https://jigsaw.w3.org/css-validator/) pages.
++ Make sure that the property and value is supported in the browser you're testing in.
++ Ensure that there's not something else overriding your CSS.
++ Make a reduced test case of the problem.
+
+### Organizing your CSS
+
+#### Tips to keep your CSS tidy
+
++ Ensure your project has a coding style guide for CSS. You can review CSS guidelines for [MDN code examples](https://developer.mozilla.org/en-US/docs/MDN/Guidelines/Code_guidelines/CSS) as inspiration.
+
++ Keep the CSS consistent.
+
++ Break CSS rules in multiple lines to improve readability.
+
++ Comment your CSS to help future developers (or your *future self*) to understand the CSS code. It is also a good practice to use comments to break up the different sections of a CSS file (e.g. general styles, typography, etc. etc.)
+
++ Create logical sections in your stylesheet:
+  + Begin by creating a *general styles* sectionin which you would put rules that apply to elements like `<body>`, `<h1>`, `<ul>`...
+  + Define them some utility classes that you will share across the pages, such as a `.nobullets {...}` rule that removes the bullets from lists.
+  + Add then some sitewide navigation rules. Those would be classes that you will attach to elements such as `.logo {...}`, `.main-nav {...}`, etc.
+  + Finally, add some CSS rules broken down by context, page or component, such as `.product-listing {...}`, `user-box {...}`, etc.
+
++ Avoid overly specific selectors, as that would play agains reusability.
+
++ Break large stylesheets into multiple smaller ones. It is a good idea to have a stylesheet that includes all the global rules, and then smaller ones that include the specific rules needed for those sections. The normal rules for cascading will apply.
+
+#### CSS Methodologies
+
+There are a few known methodologies that you might consider when setting up the CSS organization for a project.
+
+##### OOCSS
+
+Object Oriented CSS (OOCSS) is a methodology in which you separate your CSS into reusable objects that can be used anywhere you need on your site.
+
+The pattern in which OOCSS is based (the *Media object*) can be used in different places even if not using OOCSS across the board.
+
+For example, you can wrap common properties used in two different components such as a comment box and and list item into a `.media` rule and then add additional rules that deal with the tiny differences.
+
+
+
+##### BEM
+
+Block Element Modifier is another methodology in which you use modifier rules to tailor how a a particular element is being displayed.
+
+```html
+<button class="button btn-primary btn-large">
+```
+
+##### Other common systems
+
+Other common systems include SMACSS, ITCSS and ACSS.
+
+#### Build systems for CSS
+
+Another way to organize CSS is to take advantage of some of the tooling available for frontend developers. These tools often include pre-processors and post-processors.
+
+The most popular pre-processor is [Sass](https://sass-lang.com/)
+
+Sass allows you to create variables that can be referenced in your stylesheets and then substituted in the compilation process.
+
+```css
+$base-color: #c6538c;
+
+.alert {
+  border: 1px solid $base-color;
+}
+```
+
+It also allows you to break the CSS down to component level, and use the *include* functionality to reference those stylesheets:
+
+```css
+@use 'lists'
+@use 'footer'
+@use 'links'
+```
+
+You can also use some tooling like [cssnano](https://cssnano.co/) for striping out all the unneeded elements for the production version of your stylesheets.
+
+#### Modern CSS make Sass not that relevant
+
+Modern CSS include several features that make Sass not as relevant as it once was.
+
+For example, you can use the [`@import`](https://developer.mozilla.org/en-US/docs/Web/CSS/@import) to import style ryles from other stylesheets.
+
+For example you can do:
+
+```css
+@import url('foundation.css');
+@import 'lists.css';
+@import 'containers' screen;
+```
+
+And you can define variables too via CSS custom properties.
+
+Those are defined using the custom property notation (--main-color: rebeccapurple;) and then referenced throughout the document using `var()` as in (`var(--main-color);`).
+
+It is common to define those properties on the `:root` pseudo-class so that it can be applied across your HTML document:
+
+```css
+:root {
+  --main-bg-color: rebeccapurple;
+}
+
+element {
+  background-color: var(--main-bg-color);
+}
+```
+
+You can find more documentation on custom properties in [MDN: using CSS custom properties(variables)](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+
+| NOTE: |
+| :---- |
+| Remember that pseudo-classes style an element when it is on a certain state (e.g. a link in the state when you're hovering over it, or an element that happens to be the first element of their type).<br>The `:root` pseudo-class matches the root element of the tree that represents the HTML document. |
+
 
 ## Examples, Exercises and mini-projects
 
@@ -2841,6 +3032,9 @@ Illustrates how images behave differently in advanced layouts (grid, flex...) th
 ### [35 &mdash; Styling text input](styling-text-inputs)
 Illustrates how to style a simple form with `<input>` elements.
 
+### [36 &mdash; Styling tables](36-styling-tables)
+Illustrates different techniques to style HTML tables.
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
 
@@ -2861,6 +3055,9 @@ Exercises on units, value types and sizing in general.
 
 ### [e07 &mdash; Practising styling on images and form elements](e07-practising-image-styling-and-form-elements)
 Exercises on images, media, and form elements.
+
+### [e08 &mdash; Practising HTML table styling](e08-practising-html-table-styling)
+Exercises on styling HTML tables
 
 ## CSS properties cheatsheet
 
