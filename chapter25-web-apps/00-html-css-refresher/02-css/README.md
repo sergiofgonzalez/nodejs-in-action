@@ -3057,7 +3057,13 @@ Exercises on units, value types and sizing in general.
 Exercises on images, media, and form elements.
 
 ### [e08 &mdash; Practising HTML table styling](e08-practising-html-table-styling)
-Exercises on styling HTML tables
+Exercises on styling HTML tables.
+
+### [e09 &mdash; Practising CSS fundamentals by creating an online business card](e09-css-fundamentals-online-business-card)
+Miniproject on fundamental CSS comprehension in which we create an online business card.
+
+### [e10 &mdash; Practising CSS fundamentals by creating a fancy letterheaded paper](e10-css-fundamentals-fancy-letterheaded-paper)
+Miniproject on fundamental CSS comprehension in which we create a fancy letterheaded paper.
 
 ## CSS properties cheatsheet
 
