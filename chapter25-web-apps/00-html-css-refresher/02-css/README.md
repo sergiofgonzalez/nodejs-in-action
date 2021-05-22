@@ -2920,6 +2920,96 @@ You can find more documentation on custom properties in [MDN: using CSS custom p
 | :---- |
 | Remember that pseudo-classes style an element when it is on a certain state (e.g. a link in the state when you're hovering over it, or an element that happens to be the first element of their type).<br>The `:root` pseudo-class matches the root element of the tree that represents the HTML document. |
 
+### Advanced styling effects
+
+The following sections introduces some advanced styling features such as box shadows, blend modes, and filters.
+
+#### Box shadows
+
+The `box-shadow` property allows you to apply one or more drop shadows to an element's box.
+
+A simple box shadow is applied using the following CSS:
+
+```css
+.simple {
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.7);
+}
+```
+
++ the horizontal offset &mdash; the distance to the right that the shadow is offset from the original box.
++ the vertical offset &mdash; the distance downwards that the shadow is offset from the original box.
++ the blur radius &mdash; the amount of blurring applied to the shadow.
++ The base color of the shadow.
+
+This results in the following effect:
+
+![A simple box shadow](37-hello-box-shadows/docs/images/box-shadow_simple.png)
+
+We give four values to the `box-shadow` property:
+
+
+You can also apply several shadows:
+
+```css
+.multiple {
+  box-shadow: 1px 1px 1px black,
+              1px 1px 1px black,
+              3px 3px 1px red,
+              4px 4px 1px red,
+              5px 5px 1px black,
+              6px 6px 1px black;
+}
+```
+
+Which results in:
+
+![Multiple boxes](37-hello-box-shadows/docs/images/box-shadow_multiple.png)
+
+Note that appart from being able to create *outer* shadows, you can use the `inset` keyword to create *inner* shadows as can be seen in the image below:
+
+![Cool looking button](37-hello-box-shadows/docs/images/box-shadow_inset.png)
+
+In the example, we use the following CSS:
+
+```css
+button {
+  width: 150px;
+  font-size: 1.1rem;
+  line-height: 2;
+  border-radius: 10px;
+  border: none;
+  background-image: linear-gradient(to bottom right, #777, #ddd);
+  box-shadow: 1px 1px 1px black,
+              inset 2px 3px 5px rgba(0, 0, 0, 0.3),
+              inset -2px -3px 5px rgba(255, 255, 255, 0.5);
+}
+
+button:focus,
+button:hover {
+  background-image: linear-gradient(to bottom right, #888, #eee);
+}
+
+button:active {
+  box-shadow: inset 2px 2px 1px black,
+              inset 2px 3px 5px rgba(0, 0, 0, 0.3),
+              inset -2px -3px 5px rgba(255, 255, 255, 0.5);
+}
+```
+
+Note how we've applied some styles on the focus/hover/active states using pseudo-classes. The button has a simple black box shadow set on by default, plus a couple of inset shadows, one light and one dark, placed on opposite corners of the button to give it a nice shading effect.
+
+When the button is pressed in, the active state causes the first box shadow to be swapped fro a very dark inset shadow, giving the appearanche of a real button that has been pressed in.
+
+| NOTE: |
+| :---- |
+| `box-shadow` can be given another value that specifies the spread radius. |
+
+
+#### Filters
+
+#### Blend modes
+
+
 
 ## Examples, Exercises and mini-projects
 
@@ -3034,6 +3124,9 @@ Illustrates how to style a simple form with `<input>` elements.
 
 ### [36 &mdash; Styling tables](36-styling-tables)
 Illustrates different techniques to style HTML tables.
+
+### [37 &mdash; Hello box shadows!](37-hello-box-shadows)
+Illustrates the usage of `box-shadow` property.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
