@@ -1,0 +1,13 @@
+div {
+  width: 250px;
+  height: 130px;
+  padding: 10px;
+  margin: 10px;
+  display: inline-block;
+  background: url(/images/colorful-heart.png) no-repeat center 20px;
+  background-color: green;
+}
+
+.multiply {
+  background-blend-mode: multiply;
+}

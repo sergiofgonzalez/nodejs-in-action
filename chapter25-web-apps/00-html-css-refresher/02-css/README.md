@@ -3005,10 +3005,223 @@ When the button is pressed in, the active state causes the first box shadow to b
 | `box-shadow` can be given another value that specifies the spread radius. |
 
 
+| EXAMPLE: |
+| :------- |
+| See [37 &mdash; Hello box shadows!](37-hello-box-shadows) for a runnable example. |
+
 #### Filters
+
+The `filter` property enables *Photoshop-like* filters in CSS.
+
+```css
+.blur {
+  filter: blur(10px);
+}
+
+.grayscale {
+  filter: grayscale(60%);
+}
+```
+
+![Filters](38-hello-filters/docs/images/filter_examples.png)
+
+Filters can be applied to any element, and no just images.
+
+The interesting thing about filters is that they work on the exact shape of the content inside the box, not just the box itself as one big chunk as it happens with (for example, `box-shadow`).
+
+![filter vs. box-shadow](38-hello-filters/docs/images/filter_vs_box-shadow.png)
+
+| EXAMPLE: |
+| :------- |
+| See [38 &mdash; Hello filters!](38-hello-filters) for a runnable example. |
 
 #### Blend modes
 
+CSS blend modes allow us to blend modes to elements that specify a blending effect when two elements overlap &mdash; the final color shown for each pixel will be the result of a combination of the original pixel color, and that of the pixel in the layer underneath it.
+
+There are two properties that use blend modes in CSS:
+
++ `background-blend-mode` &mdash; blends together multiple background images and colors set on a single element.
+
++ `mix-blend-mode` &mdash; blends together the element it is set on with elements it is overlapping (both background and content).
+
+![background blend mode](39-hello-blend-modes/docs/images/background-blend-mode.png)
+
+![mix blend mode](39-hello-blend-modes/docs/images/mix-blend-mode.png)
+
+
+| EXAMPLE: |
+| :------- |
+| See [39 &mdash; Hello blend modes!](39-hello-blend-modes) for a runnable example. |
+
+#### CSS shapes
+
+While it is true that everything in CSS is a rectangular box, we can achieve the effect the our content flows around non-rectangular things by using CSS shapes.
+
+CSS shapes specification enables wrapping of text around non-rectangular shape, and it's specially useful when working with an image which has some white space you might want to float text around.
+
+![Flowing text](40-hello-css-shapes/docs/images/css_shapes.png)
+
+| EXAMPLE: |
+| :------- |
+| See [40 &mdash; Hello CSS shapes!](40-hello-css-shapes) for a runnable example. |
+
+### Fundamental text and font styling
+
+This section deals with the basic fundamentals of text/font styling in detail.
+
+#### What is involved in styling text in CSS?
+
+The text inside an element is laid out inside the element's context box. It starts at the top left of the content area, and flows towards the end of the line. Once it reaches the end, it goes down to the next line and continues, then the next line, until all the content has been placed in the box.
+
+Text content behaves as a series of inline elements, being laid out on lines adjacent to one another, and not creating line breaks until the end of the line is reached, or until you force a line break using `<br>`.
+
+The CSS properties used to style text fall into two categories:
++ Font styles &mdash; its size, whether it is bold, italic, etc.
+
++ Text layout &mdash; the properties that affect spacing, alignment, etc.
+
+#### Font styles
+
+##### Color
+
+The `color` property sets the color of the foreground content of the selected elements (which is usually the text).
+
+```css
+p {
+  color: red;
+}
+```
+
+##### Font families
+
+The `font-family` property is used to set a different font on your text. It allows you to specify a font (or list of fonts) for the browser to apply to the selected elements.
+
+The browser will only apply a font if it is available on the machine the website is being accessed on, if not it will just use the browser default font.
+
+```css
+p {
+  font-family: arial;
+}
+```
+
+###### Web safe fonts
+
+There are only a certain number of fonts that are available across all systems. These are called *web safe fonts*.
+
+The following table lists the fonts that can be reasonably considered *web safe*.
+
+| Name | Generic type | Notes |
+| :--- | :----------- | :---- |
+| Arial | sans-serif | It's considered a best practice to add Helvetica as a preferred alternative to Arial, as Helvetica is considered to have a nice shape. |
+| Courier New | monospace | |
+| Georgia | serif | |
+| Times New Roman | serif | |
+| Trebuchet MS | sans-serif | Not generally available in mobile OSes. |
+| Verdana | sans-serif | |
+
+
+###### Default fonts
+
+CSS defines five generic names for fonts: `serif`, `sans-serif`, `monospace`, `cursive`, and `fantasy`.
+
+When using those generic names, the browser will decide which exact font to use depending on the OS it is running on.
+
+| Term | Definition | Example |
+| :--- | :--------- | :------ |
+| `serif` | Fonts that have *serifs* (the flourishes and other small details you see at the ends of the strokes in some typefaces). | <p style="font-family: serif">My big red elephant</p> |
+| `sans-serif` | Fonts that don't have *serifs*. | <p style="font-family: sans-serif">My big red elephant</p> |
+| `monospace` | Fonts where every character has the same width, typically used in code listings. | <p style="font-family: monospace">My big red elephant</p> |
+| `cursive` | Fonts that emulate handwriting, with flowing connected strokes. | <p style="font-family: cursive">My big red elephant</p> |
+| `fantasy` | Fonts intended to be decorative. | <p style="font-family: fantasy">My big red elephant</p> |
+
+
+| NOTE: |
+| :---- |
+| While `serif`, `sans-serif`, and `monospace` are quite safe and predictable, `cursive` and `fantasy` are not. |
+
+###### Font stacks
+
+As you can't guarantee the availability of the fonts you want to use on your page, it is a good practice to supply a *font stack* that specify multiple font names separated by comma:
+
+```css
+p {
+  font-family: "Trebuchet MS", Verdana, sans-serif;
+}
+```
+
+It is a good idea to provide a suitable generic font name at the end of the stack so that if none of the listed fonts are available, the browser can at least provide something suitable.
+
+| NOTE: |
+| :---- |
+| Paragraphs are displayed with the browser's default serif font if no other option is available.<br>Note also that font names with more than one word must be surrounded with quotes as "Trebuchet MS". |
+
+A good example for a font family for the web is:
+
+```css
+p {
+  font-family: Helvetica, Arial, sans-serif;
+}
+```
+
+##### Font size
+
+Font size is specified with the `font-size` property that can take values from the length and size property values along with percentages.
+
+As a refresher:
+
++ `px` &mdash; the number of pixels high you want the text to be.
++ `em` &mdash; `1em` is equal to the font size set on the parent element of the current element you're styling. Ultimately is the width of a capital letter *M* contained inside a parent element.
++ `rem` &mdash; `1rem` is equal to the font size set on the root element of the document. Note that this makes Math much easier, especially if you have a lot of nested elements.
+
+The `font-size` of an element is inherited from that element's parent element, starting from the root element `<html>`, which is set to `16px` as standard across browsers.
+
+As a result, any paragraph for which no customization is made, will have a font size of `16px`.
+
+Other elements will have different default size, for example, an `<h1>` will have `2em` set by default, so it will have a final size of `32px`.
+
+Things become more complicated when you start altering the font size of nested elements.
+
+Consider the following example:
+
+```html
+<!-- default font-size is 16px -->
+<article> <!-- set using CSS to 1.5em = 24px -->
+  <p>My paragraph</p> <!-- I want it to be 20px -->
+<article>
+```
+
+```css
+article {
+  font-size: 1.5em;
+}
+
+p {
+  font-size: 0.8333em;
+}
+```
+
++ `px` &mdash;
+
+##### Font style, font weight, text transform, and text decoration
+
+##### Text drop shadows
+
+##### Multiple shadows
+
+#### Text layout
+
+##### Text alignment
+
+##### Line height
+
+##### Letter and word spacing
+
+##### Other properties worth mentioning
+
+#### Font shorthand
+
+#### Playing with styling text
 
 
 ## Examples, Exercises and mini-projects
@@ -3127,6 +3340,15 @@ Illustrates different techniques to style HTML tables.
 
 ### [37 &mdash; Hello box shadows!](37-hello-box-shadows)
 Illustrates the usage of `box-shadow` property.
+
+### [38 &mdash; Hello filters!](38-hello-filters)
+Illustrates the usage of `filter` property to achieve *Photoshop-like* filters using CSS.
+
+### [39 &mdash; Hello blend modes!](39-hello-blend-modes)
+Illustrates the usage of *blend modes* to achieve *Photoshop-like* effects using CSS.
+
+### [40 &mdash; Hello CSS shapes!](40-hello-css-shapes)
+Illustrates the usage of CSS shapes to allow text to flow around an image in a non-rectangular way.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.

@@ -1,0 +1,9 @@
+.wrapper {
+  max-width: 500px;
+}
+
+img {
+  float: left;
+  shape-outside: circle(40%);
+  margin: 10px;
+}

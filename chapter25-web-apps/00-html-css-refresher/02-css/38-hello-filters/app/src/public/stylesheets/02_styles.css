@@ -1,0 +1,13 @@
+p {
+  border: 5px dashed red;
+  max-width: 200px;
+  padding: 1em;
+}
+
+.filter {
+  filter: drop-shadow(5px 5px 1px rgba(0, 0, 0, 0.7));
+}
+
+.box-shadow {
+  box-shadow: 5px 5px 1px rgba(0, 0, 0, 0.7);
+}

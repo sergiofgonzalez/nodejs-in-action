@@ -1,0 +1,18 @@
+.wrapper {
+  max-width: 200px;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.blur {
+  filter: blur(10px);
+}
+
+.grayscale {
+  filter: grayscale(60%);
+}
