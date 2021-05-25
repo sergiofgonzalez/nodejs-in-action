@@ -1,0 +1,47 @@
+/* General styles */
+html {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10px;
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1.5rem;
+}
+
+/* ||- Links */
+a {
+  outline: none;
+  text-decoration: none;
+  padding: 2px 1px 0;
+}
+
+a:link {
+  color: blue;
+}
+
+a:visited {
+  color: rebeccapurple;
+}
+
+a:focus,
+a:hover {
+  border-bottom: 1px solid;
+}
+
+a:active {
+  color: red;
+}
+
+a[href*="http"] {
+  background: url(/images/external-link-icon.png) no-repeat 100% 0;
+  background-size: 16px 16px;
+  padding-right: 19px;
+}

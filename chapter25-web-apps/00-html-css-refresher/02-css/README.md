@@ -3182,14 +3182,24 @@ Other elements will have different default size, for example, an `<h1>` will hav
 
 Things become more complicated when you start altering the font size of nested elements.
 
-Consider the following example:
+Consider the following example, in which we have left the document base font size to its default value of 16px, and we have the following HTML document:
 
 ```html
 <!-- default font-size is 16px -->
-<article> <!-- set using CSS to 1.5em = 24px -->
+<article>
   <p>My paragraph</p> <!-- I want it to be 20px -->
 <article>
 ```
+
+Let's assume that we have some rule that set the `<article>`'s font size to be `1.5em`s. As a result, if we want the paragraph font size to be 20px but expressed as *ems* we have to do:
+
+```
+article_font_size_px = parents_font_size_px * article_font_size_em = 16 * 1.5 = 24px
+p_font_size_px = parents_font_size_px * p_font_size_em = 24 * p_font_size_em = 20
+p_font_size_em = 20 / 24 = .83333
+```
+
+Therefore:
 
 ```css
 article {
@@ -3201,27 +3211,471 @@ p {
 }
 ```
 
-+ `px` &mdash;
+As things tend to get complicated soon as we have more nesting in the document, it is a good practive to set the font size of the document to 10px, so the Math get easier to work out:
+
+```css
+html {
+  font-size: 10px;
+}
+
+h1 {
+  font-size: 5rem;
+}
+
+p {
+  font-size: 1.5rem;
+  color: red;
+  font-family: Helvetica, Arial, sans-serif;
+}
+```
+
+In the previous example, the `<h1>` element's font size will be 50px, and the `<p>` element 15px.
 
 ##### Font style, font weight, text transform, and text decoration
 
+CSS provides four common properties to alter the visual weight/emphasis of text:
++ `font-style` &mdash; used to trun italic text on and off.
+  + `normal`: sets the text to normal (turn off italics).
+  + `italic`: sets the text to the italic version of the font (if available).
+  + `oblique`: sets the text to use a simulated version of the italic font by *slanting* the normal version.
+
++ `font-weightp &mdash; sets how bold the text is.
+  + `normal`, `bold`: normal and bold font weight.
+  + `lighter`, `bolder`: sets the current element's font to be one step lighter or heavier than the parent's boldness.
+  + `100`-`900`: sets the numeric boldness value.
+
++ `text-transform` &mdash; allows you to transform the font:
+  + `none`: turns off any transformation.
+  + `uppercase`: transforms all text to capitals.
+  + `lowercase`: transforms all text to lower case.
+  + `capitalize`: transforms all text to have the first letter capitalized.
+  + `full-width`: transforms all glyphs to be written inside a fixed-width square, similar to a monospace font (useful to align Asian language glyphs with Latin characters)
+
++ `text-decoration` &mdash; sets/unsets decorations on fonts:
+  + `none`: unsets any text decorations already present.
+  + `underline`: underlines the text.
+  + `overline`: overlines the text.
+  + `line-through`: puts a strikethrough over the text.
+
+
 ##### Text drop shadows
 
-##### Multiple shadows
+You can apply drop shadows to your text using `text-shadow` property:
+
+```css
+text-shadow: 4px 4px 5px red;
+```
+
+The property accepts the horizontal and vertical offset, followed by the blur radius and base color.
+
+As in the case of the `box-shadow` you can also specify multiple shadows:
+
+```css
+text-shadow: 1px 1px 1px red,
+             2px 2px 2px rebeccapurple;
+```
+
+| EXAMPLE: |
+| :------- |
+| See [41 &mdash; Hello Font Styles!](41-hello-font-styles) for a runnable example illustrating many of the properties seen in this section. |
 
 #### Text layout
 
+Once the basic intrinsic properties of the text are configured, you can use another set of properties to control how the text is laid out.
+
 ##### Text alignment
+
+The `text-align` property is used to control how text is aligned with its containing context box in a similar fashion you'd do in a word processor application:
+
++ `left` &mdash; justifies text to the left.
++ `right` &mdash; justifies text to the right.
++ `center` &mdash; centers the text.
++ `justify` &mdash; justifies the text.
 
 ##### Line height
 
+The `line-height` property sets the height of each line of text. This can take most of length and size units as `line-height: 30px`, but it is recommended to use a unitless value.
+
+For example:
+
+```css
+line-height: 1.6;
+```
+
+means that lines will be spaced about 1.6 times the height of the font-
+
+| NOTE: |
+| :---- |
+| It is recommended to set the `line-height` to be between `1.5` and `2.0`. |
+
+
 ##### Letter and word spacing
+
+The `letter-spacing` and `word-spacing` properties allow you to set the spacing between letters and words in your text.
+
+You might want to use them for special artistic effects, such as having extra spacing in the first line of articles or paragraphs:
+
+```css
+p::first-line {
+  letter-spacing: 4px;
+  word-spacing: 4px;
+}
+```
+
 
 ##### Other properties worth mentioning
 
+There are a huge number of properties that can be used to fine-tune the font styles and text layout styles (See [MDN: Other text layout properties worth looking at](https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Fundamentals#other_properties_worth_looking_at)):
+
++ `text-index`: specify how much horizontal space should be left before the beginning of the first line of the text content.
++ `text-overflow`: define how overflowed content that is not displayed should be signaled to users.
++ `white-space`: define how whitespace and line breaks should be handled.
++ `word-break`: specify whether to break lines within words.
+
 #### Font shorthand
 
-#### Playing with styling text
+It is worth mentioning that many font properties can also be set using the `font` shorthand property as in:
+
+```css
+font: italic normal bold normal 3em/1.5 Helvetica, Arial, sans-serif;
+```
+
+| EXAMPLE: |
+| :------- |
+| See [42 &mdash; Hello Text layout!](42-hello-text-layout) for a runnable example. |
+
+### Styling lists
+
+This section deals with some CSS properties specific to lists, and some best practices to consider.
+
+#### A simple list example
+
+Let's look at the following markup with different types of lists:
+
+```html
+<h2>Shopping (unordered) list</h2>
+<p>
+  Paragraph for reference, paragraph for reference, paragraph for reference,
+  paragraph for reference, paragraph for reference, paragraph for reference.
+</p>
+
+<ul>
+  <li>Hummus</li>
+  <li>Pita</li>
+  <li>Green salad</li>
+  <li>Halloumi</li>
+</ul>
+
+<h2>Reciper (ordered) list</h2>
+
+<p>
+  Paragraph for reference, paragraph for reference, paragraph for reference,
+  paragraph for reference, paragraph for reference, paragraph for reference.
+</p>
+
+<ol>
+  <li>Toast pita, leave to cool, then slice down the edge.</li>
+  <li>Fry the halloumi in a shallow, non-stick pan, until browned on both sides.</li>
+  <li>Wash and chop the salad.</li>
+  <li>Fill the pita with salad, hummus, and fried halloumi.</li>
+</ol>
+
+<h2>Ingredient description list</h2>
+
+<p>
+  Paragraph for reference, paragraph for reference, paragraph for reference,
+  paragraph for reference, paragraph for reference, paragraph for reference.
+</p>
+
+<dl>
+  <dt>Hummus</dt>
+  <dd>A thick dip/sauce generally made from chick peas bended with tahini, lemon juice, salt, garlic, and other ingredients.</dd>
+  <dt>Pita</dt>
+  <dd>A soft, slightly leavened flatbread.</dd>
+  <dt>Halloumi</dt>
+  <dd>A semi-hard, unripened, brined cheese with a higher-than-usual melting joing, usually made from goat/sheep milk.</dd>
+  <dt>Green salad</dt>
+  <dd>That green healthy stuff that many of us just use to garnish kebabs.</dd>
+</dl>
+```
+
+#### Handling list spacing
+
+It is a good practive to adjust the list styles to keep the same vertical spacing as their surrounding elements (such as paragraphs and images), and the same horizontal spacing as each other.
+
+Therefore, it is recommended to apply the following styles to override the default styles applies to lists:
+
+```css
+html {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10px;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+ul, ol, dl, p {
+  font-size: 1.5rem;
+}
+
+li, p, dd, dt {
+  line-height: 1.5;
+}
+
+dt {
+  font-weight: bold;
+}
+```
+
+Those rules set the sitewide font and size, as recommended by the best practices, and then sets the font sizes and line heights for the different list elements.
+
+Finally, we make the description terms bold, so that they stand out from the definition text.
+
+
+#### List-specific styles
+
+The following three properties can be used on `<ul>` and `<ol>` to change the style of unordered and ordered lists:
+
++ `list-style-type` &mdash; sets the type of bullets to use for the list (square, circle, numbers, letters, roman numerals...).
++ `list-style-position` &mdash; sets whether bullets appear inside the list items or outside them before the start of each item.
++ `list-style-image` &mdash; allows you to use a custom image for the bullet, rather than a simple square or circle.
+
+| NOTE: |
+| :---- |
+| The three properties listed above can be configured with `list-style` property shorthand as in `list-style: square url(example.png) inside`. |
+
+##### Using a custom bullet image
+
+Although, it is possible to use `list-style-image: url(/images/bomb.png)` to use an image for your bullets, it is generally more robust to use `background-*` related properties as you will get more fine-tune control on the size and position of the bullets:
+
+```css
+ul {
+  padding-left: 2rem;
+  list-style-type: none;
+}
+
+ul li {
+  padding-left: 2rem;
+  background-image: url(/images/bomb.png);
+  background-position: 0 0;
+  background-size: 1.6rem 1.6rem;
+  background-repeat: no-repeat;
+}
+```
+
+The previous snippet uses our `bomb.png` icons as bullets as seen on the image below:
+
+![bombs as bullets](images/lists_bombs_as_bullets.png)
+
+
+#### Controlling list counting
+
+The following section details how to fine-tuning the counting in ordered lists.
+
+The `start` attribute lets you set the start number of a list to a number other than 1.
+
+```html
+<ol start="4">
+  <li>Toast pita, leave to cool, then slice down the edge.</li>
+  <li>Fry the halloumi in a shallow, non-stick pan, until browned on both sides.</li>
+  <li>Wash and chop the salad.</li>
+  <li>Fill the pita with salad, hummus, and fried halloumi.</li>
+</ol>
+```
+
+The reversed attribute, will start the list counting down instead of up:
+
+```html
+<ol start="4" reversed>
+  <li>Toast pita, leave to cool, then slice down the edge.</li>
+  <li>Fry the halloumi in a shallow, non-stick pan, until browned on both sides.</li>
+  <li>Wash and chop the salad.</li>
+  <li>Fill the pita with salad, hummus, and fried halloumi.</li>
+</ol>
+```
+
+
+The `value` attribute will allow you set your list items to specific numerical values:
+
+```html
+<ol>
+  <li value="2">Toast pita, leave to cool, then slice down the edge.</li>
+  <li value="4">Fry the halloumi in a shallow, non-stick pan, until browned on both sides.</li>
+  <li value="6">Wash and chop the salad.</li>
+  <li value="8">Fill the pita with salad, hummus, and fried halloumi.</li>
+</ol>
+```
+
+| EXAMPLE: |
+| :------- |
+| See [43 &mdash; Hello list styling!](43-hello-list-styling) for a runnable example on which you can exercise different styling on lists. |
+
+### Styling links
+
+When styling links, it is important to be know how to make proper use of pseudo-classes to style link states effectively, and how to style links for navigation menus, tabs, buttons...
+
+##### Link states
+
+The different states on which a link can be are described by the following *pseudo-classes*:
+
++ `:link` &mdash; a link which has a destination
++ `:visited` &mdash; a link that has already been visited
++ `:hover` &mdash; a link that is being hovered over
++ `:focus` &mdash; a link when it has been focused
++ `:active` &mdash; a link when it has been activated (e.g. clicked on)
+
+##### Default states
+
++ Links are underlined.
++ Unvisited links are blue.
++ Visited links are purple.
++ Hovering a link makes the mouse pointer change to a little hand icon.
++ Focused links have an outline around them.
++ Active links are red.
+
+##### Best practices for styling links
+
++ Use underlining for links, but not for other things. If you don't want to use underlined links, highlight them consistently using some other way, but don't stray too far from the expected behavior.
+
++ Make them react when hovered/focused, and in a slightly different way when activated.
+
++ Use judiciously the following properties to style links:
+  + `color`: for the text color of the link.
+  + `cursor`: for the mouse pointer style.
+  + `outline`: for the text outline.
+
+#### Including icons on links
+
+It is a common practice to include icons on links.
+
+You can do that by using the `background-*` properties for the `<a href="...">` elements as seen below:
+
+```css
+/* select elements that contain http in the href attribute in any position */
+a[href*="http"] {
+  background-image: url(...);
+  background-repeat: no-repeat;
+  padding-right: 19px;
+}
+```
+
+#### Styling links as buttons
+
+Links are quite commonly styled to look and behave like buttons in certain circumstances such as navigation bars.
+
+The following CSS can be used to style a navigation bar in such way:
+
+```css
+/* General styles */
+html {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10px;
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1.5rem;
+}
+
+ul {
+  padding: 0;
+  width: 100%;
+}
+
+
+/* ||- Links as buttons*/
+
+li {
+  display: inline;
+}
+
+a {
+  outline: none;
+  text-decoration: none;
+  display: inline-block;
+  width: 19.5%;
+  margin-right: 0.625%;
+  text-align: center;
+  line-height: 3;
+  color: black;
+}
+
+li:last-child a {
+  margin-right: 0;
+}
+
+a:link,
+a:visited,
+a:focus {
+  background-color: yellow;
+}
+
+a:hover {
+  background-color: orange;
+}
+
+a:active {
+  background-color: red;
+  color: white;
+}
+```
+
+These are the relevant parts from the snippet above:
+
++ We remove the default padding from the `<ul>` elements and set it to span the 100% of the outer container.
++ `<li>` elements, which are block elements, are set to inline, as we don't want them to break into different lines.
++ We style the `<a>` element in the following way:
+  + we turn off the `text-decoration` and `outline`.
+  + we set the display to `inline-block` because we don't want them to break on different lines, but we want them to respect the size that we assign them.
+  + we size them so that they fill up the whole width of the `<ul>` element. As we have 5 buttons, 19.5% seems like a good fit. We also set the margin to 0.625% because we want the options close to each other.
+  + Finally, we remove the margin of the last element, so that we don't take more than 100%, and set some line height to make the buttons some height.
+
+
+Note that for this to work, the HTML for the navigation bar needs to be written in one line so that we don't have extra spaces that would break our layout computations:
+
+```html
+<ul>
+  <li><a href="#">Home</a></li><li><a href="#">Pizza</a></li><li><a href="#">Music</a></li><li><a href="#">Wombats</a></li><li><a href="#">Finland</a></li>
+</ul>
+```
+
+| EXAMPLE: |
+| :------- |
+| See [44 &mdash; Hello styling links!](44-hello-styling-links) for a runnable example on which many of these concepts are illustrated. |
+
+### Web fonts
+
+#### Font families recap
+
+#### Web fonts
+
+#### Active learning: A web font example
+
+##### Finding fonts
+
+##### Generating the required code
+
+##### Implementing the code in your demo
+
+#### Using an online font service
+
+#### `@font-face` in more detail
+
+#### Variable fonts
+
+
+
+### CSS layout
+
+At this point, we are dangerous enough with CSS to start looking at how to place our boxes in the right place in relation to the viewport. We'll look into the details of modern layout tools like flexbox, CSS grid, and positioning, as well as some other legacy techniques.
 
 
 ## Examples, Exercises and mini-projects
@@ -3349,6 +3803,18 @@ Illustrates the usage of *blend modes* to achieve *Photoshop-like* effects using
 
 ### [40 &mdash; Hello CSS shapes!](40-hello-css-shapes)
 Illustrates the usage of CSS shapes to allow text to flow around an image in a non-rectangular way.
+
+### [41 &mdash; Hello Font Styles!](41-hello-font-styles)
+Illustrates the usage of several `font-style` properties.
+
+### [42 &mdash; Hello Text layout!](42-hello-text-layout)
+Illustrates the usage of several *text layout* related properties.
+
+### [43 &mdash; Hello list styling!](43-hello-list-styling)
+Illustrates how to style different types of lists.
+
+## [44 &mdash; Hello styling links!](44-hello-styling-links)
+Illustrates how to style links.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.

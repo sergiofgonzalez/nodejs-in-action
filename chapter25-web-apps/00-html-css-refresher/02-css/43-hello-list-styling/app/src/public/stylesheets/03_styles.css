@@ -1,0 +1,44 @@
+/* General styles */
+html {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10px;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+/* standardize lists and paragraphs to keep vertican rhythm */
+ul, ol, dl, p {
+  font-size: 1.5rem;
+}
+
+li, p, dd, dt {
+  line-height: 1.5;
+}
+
+/* make term definition bold */
+dt {
+  font-weight: bold;
+}
+
+/* changing style types */
+ul {
+  padding-left: 2rem;
+  list-style-type: none;
+}
+
+ul li {
+  padding-left: 2rem;
+  background-image: url(/images/bomb.png);
+  background-position: 0 0;
+  background-size: 1.6rem 1.6rem;
+  background-repeat: no-repeat;
+}
+
+
+ol {
+  list-style-type: upper-roman;
+  list-style-position: inside;
+}
+

@@ -1,0 +1,24 @@
+/* set the default size to 10px to simplify em/rem usage */
+html {
+  font-size: 10px;
+}
+
+/* make h1 50px */
+h1 {
+  font-size: 5rem;
+  text-transform: capitalize; /* capitalize each word of h1 */
+  text-shadow: 1px 1px 1px red,
+               2px 2px 1px rebeccapurple;
+}
+
+/* make `<p>`s coming directly after `<h1>` bold */
+h1 + p {
+  font-weight: bold;
+}
+
+/* make p 15px in red, with sans-serif stack */
+p {
+  font-size: 1.5rem;
+  color: red;
+  font-family: Helvetica, Arial, Helvetica, sans-serif;
+}

@@ -1,0 +1,59 @@
+/* General styles */
+html {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10px;
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1.5rem;
+}
+
+ul {
+  padding: 0;
+  width: 100%;
+}
+
+
+/* ||- Links as buttons*/
+
+li {
+  display: inline;
+}
+
+a {
+  outline: none;
+  text-decoration: none;
+  display: inline-block;
+  width: 19.5%;
+  margin-right: 0.625%;
+  text-align: center;
+  line-height: 3;
+  color: black;
+}
+
+li:last-child a {
+  margin-right: 0;
+}
+
+a:link,
+a:visited,
+a:focus {
+  background-color: yellow;
+}
+
+a:hover {
+  background-color: orange;
+}
+
+a:active {
+  background-color: red;
+  color: white;
+}
