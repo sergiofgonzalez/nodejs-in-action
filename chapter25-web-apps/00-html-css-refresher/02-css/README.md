@@ -3653,24 +3653,170 @@ Note that for this to work, the HTML for the navigation bar needs to be written 
 
 ### Web fonts
 
-#### Font families recap
+We know about the basic CSS features available for selecting and styling fonts and text.
 
-#### Web fonts
+For example, we know that we can use the `font-family` property to select the fonts that we want to apply:
 
-#### Active learning: A web font example
+```css
+p {
+  font-family: Helvetica, "Trebuchet MS", Verdana, sans-serif;
+}
+```
 
-##### Finding fonts
+When using that property, the browser will check from the first font to the last *default system font* until finding one that is available in the system.
 
-##### Generating the required code
+The alternative to this approach, is to use Web fonts. This features allows you to specify font files to be downloaded along with the website while being accessed. This ensures that any browser supporting web fonts will have exactly the font you have specified.
 
-##### Implementing the code in your demo
+```css
+@font-face {
+  font-family: "myFont";
+  src: url("myFont.woff2");
+}
+```
+
+Below this, you can use the newly defined font family name within your CSS:
+
+```css
+html {
+  font-family: "myFont", "Bitstream Vera Serif", serif;
+}
+```
+
+You should be aware that:
++ Fonts generally aren't free to use &mdash; license should be reviewed carefully and respected.
++ All major browsers support WOFF/WOFF2 fonts.
++ WOFF2 supports the entirety of the TrueType and OpenType specifications.
++ The order in which you list font files is important. If you provide the browser with a list of multiple font files to download, the browser will choose the first font file it's able to use. As a result, it is a good practice to place the WOFF2 format first.
+
+When looking for fonts you have several alternatives:
++ use a free font distributor that makes free fonts available for download &mdash; [Font Squirrel](https://www.fontsquirrel.com/), [dafont](https://www.dafont.com/), [Everything Fonts](https://everythingfonts.com/).
+
++ a paid font distrubutor &mdash; [fonts.com](https://www.fonts.com/), [myfonts.com](https://www.myfonts.com/)
+
++ an online font service &mdash; [Google Fonts](https://www.google.com/fonts), [Adobe Fonts](https://fonts.adobe.com/) and [Cloud.typography](https://www.typography.com/cloud/welcome/). These are sites that store and serve the fonts for you, making the process a lot easier.
+
+#### Using a font distributor
+
+Let's go to [Font Squirrel](https://www.fontsquirrel.com/) and download a couple of fonts. Those will be downloaded as *zip* files, which we will need to unzip and transform so that we can use them in our pages.
+
+Once downloaded, the first thing you must do is verify the licensing terms. Let's suppose that we download: [Open Sans](https://www.fontsquirrel.com/fonts/download/open-sans) for the body of the document, and [Armalite Rifle](https://www.fontsquirrel.com/fonts/download/Armalite-Rifle) for the headers. The former features an Apache License, while the latter is freeware.
+
+Next step consists in generating the required code and font formats for our downloaded font files. This can be done in [Fontsquirrel's Web font Generator](https://www.fontsquirrel.com/tools/webfont-generator). In the process, another zip file will be generated.
+
+| NOTE: |
+| :---- |
+| There are also applications that you can use to convert font files to WOFF/WOFF2 such as [woff2](https://github.com/google/woff2). |
+
+
+The contents of the zip file include:
++ versions of each of the fonts as `.woff` and `.woff2` files.
++ a demo HTML file for each font, so that you can see how they look in the screen.
++ a example `stylesheet.css` that contains the generated `@font-face` rule.
+
+In order to start using the fonts you have to:
++ Add the corresponding `@font-face` rules at the beginning of your CSS file.
++ Reference the corresponding `font-family` names in your CSS rules
+
+```css
+/* ||- Web fonts */
+@font-face {
+  font-family: 'armalite_rifleregular';
+  src: url('/fonts/armalite_rifle-webfont.woff2') format('woff2'),
+       url('/fonts/armalite_rifle-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'open_sansregular';
+  src: url('/fonts/opensans-regular-webfont.woff2') format('woff2'),
+       url('/fonts/opensans-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* General styles */
+html {
+  font-family: "open_sansregular", Helvetica, Arial, sans-serif;
+  font-size: 10px;
+}
+
+h1, h2 {
+  font-family: "armalite_rifleregular", serif;
+}
+```
+
+Note that the `@font-face` rule defines the following properties:
++ `font-family` &mdash; which specifies the name for the font family, so that you can reference it subsequently in your CSS rules.
++ `src` &mdash; the paths for the font files to be imported into your CSS, and its associated format. Remember that `'woff2'` should be used first.
++ `font-weight` and `font-style` &mdash; which specify the weight and the style the font has. This becomes more important when importing multiple weights of the same font, as you can assign them the same name, and the just use the `font-weight` and `font-style` to reference them:
+
+```css
+@font-face {
+	font-family: 'DroidSerif';
+	src: url('DroidSerif-Regular-webfont.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'DroidSerif';
+	src: url('DroidSerif-Italic-webfont.ttf') format('truetype');
+	font-weight: normal;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'DroidSerif';
+	src: url('DroidSerif-Bold-webfont.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'DroidSerif';
+	src: url('DroidSerif-BoldItalic-webfont.ttf') format('truetype');
+	font-weight: bold;
+	font-style: italic;
+}
+
+body {
+  font-family: "DroidSerif", Georgia, serif;
+}
+
+h1 {
+  font-weight: bold;
+}
+
+strong em {
+  font-weight: bold;
+  style: italic;
+}
+```
 
 #### Using an online font service
 
-#### `@font-face` in more detail
+As an alternative to the previous workflow, you can use an online font service such as [Google Fonts](https://www.google.com/fonts).
 
-#### Variable fonts
+In the service you can browser for OpenSource fonts, and after selecting it, you will be given the pieces of HTML code and CSS code you need to use to start using the fonts:
 
+For example:
+
+```html
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+```
+
+```css
+.a {
+  font-family: 'ZCOOL KuaiLe', cursive;
+}
+```
+
+| NOTE: |
+| :---- |
+| You don't need to use `@font-face` when using an online font service. |
+
+| EXAMPLE: |
+| :------- |
+| See [45 &mdash; Hello Web fonts!](45-hello-web-fonts) for a runnable example illustrating the concepts of the web fonts section. |
 
 
 ### CSS layout
@@ -3813,8 +3959,11 @@ Illustrates the usage of several *text layout* related properties.
 ### [43 &mdash; Hello list styling!](43-hello-list-styling)
 Illustrates how to style different types of lists.
 
-## [44 &mdash; Hello styling links!](44-hello-styling-links)
+### [44 &mdash; Hello styling links!](44-hello-styling-links)
 Illustrates how to style links.
+
+### [45 &mdash; Hello Web fonts!](45-hello-web-fonts)
+Illustrates how to work with web fonts.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.

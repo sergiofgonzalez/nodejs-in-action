@@ -5,7 +5,7 @@
 
 This is the exercise [MDN: A cool-looking box](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/A_cool_looking_box)
 
-It consists of an exercise in which you are given a fixed HTML document and an initial CSS file and you.
+It consists of an exercise in which you are given a fixed HTML document and an initial CSS file and you create a *cool-looking box*.
 
 ### Exercise
 

@@ -1,0 +1,75 @@
+/* General styles */
+html {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10px;
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+ul {
+  padding: 0;
+  width: 100%;
+}
+
+p {
+  font-size: 1.5rem;
+  max-width: 95%;
+}
+
+/* ||- Links as buttons*/
+
+li {
+  display: inline;
+}
+
+a {
+  font-size: 1.5rem;
+  outline: none;
+  text-decoration: none;
+  display: inline-block;
+  width: 22%;
+  margin-right: 0;
+  text-align: center;
+  line-height: 3;
+  color: gray;
+}
+
+li:last-child a {
+  margin-right: 0;
+}
+
+a:link,
+a:visited,
+a:focus {
+  background-color: black;
+}
+
+a:hover {
+  color: white;
+}
+
+.active {
+  color: white;
+  font-weight: bold;
+}
+
+.navbar-text {
+  display: inline-block;
+  color: lightgray;
+  font-size: 1.5rem;
+  background-color: black;
+  line-height: 3;
+  text-align: center;
+  padding-left: 2.5rem;
+  background-image: url(/images/bomb_inverted.png);
+  background-repeat: no-repeat;
+  background-position: left 3% top 40%;
+  background-size: 2rem 2rem;
+}
+
