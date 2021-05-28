@@ -1068,7 +1068,7 @@ for await (const record of db.queryStream(sql`SELECT * FROM my_table`)) {
 
 ### Middleware
 
-The **Middleware** pattern is one of the most distinctive Node.js patterns. However, it is also one of the terms that tend to create more confusion, as it has nothing to do with what is known as middleware on other contexts such as abstractions over lower-level mechanisms such as memory management, etc.
+The **Middleware** pattern is one of the most distinctive Node.js patterns. However, it is also one of the terms that tend to create more confusion, as it has nothing to do with what is known as middleware on other contexts, such as abstractions over lower-level mechanisms (memory management, etc.).
 
 #### Middleware in Express
 

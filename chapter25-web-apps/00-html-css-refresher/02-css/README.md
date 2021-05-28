@@ -1,6 +1,9 @@
 # CSS basics
 > practising CSS concepts
 
+## Table of Contents
+
+
 ## Concepts
 
 ### CSS first steps
@@ -1084,7 +1087,7 @@ CSS boxes have an **inner** and **outer** display types.
 
 | NOTE: |
 | :---- |
-| Block and inline layout is the default way that things on the web behave, that is whyc this style is known as the *normal flow*. Other layouts like `flex` and `grid` will be learned later. |
+| Block and inline layout is the default way that things on the web behave, that is why this style is known as the *normal flow*. Other layouts like `flex` and `grid` will be learned later. |
 
 #### Examples of different display types
 
@@ -3823,6 +3826,219 @@ For example:
 
 At this point, we are dangerous enough with CSS to start looking at how to place our boxes in the right place in relation to the viewport. We'll look into the details of modern layout tools like flexbox, CSS grid, and positioning, as well as some other legacy techniques.
 
+#### Introduction to CSS layout
+This section will recap some of the CSS layout features already touched upon (such as `display` values) and introduce the new concepts that will be elaborated in the next sections.
+
+CSS page layout techniques allow us to take elements contained in a web page and control where they are positioned relative to their default position in normal layout flow, the other elements around them, their parent container, or the main viewport/window.
+
+We'll start by introducing each of the available techniques (normal flow, display, flexbox...) with its advantages and disadvantages.
+
+#### Normal Flow
+
+Normal flow is how the browser lays out HTML pages by default when you do nothing to control the page layout.
+
+In this mode, the HTML is displayed in the exact order in which it appears in the source code, with elements stacked up on top of one another.
+
+The elements that appear one below the other are called *block elements*, in contrast to *inline elements*, which appear one beside the other, like the individual words in a paragraph.
+
+![writing modes](images/writing-modes.png)
+
+You will typically need to alter this default behavior some of the tools available to you in CSS.
+
+The methods at your disposal to change how elements are laid out in CSS are as follows:
+
++ The `display` property &mdash; the standard values `block`, `inline` and `inline-block` can change how elements behave in normal flow, such as making a block-level element behave like an inline element.<br>There are also entire layout methogs that are configured with specific `display` values for *CSS grid* and *Flexbox* advanced layout techniques.
+
++ Floats &mdash; allows you to precisely control the placement of boxes inside other boxes. `static` positioning is the default in normal flow, but you can use elements to be laid out differently using other values for example to lay out boxes to the top or bottom of the browser viewport.
+
++ Table layout &mdash; allows you to style non-table elements using the same properties you'd use for styling parts of an HTML table using `display: table`.
+
++ Multi-column layout &mdash; that allows you to lay out the content of a block in columns (as in a newspaper).
+
+#### The `display` property
+
+The `display` property allows you to change the default way something display. All the elements have a value for the `display` property, even when using the *normal flow* (`display: block` for block elements and `display: inline` for inline elements).
+
+You can change the default layout behavior of an element switching from one value to another one. For example, you can make a `<li>` element which has a default `display: block` property to use `display: inline` (or `display: inline-block` if you want to display it like an *inline* element but respecting some of the ).
+
+Apart from `block`, `inline`, and `inline-block` the other really relevant values we will use are `display: flex` to enable the *Flexbox layout* and `display: grid` to enable the *Grid layout*.
+
+#### Flexbox
+
+*Flexbox (Flexible Box Layout) Module* was designed to make it easy for you lay out things out in one dimension (as a row or a column). To use flexbox, you apply `display: flex` to the parent element of the elements you want to lay out, and all of its direct children become flex items.
+
+Consider the following piece of HTML:
+
+```html
+<div class="wrapper">
+  <div class="box1">One</div>
+  <div class="box2">Two</div>
+  <div class="box3">Three</div>
+</div>
+```
+
+In the normal flow, the three `<div>`s would be rendered as blocks, one below the other.
+
+But if we add:
+
+```css
+.wrapper {
+  display: flex;
+}
+```
+
+the three items will be arranged in three columns, one beside the other.
+
+![Flexbox](46-hello-layout-flexbox/docs/images/flexbox_default.png)
+
+
+| NOTE: |
+| :---- |
+| They are displayed in a row because of the initial default values that flexbox sets on the flex container. |
+
+Once *flexbox* is enabled, you will have additional properties such as `flex-direction` to set the elements on a row or in columns, and you will be able to also use `align-items` to values such as `align-items: stretch` which will cause the items to stretch to the height of the flex container. Also, by default items will be aligned at the start of the container, leaving extra space at the end.
+
+This can be changed by using other properties such as:
+
+```css
+.wrapper {
+  display: flex;
+}
+
+.wrapper > div {
+  flex: 1;
+}
+```
+
+which will cause the elements to grow and fill the container, in a flexible way, so that they end up distributed along the container available width.
+
+![Flexbox: fill the container](46-hello-layout-flexbox/docs/images/flexbox_stretch.png)
+
+
+| EXAMPLE: |
+| :------- |
+| See [46 &mdash; Hello Flexbox!](46-hello-layout-flexbox) for a runnable example. |
+
+#### Grid layout
+
+*Grid Layout* is another CSS layout module build to arrange elements in rows and columns.
+
+You can activate this mode using `display: grid`. Then, you will need to also specify some rown and column tracks on the parent container using `grid-template-rows` and `grid-template-columns` as seen on the example below. The child elements will be automatically aligned according to those specifications:
+
+```css
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 100px 100px;
+  gap: 10px;
+}
+
+.wrapper > div {
+  background-color: aquamarine;
+}
+```
+
+As a result, the following markup:
+
+```html
+<div class="wrapper">
+  <div class="box1">One</div>
+  <div class="box2">Two</div>
+  <div class="box3">Three</div>
+  <div class="box4">Four</div>
+  <div class="box5">Five</div>
+</div>
+```
+
+will be displayed as:
+
+![Grid: auto-placement](47-hello-layout-grid/docs/images/grid_auto_placement.png)
+
+
+Once you have a grid, you can explicitly place your items on it, rather than relying on the auto-placement:
+
+```css
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 100px 100px;
+  gap: 10px;
+}
+
+.wrapper > div {
+  background-color: aquamarine;
+}
+
+.box1 {
+  grid-column: 2 / 4;
+  grid-row: 1;
+}
+
+.box2 {
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+
+.box3 {
+  grid-row: 2;
+  grid-column: 3;
+}
+```
+
+That when applied to this markup:
+
+```html
+<div class="wrapper">
+  <div class="box1">One</div>
+  <div class="box2">Two</div>
+  <div class="box3">Three</div>
+</div>
+```
+
+will result in:
+
+![Grid: custom placement](47-hello-layout-grid/docs/images/grid_custom_placement.png)
+
+| EXAMPLE: |
+| :------- |
+| See [47 &mdash; Hello Grid!](47-hello-layout-grid) for a runnable example. |
+
+#### Floats
+
+*Floating* an element changes the behavior of that element, and the behavior of the block level elements that follow it in the normal flow.
+
+The element is moved to the left or right, and removed from the normal flow, and the surrounding content floats around the floated item.
+
+This behavior is configured with the `float` property, which has 4 possible values:
+
++ `left` &mdash; floats the element to the left.
++ `right` &mdash; floats the element to the right.
++ `none` &mdash; disables floating. This is the default.
++ `inherit` &mdash; inherit the value from the element's parent element.
+
+In the example below, we float a `<div>` to the left, and give it a margin to push the text to the right, so that it achieves the effect of text wrapped around the box.
+
+![Text wrapping with floats](48-hello-floats/docs/images/floats_text_wrapping.png)
+
+| EXAMPLE: |
+| :------- |
+| See [48 &mdash; Hello Floats!](48-hello-floats) for a runnable example. |
+
+#### Positioning techniques
+
+##### Simple positioning example
+
+##### Relative positioning
+
+##### Absolute positioning
+
+##### Fixed positioning
+
+##### Sticky positioning
+
+#### Table layout
+
+#### Multi-column layout
 
 ## Examples, Exercises and mini-projects
 
@@ -3965,6 +4181,15 @@ Illustrates how to style links.
 ### [45 &mdash; Hello Web fonts!](45-hello-web-fonts)
 Illustrates how to work with web fonts.
 
+### [46 &mdash; Hello Flexbox!](46-hello-layout-flexbox)
+First steps into *flexbox module*.
+
+### [47 &mdash; Hello Grid!](47-hello-layout-grid)
+First steps into the *Grid* layout.
+
+### [48 &mdash; Hello Floats!](48-hello-floats)
+Illustrates the most common usage of floats these days to achieve the effect of text wrapped around a box.
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
 
@@ -3997,6 +4222,10 @@ Miniproject on fundamental CSS comprehension in which we create a fancy letterhe
 
 ### [e11 &mdash; Practising CSS fundamentals by creating a cool-looking box](e11-css-fundamentals-cool-looking-box)
 Miniproject on fundamental CSS comprehension in which we create an eye-catching box.
+
+## [e12 &mdash; Practising CSS Text styling by creating a community school homepage](e12-css-styling-text-community-school-page)
+Miniproject on fundamentals of text styling CSS in which we apply the techniques we've learned about text styles to a community school's homepage.
+
 
 ## CSS properties cheatsheet
 

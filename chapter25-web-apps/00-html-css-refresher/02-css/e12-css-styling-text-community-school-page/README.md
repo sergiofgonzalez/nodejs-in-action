@@ -28,5 +28,20 @@ You have to add some additional CSS to accomplish the following:
 + Give your body text some letter spacing and word spacing as appropriate.
 + Give the first paragraph after each heading in the `<section>` a little bit of text indentation (around 20 pixels).
 
+#### Links
++ Give the link, visited, focus, and hover states some colors that go with the corolor of the horizontal bars at the top and bottom of the page.
++ Make it so that links are underlined by default, but when you hover or focus them, the underline disappears.
++ Remove the default focus outline from all the links on the page.
++ Give the active state a noticeable different styling so it stands out nicely, but make it still fil in with the overall page design.
++ Make it so that external links have the external link icon inserted next to them.
+
+
+#### Lists
++ Make sure the spacing of your lists and list items works well with the styling of the overall page. Each list item should have the same line-height as a paragraph line, and each list should have the same spacing at its top and bottom as you have between paragraphs.
++ Give your list items a nice bullet, appropriate for the design of the page. You can shoose a custom bullet image or something else.
+
+#### Navigation Menu
++ Style your navigation menu so that it has an appropriate look for the design of the page.
+
 The final result should look like:
-![Final state](docs/images/final-state.png)
+![Final state](docs/images/final_state.png)

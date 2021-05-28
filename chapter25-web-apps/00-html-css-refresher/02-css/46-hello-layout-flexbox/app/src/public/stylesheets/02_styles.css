@@ -1,0 +1,11 @@
+.wrapper {
+  display: flex;
+}
+
+.wrapper > div {
+  flex: 1;
+  background-color: aquamarine;
+  line-height: 3rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
