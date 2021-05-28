@@ -1,0 +1,12 @@
+body {
+  width: 500px;
+  margin: 0 auto; /* center horizontally */
+}
+
+p {
+  background-color: rgb(207,232,220);
+  border: 2px solid rgb(79,185,227);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+}

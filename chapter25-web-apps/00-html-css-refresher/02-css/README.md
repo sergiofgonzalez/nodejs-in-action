@@ -4024,7 +4024,23 @@ In the example below, we float a `<div>` to the left, and give it a margin to pu
 | :------- |
 | See [48 &mdash; Hello Floats!](48-hello-floats) for a runnable example. |
 
+
+| NOTE: |
+| :---- |
+| In modern web design, *floats* are considered legacy techniques and should not be used in new projects. Text wrapping might be all you need to know these days with respect to floats. |
+
 #### Positioning techniques
+
+*Positioning* allows you to move an element from where it would be placed in normal flow.
+
+While *Positioning techniques* are not be used as a layout technique, there are certain patterns that rely on the `position` property that should be understood.
+
+There are five types of positioning:
++ **Static positioning**: the default positioning every element gets.
++ **Relative positioning**: allows you to modify an element's position on the page, moving it relative to its position in the normal flow.
++ **Absolute positioning**: moves an element completely out of the page's normal flow, as if it was sitting on a different layer. From there, you can fix it in a position relative to the edges of the page's `<html>` element (or its nearest positioned ancestor element). This can be useful to create complex layout effects such as *tabbed user interfaces*, or information that sits off screen, but can be made to slide on screen.
++ **Fixed positioning**: same as absolute positioning, except that it fixes an element relative to the browser's viewport, and not another element. This can be useful to create a persistent navigation menu that stays in the same place on the screen while the rest of the content scrolls.
++ **Sticky positioning**: it is a positioning method which makes an element to act like `position: static` until it hits a defined offset from the viewport, at which point it acts like `position: fixed`.
 
 ##### Simple positioning example
 
