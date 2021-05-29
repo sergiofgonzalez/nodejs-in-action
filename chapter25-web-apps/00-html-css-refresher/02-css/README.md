@@ -4044,17 +4044,555 @@ There are five types of positioning:
 
 ##### Simple positioning example
 
+The default positioning will follow the *normal flow* with block level elements displayed as blocks.
+
+For example, the following basic markup:
+
+```html
+<p>I am a basic block level element.</p>
+<p class="positioned">I am basic block level element.</p>
+<p>I am a basic block level element.</p>
+```
+
+with the following styling applied to it:
+
+```css
+body {
+  width: 500px;
+  margin: 0 auto; /* center horizontally */
+}
+
+p {
+  background-color: rgb(207,232,220);
+  border: 2px solid rgb(79,185,227);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+}
+```
+
+will result in:
+
+![position: static (default)](49-hello-position/docs/images/position_static.png)
+
+
 ##### Relative positioning
+
+Relative positioning allows you to offset an item from its position in normal flow.
+
+For example, the following basic markup:
+
+```html
+<p>I am a basic block level element.</p>
+<p class="positioned">I am basic block level element.</p>
+<p>I am a basic block level element.</p>
+```
+
+with the following styling applied to it:
+
+```css
+.positioned {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}
+```
+
+will result in:
+
+![position: relative](49-hello-position/docs/images/position_relative.png)
+
+That is, we have moved the 2nd paragraph +30 pixels down and +30pixels right (from its default position).
+
+| NOTE: |
+| :---- |
+| Using `position: relative` will be useful to align an icon to a line of text. |
 
 ##### Absolute positioning
 
+Absolute positioning is used to completely remove an element from the *normal flow*, placing it on a certain position from the edges of a containing block.
+
+For example, the following basic markup:
+
+```html
+<p>I am a basic block level element.</p>
+<p class="positioned">I am basic block level element.</p>
+<p>I am a basic block level element.</p>
+```
+
+with the following styling applied to it:
+
+```css
+.positioned {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+```
+
+will result in:
+
+![position: absolute](49-hello-position/docs/images/position_absolute.png)
+
+Note how it has been removed from the document, so that the other blocks are rendered one below the other, and the one with `class="positioned"` is placed 30px down and 30 px right from the edge of the document.
+
+| NOTE: |
+| :---- |
+| It is possible to change the parent element that becomes the container for `position: absolute`, but by default it will be the top and left of the page. |
+
+This is very different from the `position: relative` as in the previous case, the element was occupying space &mdash; although its position was altered.
+
+
+Note that if we would use a longer markup and a smaller viewport, we would see that when scrolling down the page, the absolutely positioned paragraph will eventually disappear as seen on the screenshots below.
+
+![position: absolute: onscreen](49-hello-position/docs/images/position_absolute_long_text.png)
+
+![position: absolute: offscreen](49-hello-position/docs/images/position_absolute_long_text_offscreen.png)
+
+
 ##### Fixed positioning
+
+Fixed positioning removes the element from the document flow, but the coordinates that give the position of the element are applied to the viewport.
+
+As a result, the element will remain fixed in relation to the viewport.
+
+When applied to our simple markup:
+```html
+<p>I am a basic block level element.</p>
+<p class="positioned">I am basic block level element.</p>
+<p>I am a basic block level element.</p>
+```
+
+using the following styling applied to it:
+
+```css
+.positioned {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+}
+```
+
+will result in:
+
+![position: fixed](49-hello-position/docs/images/position_fixed.png)
+
+which looks pretty similar to the `position: absolute`.
+
+However, the difference strikes when used on longer pages and smaller viewports:
+
+![position: fixed (scrolling)](49-hello-position/docs/images/position_fixed_long_text.png)
+
+When scrolling down the page, the fixed positioned element will stay in the same position.
+
+| NOTE: |
+| :---- |
+| `position: fixed` is typically used to place menus on the viewport that do not scroll with the rest of the page. |
 
 ##### Sticky positioning
 
+Sticky positioning mixes the default *static positioning* behavior with the *fixed positioning* behavior. This means that:
++ it will be placed in the normal flow initially.
++ when the element hits the ofsset from the viewport that we have defined, it will change its behavior to *fixed* and become stuck at that position.
+
+If we use it on a somewhat long page with a small viewport with the following CSS:
+
+```css
+.positioned {
+  position: sticky;
+  top: 30px;
+  left: 30px;
+}
+```
+
+![position: sticky onscreen](49-hello-position/docs/images/position_sticky_static.png)
+
+![position: sticky offscreen](49-hello-position/docs/images/position_sticky_fixed.png)
+
+That is, while scrolling, when it hits the 30px from the top, it will remain there while we keep scrolling.
+
+| EXAMPLE: |
+| :------- |
+| See [49 &mdash; Hello Position!(49-hello-position)] for a runnable example. |
+
+###### About `margin: 0 auto`
+
+In the example above we use the following CSS rule:
+
+```css
+body {
+  margin: 0 auto;
+}
+```
+
+This has the effect of centering horizontally the HTML contents in the viewport.
+
+As you know, `margin` is a shorthand for `margin-top`, `margin-right`, `margin-bottom` and `margin-left`.
+
++ When one value is specified, it applies the same margin to all four sides.
++ when two values are given, the first value applies to top and bottom, and the second to the right and left.
++ When three values are specified, the first margin applies to the top, the seond to the right and the left, and the third to the bottom.
+
+Thus, `margin: 0 auto` has the effect of no adding extra space to the top and bottom, and use a *suitable margin* chosen by the browser for the left and right margin. This ultimately centers the contents horizontally.
+
+
 #### Table layout
 
+HTML tables were used many years ago for entire web page layouts. This worked at the time, but it has many problems as table layouts are inflexible, very heavy on markup and semantically wrong.
+
+The way that a table looks on a webpage when you use table markup is due to a set of CSS properties that define table layout, but athat can be used to lay out elements that are not tables.
+
+We will see an example of how this worked for completeness, but definitely, newer methods based on CSS grid and Flexbox should be used instead.
+
+Consider the following markup consisting on a simple form:
+
+```html
+<form>
+  <p>First of all, tell us your name and age.</p>
+  <div>
+    <label for="fname">First name:</label>
+    <input type="text" id="fname">
+  </div>
+  <div>
+    <label for="lname">Last name:</label>
+    <input type="text" id="lname">
+  </div>
+  <div>
+    <label for="age">Age:</label>
+    <input type="text" id="age">
+  </div>
+</form>
+```
+
+without any styling, it would be shown as:
+
+![Initial state](50-hello-css-tables-layout/docs/images/css_tables_initial.png)
+
+
+
+When applying the following CSS:
+
+```css
+form {
+  display: table;
+  margin: 0 auto;
+}
+
+form div {
+  display: table-row;
+}
+
+form label, form input {
+  display: table-cell;
+  margin-bottom: 10px;
+}
+
+form label {
+  width: 200px;
+  padding-right: 5%;
+  text-align: right;
+}
+
+form input {
+  width: 300px;
+}
+
+form p {
+  display: table-caption;
+  caption-side: bottom;
+  width: 300px;
+  color: #999;
+  font-style: italic;
+}
+```
+
+Note that it uses `display: table` on the form, and the different elements are also given special `display` values such as `table-row`, `table-cell`, `table-caption`.
+
+The results is:
+
+![Styling a form](50-hello-css-tables-layout/docs/images/css_tables_styled.png)
+
+| EXAMPLE: |
+| :------- |
+| See [50 &mdash; Hello CSS tables layout!](50-hello-css-tables-layout) for a runnable example. |
+
 #### Multi-column layout
+
+The multi-column layout module gives us a way to lay out content in columns, in a similar fashion to how text flows in a newspaper.
+
+To turn a block into a *multicol container* you use `column-count` (which tells the browser how many cols we'd like to have), or `column-width` (which tells the browser to fill the container with as many columns of at least that width).
+
+The following picture illustrates the use of the former to create as many columns as possible of 200px width:
+
+```css
+.container {
+  column-width: 200px;
+}
+```
+
+![Multi-column](51-hello-multi-column-layout/docs/images/multicol.png)
+
+| NOTE: |
+| :---- |
+| This approach is responsive: if the viewport becomes wider, more columns will be accomodated. |
+
+| EXAMPLE: |
+| :------- |
+| See [51 &mdash; Hello multi-column layout!](51-hello-multi-columns) for a runnable example. |
+
+#### Normal Flow
+
+Elements on a webpage are laid out in the normal flow. Using different layout techniques you will be able to adjust their position with respect to the normal flow to suit your needs.
+
+However, starting with a solid, well-structured document that is &mdash; at least &mdash; readable in the normal flow is the best way to begin any webpage.
+
+#### How are element laid out by default?
+
+Individual element boxes are laid out taking the elements' content, then adding any padding, border, and margin around them in what we have called the *box model*.
+
+![Parts of a block box](images/parts_of_block_box.png)
+
+By default, a **block level** element's content fills the available *inline* space of the parent element containing it, and grows in the block dimension to accommodate its content. Block level elements will appear on a new line below the last one, and they will be separated by any margin set on them.
+
+![writing modes](images/writing-modes.png)
+
+**Inline elements** are the size of their content. You can't set the width or height on inline elements &mdash; they just sit inside the content of block level elements.<br>If you want to control the size of an inline element you have to change its *display type* using either `display: block` or `display: inline-block` (the latter will display the element as inline without adding extra breaks while giving you the chance to control its width and height).<br>Inline elements sit on the same line along with any adjacent or wrapped text content, as long as there is space for them to do so inside the width of the parent block level element. If there isn't space, the overflowing text or elements will move down to a new line.
+
+If two adjacent elements both have the margin set on them and the two margins touch, the larger of the two remains, and the smaller one disappears in what is knwn as the *margin collapsing* situation.
+
+The picture below in which the following CSS is applied, illustrates these concepts:
+
+```css
+body {
+  width: 500px;
+  margin: 0 auto;
+}
+
+p {
+  background-color: rgba(255, 84, 104, 0.3);
+  border: 2px solid rgb(255, 84, 104);
+  padding: 1rem;
+  margin: 1rem;
+}
+
+span {
+  background-color: white;
+  border: 1px solid black;
+}
+```
+
+![Normal flow](52-normal-flow/docs/images/normal_flow.png)
+
+
+See for example how the margin between adjacent blocks is not 20 pixels, but rather 10 pixels because the margins have collapsed.
+
+| EXAMPLE: |
+| :------- |
+| See [52 &mdash; Normal flow](52-normal-flow) for a runnable example. |
+
+
+#### Flexbox
+
+Flexbox is a one-dimensional layout method for laying out items in rows or columns. Essentially, when using this technique, items can *flex* to fill additional space or shrink to fit into smaller spaces.
+
+Using Flexbox will allow you to perform advanced actions on your page such as:
++ vertically centering a block of content inside its parent.
++ making all the children of a container take up an equal amount of the available width/height regardless of how much width/height is available.
++ making all columns in a multi-column layout adopt the same height independently of their content.
+
+As our first example, consider the following web page that in normal flow is displayed as:
+
+![Initial state](53-flexbox/docs/images/flexbox_initial.png)
+
+The markup is based on a `<header>` element, and a `<section>` element containing three `<article>`s.
+
+What we want to achieve is a *fairly standard* three-column layout, in which each of the columns should have the same width and height (distributed horizontally in PowerPoint terms).
+
+This can be achieve just by doing:
+
+```css
+section {
+  display: flex;
+}
+```
+
+![Basic three column layout](53-flexbox/docs/images/flexbox_3cols.png)
+
+
+That is, by setting `display: flex` on the parent container of the elements that we want to distribute horizontally, we will be making such container a *flex container* and the elements (the `<article>`s will become *flex items*).
+
+| NOTE: |
+| :---- |
+| The `<section>` element will still behave as a block level element in terms of how interacts with the rest of the page. You can use `display: inline-flex` if you want to lay out an element's children using flexbox, but you want the element itself to behave like an inline element. |
+
+##### The flex model
+
+The following picture illustrated the flexbox model:
+
+![Flex model](images/flexbox-model.png)
+
+When you set a container as *flex*, their children will be laid out as *flex items* along two axes:
++ The main axis is the axis running in the direction the flex items are being laid out (either horizontally in columns or vertically in rows). The start and end of this main axis are called *main start* and *main end*.
++ The cross axis is the axis running perpendicularly to the direction the flex items are being laid out in. The start and ending points of this axis are called *cross start* and *cross end*.
++ The element on which `display:flex` or `display: inline-flex` is applied is known as the *flex container*.
++ The elements being laid out as flexible boxes inside that container are known as *flex items*.
+
+##### Laying flex items in columns or rows
+
+*Flexbox* provides a property called `flex-direction` that specifies what direction the main axis runs in, and therefore leads in what direction flex children are laid out in. By default, is set to `flex-direction: row` meaning that the items will be laid out in columns along a row (for left-to-right directions).
+
+Alternatively, you can set `flex-direction: column`, which will lay out the items in different columns.
+
+```css
+section {
+  display: flex;
+  flex-direction: column;
+}
+```
+
+![Basic three row layout](53-flexbox/docs/images/flexbox_3rows.png)
+
+| NOTE: |
+| :---- |
+| `flex-direction` also allows you to use `row-reverse` and `column-reverse` which will lay out the items across the same axis as `row` and `column` respectively, but in reverse direction. |
+
+![Basic three row layout reversed](53-flexbox/docs/images/flexbox_3rows_reversed.png)
+
+##### Wrapping
+
+Consider the following example, in which we set:
+
+```css
+section {
+  display: flex;
+  flex-direction: row;
+}
+```
+
+to enable the *flexbox layout* module, but the content is so lare that it doesn't fit in the viewport:
+
+![Large content](53-flexbox/docs/images/flexbox_large_content.png)
+
+See how the children are breaking out of the container.
+
+This can be fixed by adding:
+
+```css
+section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;  /* this by itself will lay out the children in rows */
+}
+
+article {
+  flex: 20rem;  /* this will cause the articles to spread in 20rem boxes */
+}
+```
+
+which will result in:
+![Large content wrapped](53-flexbox/docs/images/flexbox_wrap.png)
+
+
+That is, we will now have multiple rows, with the overflowing children moved down to additional lines. The `flex: 20rem` declaration on the articles tells the browser to make the boxes at least 20rems wide.
+
+| NOTE: |
+| :---- |
+| The `flex-flow` property shorthand can be used to specify both the direction and wrap properties as in `flex-flow: row wrap`. |
+
+##### flexible sizing of flex items
+
+Flexbox also allows you to control the proportion of space flex items take up when compared to other items.
+
+For example, if you do:
+
+```css
+article {
+  flex: 1;
+}
+```
+
+you will be telling the browser to make each article to take *one value* of space. As we have three articles, each one with the same value, they will take the same space and will be displayed as:
+
+![Basic three column layout](53-flexbox/docs/images/flexbox_3cols.png)
+
+However, if you do:
+
+```css
+article {
+  flex: 1;
+}
+
+article:nth-of-type(3) {
+  flex: 2;
+}
+```
+
+You will be telling the browser to make the 3rd article to take up twice as much available space as the other two.
+
+That will result in:
+
+![Flexbox sizing](53-flexbox/docs/images/flexbox_sizing.png)
+
+Note that the proportion will be respected even in narrow viewports &mdash; the third article will always be the double in width as the other two.
+
+You can also specify a size accompanying the *unitless proportion* that will instruct the browser to use at least that much width:
+
+```css
+article {
+  flex: 1 20rem;
+}
+
+article:nth-of-type(3) {
+  flex: 2 20rem;
+}
+```
+
+That will result in the following in narrow viewports:
+
+![Flexbox sizing with min width: narrow](53-flexbox/docs/images/flex_sizing_narrow_viewport.png)
+
+in medium viewports:
+![Flexbox sizing with min width: medium](53-flexbox/docs/images/flex_sizing_medium_viewport.png)
+
+in wide viewports:
+![Flexbox sizing with min width: wide](53-flexbox/docs/images/flex_sizing_wide_viewport.png)
+
+
+So essentially, the CSS above tells the browser:
+> each flex item will be given 20rem of available space. After that, the rest of the available space must be shared out according to the proportion units given (that is, making the third container the double in width as the other two).
+
+##### `flex`: shorthand vs. longhand
+
+`flex` is actually a shorthand property that can take up to three different values:
++ the unitless proportion, which can be specified individually using `flex-grow`.
++ a second unitless proportion `flex-shrink` that comes into play when flex items are overflowing their container. This specifies how much of the overflowing amount is taken away from each flex item's size, to stop them overflowing their container.
++ the minimum size value, which can also be given with `flex-basis`.
+
+##### Horizontal and vertical alignment
+
+##### Ordering flex items
+
+##### Nested flex boxes
+
+##### Cross-browser compatibility
+
+#### NEXT: Grid
+
+#### Floats
+
+#### Positioning
+
+#### Multiple-column layout
+
+#### Responsive design
+
+#### Beginner's guide to media queries
+
+#### Legacy layout methods
+
+#### Supporting older browsers
+
+#### Assessment
 
 ## Examples, Exercises and mini-projects
 
@@ -4205,6 +4743,19 @@ First steps into the *Grid* layout.
 
 ### [48 &mdash; Hello Floats!](48-hello-floats)
 Illustrates the most common usage of floats these days to achieve the effect of text wrapped around a box.
+
+### [49 &mdash; Hello Position!](49-hello-position)
+Illustrates some of the behaviors associated to the different values of the `position` property.
+
+### [50 &mdash; Hello CSS tables layout!](50-hello-css-tables-layout)
+Illustrates the use of CSS tables as was used many years ago to lay out elements in a webpage. This technique is considered legacy.
+
+### [51 &mdash; Hello multi-column layout!](51-hello-multi-columns)
+Illustrates the use of the multi-column module to layout content in columns, as in a newspaper.
+
+### [52 &mdash; Normal flow](52-normal-flow)
+A refresher on the concepts of *normal flow* and how block level elements and inline elements are laid out by default when no CSS positioning related styles are applied.
+
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.

@@ -1,8 +1,5 @@
 # 49 &mdash; Hello Position!
-> illustrates some of the techniques associated to the `position` property-
-
-![Text wrapping with floats](docs/images/floats_text_wrapping.png)
-
+> illustrates some of the behaviors associated to the different values of the `position` property.
 
 ## About `margin: 0 auto`
 

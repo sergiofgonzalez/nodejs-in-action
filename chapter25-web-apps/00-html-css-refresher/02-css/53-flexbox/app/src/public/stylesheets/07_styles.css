@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+}
+
+header {
+  background-color: rebeccapurple;
+  height: 10rem;
+}
+
+h1 {
+  text-align: center;
+  color: white;
+  line-height: 10rem;
+  margin: 0;
+}
+
+article {
+  padding: 1rem;
+  margin: 1rem;
+  background-color: aqua;
+}
+
+/* enable flexbox by setting display: flex on the parent container */
+section {
+  display: flex;
+}
+
+article {
+  /*
+    + make all elements take up same space along the main axis
+    + make them at least 20 rems
+  */
+  flex: 1 20rem;
+}
+
+article:nth-of-type(3) {
+/*
+  + make the third item take up the double as the other ones along the main axis
+  + make them at least 20 rems
+*/
+  flex: 2 20rem;
+}

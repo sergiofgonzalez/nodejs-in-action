@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+}
+
+header {
+  background-color: rebeccapurple;
+  height: 10rem;
+}
+
+h1 {
+  text-align: center;
+  color: white;
+  line-height: 10rem;
+  margin: 0;
+}
+
+article {
+  padding: 1rem;
+  margin: 1rem;
+  background-color: aqua;
+}
+
+/* enable flexbox by setting display: flex on the parent container */
+section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; /* this by itself will lay out the children in rows filling the width of the container */
+}
+
+article {
+  flex: 20rem; /* this will cause the articles to spread out in boxes of 20rems */
+}

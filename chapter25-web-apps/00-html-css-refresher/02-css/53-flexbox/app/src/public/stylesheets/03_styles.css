@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+}
+
+header {
+  background-color: rebeccapurple;
+  height: 10rem;
+}
+
+h1 {
+  text-align: center;
+  color: white;
+  line-height: 10rem;
+  margin: 0;
+}
+
+article {
+  padding: 1rem;
+  margin: 1rem;
+  background-color: aqua;
+}
+
+/* enable flexbox by setting display: flex on the parent container */
+section {
+  display: flex;
+  flex-direction: column-reverse;
+}
