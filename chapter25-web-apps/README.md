@@ -3,6 +3,9 @@
 
 For the web development cheat sheet on Javascript in the browser, CSS basics, Events and Form Fields please see [Web Development Cheat Sheet](https://github.com/sergiofgonzalez/eloquent-js/blob/3rd_edition/chapter18-http-and-forms/CHEAT_SHEET.md).
 
+## [00-html-css-refresher](00-html-css-refresher)
+A deep-dive refresher on HTML & CSS basic concepts.
+
 ## [01-bootstrap-refresher](./01-bootstrap-refresher/)
 Refreshing basic Bootstrap CSS concepts (using Bootstrap v4.4).
 
