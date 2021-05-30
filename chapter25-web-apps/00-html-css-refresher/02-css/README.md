@@ -4570,11 +4570,181 @@ So essentially, the CSS above tells the browser:
 
 ##### Horizontal and vertical alignment
 
+You can also use flexbox features to align flex items along the main or cross axis.
+
+Consider the following example, in which 5 buttons are initially laid out right below the header:
+
+![Flexbox alignment before](53-flexbox/docs/images/flexbox_alignment_before.png)
+
+If you add the following CSS:
+
+```css
+div {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+```
+
+you will get:
+![Flexbox alignment after](53-flexbox/docs/images/flexbox_alignment_after.png)
+
+That is, the buttons are now nicely centered horizontally and vertically in their container.
+
+`align-items` is used to control where the flex items sit on the cross axis (in above example vertically):
++ `stretch`: the default value, which stretches all flex items to fill the parent in the direction of the cross axis.
++ `center`: causes the items to maintin their intrinsic dimensions, while centered along the cross axis.
++ `flex-start`/`flex-end`: will align the items at the start/end of the cross axis respectively.
+
+Note that you can also override the `align-items` behavior for an specific item by changing that value for that item:
+
+```css
+button:first-child {
+  align-self: flex-end;
+}
+```
+
+![Flexbox alignment override](53-flexbox/docs/images/flexbox_alignment_self.png)
+
+See how the first button, instead of being centered in its container as happens with the other buttons, is aligned with the end of the cross axis (vertically, to the bottom).
+
+The `justify-content` property controls where the flex items sit on the main axis:
++ `flex-start`: the default value, which makes all items sit at the start of the main axis.
++ `flex-end`: makes the items sit at the end of the main axis.
++ `center`: makes the items sit at the center of the main axis.
+![justify-content: center](images/flexbox_alignment_justify_center.png)
+
++ `space-around`: makes the items to distribute event along the main axis, with space left at either end.
++ `space-between`: distributes the items evenly without leaving space at either end.
+![justify-content: space-between](images/flexbox_alignment_space_between.png)
+
 ##### Ordering flex items
+
+Flexbox also allows you to change the layout order of flex items without affecting the source HTML.
+
+You do this by simply using the CSS:
+
+```css
+button:first-child {
+  order: 1;
+}
+```
+
+For example, we can rearrange our three column layout so that the item in the middle is shown as the first article:
+
+![Flexbox: ordering flex items](53-flexbox/docs/images/flexbox_item_ordering.png)
+
+which required using:
+
+```css
+article:nth-of-type(2) {
+  order: -1;
+}
+```
+
++ By default, all flex items have an order value of 0.
++ Flex items with higher order values set on them will appear later in the display order.
++ Flex items with the same order value will appear in their source order.
+
+In the example above, we set the order of the 2nd element -1 to make it appear before the other elements which had the default order value of 0.
 
 ##### Nested flex boxes
 
+Flexbox layout module allows you to set flex items also as flex containers, which will allow you to create complex layouts.
+
+Consider a quite complex layout consisting in the following DOM:
+
+```
+section
+├── article
+├── article
+└── article
+     ├── div
+     |   ├── button
+     |   ├── button
+     |   ├── button
+     |   ├── button
+     |   └── button
+     ├── div
+     └── div
+```
+
+You first make the `<section>` a flexbox container using:
+
+```css
+section {
+  display: flex;
+}
+```
+
+Now, you make the `<articles>` to use (initially) one unitless value for the space, with at least 20rem width. That is, in narrow viewports, the elements will have at least 20rems and will be equal in width.
+
+```css
+article {
+  flex: 1 20rem;
+}
+```
+
+After that, you act on the first `<article>`, as it is the one that will contain some `<button>`s and some `<div>`s.
+
+```css
+article:nth-of-type(3) {
+  flex: 3 20rem;
+  display: flex;
+  flex-flow: column;
+}
+```
+
+You make that article a flex container using `display-flex` and setting the main axis vertically to arrange the items in a column. We also instruct the browser to make it at least 20rems wide, but to make it 3 times the size as the other container when widening the viewport.
+
+
+Now, you can act on the first `<div>` that will contain the `<button>`s:
+
+```css
+article:nth-of-type(3) div:first-child {
+  flex: 1 10rem;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+```
+
+This will make the `<div>` to be at least 10rem high, and the we set its childred as flex items, laying them out in a wrapping row, and align them in center of the available space.
+
+Finally, you can set some sizing on the button using:
+
+```css
+button {
+  flex: 1 auto;
+  margin: 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+```
+
+The `flex: 1 auto` rule has the effect of making the buttons take as much space as they can, and sit as many on the same line as they can, but dropping down to create new lines when they no longer fit.
+
+As a result, we get a complex layout with several levels of flexbox containers that behave responsively in a very nice way:
+
+In narrow viewports:
+![Flexbox nested: narrow viewport](53-flexbox/docs/images/flexbox_complex_narrow.png)
+
+In medium sized viewports:
+![Flexbox nested: medium viewport](53-flexbox/docs/images/flexbox_complex_medium.png)
+
+In wide viewports:
+![Flexbox nested: wide viewport](53-flexbox/docs/images/flexbox_complex_wide.png)
+
+
+Note that if we wouldn't have used `flex-flow: row-wrap` in narrow viewports we would have gotten the following result:
+
+![Flexbox no row wrap](images/flexbox_no_row_wrap.png)
+
+
 ##### Cross-browser compatibility
+
+You must take into account that while Flexbox is supported in most modern browsers, older ones will not support it. This might create some issues with the layout that will make the site unusable.
 
 #### NEXT: Grid
 

@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+}
+
+header {
+  background-color: rebeccapurple;
+  height: 10rem;
+}
+
+h1 {
+  text-align: center;
+  color: white;
+  line-height: 10rem;
+  margin: 0;
+}
+
+article {
+  padding: 1rem;
+  margin: 1rem;
+  background-color: aqua;
+}
+
+/* enable flexbox by setting display: flex on the parent container */
+section {
+  display: flex;
+}
+
+article {
+  flex: 1 20rem;
+}
+
+article:nth-of-type(3) {
+  flex: 3 20rem;
+  display: flex;
+  flex-flow: column;
+}
+
+article:nth-of-type(3) div:first-child {
+  flex: 1 10rem;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+button {
+  flex: 1 auto;
+  margin: 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}

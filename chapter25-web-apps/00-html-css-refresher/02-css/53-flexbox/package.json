@@ -22,8 +22,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "eslint": "7.26.0",
-    "pino-pretty": "4.7.1"
+    "eslint": "7.27.0",
+    "pino-pretty": "5.0.1"
   },
   "scripts": {
     "reset": "rm -rf node_modules && rm -f package-lock.json && npm install",
@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "compression": "1.7.4",
-    "dotenv": "9.0.0",
+    "dotenv": "10.0.0",
     "ejs": "3.1.6",
     "express": "4.17.1",
     "express-pino-logger": "6.0.0",
