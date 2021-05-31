@@ -4752,9 +4752,12 @@ You must take into account that while Flexbox is supported in most modern browse
 
 #### Grid layout
 
-##### What is grid layout?
+*CSS Grid Layout* is a 2D layout system for the web that lets you arrange content in rows and columns.
 
-##### Creating your grid in CSS?
+A grid is a collection of horizontal and vertical lines creating a pattern against which we can line up our design elements.
+
+![CSS Grid Layout](images/css_grid_layout_model.png)
+
 
 ###### Defining a grid
 
