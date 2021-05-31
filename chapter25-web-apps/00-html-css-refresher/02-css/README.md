@@ -4746,9 +4746,37 @@ Note that if we wouldn't have used `flex-flow: row-wrap` in narrow viewports we 
 
 You must take into account that while Flexbox is supported in most modern browsers, older ones will not support it. This might create some issues with the layout that will make the site unusable.
 
-#### NEXT: Grid
+| EXAMPLE: |
+| :------- |
+| See [53 &mdash; *Flexbox*](53-flexbox) for a runnable example illustrating the concepts of this section and [e13 &mdash; Practising CSS Layout: Flexbox module](e13-flexbox) for some additional exercises on *flexbox*. |
 
-#### Floats
+#### Grid layout
+
+##### What is grid layout?
+
+##### Creating your grid in CSS?
+
+###### Defining a grid
+
+###### Flexible grids with the `fr` unit
+
+###### Gaps between tracks
+
+###### Repeating track listings
+
+###### The implicit and explicit grid
+
+###### The minmax() function
+
+###### As many columns as will fit
+
+##### Line-based placement
+
+##### Positioning with `grid-template-areas`
+
+##### A CSS Grid, grid framework
+
+#### NEXT: Floats
 
 #### Positioning
 
@@ -4926,6 +4954,8 @@ Illustrates the use of the multi-column module to layout content in columns, as 
 ### [52 &mdash; Normal flow](52-normal-flow)
 A refresher on the concepts of *normal flow* and how block level elements and inline elements are laid out by default when no CSS positioning related styles are applied.
 
+### [53 &mdash; *Flexbox*](53-flexbox)
+A series of exercises that illustrates the different flexbox layout technique concepts and behavior.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
@@ -4963,6 +4993,8 @@ Miniproject on fundamental CSS comprehension in which we create an eye-catching 
 ## [e12 &mdash; Practising CSS Text styling by creating a community school homepage](e12-css-styling-text-community-school-page)
 Miniproject on fundamentals of text styling CSS in which we apply the techniques we've learned about text styles to a community school's homepage.
 
+### [e13 &mdash; Practising CSS Layout: Flexbox module](e13-flexbox)
+Exercises about the Flexbox module
 
 ## CSS properties cheatsheet
 
