@@ -1,0 +1,28 @@
+/* ||- General styling (nothing to do with flexbox layout) */
+body {
+  margin: 0;
+}
+
+.parent {
+  border: 2px solid rgb(119, 166, 182);
+  border-radius: 0.5rem;
+  height: 20rem;
+  width: 40rem;
+  margin: 0.5rem;
+}
+
+.child {
+  background-color: rgb(77, 114, 152);
+  width: 10rem;
+  padding: 0.5rem;
+  color: white;
+  text-align: center;
+}
+
+
+/* ||- Flexbox layout styling */
+.parent {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}

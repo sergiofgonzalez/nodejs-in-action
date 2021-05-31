@@ -1,0 +1,42 @@
+/* ||- General styling (nothing to do with flexbox layout) */
+body {
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+  margin: 0.25rem;
+  padding: 0;
+  width: 50rem;
+}
+
+li {
+  color: white;
+  background-color: rgb(77, 114, 152);
+  border: 2px solid rgb(119, 166, 182);
+  border-radius: 0.5rem;
+  margin: 0;
+  max-width: 20rem;
+  padding: 0.5rem 2rem;
+  margin: 0.5rem;
+}
+
+
+/* ||- Flexbox layout styling */
+ul {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+li {
+  flex: 1; /* initially: all items same value */
+}
+
+li:nth-of-type(4) {
+  padding-right: 5rem;
+}
+
+li:nth-of-type(7) {
+  padding-right: 10rem;
+}

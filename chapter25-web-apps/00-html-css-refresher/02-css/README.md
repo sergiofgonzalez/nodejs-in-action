@@ -4469,7 +4469,7 @@ section {
 }
 ```
 
-to enable the *flexbox layout* module, but the content is so lare that it doesn't fit in the viewport:
+to enable the *flexbox layout* module, but the content is so large that it doesn't fit in the viewport:
 
 ![Large content](53-flexbox/docs/images/flexbox_large_content.png)
 
