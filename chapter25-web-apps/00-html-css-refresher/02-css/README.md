@@ -4761,13 +4761,167 @@ A grid is a collection of horizontal and vertical lines creating a pattern again
 
 ###### Defining a grid
 
+To define a grid, you use the `display: grid` on a container element. This will make all of the direct children of the container become grid items. However, unlike flexbox, items will not immediately looks any different, so you have to also use `grid-template-columns: <col1_length> <col2_length>...<colN_length>` specifying any unit length or percentages to create the column tracks.
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: 20rem 20rem 20rem;
+}
+```
+
+For example, on this simple HTML markup it will have the following effect:
+
+```html
+<div class="container">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+  <div>Four</div>
+  <div>Five</div>
+  <div>Six</div>
+  <div>Seven</div>
+</div>
+```
+
+![Grid: basic 3 columns](54-grid/docs/images/grid_basic_3cols.png)
+
+
+Note however, what happens when we run the example in narrower viewports:
+
+![Basic 3 columns: narrow](54-grid/docs/images/grid_basic3cols_narrow_viewport.png)
+
 ###### Flexible grids with the `fr` unit
+
+You can use `fr` units to flexibly size grid rows and columns. `1fr` represents *one fraction* of the available space in the grid container.
+
+Thus, if you do:
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+```
+
+on this HTML markup:
+
+```html
+<div class="container">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+  <div>Four</div>
+  <div>Five</div>
+  <div>Six</div>
+  <div>Seven</div>
+</div>
+```
+
+you would get:
+![Basic 3 columns: fr units](54-grid/docs/images/grid_using_fr_narrow_viewport.png)
+
+
+Also, you could give different proportion to the columns:
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+}
+```
+
+![Basic 3 unequally sized columns: fr units](54-grid/docs/images/grid_fr_units_unequally_sized_cols.png)
+
 
 ###### Gaps between tracks
 
+To create gaps between tracks you can use:
++ `column-gap` &mdash; sets the gaps between columns
++ `row-gap` &mdash; sets the gaps between rows
+
+You can also use the `gap` shorthand that sets both the column and row gaps.
+
+For example, for the following simple markup:
+
+```html
+<div class="container">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+  <div>Four</div>
+  <div>Five</div>
+  <div>Six</div>
+  <div>Seven</div>
+</div>
+```
+
+using this CSS:
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2rem;
+}
+```
+
+has the following effect:
+
+![Setting gaps](54-grid/docs/images/grid_setting_gaps.png)
+
+| NOTE: |
+| :---- |
+| `gap` and `gap-*` properties used to be prefixed as `grid-gap*`. |
+
 ###### Repeating track listings
 
+You can use the `repeat()` notation to simplify the specification of columns.
+
+For example, you could do:
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+```
+to create an equally sized 3 column layout with 2rem gaps between rows and between columns.
+
 ###### The implicit and explicit grid
+
+Note that in the previous examples you have specified the number and size of the columns we want to have, and yet the rows were created to hold your content.
+
+The *explicit grid* is the one that you create using `grid-template-columns` or `grid-template-rows`; the *implicit grid* is the one created outside of that specification (as the rows in your example).
+
+By default, tracks created in the *implicit grid* are auto sized, which means they are large enough to fit their content. You can set specific size for the *implicit grid* using `grid-auto-rows` and `grid-auto-columns`.
+
+For example, for this simple markup:
+
+```html
+<div class="container">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+  <div>Four</div>
+  <div>Five</div>
+  <div>Six</div>
+  <div>Seven</div>
+</div>
+```
+
+in which we set explicitly the grid in columns, we can set our rows to be 10rem high by doing:
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* divide available space in 3 cols */
+  grid-auto-rows: 10rem;                  /* rows will be 10rem tall          */
+}
+```
+
+![Setting row height](54-grid/docs/images/grid_row_height.png)
 
 ###### The minmax() function
 
