@@ -4925,9 +4925,74 @@ in which we set explicitly the grid in columns, we can set our rows to be 10rem 
 
 ###### The minmax() function
 
+The `minmax()` function let you set a minimum and maximum size for a track, as in `grid-auto-rows: minmax(100px, auto)`, which will make the height of the rows to be at least 100px but to expand to fit content.
+
+This will help to lay out content for which we don't know the exact height, without causing overflow.
+
+For example, if we apply the following CSS:
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(10rem, auto);
+  column-gap: 2rem;
+  row-gap: 1rem;
+}
+```
+
+For small content we will get:
+
+![minmax on small content](54-grid/docs/images/grid_min_max.png)
+
+but for large content, the row height will grow to accomodate:
+
+![minmax on large content](54-grid/docs/images/grid_min_max_large_content.png)
+
 ###### As many columns as will fit
 
+You can use a combination of `repeat()` and `minmax()` functions, and a new keyword `autofill` to create layouts that will accommodate as many columns as will fit in the grid container:
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-auto-rows: minmax(10rem, auto);
+  column-gap: 2rem;
+  row-gap: 1rem;
+}
+```
+
+This will cause the following on narrow viewports:
+
+![as many columns narrow](54-grid/docs/images/grid_as_many_columns_narrow.png)
+
+
+And will place more columns on wider viewports:
+![as many columns wide](54-grid/docs/images/grid_as_many_columns_wide.png)
+
+
 ##### Line-based placement
+
+CSS Grid module also has a powerful way of placing content in the grid. In this layout system, columns and rows are numbered starting from one, so that column line 1 is on the left hand side, and row 1 is on top for left-to-right writing systems.
+
+We can place things on rows and columns using:
++ `grid-column-start`
++ `grid-column-end`
++ `grid-row-start`
++ `grid-row-end`
+
+These properties can all have a line number as the value.
+
+It is also common to use the shorthands `grid-column`, `grid-row` which allows you to specify the start and end values using the notation `start / end`.
+
+For example, this sequence of pictures illustrates how the layout changes from the initial state (in which the grid layout has not been enabled), halfway through (when enabling the grid system with 2 columns), to the final state in which we explicitly set the content in rows and columns:
+
+![Placement: initial](54-grid/docs/images/grid_placement_initial.png)
+
+![Placement: midway](54-grid/docs/images/grid_placement_midway.png)
+
+![Placement: final](54-grid/docs/images/grid_placement_final.png)
 
 ##### Positioning with `grid-template-areas`
 

@@ -31,3 +31,30 @@
 ## Setting row height (implicit grid) with `grid-auto-rows`
 
 ![Setting row height](docs/images/grid_row_height.png)
+
+## Using `minmax()` to flexibly set the row height
+
+### With small content
+![minmax on small content](docs/images/grid_min_max.png)
+
+### With large content
+![minmax on large content](docs/images/grid_min_max_large_content.png)
+
+## Flexible layout with as many columns as will fit in the container
+
+### On narrow viewports
+![as many columns narrow](docs/images/grid_as_many_columns_narrow.png)
+
+### On wide viewports
+![as many columns wide](docs/images/grid_as_many_columns_wide.png)
+
+## Explicit placement on rows and columns
+
+### Initial state
+![Placement: initial](docs/images/grid_placement_initial.png)
+
+### Midway: grid enablement
+![Placement: midway](docs/images/grid_placement_midway.png)
+
+### Final: placement rules
+![Placement: final](docs/images/grid_placement_final.png)
