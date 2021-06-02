@@ -4996,7 +4996,58 @@ For example, this sequence of pictures illustrates how the layout changes from t
 
 ##### Positioning with `grid-template-areas`
 
-##### A CSS Grid, grid framework
+The CSS Grid Layout module allows you to give the various elements of your design a name, and then use them in your CSS.
+
+For example, the same markup and result seen in the picture above can be obtained with the following CSS:
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-gap: 2rem;
+  grid-template-areas:
+    "header header"
+    "sidebar content"
+    "footer footer";
+}
+
+/* placement rules */
+header {
+  grid-area: header;
+}
+
+article {
+  grid-area: content;
+}
+
+aside {
+  grid-area: sidebar;
+}
+
+footer {
+  grid-area: footer;
+}
+```
+
+The rules for `grid-template-areas` are:
++ You need to have every cell of the grid filled
++ To span across two cells, repeat the name
++ To leave a cell empty, use a `.` (period).
++ Areas must be rectangular (i.e. L-shaped areas are not supported).
++ Areas cannot be repeated in different locations.
+
+
+##### A CSS Grid-based grid framework
+
+There are "Grid frameworks" that provide a system of 12 or 16 column grids on which you can position your elements.
+
+Note that the CSS spec already supports that, and probably in a more flexible way that those frameworks.
+
+Even so, you could also lay out a 12 column grid as those frameworks, using the CSS grid system.
+
+
+![12 col grid framework](54-grid/docs/images/grid_12_column_framework.png)
+
 
 #### NEXT: Floats
 

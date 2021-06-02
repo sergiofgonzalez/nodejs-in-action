@@ -58,3 +58,11 @@
 
 ### Final: placement rules
 ![Placement: final](docs/images/grid_placement_final.png)
+
+## Explicit placement on rows and columns: now using names!
+
+![Placement: final](docs/images/grid_placement_final.png)
+
+## A 12-column grid framework based on CSS grid
+
+![12 col grid framework](docs/images/grid_12_column_framework.png)
