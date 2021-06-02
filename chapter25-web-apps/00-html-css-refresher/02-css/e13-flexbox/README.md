@@ -5,7 +5,7 @@
 
 This is the exercise [MDN: Test your skills: Flexbox](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox_skills)
 
-It consists of a series of exercises in which you are given fixed HTML documentsand you practice common layouts that work well with Flexbox.
+It consists of a series of exercises in which you are given fixed HTML documents and you practice common layouts that work well with Flexbox.
 
 ### Exercise One: navbar
 

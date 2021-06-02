@@ -4994,6 +4994,38 @@ For example, this sequence of pictures illustrates how the layout changes from t
 
 ![Placement: final](54-grid/docs/images/grid_placement_final.png)
 
+The final state is achieved with this CSS:
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-gap: 2rem;
+}
+
+/* placement rules */
+header {
+  grid-column: 1 / 3; /* fill first row with header */
+  grid-row: 1;        /* this is not needed, but make it more explicit */
+}
+
+article {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+aside {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+footer {
+  grid-column: 1 / 3;
+  grid-row: 3;
+}
+```
+
+
 ##### Positioning with `grid-template-areas`
 
 The CSS Grid Layout module allows you to give the various elements of your design a name, and then use them in your CSS.

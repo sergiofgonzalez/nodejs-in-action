@@ -1,0 +1,25 @@
+/* ||- General styling (nothing to do with flexbox layout) */
+body {
+  margin: 0;
+}
+
+div {
+  padding: 1rem;
+}
+
+div div {
+  color: white;
+  background-color: rgb(77, 114, 152);
+  border: 1px solid rgb(119, 166, 182);
+  margin-left: 1rem;
+  margin-right: 1rem;
+  border-radius: 0.5rem;
+}
+
+
+/* ||- Layout (CSS grid related stuff) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
