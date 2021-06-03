@@ -2277,7 +2277,7 @@ You can see the effect on the following picture:
 
 ![object-fit](33-hello-sizing-images-object-fit/docs/images/object-fit.png)
 
-In the picture on top, `object-fit: cover` is used. As a result, it neatly fills the box respecting the aspect ration but certain parts of the image are cropped.
+In the picture on top, `object-fit: cover` is used. As a result, it neatly fills the box respecting the aspect ratio but certain parts of the image are cropped.
 
 In the picture on the middle, `object-fit: contain` ensures that the while picture is displayed, but empty space shows up to the left and right of the picture.
 
@@ -2338,7 +2338,7 @@ img {
 
 This can be seen inthe first image, no CSS is given to the `<img>` element and as a result, we see how the `<div>`s fill out the whole space assigned to them, but not the image.
 
-![Image sizing](docs/images/images_advanced_layout.png)
+![Image sizing](34-images-in-advanced-layouts/docs/images/images_advanced_layout.png)
 
 However, if we style the `<img>` with:
 
@@ -2352,7 +2352,7 @@ img {
 
 we can obtain the same effect:
 
-![Image sizing: stretch](docs/images/images_advanced_layout_stretch.png)
+![Image sizing: stretch](34-images-in-advanced-layouts/docs/images/images_advanced_layout_stretch.png)
 
 | EXAMPLE: |
 | :------- |
@@ -4972,6 +4972,20 @@ And will place more columns on wider viewports:
 ![as many columns wide](54-grid/docs/images/grid_as_many_columns_wide.png)
 
 
+when applied to the following simple markup:
+
+```html
+<div class="container">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+  <div>Four</div>
+  <div>Five</div>
+  <div>Six</div>
+  <div>Seven</div>
+</div>
+```
+
 ##### Line-based placement
 
 CSS Grid module also has a powerful way of placing content in the grid. In this layout system, columns and rows are numbered starting from one, so that column line 1 is on the left hand side, and row 1 is on top for left-to-right writing systems.
@@ -5079,6 +5093,11 @@ Even so, you could also lay out a 12 column grid as those frameworks, using the 
 
 
 ![12 col grid framework](54-grid/docs/images/grid_12_column_framework.png)
+
+
+| EXAMPLE: |
+| :------- |
+| See [e14 &mdash; Practising CSS Layout: Grid layout](e14-grid) for a runnable project illustrating all of the concepts of this section and [54 &mdash; *CSS Grid Layout*](54-grid) for some exercises illustrating different layouts that can be achieved with CSS Grid. |
 
 
 #### NEXT: Floats
@@ -5262,6 +5281,9 @@ A refresher on the concepts of *normal flow* and how block level elements and in
 ### [53 &mdash; *Flexbox*](53-flexbox)
 A series of exercises that illustrates the different flexbox layout technique concepts and behavior.
 
+### [54 &mdash; *CSS Grid Layout*](54-grid)
+A series of exercises that illustrates the different CSS Grid Layout concepts.
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
 
@@ -5295,11 +5317,14 @@ Miniproject on fundamental CSS comprehension in which we create a fancy letterhe
 ### [e11 &mdash; Practising CSS fundamentals by creating a cool-looking box](e11-css-fundamentals-cool-looking-box)
 Miniproject on fundamental CSS comprehension in which we create an eye-catching box.
 
-## [e12 &mdash; Practising CSS Text styling by creating a community school homepage](e12-css-styling-text-community-school-page)
+### [e12 &mdash; Practising CSS Text styling by creating a community school homepage](e12-css-styling-text-community-school-page)
 Miniproject on fundamentals of text styling CSS in which we apply the techniques we've learned about text styles to a community school's homepage.
 
 ### [e13 &mdash; Practising CSS Layout: Flexbox module](e13-flexbox)
 Exercises about the Flexbox module
+
+### [e14 &mdash; Practising CSS Layout: Grid layout](e14-grid)
+Exercises about the CSS Grid Layout module
 
 ## CSS properties cheatsheet
 

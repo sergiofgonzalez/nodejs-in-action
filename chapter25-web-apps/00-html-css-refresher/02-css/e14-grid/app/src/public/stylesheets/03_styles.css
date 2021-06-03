@@ -1,0 +1,44 @@
+/* ||- General styling (nothing to do with flexbox layout) */
+body {
+  margin: 0;
+}
+
+div {
+  padding: 1rem;
+}
+
+div div {
+  padding: 1rem;
+  color: white;
+  border-radius: .5rem;
+  background-color: rgb(77, 114, 152);
+  border: 1px solid rgb(119, 166, 182);
+}
+
+/* ||- Layout (CSS grid related stuff) */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem;
+  grid-template-areas:
+    "one one"
+    "two three"
+    ". four";
+}
+
+/* placement rules */
+.one {
+  grid-area: one;
+}
+
+.two {
+  grid-area: two;
+}
+
+.three {
+  grid-area: three;
+}
+
+.four {
+  grid-area: four;
+}
