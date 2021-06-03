@@ -5100,9 +5100,63 @@ Even so, you could also lay out a 12 column grid as those frameworks, using the 
 | See [e14 &mdash; Practising CSS Layout: Grid layout](e14-grid) for a runnable project illustrating all of the concepts of this section and [54 &mdash; *CSS Grid Layout*](54-grid) for some exercises illustrating different layouts that can be achieved with CSS Grid. |
 
 
-#### NEXT: Floats
+#### Floats
 
-#### Positioning
+The `float` property can be used to create layouts involving an element floating in a particular position.
+
+| NOTE: |
+| :---- |
+| Before the introduction of *Flexbox* and *CSS Grids*, developers used *floats* to crete entire layouts featuring multiple columns. That technique is considered legacy and its usage is discouraged. |
+
+##### A simple float example
+
+Consider the following simple markup consisting on an article with a header a box containing some text:
+
+```html
+<header>
+  <h1>Simple float example</h1>
+</header>
+<main>
+  <article>
+    <div class="box">Float</div>
+
+    <p>(...long paragraph..)</p>
+    <p>(...long paragraph..)</p>
+    <p>(...long paragraph..)</p>
+  </article>
+</main>
+```
+
+If we apply some basic styling to the markup, but nothing related to *layout* we will get:
+
+![Initial state](55-floats/docs/images/floats_simple_initial.png)
+
+That is, the order in which the markup was written is driving how the page is rendered, and box sits above the paragraphs.
+
+However, if we use `float` with the box:
+
+```css
+.box {
+  float: left;
+}
+```
+
+the layout changes to:
+
+![Final state](55-floats/docs/images/floats_simple_final.png)
+
+
+##### Clearing floats
+
+##### Clearing boxes wrapped around a float
+
+###### The `clearfix` hack
+
+###### Using `overflow`
+
+###### `display: flow-root`
+
+#### NEXT: Positioning
 
 #### Multiple-column layout
 
