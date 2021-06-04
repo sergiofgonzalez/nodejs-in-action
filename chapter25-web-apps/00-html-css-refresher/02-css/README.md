@@ -5145,8 +5145,89 @@ the layout changes to:
 
 ![Final state](55-floats/docs/images/floats_simple_final.png)
 
+That is, the element with the `float` set on it is taken out of the normal layout flow of the document and stuck to the left hand side of its parent container, which is the `<body>` in the example above.
+
+Any content that comes below the floated element in the normal layout flow will now wrap around it, filling up the space to the right-hand side of it as fars as the top of the floated element.
+
+Floating content to the right will have the same effect, but in reverse:
+
+```css
+.box {
+  float: right;
+}
+```
+
+![Final state: reversed](55-floats/docs/images/floats_simple_reverse.png)
+
+
+Note that while we can add a margin to the float to push the text away, we can't add a margin to the text to move it away from the float. This is because a floated element is taken out of normal flow, and the boxes of the following items actually *run behind the float*.
+
+This can be demonstrated by setting a background color to the first paragraph:
+
+```html
+<header>
+  <h1>Simple float example</h1>
+</header>
+<main>
+  <article>
+    <div class="box">Float</div>
+    <p class="special">(...long paragraph..)</p>
+    <p>(...long paragraph..)</p>
+    <p>(...long paragraph..)</p>
+  </article>
+</main>
+```
+
+```css
+.special {
+  background-color: rgb(79,185,227);
+  padding: 1rem;
+  color: #fff;
+}
+```
+
+
+![Paragraph runs behind float](55-floats/docs/images/floats_elems_following_float_run_behind_float.png)
 
 ##### Clearing floats
+
+When the *float* is removed from the normal flow, the other elements will display beside it.
+
+If we want to stop the following element from moving up, we need to use the `clear` property.
+
+For example, this is the result of defining the following rule:
+
+```html
+<header>
+  <h1>Simple float example</h1>
+</header>
+<main>
+  <article>
+    <div class="box">Float</div>
+
+    <p>(...long paragraph..)</p>
+    <p class="cleared">(...long paragraph..)</p>
+    <p>(...long paragraph..)</p>
+  </article>
+</main>
+```html
+
+```css
+.cleared {
+  clear: left;
+}
+```
+
+![Using clear on second para](55-floats/docs/images/floats_cleared_second_para.png)
+
+And if we would apply it to the first paragraph, it would look as if the normal flow would have been respected:
+
+![Using clear on first para](docs/images/floats_cleared_first_para.png)
+
+The `clear` property accepts the following values:
++ `left` &mdash; clear items floated to the left.
++ `right` &mdash; clear items floated to the right.
++ `both` &mdash; clear any items floated.
 
 ##### Clearing boxes wrapped around a float
 
