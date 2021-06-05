@@ -5229,17 +5229,225 @@ The `clear` property accepts the following values:
 + `right` &mdash; clear items floated to the right.
 + `both` &mdash; clear any items floated.
 
+| NOTE: |
+| :---- |
+| To sum up, `clear` is use to *resume* the normal flow of the elements, so that the layout gets back to normal. |
+
 ##### Clearing boxes wrapped around a float
+
+Consider the following situation in which we have a tall float and a short paragraph, with a box wrapped around both elements.
+
+The markup is as follows:
+
+```html
+<body>
+  <header>
+    <h1>Simple float example</h1>
+  </header>
+  <main>
+    <article>
+      <div class="wrapper">
+        <div class="box">Float</div>
+
+        <p>(short paragraphs... just a few lines)</p>
+      </div>
+
+      <p class="cleared">Long paragraph</p>
+
+      <p>Long paragraph</p>
+    </article>
+  </main>
+</body>
+```
+
+```css
+.box {
+  float: left;
+  margin: 1.5rem; /* push text away from the float */
+}
+
+.wrapper {
+  background-color: rgb(79,185,227);
+  padding: 1rem;
+  color: #fff;
+}
+```
+
+Note that we have the `.box` element that is floated, and the wrapper (which in the HTML contains both the float and the first paragraph).
+
+![Clearing boxes around float: initial](55-floats/docs/images/floats_clearing_boxes_around_float_initial.png)
+
+As you can see, the background color runs behind the float. This happens because the float has been taken out of normal flow. What we want is the background color to surround the float, as our HTML structure suggests.
+
+![Clearing boxes around float: Goal](55-floats/docs/images/floats_clearfix_hack.png)
+
+There are several ways to fix this.
 
 ###### The `clearfix` hack
 
+This fix consists in adding some generated content after the box contains the float and wrapping content and setting `clear: both`:
+
+```html
+<body>
+  <header>
+    <h1>Simple float example</h1>
+  </header>
+  <main>
+    <article>
+      <div class="wrapper">
+        <div class="box">Float</div>
+
+        <p>(short paragraphs... just a few lines)</p>
+      </div>
+
+      <p class="cleared">Long paragraph</p>
+
+      <p>Long paragraph</p>
+    </article>
+  </main>
+</body>
+```
+
+```css
+.box {
+  float: left;
+  margin: 1.5rem; /* push text away from the float */
+}
+
+.wrapper {
+  background-color: rgb(79,185,227);
+  padding: 1rem;
+  color: #fff;
+}
+
+.wrapper::after {
+  content: "";
+  clear: both;
+  display: block;
+}
+```
+
+![Clearing boxes around float: clearfix hack](55-floats/docs/images/floats_clearfix_hack.png)
+
+
 ###### Using `overflow`
+
+Alternatively, you can obtain the same goal but setting the `overflow` property of the wrapper to a value other than `visible`:
+
+```html
+<body>
+  <header>
+    <h1>Simple float example</h1>
+  </header>
+  <main>
+    <article>
+      <div class="wrapper">
+        <div class="box">Float</div>
+
+        <p>(short paragraphs... just a few lines)</p>
+      </div>
+
+      <p class="cleared">Long paragraph</p>
+
+      <p>Long paragraph</p>
+    </article>
+  </main>
+</body>
+```
+
+```css
+.box {
+  float: left;
+  margin: 1.5rem; /* push text away from the float */
+}
+
+.wrapper {
+  background-color: rgb(79,185,227);
+  padding: 1rem;
+  color: #fff;
+  overflow: auto;
+}
+```
+
+
+As you can see, the result is the same:
+![Clearing boxes around float: overflow hack](docs/images/floats_overflow_hack.png)
+
+However, this technique may cause undesired shadows or unwanted scrollbars in some circumstances.
 
 ###### `display: flow-root`
 
-#### NEXT: Positioning
+This is the *non-hacky* modern way to solve the problem. It consists in using `display: flow-root`.
+That creates a *block formatting context (BFC)* &mdash; like a mini-layout inside your page, inside which everythin is contained and therefore the floated element will be contained inside it, and the background will run behind both items: the float and the paragraph.
 
-#### Multiple-column layout
+Also, using this new technique will have no unintended consequences:
+
+```html
+<body>
+  <header>
+    <h1>Simple float example</h1>
+  </header>
+  <main>
+    <article>
+      <div class="wrapper">
+        <div class="box">Float</div>
+
+        <p>(short paragraphs... just a few lines)</p>
+      </div>
+
+      <p class="cleared">Long paragraph</p>
+
+      <p>Long paragraph</p>
+    </article>
+  </main>
+</body>
+```
+
+```css
+.box {
+  float: left;
+  margin: 1.5rem; /* push text away from the float */
+}
+
+.wrapper {
+  background-color: rgb(79,185,227);
+  padding: 1rem;
+  color: #fff;
+  display: flow-root;
+}
+```
+
+As you can see, the result is the same:
+![Clearing boxes around float: flow-root solution](55-floats/docs/images/floats_flow_root.png)
+
+| EXAMPLE: |
+| :------- |
+| See [55 &mdash; Floats](55-floats) for a runnable example illustrating the concepts of this section and [e15 &mdash; Practising CSS Layout: Floats](e15-floats) for some additional exercises on modern usage of floats. |
+
+#### Positioning
+
+##### Introducing positioning
+
+##### Static positioning
+
+##### Relative positioning
+
+###### Introducing top, bottom, left, and right
+
+##### Absolute positioning
+
+###### Positioning contexts
+
+###### Introducing z-index
+
+##### Fixed positioning
+
+##### Sticky positioning
+
+- [ ] ToDo: Sticky table!
+
+
+#### NEXT: Multiple-column layout
 
 #### Responsive design
 
@@ -5419,6 +5627,9 @@ A series of exercises that illustrates the different flexbox layout technique co
 ### [54 &mdash; *CSS Grid Layout*](54-grid)
 A series of exercises that illustrates the different CSS Grid Layout concepts.
 
+### [55 &mdash; Floats](55-floats)
+A series of exercises that illustrates the modern usage of *floats*.
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
 
@@ -5456,10 +5667,13 @@ Miniproject on fundamental CSS comprehension in which we create an eye-catching 
 Miniproject on fundamentals of text styling CSS in which we apply the techniques we've learned about text styles to a community school's homepage.
 
 ### [e13 &mdash; Practising CSS Layout: Flexbox module](e13-flexbox)
-Exercises about the Flexbox module
+Exercises about the Flexbox module.
 
 ### [e14 &mdash; Practising CSS Layout: Grid layout](e14-grid)
-Exercises about the CSS Grid Layout module
+Exercises about the CSS Grid Layout module.
+
+### [e15 &mdash; Practising CSS Layout: Floats](e15-floats)
+Exercises about Floats.
 
 ## CSS properties cheatsheet
 

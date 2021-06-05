@@ -26,3 +26,21 @@
 ### Using `clear: left` on first paragraph
 
 ![Using clear on first para](docs/images/floats_cleared_first_para.png)
+
+## Clearing boxes wrapped around a float
+
+### Initial State
+
+![Clearing boxes around float: initial](docs/images/floats_clearing_boxes_around_float_initial.png)
+
+### The *clearfix* hack
+
+![Clearing boxes around float: clearfix hack](docs/images/floats_clearfix_hack.png)
+
+### The `overflow` hack
+
+![Clearing boxes around float: overflow hack](docs/images/floats_overflow_hack.png)
+
+### The `display: flow-root` solution
+
+![Clearing boxes around float: flow-root solution](docs/images/floats_flow_root.png)

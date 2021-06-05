@@ -1,0 +1,26 @@
+/* ||- General styling (nothing to do with flexbox layout) */
+body {
+  margin: 0;
+}
+
+.box {
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.float {
+  width: 10rem;
+  height: 10rem;
+  background-color: rgb(207, 232, 220);
+  padding: 1rem;
+  margin: 1rem;
+  float: left;
+}
+
+p {
+  margin: 2rem 1rem;
+}
+
+.below {
+  clear: left;
+}
