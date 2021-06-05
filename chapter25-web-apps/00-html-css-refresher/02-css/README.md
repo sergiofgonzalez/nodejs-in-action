@@ -5426,9 +5426,47 @@ As you can see, the result is the same:
 
 #### Positioning
 
-##### Introducing positioning
+Positioning techniques allows you to take elements out of the normal document layout flow, and make them behave differently to produce interesting effect.
+
+This is typically used to slightly alter the position of some boxes inside a layout from their default layout flow position.
+
+To make a specific type of positioning of active on an element, we use the `position` property.
 
 ##### Static positioning
+
+Static positioning is the default that every element gets in the normal flow.
+
+This means that if we have the following markup:
+
+```html
+  <h1>Basic document flow</h1>
+
+  <p>(paragraph)</p>
+
+  <p class="positioned">(paragraph)</p>
+
+  <p>(paragraph)</p>
+
+  <p>(paragraph with spans and image)</p>
+```
+
+That will be rendered as:
+
+![Initial state](56-position/docs/images/position_initial.png)
+
+And we apply the following CSS to it:
+
+```css
+.positioned {
+  position: static;
+  background: yellow;
+}
+```
+
+the only change that we will notice is that the background color of the paragraph will change:
+
+![Static positioning](56-position/docs/images/position_static.png)
+
 
 ##### Relative positioning
 
