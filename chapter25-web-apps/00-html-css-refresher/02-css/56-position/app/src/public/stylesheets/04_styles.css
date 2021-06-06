@@ -1,0 +1,26 @@
+body {
+  width: 500px;
+  margin: 0 auto;  /* center horizontally */
+}
+
+p {
+  background-color: aqua;
+  border: 3px solid blue;
+  padding: 1rem;
+  margin: 1rem;;
+}
+
+span {
+  background-color: red;
+  border: 1px solid black;
+}
+
+/* additions for positioning exercises */
+.positioned {
+  position: absolute;
+  background-color: yellow;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}

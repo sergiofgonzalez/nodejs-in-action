@@ -5470,19 +5470,438 @@ the only change that we will notice is that the background color of the paragrap
 
 ##### Relative positioning
 
-###### Introducing top, bottom, left, and right
+You enable relative positioning using `position: relative` on an element. Using this mode will allow you to modify the position of the element once positioned in the normal layout flow using the properties: `top`, `bottom`, `left` and `right`.
+
+For example, if we have the following markup:
+
+```html
+<h1>Basic document flow</h1>
+
+<p>(paragraph)</p>
+
+<p class="positioned">(paragraph)</p>
+
+<p>(paragraph)</p>
+
+<p>(paragraph with spans and image)</p>
+```
+
+and we use the following CSS:
+
+```css
+.positioned {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}
+```
+
+will have the effect of moving the second paragraph 30 pixels down and 30 pixels right as seen on the image below:
+
+![Relative positioning](56-position/docs/images/position_relative.png)
+
 
 ##### Absolute positioning
 
+You enable absolute positioning using `position: absolute`. When you apply this positioning to an element it is entirely removed from the normal document flow, so the rest of elements are *unaware* of their existence when being displayed.
+
+As a mental model, you can think that an element with absolute positioning is placed on its own different layer from the rest of the elements.
+
+As a result, absolute positioning will be very useful for displaying popups, control menus, rollover panels, drag and drop components, etc. that don't interfere with the rest of the page.
+
+When using absolute positioning `top`, `bottom`, `left` and `right` specify the distance the element should be from each of the containing element's sides.
+
+For example, if we have the following markup:
+
+```html
+<h1>Basic document flow</h1>
+
+<p>(paragraph)</p>
+
+<p class="positioned">(paragraph)</p>
+
+<p>(paragraph)</p>
+
+<p>(paragraph with spans and image)</p>
+```
+
+and we use the following CSS:
+
+```css
+.positioned {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+```
+
+will have the effect of removing the second paragraph from the normal document flow, so that the first and third paragraph now sit together, and the second paragraph will be placed 30 pixels down and 30 pixels right from the *containment element*, which is the *initial containing block* (see section below for more info on *initial containing block*).
+
+![Absolute positioning](56-position/docs/images/position_absolute.png)
+
+Note that setting `top`, `bottom`, `left` and `right` lets you resize the element with respect with the *containment element*.
+
+For example, if we apply the following CSS on the same markup:
+
+```css
+.positioned {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+```
+
+we will be making the element the same size as its containment element:
+
+![Resizing with absolute positioning](56-position/docs/images/position_absolute_resizing.png)
+
 ###### Positioning contexts
+
+As seen on the section above, an element with `position: absolute` will be placed with respect with the *containment element*. Which element is the *containment element* depends on the `position` property of its ancestors.
+
+If no ancestors have their `position` property explicitly defined, then by default all the ancestors will have a `position: static`. Ultimately, this means that the absolutely positioned element will be contained in the **initial containing block*, which has the dimensions of the viewport &mdash; that is, the element will be positioned with respect to the viewport.
+
+The **positioning context** can be changed by setting the `position` property on one of the element's ancestors.
+
+For example, consider the following markup:
+```html
+<h1>Basic document flow</h1>
+
+<p>(paragraph)</p>
+
+<p class="positioned">(paragraph)</p>
+
+<p>(paragraph)</p>
+
+<p>(paragraph with spans and image)</p>
+```
+
+and we use the following CSS:
+
+```css
+body {
+  position: relative;
+}
+
+.positioned {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+```
+
+will have the effect of changing the *containment block* of the second paragraph so that now it is positioned with respect to the `<body>` element, instead of the viewport.
+
+![Absolute positioning containment block](56-position/docs/images/position_absolute_containment_block.png)
+
 
 ###### Introducing z-index
 
+The `z-index` peroperty determines which elements appear on top of which when using `position: absolute`.
+
+Consider the following markup:
+
+For example, consider the following markup:
+```html
+<h1>Basic document flow</h1>
+
+<p>(paragraph)</p>
+
+<p class="positioned">(paragraph)</p>
+
+<p>(paragraph)</p>
+
+<p>(paragraph with spans and image)</p>
+```
+
+on which we apply the following CSS:
+
+```css
+.positioned {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+
+p:nth-of-type(1) {
+  position: absolute;
+  background: lime;
+  top: 10px;
+  left: 10px;
+}
+```
+
+will stack one absolutely positioned elements on top of the other as seen on the image below:
+
+![Overlapping elements: no z-index](56-position/docs/images/position_absolute_overlapping.png)
+
+The stacking order can be controlled with the `z-index` property, which can be thought of an imaginary *z-axis* perpendicular to the page that runs from the screen display the page to your face: positive value will have the effect of moving the element higher up, and negative lower down. By default, positioned elements all have a `z-index: auto` which is the same as `z-index: 0`.
+
+You can use this property to revert the default stacking on the image above, and make the green paragraph be displayed on top of the yellow one:
+
+```css
+.positioned {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+
+p:nth-of-type(1) {
+  position: absolute;
+  background: lime;
+  top: 10px;
+  left: 10px;
+}
+```
+
+![Overlapping elements: no z-index](docs/images/position_absolute_overlapping_z-index.png)
+
 ##### Fixed positioning
+
+You can enable *fixed positioning* using `position: fixed` on an element. This will work in the same way as *absolute positioning* except that fixed positioning usually fixes an element in place with respect to the visible portion of the viewport (except if one of its ancestors is a fixed containing block).
+
+This will be useful to create UI items like persisting navigation menus that are always visible independently of the scroll value.
+
+Consider the following markup:
+
+```html
+<h1>Basic document flow</h1>
+
+<p>(paragraph)</p>
+
+<p class="positioned">(paragraph)</p>
+
+<p>(paragraph)</p>
+
+<p>(paragraph with spans and image)</p>
+```
+
+on which we apply the following CSS:
+
+```css
+body {
+  width: 500px;
+  height: 1400px;
+  margin: 0 auto;
+}
+
+h1 {
+  position: fixed;
+  top: 0;
+  width: 500px;
+  margin-top: 0;
+  background: white;
+  padding: 10px;
+}
+
+p:nth-of-type(1) {
+  margin-top: 60px;
+}
+```
+
+See how we make the body high enough to cause the scroll bar to be present. In this case, we want the `<h1>` element to be present at the top of the viewport, no matter how much we scroll, so we apply the `position: fixed` which results on the situation below:
+
+![Fixed positioning: final](56-position/docs/images/position_fixed_final.png)
+
+| NOTE: |
+| :---- |
+| We had to include `margin-top` for the first paragraph because `position: fixed` removed the element from the normal layout flow, and therefore, all the paragraphs are pulled up. |
+
 
 ##### Sticky positioning
 
-- [ ] ToDo: Sticky table!
+You can use `position: sticky` to enable a *hybrid* behavior between relative and fixed positioning. Setting an element with `position: sticky` makes it behave like it is relatively positioned until it is scrolled to a certain threshold point, after which it becomes fixed.
+
+This can be used to cause a navigation bar to scroll with the page until a certain point, and then stick to the top of the page.
+
+Consider the following markup:
+
+```html
+<h1>Sticky positioning</h1>
+
+<p>(long paragraph)</p>
+
+<div class="positioned">Sticky</div>
+
+<p>(long paragraph)</p>
+
+<p>(long paragraph)</p>
+```
+
+in which we don't initially use any special positioning technique:
+
+```css
+.positioned {
+  background-color: rgba(255, 84, 104, 0.3);
+  padding: 1rem;
+  margin: 1rem;
+  border: 2px solid rgb(255, 84, 104);
+  border-radius: 0.5rem;
+}
+```
+
+As expected, that will cause the `<div class="positioned">` to scroll with the text:
+
+![Sticky positioning: initial](56-position/docs/images/position_sticky_initial.png)
+
+However, if we change the CSS to:
+
+```css
+.positioned {
+  position: sticky;
+  top: 3rem;
+  left: 3rem;
+  background-color: rgba(255, 84, 104, 0.3);
+  padding: 1rem;
+  margin: 1rem;
+  border: 2px solid rgb(255, 84, 104);
+  border-radius: 0.5rem;
+}
+```
+
+will cause the `<div>` to stick to the top of the page when scrolling:
+
+![Sticky positioning: final](56-position/docs/images/position_sticky_final.png)
+
+
+Another interesting technique consists in creating a scrolling index page, where different headings stick to the top of the page as they reach it:
+
+```html
+<dl>
+  <dt>A</dt>
+  <dd>Apple</dd>
+  <dd>Ant</dd>
+  <dd>Altimeter</dd>
+  <dd>Airplane</dd>
+  <dt>B</dt>
+  <dd>Bird</dd>
+  <dd>Buzzard</dd>
+  <dd>Bee</dd>
+  <dd>Banana</dd>
+  <dd>Beanstalk</dd>
+  <dt>C</dt>
+  <dd>Calculator</dd>
+  <dd>Cane</dd>
+  <dd>Camera</dd>
+  <dd>Camel</dd>
+  <dt>D</dt>
+  <dd>Duck</dd>
+  <dd>Dime</dd>
+  <dd>Dipstick</dd>
+  <dd>Drone</dd>
+  <dt>E</dt>
+  <dd>Egg</dd>
+  <dd>Elephant</dd>
+  <dd>Egret</dd>
+</dl>
+```
+
+If we apply the following CSS and no positioning we will get:
+
+```css
+dt {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  margin: 1em 0;
+}
+```
+
+![Sticky positioning: scrolling index: initial](56-position/docs/images/position_sticky_scrolling_index_initial.png)
+
+Note how with the normal flow, the index headers disappear when you scroll down the page.
+
+However, if we apply the `position: sticky` we get the following interesting effect:
+
+```css
+dt {
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  margin: 1em 0;
+}
+```
+
+![Sticky positioning: scrolling index: final](56-position/docs/images/position_sticky_scrolling_index_final.png)
+
+Now, when we scroll the page, the header stays in the top of the page.
+
+Another interesting example, is the HTML table with sticky headers and footers.
+
+Consider the following markup:
+
+```html
+<h1>Sticky table headers and footers</h1>
+
+<p>(long paragraph)</p>
+<table>
+  <thead>
+    <tr>
+      <th>Header Cell</th>
+      <th>Header Cell</th>
+      <th>Header Cell</th>
+      <th>Header Cell</th>
+      <th>Header Cell</th>
+    </tr>
+  </thead>
+  <tfoot>
+    <th>Footer Cell</th>
+    <th>Footer Cell</th>
+    <th>Footer Cell</th>
+    <th>Footer Cell</th>
+    <th>Footer Cell</th>
+  </tfoot>
+  <tbody>
+    <tr>
+      <th>Row Header</th>
+      <td>Cell Data</td>
+      <td>Cell Data</td>
+      <td>Cell Data</td>
+      <td>Cell Data</td>
+    </tr>
+    <tr>
+      <th>Row Header</th>
+      <td>Cell Data</td>
+      <td>Cell Data</td>
+      <td>Cell Data</td>
+      <td>Cell Data</td>
+    </tr>
+    ... more rows ...
+    <tr>
+      <th>Row Header</th>
+      <td>Cell Data</td>
+      <td>Cell Data</td>
+      <td>Cell Data</td>
+      <td>Cell Data</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+If we apply no positioning CSS we will get:
+
+![Sticky positioning: sticky table headers and footers: initial](56-position/docs/images/position_sticky_sticky_table_headers_and_footers_initial.png)
+
+That is, the table flows with the scroll, with the table footer being not visible initially, and the table header not visible when you scroll down the page.
+
+However, if we apply `position: sticky` in both the table header and footer element, we can get the table header to stick to the top, and the table footer to stick to the bottom of the page no matter how much we scroll the page.
+
+```css
+thead {
+  position: sticky;
+  top: 0;
+}
+
+tfoot {
+  position: sticky;
+  bottom: 0;
+}
+```
+![Sticky positioning: sticky table headers and footers: final](56-position/docs/images/position_sticky_sticky_table_headers_and_footers_final.png)
 
 
 #### NEXT: Multiple-column layout

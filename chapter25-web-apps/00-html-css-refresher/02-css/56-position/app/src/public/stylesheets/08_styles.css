@@ -1,0 +1,23 @@
+body {
+  width: 500px;
+  margin: 0 auto;  /* center horizontally */
+}
+
+p {
+  background-color: aqua;
+  border: 3px solid blue;
+  padding: 1rem;
+  margin: 1rem;;
+}
+
+span {
+  background-color: red;
+  border: 1px solid black;
+}
+
+/* additions for positioning exercises */
+body {
+  width: 500px;
+  height: 1400px;
+  margin: 0 auto;
+}

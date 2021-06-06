@@ -1,0 +1,27 @@
+body {
+  width: 500px;
+  margin: 0 auto;  /* center horizontally */
+}
+
+/* additions for positioning exercises */
+th,
+td {
+  padding: 1rem;
+}
+
+thead,
+tfoot {
+  background-color: #eee;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  border-bottom: 2px solid #ccc;
+}
+
+tfoot {
+  position: sticky;
+  bottom: 0;
+  border-top: 2px solid #ccc;
+}

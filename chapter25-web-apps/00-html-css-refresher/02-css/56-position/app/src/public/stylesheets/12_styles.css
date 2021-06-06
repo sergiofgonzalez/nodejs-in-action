@@ -1,0 +1,12 @@
+body {
+  width: 500px;
+  margin: 0 auto;  /* center horizontally */
+}
+
+/* additions for positioning exercises */
+dt {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  margin: 1rem 0;
+}
