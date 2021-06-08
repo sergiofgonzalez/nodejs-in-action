@@ -1,0 +1,13 @@
+body {
+  width: 90%;
+  max-width: 900px;
+  margin: 2rem auto;
+  font: .9em/1.2 Arial, Helvetica, sans-serif;
+}
+
+/* multicol layout related */
+.container {
+  column-count: 3;
+  column-gap: 2rem;
+  column-rule: 4px dotted rgb(79, 185, 227);
+}

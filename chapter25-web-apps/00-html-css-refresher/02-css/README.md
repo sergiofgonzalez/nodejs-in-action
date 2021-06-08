@@ -5909,13 +5909,204 @@ tfoot {
 
 #### Multiple-column layout
 
-##### A basic example
+The multiple-column layout specification helps you configure content in columns, as you might see in a newspaper.
+
+| NOTE: |
+| :---- |
+| The multiple-column layout spec is often referred to as *multicol*. |
+
+Consider the following mark up:
+
+```html
+  <div class="container">
+    <h1>Simple multicol example</h1>
+
+    <p>(long paragraph)</p>
+
+    <p>(long paragraph)</p>
+  </div>
+```
+
+The `<div class="container">` will become our *multicol* container. In order to enable it, you just have to use either `column-count` or `column-width`.
+
+As a result if we apply the CSS:
+
+```css
+.container {
+  column-count: 3;
+}
+```
+
+Three flexible columns will be created to accomodate the content:
+
+![Narrow viewport](57-multicol/docs/images/multicol_basic_3_flexible_cols_narrow.png)
+
+and in wide viewports it will look like the following:
+
+![Wide viewport](57-multicol/docs/images/multicol_basic_3_flexible_cols_wide.png)
+
+
+You can opt as well for specifying a width, and the browser will accommodate as many cols as it can fit of that width.
+
+That is, if you apply on the same markup:
+
+```css
+.container {
+  column-width: 20rem;
+}
+```
+
+Multiple flexible columns will be created to accomodate the content, so that in narrow viewports you'll get:
+
+![Narrow viewport](57-multicol/docs/images/multicol_basic_col_width_narrow.png)
+
+and in wide viewports you'll get:
+![Wide viewport](57-multicol/docs/images/multicol_basic_col_width_wide.png)
 
 ##### Styling the columns
 
+The columns created in this layout cannot be styled individually. The opportunities you'll have to style the columns are:
++ using `column-gap` to change the gap between columns.
++ using `column-rule` to add a rule affecting the columns.
+
+For example, given the following markup:
+
+```html
+  <div class="container">
+    <h1>Simple multicol example</h1>
+
+    <p>(long paragraph)</p>
+
+    <p>(long paragraph)</p>
+  </div>
+```
+
+If we apply the CSS:
+
+```css
+.container {
+  column-count: 3;
+  column-gap: 2rem;
+  column-rule: 4px dotted rgb(79.185,127);
+}
+```
+
+will result in:
+
+![multicol styling](57-multicol/docs/images/multicol_styling.png)
+
+| NOTE: |
+| :---- |
+| The rule given in `column-rule` does not take any space of its own &mdash; it lies across the column gap. |
+
+
 ##### Spanning columns
 
+You can cause an element to span across all of the columns. The content will break when the spanning element is introduced and will continue below creating a new set of column boxes.
+
+This is achieved with the `column-span: all` rule on the spanning element.
+
+Consider the following markup:
+
+```html
+  <div class="container">
+    <h1>Simple multicol example</h1>
+
+    <p>(long paragraph)</p>
+    <h2>Subheader spanning all columns</h2>
+
+    <p>(long paragraph)</p>
+  </div>
+```
+
+in which we apply the following CSS:
+
+```css
+.container {
+  column-count: 3;
+  column-gap: 2rem;
+  column-rule: 4px dotted rgb(79.185,127);
+}
+
+h2 {
+  column-span: all;
+}
+```
+
+
+will result in:
+![Element spanning all cols](57-multicol/docs/images/multicol_element_spanning_all_cols.png)
+
 ##### Columns and fragmentation
+
+One situation you might find when using multicol is that the content gets fragmented in a way that leads to poor reading experience.
+
+Consider the following markup:
+
+```html
+<div class="container">
+  <div class="card">
+    <h2>I am the heading</h2>
+    <p>(...long paragraph...)</p>
+  </div>
+
+  <div class="card">
+    <h2>I am the heading</h2>
+    <p>(...long paragraph...)</p>
+  </div>
+  ... many other cards ...
+
+  <div class="card">
+    <h2>I am the heading</h2>
+    <p>(...long paragraph...)</p>
+  </div>
+</div>
+```
+
+If we apply the following CSS:
+
+```css
+.container {
+  column-width: 25rem;
+  column-gap: 2rem;
+}
+
+.card {
+  background-color: rgb(207,232,220);
+  border: 2px solid rgb(79,185,227);
+  padding: 1rem;
+  margin: 0 0 1rem 0;
+}
+```
+
+we will get:
+
+![Fragmentation](57-multicol/docs/images/multicol_fragmentation_initial.png)
+
+Note how the top column to the right is the continuation of the bottom column to the left, which makes for a bad reading experience.
+
+This can be fixed using the following CSS from the CSS Fragmentation spec:
+
+```css
+.container {
+  column-width: 25rem;
+  column-gap: 2rem;
+}
+
+.card {
+  break-inside: avoid;
+  page-break-inside: avoid; /* old property name */
+  background-color: rgb(207,232,220);
+  border: 2px solid rgb(79,185,227);
+  padding: 1rem;
+  margin: 0 0 1rem 0;
+}
+```
+
+will result in:
+
+![Fragmentation: fix](57-multicol/docs/images/multicol_fragmentation_fix.png)
+
 
 #### NEXT: Responsive design
 
