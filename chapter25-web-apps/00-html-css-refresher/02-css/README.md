@@ -5903,10 +5903,21 @@ tfoot {
 ```
 ![Sticky positioning: sticky table headers and footers: final](56-position/docs/images/position_sticky_sticky_table_headers_and_footers_final.png)
 
+| EXAMPLE: |
+| :------- |
+| See [e16 &mdash; Practising CSS Layout: Positioning](e16-positioning) for a runnable example in which all the concepts of this section are illustrated, and also [e16 &mdash; Practising CSS Layout: Positioning](e16-positioning) for additional exercises on positioning. |
 
-#### NEXT: Multiple-column layout
+#### Multiple-column layout
 
-#### Responsive design
+##### A basic example
+
+##### Styling the columns
+
+##### Spanning columns
+
+##### Columns and fragmentation
+
+#### NEXT: Responsive design
 
 #### Beginner's guide to media queries
 
@@ -6087,6 +6098,9 @@ A series of exercises that illustrates the different CSS Grid Layout concepts.
 ### [55 &mdash; Floats](55-floats)
 A series of exercises that illustrates the modern usage of *floats*.
 
+### [56 &mdash; Positioning with `position`](56-position)
+A series of exercises that illustrates how to use `position` to position elements outside of their normal flow.
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
 
@@ -6131,6 +6145,9 @@ Exercises about the CSS Grid Layout module.
 
 ### [e15 &mdash; Practising CSS Layout: Floats](e15-floats)
 Exercises about Floats.
+
+### [e16 &mdash; Practising CSS Layout: Positioning](e16-positioning)
+Exercises about positioning using `position` property.
 
 ## CSS properties cheatsheet
 

@@ -1,0 +1,16 @@
+/* ||- General styling */
+
+.container {
+  border: 5px solid grey;
+}
+
+p {
+  padding: 1rem;
+}
+
+.target {
+  background-color: rgb(207, 232, 220);
+  width: 10rem;
+  height: 10rem;
+  padding: 1rem;
+}
