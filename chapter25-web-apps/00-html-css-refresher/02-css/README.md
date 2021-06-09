@@ -6113,17 +6113,63 @@ will result in:
 
 #### Responsive design
 
-##### Historic website layouts
+*Responsive Web Design (RWD)* or *Responsive Design* is a set of practices that allows web pages to alter their layour and appearance to suit different screen widths and resolutions.
 
-##### Flexible layout before responsive design
+Traditionally, web page designed tended to result in websited that looked its best on the screen of the person designing the site. You would typically opt for either a liquid layout, in which you accommodated the content in % of screen area (which would look too squashed on mobile devices), or fixed-width layout which would look great only on a specific screen size and would have either lots of white space or scroll bars.
+
+As the mobile web started to emerge, you would often find special versions of web sites for desktop or mobile, which meant that two different sites have to be developed.
 
 ##### Responsive design
+Before the responsive design term was coined, there was a number of approaches to create *resolution dependendent layouts*, that primarily used JavaScript to detect the viewport size and adapt the CSS as a result.
+
+The term *responsive design* was introduced in 2010 by Ethan Marcotte and was based on:
+1. Use fluid grids.
+2. Use fluid images, that is, make the images to scale down if their containing column became narrower than the image's intrinsic size, but never larger.
+3. Use the media query, which enable a layout switch based on screen size, but using only CSS instead of JavaScript.
+
+Note that *responsive web design* is not a separate technology &mdash; it is a term used to describe an approach to web design the fosters the use of a set of best practices that ultimately enables the creation of layouts that can respond to the device being used to view the cotent.
 
 ##### Media queries
 
+The *Media Queries Level 3* spec allows you to run a series of tests to style the page appropriately for the user's needs.
+
+For example, the following CSS snippet tests to see if the current page is being displayed as screen media (as opposed to a printed document) and viewport is at least 800px wide.
+
+```css
+@media screen and (min-width: 800px) {
+  .container {
+    margin: 1em 2em;
+  }
+}
+```
+
+The points at which a media query is introduced and the layout changed are known as *breakpoints*. In the previous example, the breakpoing is 800px.
+
+A common approach since the introduction of media queries is to create a simple single-column layout for narrow screen devices, then check for larger screens and implement a multiple-column layout when you know that you have enough screen width to handle it. This is known as *mobile-first design*.
+
 ##### Flexible grids
 
+A flexible grid means that you don't need to target every possible device size, but instead, you only need to add a breakpoint and change the design when the content starts to look bad (as in too squashed, or unreadably long).
+
+In the early days of *responsive design* this was achieved using floats and by converting a layout designed in pixels into percentages using the formula:
+
+```
+target / context = result
+```
+
+
+For example, if our target column size is 60px, and the context (container) it is in is 960px, you would do `60 / 960 = 0.0625`
+
+```css
+.col {
+  width: 6.25%
+}
+```
+
 ##### Modern layout technologies
+
+With the advent of *Flexbox* and *CSS grid* it is now easier to achieve a responsive design.
+
 
 ###### Multicol
 
