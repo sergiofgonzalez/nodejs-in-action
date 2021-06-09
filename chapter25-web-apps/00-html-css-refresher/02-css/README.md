@@ -6107,10 +6107,39 @@ will result in:
 
 ![Fragmentation: fix](57-multicol/docs/images/multicol_fragmentation_fix.png)
 
+| EXAMPLE: |
+| :------- |
+| See [57 &mdash; Multiple-column layout](57-multicol) for a runnable example that illustrates the different concepts on this section, and [e17 &mdash; Practising CSS Layout: Multi-column layouts](e17-multicol) for additional exercises. |
 
-#### NEXT: Responsive design
+#### Responsive design
 
-#### Beginner's guide to media queries
+##### Historic website layouts
+
+##### Flexible layout before responsive design
+
+##### Responsive design
+
+##### Media queries
+
+##### Flexible grids
+
+##### Modern layout technologies
+
+###### Multicol
+
+###### Flexbox
+
+###### CSS Grid
+
+##### Responsive images
+
+##### Responsive typography
+
+###### Using viewport units for responsive typography
+
+##### The `viewport` meta tag
+
+#### NEXT: Beginner's guide to media queries
 
 #### Legacy layout methods
 
@@ -6292,6 +6321,9 @@ A series of exercises that illustrates the modern usage of *floats*.
 ### [56 &mdash; Positioning with `position`](56-position)
 A series of exercises that illustrates how to use `position` to position elements outside of their normal flow.
 
+### [57 &mdash; Multiple-column layout](57-multicol)
+A series of exercises that illustrates the multiple-column layout specification (often referred to as *multicol*).
+
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
 
@@ -6339,6 +6371,9 @@ Exercises about Floats.
 
 ### [e16 &mdash; Practising CSS Layout: Positioning](e16-positioning)
 Exercises about positioning using `position` property.
+
+### [e17 &mdash; Practising CSS Layout: Multi-column layouts](e17-multicol)
+Exercises about *multicol* layout.
 
 ## CSS properties cheatsheet
 

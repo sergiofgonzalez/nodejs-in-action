@@ -1,0 +1,37 @@
+/* ||- General styling */
+.container {
+  column-count: 3;
+}
+
+.box {
+  column-span: all;
+  padding: 0.5rem;
+  margin: 2rem 0;
+}
+
+.box h2 {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  column-gap: .5rem;
+  align-items: center;
+}
+
+.box h2::before {
+  content: "";
+  border-bottom: 5px dotted grey;
+}
+
+.box h2::after {
+  content: "";
+  border-bottom: 5px dotted grey;
+}
+
+div .subhead {
+  width: 21rem;
+  margin: 0 auto;
+}
+
+.subhead {
+  font-style: italic;
+}

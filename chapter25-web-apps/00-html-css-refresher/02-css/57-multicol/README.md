@@ -1,4 +1,4 @@
-# 55 &mdash; Multiple-column layout
+# 57 &mdash; Multiple-column layout
 > a series of exercises that illustrates the multiple-column layout specification (often referred to as *multicol*)
 
 ## Initial state

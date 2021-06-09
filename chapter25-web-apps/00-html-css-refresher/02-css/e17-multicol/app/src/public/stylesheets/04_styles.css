@@ -1,0 +1,6 @@
+/* ||- General styling */
+.container {
+  column-width: 20rem;
+  column-gap: 2rem;
+  column-rule: 0.5rem solid grey;
+}
