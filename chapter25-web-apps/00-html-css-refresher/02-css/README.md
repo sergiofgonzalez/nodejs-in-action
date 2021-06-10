@@ -6237,29 +6237,236 @@ body {
 
 Note how there is no flexbox definitions for smaller screens, but a *media query* is added for the 600px breakpoint. When that screen size is reached, we introduced the `.wrapper` element as a flex container with `.col1` being the item #1 and `.col2` the 2nd item.
 
-The result is the expected one:
+The result is the expected one for narrower devices:
 
 ![Flexbox: narrow viewports](58-hello-responsive-web-design/docs/images/responsive_flexbox_below_600px.png)
 
-### Desktop layout (600 pixels and larger layouts)
+and once you reach the breakpoint, the contents adapts itself to a multiple column layout:
 
 ![Flexbox: wide viewports](58-hello-responsive-web-design/docs/images/responsive_flexbox_600px_and_larger.png)
 
-###### Flexbox
 
-###### CSS Grid
+The implementation is even simpler when using the *CSS Grid layout*:
+
+```css
+body {
+  font: 1.2em Helvetica, Arial, sans-serif;
+  margin: 20px;
+  padding: 0;
+  background-color: #eee;
+}
+
+.wrapper {
+  max-width: 960px;
+  margin: 2em auto;
+}
+
+.col1,
+.col2 {
+  background-color: #fff;
+}
+
+@media screen and (min-width: 600px) {
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    column-gap: 5%;
+  }
+}
+```
+
+And the result is exactly the same for both narrow viewports:
+![Flexbox: narrow viewports](58-hello-responsive-web-design/docs/images/responsive_grid_below_600px.png)
+
+and also wider screens:
+![Flexbox: wide viewports](58-hello-responsive-web-design/docs/images/responsive_grid_600px_and_larger.png)
+
 
 ##### Responsive images
 
+The simplest approach to responsive image is to use the following CSS snippet:
+
+```css
+img {
+  max-width: 100%;
+}
+```
+
+However, a much better approach consists in using the `<picture>` as in:
+
+```html
+<img srcset="elva-fairy-480w.jpg 480w,
+             elva-fairy-800w.jpg 800w"
+     sizes="(max-width: 600px) 480px,
+           800px"
+     src="elva-fairy-800w.jpg"
+     alt="Elva dressed as a fairy">
+```
+
+You can review the contents of [HTML: responsive images](../01-html/README.md#responsive-images)
+
+
 ##### Responsive typography
+
+*Responsive typography* consists in changing font sizes within media queries to reflect the amount of screen real state available.
+
+Consider the following markup:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+...
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="col1">
+      <h1>Watch my size!</h1>
+      <p>(short paragraph)</p>
+    </div>
+    <div class="col2">
+      <p>(...long paragraph...)</p>
+      <p>(...long paragraph...)</p>
+    </div>
+
+  </div>
+</body>
+
+</html>
+```
+
+We can have responsive typography applying the following CSS:
+
+```css
+.wrapper {
+  max-width: 960px;
+  margin: 2em auto;
+}
+
+h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.col1,
+.col2 {
+  background-color: #fff;
+}
+
+@media screen and (min-width: 600px) {
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    column-gap: 5%;
+  }
+
+  h1 {
+    font-size: 4rem;
+  }
+}
+```
+
+Note how in smaller screens we have a single-column layout, with a header font size of 2 rems, while in larger screens we switch to a two-column mode and make the header font size 4 rems.
+
+Thus, in mobile (narrower screen sizes) we will have:
+![Flexbox: narrow viewports](58-hello-responsive-web-design/docs/images/responsive_typography_below_600px.png)
+
+while in wider screen sizes we will have:
+![Flexbox: wide viewports](58-hello-responsive-web-design/docs/images/responsive_typography_600px_and_larger.png)
+
 
 ###### Using viewport units for responsive typography
 
+It might seem that using *viewport units* for the font size is good idea to enable response typography so that you don't have to use *media queries*.
+
+| NOTE: |
+| :---- |
+| Remember that `1vw` is equal to 1% of the viewport width. |
+
+However, when doing something like:
+
+```css
+h1 {
+  font-size: 6vw;
+}
+```
+
+the use will lose the ability to zoom any text, as the size of the text always related to the viewport size as seen on the image below:
+
+![Responsive Typography: vw problem](58-hello-responsive-web-design/docs/images/responsive_typography_zoom_mobile.png)
+
+See how the paragraph text gets bigger because it is zoomed-in, but the header size stays the same (eventually becoming even smaller than the paragraph text!).
+
+This can be fixed with either *media queries* as already done before, or using a hybrid solution that involves something like the following:
+
+```css
+h1 {
+  font-size: calc(1.5rem + 3vw)
+}
+```
+
 ##### The `viewport` meta tag
 
-#### NEXT: Beginner's guide to media queries
+You might have noticed that all the markup includes the following `<meta>` tag in the `<head>` of the document:
 
-#### Legacy layout methods
+```html
+<head>
+  ...
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  ...
+</head>
+```
+
+This *meta tag* instruct mobile browsers to set the width of the viewport to the device width, and scale the document to 100% of its intended size. This is needed because mobile browsers tend to lie about their viewport width, and instead set the viewport size to 960px and then scale the website using zoom. This will break any responsive design you might have added.
+
+The viewport meta tag allows you to use the following properties:
++ `initial-scale` &mdash; set the initial zoom of the page (1 being 100%)
++ `height` &mdash; sets a specific height for the viewport
++ `minimum-scale` &mdash; sets the minimum zoom level
++ `maximum-scale` &mdash; sets the maximum zoom level
++ `user-scalable` &mdash; when set to `no` prevents zoomin.
+
+| EXAMPLE: |
+| :------- |
+| See [58 &mdash; Hello, *Responsive Web Design*](58-hello-responsive-web-design) for a runnable example illustrating some of the concepts of this section. |
+
+#### Beginner's guide to media queries
+
+#### Media Query Basics
+
+#### Media types
+
+##### Media feature rules
+
+###### Width and height
+
+###### Orientation
+
+###### Use of pointing devices
+
+#### More complex media queries
+
+##### "and" logic in media queries
+
+##### "or" logic in media queries
+
+##### "not" logic in media queries
+
+#### How to choose breakpoints
+
+#### Mobile first responsive design example
+
+##### A simple mobile first layout
+
+#### The viewport meta tag
+
+#### Do you really need a media query?
+
+#### NEXT: Legacy layout methods
 
 #### Supporting older browsers
 
@@ -6441,6 +6648,9 @@ A series of exercises that illustrates how to use `position` to position element
 
 ### [57 &mdash; Multiple-column layout](57-multicol)
 A series of exercises that illustrates the multiple-column layout specification (often referred to as *multicol*).
+
+### [58 &mdash; Hello, *Responsive Web Design*](58-hello-responsive-web-design)
+Illustrates *Responsive Web Design* concepts and techniques.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
