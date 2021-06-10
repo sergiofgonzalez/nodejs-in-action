@@ -6170,8 +6170,80 @@ For example, if our target column size is 60px, and the context (container) it i
 
 With the advent of *Flexbox* and *CSS grid* it is now easier to achieve a responsive design.
 
+For example, using *Flexbox*, you can have a mobile-first responsive design with very small effort:
 
-###### Multicol
+Consider the following markup (note the `<meta name="viewport"...>` tag):
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+...
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="col1">
+      <p>(short paragraph)</p>
+    </div>
+    <div class="col2">
+      <p>()...long paragraph...)</p>
+    </div>
+  </div>
+</body>
+
+</html>
+```
+
+What we want to achieve is to show the paragraphs one below the other on narrower viewports and transform into two columns for wider ones.
+
+We will establish the breakpoint in the 600 pixels mark:
+
+```css
+body {
+  font: 1.2em Helvetica, Arial, sans-serif;
+  margin: 20px;
+  padding: 0;
+  background-color: #eee;
+}
+
+.wrapper {
+  max-width: 960px;
+  margin: 2em auto;
+}
+
+.col1,
+.col2 {
+  background-color: #fff;
+}
+
+@media screen and (min-width: 600px) {
+  .wrapper {
+    display: flex;
+  }
+  .col1 {
+    flex: 1;
+    margin-right: 5%;
+  }
+
+  .col2 {
+    flex: 2;
+  }
+}
+```
+
+Note how there is no flexbox definitions for smaller screens, but a *media query* is added for the 600px breakpoint. When that screen size is reached, we introduced the `.wrapper` element as a flex container with `.col1` being the item #1 and `.col2` the 2nd item.
+
+The result is the expected one:
+
+![Flexbox: narrow viewports](58-hello-responsive-web-design/docs/images/responsive_flexbox_below_600px.png)
+
+### Desktop layout (600 pixels and larger layouts)
+
+![Flexbox: wide viewports](58-hello-responsive-web-design/docs/images/responsive_flexbox_600px_and_larger.png)
 
 ###### Flexbox
 

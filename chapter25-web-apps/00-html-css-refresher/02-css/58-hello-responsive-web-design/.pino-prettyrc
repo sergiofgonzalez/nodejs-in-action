@@ -1,0 +1,7 @@
+{
+  "colorize": "true",                       // --colorize: add terminal color escape sequence to the output
+  "levelFirst": true,                       // --levelFirst: display the log level name before the logged date and time
+  "translateTime": "SYS:standard",          // --translateTime: translate the epoch time to local system's TZ, in human readable format
+  "ignore": "pid,hostname,module",          // --ignore: ignore one or several keys
+  "singleLine": true                        // --singleLine: print each log message on a single line
+}

@@ -1,0 +1,30 @@
+body {
+  font: 1.2em Helvetica, Arial, sans-serif;
+  margin: 20px;
+  padding: 0;
+  background-color: #eee;
+}
+
+.wrapper {
+  max-width: 960px;
+  margin: 2em auto;
+}
+
+.col1,
+.col2 {
+  background-color: #fff;
+}
+
+@media screen and (min-width: 600px) {
+  .wrapper {
+    display: flex;
+  }
+  .col1 {
+    flex: 1;
+    margin-right: 5%;
+  }
+
+  .col2 {
+    flex: 2;
+  }
+}
