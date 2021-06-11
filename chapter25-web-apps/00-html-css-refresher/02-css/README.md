@@ -6552,21 +6552,240 @@ You can also find:
 
 #### More complex media queries
 
-##### "and" logic in media queries
+You can combine `media-type` and `media-features` characteristics to create more complex queries, as seen in the examples below.
 
-##### "or" logic in media queries
+The following snippet will turn the color of the text blue only if the viewport is in screen mode, and the viewport width is at least 600px wide and the orientation is landscape:
 
-##### "not" logic in media queries
+```css
+@media screen and (min-width: 600px) and (orientation: landscape) {
+  body {
+    color: blue;
+  }
+}
+```
+
+This example will turn the text color blue if either:
++ the viewport is in screen mode and it is at least 600px wide
++ the viewport is in screen mode and the orientation is landscape
+
+The following snippet will turn the color of the text blue if the orientation is not landscape (i.e. it is portrait):
+
+```css
+@media not all and (orientation: landscape) {
+  body {
+    color: blue;
+  }
+}
+```
 
 #### How to choose breakpoints
 
+With the current range of available devices, it is impossible to choose a specific set of screen sizes you would use to design your application. Instead, it is recommended to establish the *breakpoints* using your browser's web tools and detect when the design should change to provide a better UX.
+
+| NOTE: |
+| :---- |
+| The breakpoints are the points at which a media query is introduced to change the layout. |
+
+
 #### Mobile first responsive design example
 
-##### A simple mobile first layout
+The *mobile first* responsive design consists in starting your design with the smallest view and add layout as the viewport becomes larger. This typically works better than starting with the widest view and then add breakpoints to move things around as the viewport becomes smaller.
 
-#### The viewport meta tag
+Also, the view for the smallest viewports is quite often a simple single column of content, much as you would have in the *normal flow*. This means that you should order your HTML well, so that you don't need to add a lot of layout for small devices.
+
+Consider the following markup:
+
+```html
+...
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+...
+</head>
+
+<body>
+  <div class="wrapper">
+    <header>
+      <nav>
+        <ul>
+          <li><a href="">About</a></li>
+          <li><a href="">Contact</a></li>
+          <li><a href="">Meet the team</a></li>
+          <li><a href="">Blog</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <article>
+        <div class="content">
+          <h1>Veggies!</h1>
+          <p>(...long paragraph...)</p>
+
+          <p>(...long paragraph...)</p>
+
+          <p>(...long paragraph...)</p>
+
+          <p>(...long paragraph...)</p>
+        </div>
+        <aside class="related">
+          <p>
+            All these veggies are brought to you by the
+            <a href="https://veggieipsum.com/">Veggie Ipsum generator</a>.
+          </p>
+        </aside>
+      </article>
+
+      <aside class="sidebar">
+        <h2>External vegetable-based links</h2>
+        <ul>
+          <li>
+            <a href="https://www.thekitchn.com/how-to-cook-broccoli-5-ways-167323">How to cook broccoli</a>
+          </li>
+          <li>
+            <a href="https://www.bbcgoodfood.com/glossary/swiss-chard">Swiss Chard</a>
+          </li>
+          <li>
+            <a href="https://www.bbcgoodfood.com/recipes/collection/christmas-parsnip">Christmas Parsnip Recipes</a>
+          </li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer>
+      <p>&copy;<span id="current-year"></span></p>
+    </footer>
+  </div>
+</body>
+
+</html>
+```
+
+
+The mobile first approach is based in exploting the normal flow as much as possible using a minimalist one-column layout:
+
+```css
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 90%;
+  margin: 2em auto;
+  font: 1em/1.3 Arial, Helvetica, sans-serif;
+}
+
+a:link,
+a:visited {
+  color: #333;
+}
+
+nav ul,
+aside ul {
+  list-style: none;
+  padding: 0;
+}
+
+nav a:link,
+nav a:visited {
+  background-color: rgba(207, 232, 220, 0.2);
+  border: 2px solid rgb(79, 185, 227);
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  color: #333;
+  font-weight: bold;
+}
+
+nav a:hover {
+  background-color: rgba(207, 232, 220, 0.7);
+}
+
+.related {
+  background-color: rgba(79, 185, 227, 0.3);
+  border: 1px solid rgb(79, 185, 227);
+  padding: 10px;
+}
+
+.sidebar {
+  background-color: rgba(207, 232, 220, 0.5);
+  padding: 10px;
+}
+
+article {
+  margin-bottom: 1em;
+}
+```
+
+Which will render the following result in narrow viewports:
+![Initial: narrow](59-mobile-first-responsive-design/docs/images/mobile_first_initial_narrow.png)
+
+but that would look a bit stretched on wider screens:
+![Initial: wide](59-mobile-first-responsive-design/docs/images/mobile_first_initial_wide.png)
+
+
+However, if we add the following CSS when we see that there is enough screen real state to change the vertical navigation into an horizontal bar, and the content in 2 columns using the following CSS:
+
+```css
+@media screen and (min-width: 40em) {
+  article {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    column-gap: 20px;
+  }
+
+  nav ul {
+    display: flex;
+  }
+
+  nav li {
+    flex: 1;
+  }
+}
+```
+
+we will get:
+![Step1: wider viewports](59-mobile-first-responsive-design/docs/images/mobile_first_step1_wide.png)
+
+
+Then, we can even go further and use a 3 column layout for really wide screens, identifying another breakpoint for really wide viewports:
+
+```css
+@media screen and (min-width: 70em) {
+  main {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    column-gap: 20px;
+  }
+
+  article {
+    margin-bottom: 0;
+  }
+
+  footer {
+    border-top: 1px solid #ccc;
+    margin-top: 2em;
+  }
+}
+```
+
+That will end up as:
+![Step2: even wider viewports](59-mobile-first-responsive-design/docs/images/mobile_first_step2_really_wide.png)
+
+
+| EXAMPLE: |
+| :------- |
+| See [59 &mdash; *Mobile-first* responsive design](59-mobile-first-responsive-design)
+for a runnable example of the mobile first example seen in this section. |
 
 #### Do you really need a media query?
+
+With the advent of the new layout systems (Flexbox, grid, multicol) is worth paying attention to whether you really need media queries, or can just use the layout features to create a layout that works well on different viewport sizes.
+
+
+| EXAMPLE: |
+| :------- |
+| See [60 &mdash; Responsive design without media queries](60-responsive-design-without-media-queries) for a runnable example. |
+
 
 #### NEXT: Legacy layout methods
 
@@ -6753,6 +6972,12 @@ A series of exercises that illustrates the multiple-column layout specification 
 
 ### [58 &mdash; Hello, *Responsive Web Design*](58-hello-responsive-web-design)
 Illustrates *Responsive Web Design* concepts and techniques.
+
+### [59 &mdash; *Mobile-first* responsive design](59-mobile-first-responsive-design)
+An example of *mobile-first* design.
+
+### [60 &mdash; Responsive design without media queries](60-responsive-design-without-media-queries)
+Illustrates how to create a responsive site using the new layout specs instead of media queries.
 
 ### [e01 &mdash; Styling a document with basic CSS](e01-styling-a-document-with-basic-css)
 An exercise illustrating how to style a simple text document using basic CSS.
