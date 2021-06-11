@@ -6436,17 +6436,119 @@ The viewport meta tag allows you to use the following properties:
 
 #### Beginner's guide to media queries
 
-#### Media Query Basics
+This section introduces **CSS Media Query** &mdash; a way to apply CSS only when the browser/device environment matches a rule that you specify.
 
-#### Media types
+As a result, *media queries* allows you to create different layouts depending on the size of the viewport, and detect other things about the environment such as whether the user is using a touchscreen rather than a mouse as a pointing device.
+
+The basic *media query* looks like
+
+```css
+@media media-type and (media-feature-rule) {
+  /* CSS rules here */
+}
+```
+
+where:
++ `media-type` tells the browser what kind of media this code is for:
+  + `all`
+  + `print`
+  + `screen`
+  + `speech`
+
++ `media-feature-rule` is a media expresession which tests the running environment.
+
+Note that both the `media-type` and `media-feature-rule` are optional, but at least one of them should be present.
+
+For example, the following *media query* will set the `font-size` of the body of the document to 12pt if the page is printed:
+
+```css
+@media print {
+  body {
+    font-size: 12pt;
+  }
+}
+```
+
+And the following one sets the text color to blue in viewports narrower than 600px:
+
+```css
+@media (max-width: 600px) {
+  body {
+    color: blue;
+  }
+}
+```
 
 ##### Media feature rules
 
 ###### Width and height
 
+The most common *media query* makes use of `width` and `height` to identify the viewport size and adapt the layout to it:
+
+The following rule is applied if the width of the viewport is exactly 600px. That is, the text will turn red only when the viewport is 600px.
+
+```css
+@media screen and (width: 600px) {
+  body {
+    color: red;
+  }
+}
+```
+
+It is also possible to specify the width and height as ranges using the `min-` and `max-` prefixes.
+
+The following rule is applied on viewports narrower than 600px:
+
+```css
+@media screen and (max-width: 600px) {
+  body {
+    color: blue;
+  }
+}
+```
+
+| NOTE: |
+| :---- |
+| In practice, you will always see media queries with `min-width`, `max-width` and `min-height`, `max-height` rather than `width` and `height` alone. |
+
 ###### Orientation
 
+The `orientation` feature lets you test the running environment to test for `portrait` or `landscape` orientation:
+
+```css
+@media (orientation: landscape) {
+  body {
+    color: rebeccapurple;
+  }
+}
+```
+
 ###### Use of pointing devices
+
+The `hover` media feature lets you test if the user has the ability to hover over an element with a pointing device (i.e. touchscreens and keyboard navigation do not allow you to hover).
+
+```css
+@media (hover: hover) {
+  body {
+    color: rebeccapurple;
+  }
+}
+```
+
+You can also find:
+
+```css
+@media (pointer: fine) {
+  body {
+    color: rebeccapurple;
+  }
+}
+```
+
+`pointer` supports the following values:
++ `fine` &mdash; mouse-like pointing devices
++ `coarse` &mdash; finger
++ `none` &mdash; no pointer device (i.e. keyboard/speech device)
 
 #### More complex media queries
 
