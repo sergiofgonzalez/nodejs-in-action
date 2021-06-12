@@ -6787,6 +6787,10 @@ With the advent of the new layout systems (Flexbox, grid, multicol) is worth pay
 | See [60 &mdash; Responsive design without media queries](60-responsive-design-without-media-queries) for a runnable example. |
 
 
+| EXAMPLE: |
+| :------- |
+| See [e18 &mdash; Practising CSS Layout: Responsive Web Design](e18-responsive-design) for an additional exercise in which a given mobile-first wireframe is accommodated into a desktop layout with the help of *Flexbox*, *CSS Grid* and *media queries*. for a runnable example. |
+
 #### NEXT: Legacy layout methods
 
 #### Supporting older browsers
@@ -7029,6 +7033,9 @@ Exercises about positioning using `position` property.
 
 ### [e17 &mdash; Practising CSS Layout: Multi-column layouts](e17-multicol)
 Exercises about *multicol* layout.
+
+### [e18 &mdash; Practising CSS Layout: Responsive Web Design](e18-responsive-design)
+Exercise about responsive web design (responsive design) and media queries.
 
 ## CSS properties cheatsheet
 

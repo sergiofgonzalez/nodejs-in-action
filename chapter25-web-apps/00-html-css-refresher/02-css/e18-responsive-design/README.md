@@ -1,5 +1,5 @@
 # e18 &mdash; Practising CSS Layout: Responsive Web Design
-> Exercises about responsive web design (responsive design) and media queries.
+> Exercise about responsive web design (responsive design) and media queries.
 
 ## Description
 
@@ -9,4 +9,4 @@ It consists of an exercise in which you have to build a responsive site from a g
 
 The goal of the exercise is to transform the site so that it looks like the image below:
 
-
+![RWD: Solution](docs/images/rwd_solution.png)

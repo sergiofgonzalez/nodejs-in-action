@@ -69,3 +69,40 @@ main {
   padding: 0.5em 1em;
   color: #fff;
 }
+
+
+@media screen and (min-width: 59rem) {
+  header {
+    display: flex;                    /* separate the title and the nav     */
+    justify-content: space-between;   /* push title to left, links to right */
+    align-items: center;
+  }
+
+  header ul {
+    display: flex;  /* make nav links list also a flexbox container */
+  }
+
+  header li {
+    margin: 0;
+  }
+
+  header a {
+    border: 0;
+  }
+
+  main {
+    /* main content distributed in 2 cols, first one 3 times bigger than the second one */
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+    padding-right: 0;
+  }
+
+  .cards {
+    /* three column grid */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+}
