@@ -1,0 +1,32 @@
+{
+  "name": "ndps",
+  "version": "0.1.0",
+  "description": "Illustrating Node.js advanced techniques and patterns",
+  "type": "module",
+  "main": "main.js",
+  "engines": {
+    "node": ">=14.17.0",
+    "npm": ">=7.6.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {
+    "debugModules": "DISABLED"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "4.3.2"
+  },
+  "scripts": {
+    "freshen-deps": "./scripts/freshen.sh",
+    "build": "node_modules/.bin/tsc",
+    "start": "npm run build && node app/src/main.js"
+  }
+}

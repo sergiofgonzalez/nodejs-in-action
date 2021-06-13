@@ -6809,6 +6809,10 @@ Every website is different in terms of target audience. Before deciding on a par
 Find more information on [Supporting older browsers](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers).
 
 
+| EXAMPLE: |
+| :------- |
+| See [e19 &mdash; Practising CSS Layout: Building the layout of a blog website](e19-blog-website) for an step based exercise on which the fundamental layout techniques are applied. |
+
 ## Examples, Exercises and mini-projects
 
 ### [01 &mdash; Hello, CSS!](01-hello-css)
@@ -7048,6 +7052,9 @@ Exercises about *multicol* layout.
 
 ### [e18 &mdash; Practising CSS Layout: Responsive Web Design](e18-responsive-design)
 Exercise about responsive web design (responsive design) and media queries.
+
+### [e19 &mdash; Practising CSS Layout: Building the layout of a blog website](e19-blog-website)
+Exercise the CSS layout concepts.
 
 ## CSS properties cheatsheet
 
