@@ -3242,7 +3242,7 @@ CSS provides four common properties to alter the visual weight/emphasis of text:
   + `italic`: sets the text to the italic version of the font (if available).
   + `oblique`: sets the text to use a simulated version of the italic font by *slanting* the normal version.
 
-+ `font-weightp &mdash; sets how bold the text is.
++ `font-weight` &mdash; sets how bold the text is.
   + `normal`, `bold`: normal and bold font weight.
   + `lighter`, `bolder`: sets the current element's font to be one step lighter or heavier than the parent's boldness.
   + `100`-`900`: sets the numeric boldness value.
@@ -3340,7 +3340,12 @@ There are a huge number of properties that can be used to fine-tune the font sty
 It is worth mentioning that many font properties can also be set using the `font` shorthand property as in:
 
 ```css
-font: italic normal bold normal 3em/1.5 Helvetica, Arial, sans-serif;
+/*
+  font-size: 1.2em;
+  line-height: 1.2;
+  font-family: Helvetica, Arial, sans-serif;
+*/
+font: 1.2em / 1.2 Helvetica, Arial, sans-serif;
 ```
 
 | EXAMPLE: |
@@ -6791,11 +6796,18 @@ With the advent of the new layout systems (Flexbox, grid, multicol) is worth pay
 | :------- |
 | See [e18 &mdash; Practising CSS Layout: Responsive Web Design](e18-responsive-design) for an additional exercise in which a given mobile-first wireframe is accommodated into a desktop layout with the help of *Flexbox*, *CSS Grid* and *media queries*. for a runnable example. |
 
-#### NEXT: Legacy layout methods
+#### Legacy layout methods
+
+Before the CSS Grid Layout was introduced it was very common to find other approaches for implementing grid systems.
+
+Please see [Legacy layout methods](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods) for a discussion of such techniques.
 
 #### Supporting older browsers
 
-#### Assessment
+Every website is different in terms of target audience. Before deciding on a particular approach you should validate if the users of your site will be using older browsers that might not provide support for *Flexbox* and *Grid*.
+
+Find more information on [Supporting older browsers](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers).
+
 
 ## Examples, Exercises and mini-projects
 
