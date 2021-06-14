@@ -1,6 +1,13 @@
 # TypeScript: Setting up shop
 > Setting up your environment to work with TypeScript
 
+## Contents
+
++ Introducing TypeScript.
++ The `tsconfig.json` file.
++ TypeScript language basics: strong typing, basic types, type inference...
++ TypeScript and VS Code.
++ Using NPM modules in TypeScript projects.
 
 ## Intro
 
@@ -134,12 +141,86 @@ function printResult(a: string) : void {
 }
 ```
 
-### VS Code IntelliSense
-
 ### VS Code debugging
 
-### Introducing third-party libraries
+TypeScript code can be easily debugged with the help of a feature known as *source maps*.
 
-### Declaration files
+First of all, you will need to enable that feature in your `tsconfig.json`:
 
-## Summary
+```json
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "sourceMap": true,        /* Generates corresponding '.map' file. */
+  ...
+}
+```
+
+As a result, the compiler will generate a *.map*  file along with the corresponding *.js* files for each of our TypeScript files.
+
+With the *.map* file in place, we will be able to debug our TypeScript code as if it were JavaScript.
+
+### Introducing third-party libraries and declaration files.
+
+You can use 3rd party libraries in TypeScript project in the exact same way you'd do in Node.js using `npm install`.
+
+The interesting part is that when you install a library, it will be installed as a JavaScript library because that is the way 3rd party libraries are published. As a result, the TypeScript compiler will not have access to any type annotations that it would have if the library was written in TypeScript.
+
+The solution to that problem consists in *superimposing strong typing* on existing JavaScript libraries using something like `npm install --save-dev @types/<3rd_party_lib>`. This will install *declaration files* with externsion `.d.ts` holding information about the functions and variables a library exposes, along with ther associated type annotations.
+
+| NOTE: |
+| :---- |
+| It is becoming increasingly popular for JavaScript libraries to include a declaration file within their standard distribution, so that we don't need to install the `@types` separately. |
+
+For example, to use the [inquirer](https://www.npmjs.com/package/inquirer) module, that allows you to declaratively set up a series of questions for your CLI applications you will have to install the package and @types.
+
+```bash
+npm install inquirer @types/inquirer
+```
+
+Then you can write a small program that asks for the user's name and then displays it in the console:
+
+```typescript
+import * as inquirer from 'inquirer';
+// import inquirer from 'inquirer'; /* this will work too */
+
+inquirer.prompt(
+  [
+    {
+      name: `first_name`,
+      message: `What is your name?`
+    }
+  ]
+).then(
+  answers => {
+    console.log(`you answered: ${answers.first_name}`);
+  }
+);
+```
+
+Finally, when using typescript, you have to make sure that your `package.json` is not configured for *ESModules*, that is `"type": "module"` should not be present, and your `tsconfig.json` must be configured with `"module": "commonjs"`.
+
+## You know you've mastered this chapter when...
+
++ You are aware that TypeScript is a strongly typed, object oriented language that generates JavaScript code.
++ You know how to install and configure the TypeScript compiler.
++ You're aware about the basics of TypeScript static typing system:
+  + You are comfortable using the *type annotation* syntax for variable and function aguments and return type declarations.
+  + You're aware about TypeScript's basic types: `number`, `string`, `boolean`, arrays...
+  + You understand the concept of type inference, and *duck typing* in TypeScript.
++ You know about the basics for configuring VS Code to work with your TypeScript projects:
+  + You know how to configure your `package.json` and `tsconfig.json`.
+  + You know how to import 3rd party libraries, and their `@types`.
+  + You know about the *source maps* that let you debug your TypeScript code seamlessly.
+
+
+## Exercises, code examples, and mini-projects
+
+### [01 &mdash; Hello, TypeScript!](01-hello-typescript)
+Your first TypeScript program.
+
+### [02 &mdash; Hello, strong typing!](02-hello-strong-typing)
+A sandbox to practice TypeScript static type system.
+
+### [03 &mdash; Hello, NPM modules!](03-hello-npm-modules)
+A sandbox to practice NPM modules in TypeScript projects.

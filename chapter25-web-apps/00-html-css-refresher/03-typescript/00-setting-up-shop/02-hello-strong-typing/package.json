@@ -2,7 +2,6 @@
   "name": "ndps",
   "version": "0.1.0",
   "description": "Illustrating Node.js advanced techniques and patterns",
-  "type": "module",
   "main": "main.js",
   "engines": {
     "node": ">=14.17.0",

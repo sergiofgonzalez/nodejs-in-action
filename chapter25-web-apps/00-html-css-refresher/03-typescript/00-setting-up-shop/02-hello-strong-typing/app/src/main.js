@@ -34,4 +34,14 @@ function printResult(a) {
     console.log(`The result is ${a}`);
 }
 printResult('25');
-printResult(25);
+// printResult(25); /* ERROR: this won't work! */
+/* VS Code IntelliSense */
+/**
+ * Prints a hello message in the console, personalized to the given name
+ * @param name the name of the person
+ */
+function sayHello(name) {
+    console.log(`Hello, ${name ?? 'Jason Isaacs'}!`);
+}
+sayHello('Obi Wan');
+//# sourceMappingURL=main.js.map

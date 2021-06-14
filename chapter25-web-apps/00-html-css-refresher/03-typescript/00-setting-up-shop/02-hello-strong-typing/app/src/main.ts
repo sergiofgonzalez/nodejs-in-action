@@ -50,3 +50,15 @@ function printResult(a: string) : void {
 
 printResult('25');
 // printResult(25); /* ERROR: this won't work! */
+
+
+/* VS Code IntelliSense */
+/**
+ * Prints a hello message in the console, personalized to the given name
+ * @param name the name of the person
+ */
+function sayHello(name: string): void {
+  console.log(`Hello, ${ name ?? 'Jason Isaacs'}!`);
+}
+
+sayHello('Obi Wan');
