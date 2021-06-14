@@ -3,5 +3,6 @@
 
 ## Table of Contents
 
-+ [00 &mdash; Setting up shop with TypeScript](00-setting-up-shop)
++ [01 &mdash; Setting up shop with TypeScript](01-setting-up-shop)
++ [02 &mdash; TypeScript's type system](02-typescript-type-system)
 
