@@ -455,17 +455,187 @@ Note that we have used the keyword `export` to mark the classes that can be used
 
 ## Inheritance
 
+Inheritance is another OOP paradigm fully supported by TypeScript for classes and interfaces.
+
+We will use the term *base class* and *base interface* when referring to the class or interface that forms the base of the inheritance hierarchy, and the term *derived class* and *derived interface* to denote the class doing the inheriting.
+
 ### Interface inheritance
 
-### Class inheritances
+One interface can form the base interface for oner or many other interfaces:
 
-### The `super` function
+```typescript
+interface IBase {
+  id: number;
+}
+
+interface IDerivedFromBase extends IBase {
+  name: string;
+}
+
+class IdNameClass implements IDerivedFromBase {
+  name: string = 'Jason Isaacs';
+  id: number = 1;
+}
+```
+
+When using interface inheritance, we can narrow down the type defined on the base interface as a union type:
+
+```typescript
+interface IBaseStringOrNumber {
+  id: string | number;
+}
+
+interface IDerivedFromBaseNumber extends IBaseStringOrNumber {
+  id: number;
+}
+
+class IdClass implements IDerivedFromBaseNumber {
+  id: number = 5;
+}
+```
+
+Interfaces support multiple inheritance, which ensures that multiple behaviors can be combined under a single interface:
+
+```typescript
+interface IMultiple extends IDerivedFromBase, IDerivedFromBaseNumber {
+  description: string;
+}
+
+const multiObject: IMultiple = {
+  id: 1,
+  name: 'Jason Isaacs',
+  description: 'a fine actor'
+};
+```
+
+Note that we've used *duck typing* to create an object that conforms to the `IMultiple` interface without having to define the class.
+
+
+### Class inheritance
+
+Classes can also use the `extends` keyword to create an inheritance hierarchy.
+
+```typescript
+class BaseClass implements IBase {
+  id: number = 0;
+}
+
+class DerivedFromBaseClass extends BaseClass implements IDerivedFromBase {
+  name: string = 'Jason Isaacs';
+}
+
+const derivedFromBaseClassObj = new DerivedFromBaseClass();
+console.log(derivedFromBaseClassObj); // -> {id:0, name: 'Jason Isaacs'}
+```
+
+A class can only inherit from one class (no multiple inheritance in TypeScript!), but a class can implement multiple interfaces:
+
+```typescript
+interface IFirstInterface {
+  id: number;
+}
+
+interface ISecondInterface {
+  name: string;
+}
+
+class MultipleInterfaces implements IFirstInterface, ISecondInterface {
+  id = 0;
+  name = 'Idris Elba';
+}
+```
+
+### The `super()` function
+
+When using inheritance, is quite common to have derived classes that feature classes with the same name as its base class.
+
+This is especially common in constructors.
+
+If a derived class has a constructor, then this constructor must call the base class constructor using the `super()` function:
+
+```typescript
+class BaseClassWithCtor {
+  private id: number;
+  constructor(id: number) {
+    this.id = id;
+  }
+}
+
+class DerivedClassWithCtor extends BaseClassWithCtor {
+  private name: string;
+  constructor(id: number, name: string) {
+    super(id);
+    this.name = name;
+  }
+}
+```
+
+The TypeScript compiler will complain if you fail to invoke the base class constructor using `super(...)`, even if the base class constructor requires no parameters.
 
 ### Function overriding
 
+Function overriding is the technique that involved a derived class creating a method with the same name as one existing in the base class.
+
+The derived class can choose whether to call the based class implementation or not.
+
+
+For example, in the following code snippet the derived class decides to override the base class function `print()` and provide its own implementation:
+
+```typescript
+class BaseClassWithFn {
+  print(text: string): void {
+    console.log(`BaseClassWithFn.print(): ${text}`);
+  }
+}
+
+class DerivedClassWithFnOverride extends BaseClassWithFn {
+  print(text: string): void {
+    console.log(`DerivedClassWithFnOverride.print(): ${text}`);
+  }
+}
+
+const derivedClassWithFnOverrideObj = new DerivedClassWithFnOverride();
+derivedClassWithFnOverrideObj.print('hello!');
+```
+
+And in the following one, the derived class decides to override the base class function `print()` but delegating the implementation to the base class method:
+
+```typescript
+class DerivedClassWithFnDelegation extends BaseClassWithFn {
+  print(text: string): void {
+    super.print(`from DerivedClassWithFnDelegation: ${text}`)
+  }
+}
+```
+
 ### Protected
 
+Classes can mark properties and functions as `protected` so that they're seen as *private* from the outside, but accessible from derived classes:
+
+```typescript
+class BaseClassProtected {
+  protected id: number;
+  private name: string = '';
+  constructor(id: number) {
+    this.id = id;
+  }
+}
+
+class AccessProtected extends BaseClassProtected {
+  constructor(id: number) {
+    super(id);
+    console.log(`this.id =`, this.id);
+    console.log(`this.name =`, this.name); // Error: 'name' is private
+  }
+}
+
+const accessProtectedObj = new AccessProtected(55);
+console.log(accessProtectedObj.id);   // ERROR: not accessible
+console.log(accessProtectedObj.name); // ERROR: not accessible
+```
+
 ### Abstract classes
+121
 
 ### Abstract class methods
 
@@ -503,3 +673,5 @@ Sandbox for practicing class concepts.
 
 
 [ ] Validate that TypeScript uses duck typing for interfaces by creating a function that expects a particular type and passing such an object as a literal works.
+
+[ ] Using super for functions other than constructors
