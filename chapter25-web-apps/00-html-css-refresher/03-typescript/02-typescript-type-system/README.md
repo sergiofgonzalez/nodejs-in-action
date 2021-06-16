@@ -22,9 +22,6 @@
 + Function overrides
 + Literals
 
-
-## Intro
-
 ## any, let, unions, and enums
 
 ### The `any` type
@@ -663,5 +660,5 @@ withLiteralDo('three');
 
 ## Exercises, code examples, and mini-projects
 
-### [01: TypeScript's type system &mdash; Type system sandbox](chapter25-web-apps/00-html-css-refresher/03-typescript/02-typescript-type-system/01-type-system-sandbox)
+### [01: TypeScript's type system &mdash; Type system sandbox](01-type-system-sandbox)
 Sandbox for practicing the chapter exercises.
