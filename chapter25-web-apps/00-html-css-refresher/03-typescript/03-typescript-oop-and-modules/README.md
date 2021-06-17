@@ -999,11 +999,3 @@ Illustrates that TypeScript uses duck typing for interfaces by creating a functi
 
 ### [e02: TypeScript's OOP concepts and modules &mdash; Interfaces extending classes](e02-interface-extending-class)
 Practicing the concept of interfaces extending classes that TypeScript supports
-
-### [e03]
-
-[X] Validate that TypeScript uses duck typing for interfaces by creating a function that expects a particular type and passing such an object as a literal works.
-
-[X] Example of a class that implements an interface that extends a class
-
-[ ] Namespaces and modules
