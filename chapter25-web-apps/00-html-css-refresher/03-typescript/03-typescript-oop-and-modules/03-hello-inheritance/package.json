@@ -21,7 +21,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/inquirer": "7.3.1",
     "typescript": "4.3.2"
   },
   "scripts": {
@@ -31,6 +30,5 @@
     "start": "npm run build && node app/src/main.js"
   },
   "dependencies": {
-    "inquirer": "8.1.0"
   }
 }

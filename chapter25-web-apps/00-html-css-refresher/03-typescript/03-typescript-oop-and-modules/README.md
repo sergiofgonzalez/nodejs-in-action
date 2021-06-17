@@ -299,14 +299,6 @@ publicAccessObj.id = 55;
 
 By contrast, if the field is marked as private, it won't be accessible outside the class:
 
-/* Class modifiers: public */
-class ClassWithPublicProperty {
-  public id: number | undefined;
-}
-
-const publicAccessObj = new ClassWithPublicProperty();
-publicAccessObj.id = 55;
-
 ```typescript
 class ClassWithPrivateProperty {
   private id: number;
@@ -453,6 +445,8 @@ In the example above, we have created two namespaces that features classes with 
 Note that we have used the keyword `export` to mark the classes that can be used outside of the namespace.
 > The `export` keyword in front of a class definition in a namespace will make the class available outside of the namespace itself.
 
+Note however that usage of TypeScript namespaces is deprecated in favor of *ES modules*.
+
 ## Inheritance
 
 Inheritance is another OOP paradigm fully supported by TypeScript for classes and interfaces.
@@ -461,7 +455,7 @@ We will use the term *base class* and *base interface* when referring to the cla
 
 ### Interface inheritance
 
-One interface can form the base interface for oner or many other interfaces:
+One interface can form the base interface for one or many other interfaces:
 
 ```typescript
 interface IBase {
@@ -545,7 +539,7 @@ class MultipleInterfaces implements IFirstInterface, ISecondInterface {
 }
 ```
 
-### The `super()` function
+### The `super()` function and `super` keyword
 
 When using inheritance, is quite common to have derived classes that feature classes with the same name as its base class.
 
@@ -571,6 +565,28 @@ class DerivedClassWithCtor extends BaseClassWithCtor {
 ```
 
 The TypeScript compiler will complain if you fail to invoke the base class constructor using `super(...)`, even if the base class constructor requires no parameters.
+
+For non-constructors, you can invoke the base class implementation of a given method using `super.<base-class-function>`, as seen below:
+
+```typescript
+abstract class Employee {
+  public id: number;
+  public name: string;
+  doWork(): void {
+    console.log(`${this.name}: doing some work`);
+  }
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+}
+
+class OfficeWorker extends Employee {
+  doWork(): void {
+    super.doWork();
+  }
+}
+```
 
 ### Function overriding
 
@@ -635,32 +651,334 @@ console.log(accessProtectedObj.name); // ERROR: not accessible
 ```
 
 ### Abstract classes
-121
+
+An abstract class is a class that cannot be instantiated &mdash; that is, it is designed only a base class so that others can be derived from it. They provide a convenient method of sharing common properties and functions between groups of objects.
+
+In TypeScript abstract classes are marked with the `abstract` keyword:
+
+```typescript
+abstract class EmployeeBase {
+  public id: number;
+  public name: string;
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+}
+
+class OfficeWorker extends EmployeeBase {}
+
+class OfficeManager extends OfficeWorker {
+  public directReports: OfficeWorker[] = [];
+}
+
+const jack = new OfficeWorker(1, 'Jack');
+const jill = new OfficeWorker(2, 'Jill');
+const chris = new OfficeManager(3, 'Chris');
+```
 
 ### Abstract class methods
 
+An abstract class method is a class function that does not provide an implementation because it is meant to be overridden by derived classes.
+
+```typescript
+abstract class EmployeeBase {
+  public id: number;
+  public name: string;
+  abstract doWork(): void;
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+}
+
+class OfficeWorker extends EmployeeBase {
+  doWork(): void {
+    console.log(`${this.name}: doing some work!`);
+  }
+}
+
+class OfficeManager extends OfficeWorker {
+  public directReports: OfficeWorker[] = [];
+
+  manageEmployees(): void {
+    super.doWork(); // manager working
+    for (const directReport of this.directReports) {
+      directReport.doWork();
+    }
+  }
+}
+
+const alice = new OfficeWorker(1, 'Alice');
+const bob = new OfficeWorker(2, 'Bob');
+const charlie = new OfficeManager(3, 'Charlie');
+
+charlie.directReports.push(alice, bob);
+
+charlie.manageEmployees();
+```
+
+See how by declaring `doWork()` as an abstract method, we've been forced to provide an implementation in the derived class `OfficeWorker`.
+Note also how `OfficeManager` does not have to provide and implementation because it derives from `OfficeWorker`, which already provides an implementation for it, and can invoke the base class implementation using `super.doWork()`.
+
 ### instanceof
+
+We can use `instanceof` to check whether an object is an instance of a class:
+
+```typescript
+class A { }
+class BfromA extends A { }
+class CfromA extends A { }
+class DfromC extends CfromA { }
+
+new A() instanceof A;             // -> true
+new BfromA() instanceof A;        // -> true
+new BfromA() instanceof BfromA;   // -> true
+new CfromA() instanceof BfromA;   // -> false
+new DfromC() instanceof CfromA;   // -> true
+new DfromC() instanceof A;        // -> true
+```
+
+Note that `xObj instanceof Y` returns true independently of whether `xObj` is a direct descendant of `Y` or if it is derived from a class that derives from `Y`.
 
 ### Interfaces extending classes
 
+TypeScript allows you to have interfaces that derive from classes:
+
+```typescript
+class BaseInterfaceClass {
+  id: number = 0;
+  print() {
+    console.log(`this.id = ${this.id}`);
+  }
+}
+
+interface IBaseInterfaceClassExt extends BaseInterfaceClass {
+  setId(id: number): void;
+}
+```
+
+If we then create a class that implements that interface, we will need to:
+
+```typescript
+interface IBaseInterfaceClassExt extends BaseInterfaceClass {
+  setId(id: number): void;
+}
+
+class ImplementsExt implements IBaseInterfaceClassExt {
+  setId(id: number): void {
+    throw new Error("Method not implemented.");
+  }
+  /* we need to conform to IBaseInterfaceClassExt */
+  id: number = 0;
+  print(): void {
+    throw new Error("Method not implemented.");
+  }
+}
+```
+
+Note how we had to include the definition of `id` and `print()` to conform to the `IBaseInterfaceClassExt` requirements.
+
+Typically, what you would do is when implementing an interface that extends from a class is make the derived class both extend the base class that the interface extends and implement the interface:
+
+```typescript
+class ImplementsExt1 extends BaseInterfaceClass
+  implements IBaseInterfaceClassExt {
+  setId(id: number): void {
+    this.id = id;
+  }
+}
+```
+
+
 ## Modules
+
+TypeScript supports the *ECMAScript Module System (or ESM or ES modules)*.
 
 ### Exporting modules
 
+In order to be consumed, a module needs to expose some capabilities to the outside world using the `export` keyword.
+
+Consider the following piece of code, in which we create a class `Module1` that we will export. Within the class, we invoke *local functions* defined in the same module where the class is defined, but that will not be accessible from the outside:
+
+```typescript
+// module1.ts
+export class Module1 {
+  print(): void {
+    localPrint(`Module1.print()`);
+  }
+}
+
+function localPrint(text: string) {
+  console.log(`localPrint:`, text);
+}
+```
+
 ### Importing modules
+
+In its most basic form, for a given TypeScript program to consume a *functionality* that has been exported from a module, it needs to use the `import` keyword as seen below:
+
+```typescript
+import { Module1 } from "./module1";
+
+const module1 = new Module1();
+module1.print();
+```
 
 ### Module renaming
 
+When importing a module in a program, it is possible to choose the name that we want to use within that program:
+
+```typescript
+import { Module1 as MyModule } from './modules/Module1';
+
+const myModule = new MyModule();
+myModule.print();
+```
+
 ### Multiple exports
+
+It is a common practice in TypeScript to export all classes, functions, and interfaces that a library provides from a single module file.
+
+This relieves the consumer from understanding how the library is structured internally.
+
+As an example, consider a Complex library that is structured as follows:
+
+```
+./lib/
+└── complex-library/
+    ├── complex-library-class1.ts
+    ├── complex-library-class2.ts
+    └── complex-library.ts
+```
+
+The actual implementation for `ComplexLibraryClass1` and `ComplexLibraryClass1` is given in their own `.ts` files, but for convenience, a single `complex-library.ts` file is created so that the library classes can be easily consumed.
+
+Let's work through the details, starting with the `complex-library-class1.ts` and `complex-library-class2.ts` which are two *internal files* with respect to the library that expose one class each.
+
+```typescript
+// complex-library-class1.ts
+export class ComplexLibraryClass1 {
+  print() {
+    console.log(`ComplexLibraryClass1.print()`);
+  }
+}
+```
+
+```typescript
+// complex-library-class2.ts
+export class ComplexLibraryClass2 {
+  print() {
+    console.log(`ComplexLibraryClass2.print()`);
+  }
+}
+```
+
+Then, in order to simplify the consumption we create a `complex-library.ts` that simply imports and exports the classes from where those are found in the internal structure of the library.
+
+```typescript
+// complex-library.ts
+import { ComplexLibraryClass1 } from './complex-library-class1';
+import { ComplexLibraryClass2 } from './complex-library-class2';
+
+export { ComplexLibraryClass1, ComplexLibraryClass2 };
+```
+
+Finally, the program that wants to consume the library classes simply has to import the classes from the single file that exported them.
+
+```typescript
+// main.ts
+import { ComplexLibraryClass1, ComplexLibraryClass2 } from './lib/complex-library/complex-library';
+
+const complexLibClass1 = new ComplexLibraryClass1();
+const complexLibClass2 = new ComplexLibraryClass2();
+
+complexLibClass1.print();
+complexLibClass2.print();
+```
 
 ### Module namespaces
 
+There is another syntax we can use to import multiple symbols from a module without having to name them individually.
+
+```typescript
+import * as ComplexLibraryExports from './lib/complex-library/complex-library';
+
+const complexLibClass1 = new ComplexLibraryExports.ComplexLibraryClass1();
+const complexLibClass2 = new ComplexLibraryExports.ComplexLibraryClass2();
+```
+
 ### Default exports
 
-## Summary
+A module file can mark an exported *entity* as the default export for the file using the `export default` syntax:
+
+```typescript
+// lib/module3.ts
+export default function add(a: number, b: number): number {
+  return a + b;
+}
+
+export function substract(a: number, b: number): number {
+  return a - b;
+}
+```
+
+
+```typescript
+// main.ts
+import addFunction from './lib/module3';
+
+console.log(addFunction(5, 3));
+```
+
+See how we didn't have to use the *curly braces* to import the default export from the library, and also note how we were able to rename the exported function in one shot.
+
+It is also possible to import both the default an non-default functionality:
+
+```typescript
+// main.ts
+import addFunction,  { substract } from './lib/module3';
+```
+
+### Appendix A: The TypeScript starter project
+
+This chapter also introduces your first [TypeScript starter project](04-hello-modules) covering:
++ A better configured `tsconfig.json`.
++ A separate directory `dist/` that contains the compilation of the TypeScript sources.
++ A more complete `package.json` with the usual tasks for linting, building, running...
++ TypeScript linting with *ESLint*.
++ A `.gitignore` aware of TypeScript nuances.
 
 ## You know you've mastered this chapter when...
 
++ You're comfortable defining interfaces in TypeScript, understand how *duck typing* is applied, and how you can define the interface fields as optional.
+
++ You're aware that a *weak type* is an interface in which all the fields are optional.
+
++ You're aware that you can use the `in` operator to check for the existence of a field in an interface.
+
++ You know that the `keyof` keyword returns the properties of an interface (type) so that you can use to create typesafe type aliases as in `type PersonType = keyof IPerson`, so that you don't have to type `type PersonType = 'id' | 'name'`.
+
++ You're comfortable defining classes in TypeScript, and know how to implement interfaces.
+
++ You're comfortable using the class modifiers `public`, `private`, `protected` and `readonly` on class fields.
+
++ You know how to define getters and setters in TypeScript.
+
++ You're comfortable defining static functions and properties in TypeScript classes.
+
++ You're aware of the TypeScript namespace concept that allows you to group entities under a given name is no longer recommended, and that you should use *ES modules* instead to export and group functionality.
+
++ You're comfortable using the inheritance concepts in TypeScript:
+  + you know how to create interfaces that inherit from other interfaces.
+  + You know how to create classes that inherit from other classes and implement interfaces.
+  + You know how to use `super` to invoke base class methods.
+  + You know how to override methods defined on a base class.
+  + You are comfortable creating abstract classes and methods.
+  + You know how to use `instanceof` to check for class hierarchy.
+  + You're aware that in TypeScript, interfaces can extend classes.
+
++ You're comfortable using *ES modules* in TypeScript and know about the differences.
 
 ## Exercises, code examples, and mini-projects
 
@@ -670,8 +988,22 @@ Sandbox for practicing interfaces.
 ### [02: Hello, classes!](02-hello-classes)
 Sandbox for practicing class concepts.
 
+### [03: Hello, inheritance!](03-hello-inheritance)
+Sandbox for practicing inheritance concepts in TypeScript.
 
+### [04: TypeScript's OOP concepts and modules &mdash; Hello, export class!](04-hello-modules)
+Sandbox for practicing exporting classes, also a valid TypeScript starter project!
 
-[ ] Validate that TypeScript uses duck typing for interfaces by creating a function that expects a particular type and passing such an object as a literal works.
+### [e01: Duck Typing](e01-duck-typing)
+Illustrates that TypeScript uses duck typing for interfaces by creating a function that expects a particular interface as argument.
 
-[ ] Using super for functions other than constructors
+### [e02: TypeScript's OOP concepts and modules &mdash; Interfaces extending classes](e02-interface-extending-class)
+Practicing the concept of interfaces extending classes that TypeScript supports
+
+### [e03]
+
+[X] Validate that TypeScript uses duck typing for interfaces by creating a function that expects a particular type and passing such an object as a literal works.
+
+[X] Example of a class that implements an interface that extends a class
+
+[ ] Namespaces and modules

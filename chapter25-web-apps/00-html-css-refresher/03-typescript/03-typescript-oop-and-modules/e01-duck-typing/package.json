@@ -21,14 +21,16 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "4.27.0",
+    "@typescript-eslint/parser": "4.27.0",
+    "eslint": "7.28.0",
     "typescript": "4.3.2"
   },
   "scripts": {
     "reset": "rm -rf node_modules && npm install",
     "freshen-deps": "./scripts/freshen.sh",
-    "build": "node_modules/.bin/tsc",
-    "start": "npm run build && node app/src/main.js"
-  },
-  "dependencies": {
+    "lint": "node_modules/.bin/tsc --noEmit && node_modules/.bin/eslint app/src/",
+    "build": "npm run lint && node_modules/.bin/tsc",
+    "start": "npm run build && node dist/main.js"
   }
 }

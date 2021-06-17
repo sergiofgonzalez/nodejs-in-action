@@ -127,5 +127,106 @@ class AccessProtected extends BaseClassProtected {
 }
 
 const accessProtectedObj = new AccessProtected(55);
-console.log(accessProtectedObj.id);
-console.log(accessProtectedObj.name);
+// console.log(accessProtectedObj.id);     // ERROR: protected
+// console.log(accessProtectedObj.name);   // ERROR: private
+
+/* Abstract classes */
+abstract class EmployeeBase {
+  public id: number;
+  public name: string;
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+}
+
+class OfficeWorker extends EmployeeBase {}
+class OfficeManager extends OfficeWorker {
+  public directReports: OfficeWorker[] = [];
+}
+
+const jack = new OfficeWorker(1, 'Jack');
+const jill = new OfficeWorker(2, 'Jill');
+const chris = new OfficeManager(3, 'Chris');
+
+/* Abstract methods */
+
+abstract class EmployeeBase1 {
+  public id: number;
+  public name: string;
+  abstract doWork(): void;
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+}
+
+class OfficeWorker1 extends EmployeeBase1 {
+  doWork(): void {
+    console.log(`${this.name}: doing some work!`);
+  }
+}
+
+class OfficeManager1 extends OfficeWorker1 {
+  public directReports: OfficeWorker1[] = [];
+
+  manageEmployees(): void {
+    super.doWork(); // manager working
+    for (const directReport of this.directReports) {
+      directReport.doWork();
+    }
+  }
+}
+
+const alice = new OfficeWorker1(1, 'Alice');
+const bob = new OfficeWorker1(2, 'Bob');
+const charlie = new OfficeManager1(3, 'Charlie');
+
+charlie.directReports.push(alice, bob);
+
+charlie.manageEmployees();
+
+
+/* instanceof */
+
+class A { }
+class BfromA extends A { }
+class CfromA extends A { }
+class DfromC extends CfromA { }
+
+console.log(`A instance of A          :`, new A() instanceof A);
+console.log(`BfromA instance of A     :`, new BfromA() instanceof A);
+console.log(`BfromA instance of BfromA:`, new BfromA() instanceof BfromA);
+console.log(`CFromA instance of BFromA:`, new CfromA() instanceof BfromA);
+console.log(`DfromC instance of CfromA:`, new DfromC() instanceof CfromA);
+console.log(`DfromC instance of A     :`, new DfromC() instanceof A);
+
+/* Interfaces deriving from classes */
+class BaseInterfaceClass {
+  id: number = 0;
+  print() {
+    console.log(`this.id = ${this.id}`);
+  }
+}
+
+interface IBaseInterfaceClassExt extends BaseInterfaceClass {
+  setId(id: number): void;
+}
+
+class ImplementsExt implements IBaseInterfaceClassExt {
+  setId(id: number): void {
+    throw new Error("Method not implemented.");
+  }
+  /* required to conform to the interface */
+  id: number = 0;
+  print(): void {
+    throw new Error("Method not implemented.");
+  }
+}
+
+// however it is better to extend and implement
+class ImplementsExt1 extends BaseInterfaceClass implements IBaseInterfaceClassExt {
+  setId(id: number): void {
+    this.id = id;
+  }
+}
