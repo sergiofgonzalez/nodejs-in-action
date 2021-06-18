@@ -573,8 +573,6 @@ type NotNullOrUndef = NonNullable<number | undefined | null>;
 
 The previous definition extract the types from a given type union that are not `null` or `undefined`, so it only leaves the type `number`.
 
-## Summary
-
 ## You know you've mastered this chapter when...
 + You're comfortable creating functions and classes using generic types, and understand when this technique will come in handy.
 
