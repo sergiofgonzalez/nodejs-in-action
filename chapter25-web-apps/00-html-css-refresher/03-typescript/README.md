@@ -7,4 +7,5 @@
 + [02 &mdash; TypeScript's type system](02-typescript-type-system)
 + [03 &mdash; TypeScript OOP concepts and modules](03-typescript-oop-and-modules)
 + [04 &mdash; Generics and advanced type inference](04-generics)
++ [05 &mdash; Asynchronous language features](05-async-ts)
 
