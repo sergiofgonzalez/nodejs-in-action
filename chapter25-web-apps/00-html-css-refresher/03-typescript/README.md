@@ -9,4 +9,5 @@
 + [04 &mdash; Generics and advanced type inference](04-generics)
 + [05 &mdash; Asynchronous language features](05-async-ts)
 + [06 &mdash; Decorators](06-decorators)
++ [07 &mdash; Integration with JavaScript](07-js-integration)
 
