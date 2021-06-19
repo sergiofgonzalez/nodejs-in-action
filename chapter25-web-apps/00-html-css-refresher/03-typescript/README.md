@@ -8,4 +8,5 @@
 + [03 &mdash; TypeScript OOP concepts and modules](03-typescript-oop-and-modules)
 + [04 &mdash; Generics and advanced type inference](04-generics)
 + [05 &mdash; Asynchronous language features](05-async-ts)
++ [06 &mdash; Decorators](06-decorators)
 

@@ -1,4 +1,4 @@
-# TypeScript: Chapter 04 &mdash; Asynchronous language features
+# TypeScript: Chapter 05 &mdash; Asynchronous language features
 > asynchronous TypeScript
 
 ## Contents
