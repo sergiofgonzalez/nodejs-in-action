@@ -10,4 +10,4 @@
 + [05 &mdash; Asynchronous language features](05-async-ts)
 + [06 &mdash; Decorators](06-decorators)
 + [07 &mdash; Integration with JavaScript](07-js-integration)
-
++ [08 &mdash; Strict compiler options](08-strict-compiler-options)

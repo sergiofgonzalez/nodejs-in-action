@@ -1,0 +1,1 @@
+console.log(`Have a look at the directories :)`);
