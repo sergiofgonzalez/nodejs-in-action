@@ -1,5 +1,5 @@
 # TypeScript: Chapter 08 &mdash; Strict Compiler Options
-> understanding the individual TypeScript compiler options
+> TypeScript compiler options that affect code quality
 
 ## Contents
 
@@ -232,17 +232,151 @@ In this case, the compuler will also complain, because `usePrint()` will pass a 
 
 ## `no*` compiler options
 
+The `no*` compiler options are another set of compiler options that are controlled by `"strict"` in the sense that if `"strict": true` is configured then all of the `no*` options will also be set to true.
+
 ### `noImplicitAny`
+
+This configuration option tells the compiler to complain when a property, parameter, or function return type is not specified, and as a result `any` is assumed as type.
+
+For example, the compiler will beep at these situations:
+
+```typescript
+// ERROR: lacks return type annotation
+function myFunction() { }
+
+// ERROR: value has implicit any type
+function anotherFunction(value) { }
+
+// ERROR: id has implicitly any type
+class myClass {
+  id;
+}
+```
 
 ### `noUnusedLocals` and `noUnusedParameters`
 
+These options are used to detect variables or parameters that are not used and are therefore superfluous and should be removed:
+
+```typescript
+// ERROR: input is declared but never used
+function myFn(input: string): boolean {
+  // ERROR: test is declared but never used
+  let test;
+  return false;
+}
+```
+
 ### `noImplicitReturns`
 
-### `noFallthroughCasesI...`
+The `noImplicitReturns` compiler option ensures that a function explicitly returns the value it has declared:
+
+```typescript
+// ERROR: not all code paths return a value
+function isLargeNumber(value: number): boolean {
+  if (value > 1_000_000) {
+    return true;
+  }
+}
+```
+
+### `noFallthroughCasesInSwitch`
+
+This option is used to trap situations like the following:
+
+```typescript
+enum SwitchEnum {
+  ONE,
+  TWO
+}
+
+function testSwitch(value: SwitchEnum): string {
+  let returnValue = '';
+  // ERROR: fallthrough case in switch
+  switch (value) {
+    case SwitchEnum.ONE:
+      returnValue = 'One';
+    case SwitchEnum.TWO:
+      returnValue = 'Two';
+  }
+  returnValue;
+}
+```
+
+As you well now, this function will always return `'Two'` because when doing `testSwitch(SwitchEnum.ONE)` the code will fall through the statements associated to `testSwitch(SwitchEnum.TWO)` because there is no `break`.
 
 ### `noImplicitThis`
 
+This option is used to detect logic error when the `this` variable is accessed incorrectly.
+
+```typescript
+class MyClass {
+  id = 55;
+  printIdAfterSomeTime() {
+    const callback = function () {
+      // ERROR: `this` implicitly has type 'any' because it does not have type annotation
+      // an outer value of `this` is shadowed by this container
+      console.log(`this.id:`, this.id);
+    };
+    setTimeout(callback, 1_000);
+  }
+}
+```
+
+This function will print `undefined` because the callback function will receive a different copy of `this` than the one it expects.
+
+Note that this can be easily fixed in multiple ways:
+
+```typescript
+class MyClass {
+  id = 55;
+  printIdAfterSomeTime() {
+    const callback = function (_this: MyClass) {
+      console.log(`this.id:`, _this.id);
+    };
+    setTimeout(callback, 1_000, this);
+  }
+}
+
+const myClassObj = new MyClass();
+myClassObj.printIdAfterSomeTime();
+
+
+// Alternatively, you could have used an arrow function
+class MyOtherClass {
+  id = 88;
+  printIdAfterSomeTime() {
+    const callback = () => {
+      // ERROR: an outer value of `this` is shadowed by this container
+      console.log(`this.id:`, this.id);
+    };
+    setTimeout(callback, 1_000);
+  }
+}
+
+const myOtherClassObj = new MyOtherClass();
+myOtherClassObj.printIdAfterSomeTime();
+```
+
+
 ## You know you've mastered this chapter when...
+
++ You understand that `"strict": true` compiler option sets a wide variety of compiler options that affect TypeScript checkings that affect code quality.
+
++ You are aware that TypeScript compiler allows for nested configurations, in which you can have multiple `tsconfig.json` that extend from other others. You are aware however that the compilation process should be run individually in each of the directories containing those *nested* `tsconfig.json`.
+
++ You understand the scope of following different compiler options:
+  + `strictNullChecks`
+  + `strictPropertyInitialization`
+  + `strictBindCallApply`
+  + `noImplicitAny`
+  + `noUnusedLocals`
+  + `noUnusedParameters`
+  + `noImplicitReturns`
+  + `noFallthroughCasesInSwitch`
+  + `noImplicitThis`
+
++ You know that new TypeScript projects should have the `"strict"` setting enabled, but legacy code and migration activities from JavaScript to TypeScript.
+
 
 ## Exercises, code examples, and mini-projects
 
@@ -250,4 +384,4 @@ In this case, the compuler will also complain, because `usePrint()` will pass a 
 Illustrates how to use nested `tsconfig.json` and how to perform the build when using this technique.
 
 ### [02: `strict*` project sandbox](02-strict-options-sandbox)
-A sandbox project to test `strict*` compiler options.
+A sandbox project to test `strict*` and `no*` compiler options.

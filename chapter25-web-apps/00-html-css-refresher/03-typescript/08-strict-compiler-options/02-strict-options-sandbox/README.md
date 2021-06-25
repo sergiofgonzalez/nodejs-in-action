@@ -1,5 +1,5 @@
 # 02: Strict compiler options &mdash; `strict*` project sandbox
-> A sandbox project to test `strict*` compiler options
+> A sandbox project to test `strict*` and `no*` compiler options.
 
 To run the examples in the given directories you have to:
 
