@@ -360,11 +360,11 @@ writableProxy.end();
 
 *Proxies* are also effective tools to create observable objects.
 
-> The **Change Observer** pattern is a desing pattern in which an object (the *subject*) notifies one or more observers of any state change in the object so that they can *react* to changes as soon as any change occur.
+> The **Change Observer** pattern is a design pattern in which an object (the *subject*) notifies one or more observers of any state change in the object so that they can *react* to changes as soon as any change occur.
 
 | NOTE: |
 | :---- |
-| Although very similar, the **Change Observer** pattern should not be confused with the **Observer** pattern we discussed while learning about callbacks and events. The latter is a more generic approach that adopts an event emitter to propagate information about events happening in the system. See [**Observer** pattern] [chapter29-callbacks-and-events/README.md#the-observer-pattern] for a reminder on the concepts backing the pattern. |
+| Although very similar, the **Change Observer** pattern should not be confused with the **Observer** pattern we discussed while learning about callbacks and events. The latter is a more generic approach that adopts an event emitter to propagate information about events happening in the system. See [**Observer** pattern](../chapter29-callbacks-and-events/README.md#the-observer-pattern) for a reminder on the concepts backing the pattern. |
 
 The implementation is quite succinct:
 

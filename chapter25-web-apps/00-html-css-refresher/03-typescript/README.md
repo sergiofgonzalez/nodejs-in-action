@@ -11,3 +11,4 @@
 + [06 &mdash; Decorators](06-decorators)
 + [07 &mdash; Integration with JavaScript](07-js-integration)
 + [08 &mdash; Strict compiler options](08-strict-compiler-options)
++ [09 &mdash; Using observables to transform data](09-observables-to-transform-data)
