@@ -812,11 +812,14 @@ Removing the deprecation from [04: Handling errors in *Observables*](../04-hello
 
 In [04: Handling errors in *Observables*](../04-hello-rxjs-observable-errors) there is a deprecation error found in the way in which `subscribe()` is written. Fix it and update the code so that it works in the same way but using the new approach.
 
+### [e04: Using *Observables* to transform data &mdash; *Observables* from *Observables*: a rewrite](e04-rxjs-observables-from-observables-rewrite)
+Rewriting an example similar to [05: Observables returning Observables](05-rxjs-observables-returning-observables) to try and *grok* the concept.
+
+In the example, we implement in three different ways a process that simulates the retrieval of the details of a list of elements, as in:
++ you query the database and obtain a list of corresponding product Ids
++ you then use each of the product Ids to fetch each of the product details
+
 #### ToDo
-
-- [ ] Using Observables make the consumption of data more flexible. Illustrate with an example what we're seeing in the example 5 (which does not seem so clear).
-
-- [ ] Review syntax for type annotations with lambdas as in `(value: IProductId): Observable<IProductDescription> => getProductDetails(value.id)`
 
 - [ ] Read through https://www.bigbinary.com/blog/understanding-bind-and-bindall-in-backbone to understand about `_.bindAll()`
 
