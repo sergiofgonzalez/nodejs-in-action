@@ -348,6 +348,10 @@ processing done!
 | :------- |
 | See [04: Handling errors in *Observables*](04-hello-rxjs-observable-errors) for a runnable example. |
 
+| NOTE: |
+| :---- |
+| There is a deprecation warning in [04: Handling errors in *Observables*](04-hello-rxjs-observable-errors) that is fixed in [e03: Using *Observables* to transform data &mdash; Error Management in Observables](e03-rxjs-error-management). |
+
 ## Observables returning Observables
 
 Consider this real world scenario in which we have an API that returns a list of product IDs that are available in the warehouse. If we want to show this information to the end-user, we will need to call another API that retrieves the product details for each of the IDs we have received.
@@ -530,11 +534,240 @@ That is, the execution output is as follows:
     2021-06-25T16:59:04.396Z
     received value: 3
 ```
+| EXAMPLE: |
+| :------- |
+| See ### [06: The `concatMap()` operator](06-hello-rxjs-concat-map) for a runnable example. |
 
+### `forkJoin()`
 
-### `forkJoin`
+The `forkJoin()` function can be used when we have a number of *Observable streams* that need to all complete before we do something.
+
+This is common in frontend, when dealing with REST requests at the start of a page load, where the page may need to load data from a number of different REST APIs before being able to display the page.
+
+Consider the following example that features two async *Observable streams* that generate values at different times and a `forkJoin()` function that synchronizes them:
+
+```typescript
+import { forkJoin, interval, Observable } from 'rxjs';
+import { map, take, toArray } from 'rxjs/operators';
+
+const onePerSecond = interval(1000);
+
+const threeNumbers: Observable<number[]> = onePerSecond.pipe(
+  take(3),
+  map((value: number) => {
+    console.log(`>> threeNumbers emitting @ ${new Date().toLocaleTimeString()}`);
+    return value;
+  }),
+  toArray()
+);
+
+const twoStrings: Observable<string[]> = onePerSecond.pipe(
+  take(2),
+  map((value: number) => {
+    console.log(`>> twoStrings emitting @ ${new Date().toLocaleTimeString()}`);
+    return `value_${value}`;
+  }),
+  toArray()
+);
+
+forkJoin([
+  threeNumbers,
+  twoStrings
+]).subscribe((values) => {
+  console.log(`<< returned @ ${new Date().toLocaleTimeString()}`);
+  console.log(`<< threeNumbers returned:`, values[0]);
+  console.log(`<< twoNumbers returned:`, values[1]);
+});
+```
+
+You start by using `interval()` to configure a time-based stream that triggers a number with the specified frequency (i.e. 1 second).
+
+You create them your first *Observable stream* by piping this stream, taking the first three values, mapping it to show some info in the console and then calling `toArray()` which combines all the emitted values into an array. Note that this means that the value will only be emitted when all the intermediate values have been emitted.
+
+Similarly, you create another *Observable stream* with the same shape, but this one taking only two values, and returning an array of strings.
+
+While `threeNumbers` will take three seconds to emit the array `[0, 1, 2]`, `twoNumbers` will emit `['value_0', 'value_1']` in two seconds.
+
+Thus, in order to *synchronize* them, we use a `forkJoin()` which returns an *Observable* that we can subscribe to when both the streams that we pass as parameters have emitted their values.
+
+As a result we will obtain:
+```
+>> threeNumbers emitting @ 9:27:50 AM
+>> twoStrings emitting @ 9:27:50 AM
+>> threeNumbers emitting @ 9:27:51 AM
+>> twoStrings emitting @ 9:27:51 AM
+>> threeNumbers emitting @ 9:27:52 AM
+<< returned @ 9:27:52 AM
+<< threeNumbers returned: [ 0, 1, 2 ]
+<< twoNumbers returned: [ 'value_0', 'value_1' ]
+```
+
+Note that we have used array indexing to access the values emitted by the `forkJoin()`. Alternatively, we could have also used array destructuring to make it more readable:
+
+```typescript
+forkJoin([
+  threeNumbers,
+  twoStrings
+]).subscribe(([threeNumberValues, twoStringsValues]) => {
+  console.log(`<< returned @ ${new Date().toLocaleTimeString()}`);
+  console.log(`<< threeNumbers returned:`, threeNumberValues);
+  console.log(`<< twoNumbers returned:`, twoStringsValues);
+});
+```
+
+| EXAMPLE: |
+| :------- |
+| See [07: `forkJoin()`](07-hello-rxjs-fork-join) for a runnable example. |
 
 ## Observable subject
+
+In all the examples so far, we have worked with *Observables* that emit values, and we have configured *observers* that subscribe to those *Observable streams*.
+
+The *Observables* are responsible for emitting values, and the subscribers react to the values being emitted. When an *Observable stream* is complete, the subscriber complete their processing and their execution stops.
+
+Now consider a situation in which we would like the subscribers to wait around instead of completing. This is a common situation in an *event bus*, where multiple subscribers will register their interest in a particular topic, and will react to it when that event is raised on the *event bus*.
+
+*RxJS* provides the `Subject` class for this particular purpose.
+> A `Subject` maintains a list of listeners that have registered their interest. A `Subject` is also an *Observable stream*, and therefore listeners can subscribe to the stream using `subscribe()`.<br>The `Subject` has the ability to multicast, that is, it allows multiple subscribers to the same stream to receive the notification when an event happens.
+
+Consider the following simple implementation of an *event bus*:
+
+```typescript
+// lib/event-bus.ts
+import { Observable, Subject } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+
+enum EventKeys {
+  ALL = 'all-events',
+  SINGLE = 'single-event'
+}
+
+export interface IBroadcastEvent {
+  key: EventKeys;
+  data: string;
+}
+
+export class BroadcastService {
+  private _eventBus = new Subject<IBroadcastEvent>();
+
+  on(key: EventKeys): Observable<string> {
+    return this._eventBus.asObservable().pipe(
+      filter(
+        event => event.key === key || event.key === EventKeys.ALL
+      ),
+      map(event => event.data)
+    );
+  }
+
+  broadcast(key: EventKeys, data: string): void {
+    this._eventBus.next({ key, data });
+  }
+}
+```
+
+You start by defining an enum `EventKeys` which defines two values to identify whether the subscriber is interested in receiving a notification for all the events sent to the *event bus*, or only a particular one.
+
+Then, you define an interface `IBroadcastEvent` which defines the *shape* of an event of the *event bus*.
+
+Then you define the class `BroadcastService` which is the implementation of the *event bus*. The class includes the definition of a private instance property `_eventBus` of type `Subject<IBroadcastEvent>`.
+
+Then you declare two methods `on(key: EventKeys)` and `broadcast(key: EventKeys, data: string)`.
+
+The first method `on()` will be used by subscribers that want to register a listener for a particular event. In the implementation of the function, we use `asObservable()` to create a new *Observable stream* using the *Subject* as the source. We then use the `filter()` operator to check if the incoming argument named `key` matches the key of the event being raised, or if it matches `EventKeys.ALL`. If that is the case, we re-emit the event, otherwise, we swallow it as the observer won't be interested in it.
+
+In summary, the `on()` function will notify all registered *Observers* of events that either match the key `EventKeys.ALL` or the specific *Observers* that are listening to that particular event that has been emitted. Note that the events are emitted by calling `next()` on the *Subject*.
+
+The function `broadcast()` is used to send an event to the *event bus* &mdash; it will be used to broadcast an event to any registered listeners.
+
+Now, let's consider the implementation of listener on this *event bus*:
+
+```typescript
+// lib/listener.ts
+import { Subscription } from 'rxjs';
+import { BroadcastService, EventKeys } from './event-bus';
+import * as _ from 'underscore';
+
+export class Listener {
+  private eventSubscription: Subscription;
+
+  constructor(
+    broadcastService: BroadcastService,
+    eventKey: EventKeys,
+    private listenerName: string
+  ) {
+    _.bindAll(this, 'reactToEvent');
+    this.eventSubscription = broadcastService.on(eventKey).subscribe(this.reactToEvent);
+  }
+
+  private reactToEvent(event: string) {
+    console.log(`Listener [${ this.listenerName }] received event: ${ event }`);
+  }
+
+  public unregister(): void {
+    this.eventSubscription.unsubscribe();
+  }
+}
+```
+
+The `Listener` class has a single private property `eventSubscription` of type `Subscription`
+
+In the constructor we received a reference to the *event bus*, the `eventKey` that will identify if the listener is interested in all the event or in specific ones, and the `listenerName` which will be used to identify the listener in the logs.
+
+The implementation of the constructor starts with a call to `_.bindAll(this, 'reactToEvent')`. This is necessary to ensure that the calls to `reactToEvent()` have the appropriate `this` bound to them, and `bindAll()` is very handy in these situations in which you want to specify the function *statically* but you want to mutate it to receive the appropriate `this`.
+
+Right after that, the `eventSubscription` property is set to the *Observable* returned by the `on()` function for the specific `eventKey`, and configures `reactToEvent()` as the listener using `subscription()`.
+
+Finally, we also define an `unregister()` function so that we can unsubscribe this listener.
+
+
+Now, we can build our main program that illustrates how to use with this *event bus*:
+
+```typescript
+import { BroadcastService, EventKeys } from './lib/event-bus';
+import { Listener } from './lib/listener';
+
+const broadcastService = new BroadcastService();
+
+const listenerOne = new Listener(
+  broadcastService,
+  EventKeys.ALL,
+  'first'
+);
+
+const listenerTwo = new Listener(
+  broadcastService,
+  EventKeys.SINGLE,
+  'second'
+);
+
+broadcastService.broadcast(EventKeys.ALL, 'ALL event broadcast');
+broadcastService.broadcast(EventKeys.SINGLE, 'SINGLE event broadcast');
+
+listenerOne.unregister();
+broadcastService.broadcast(EventKeys.ALL, 'ALL event broadcast #2');
+
+listenerTwo.unregister();
+broadcastService.broadcast(EventKeys.ALL, 'ALL event broadcast #3');
+```
+
+You start by instantiating the *event bus* by creating a new instance of the `BroadcastService`.
+
+Then you create two listeners `'first'` and `'second'`; the former one interested in all the events, and the latter in the single ones. Right after that you can start triggering events and seeing how the listeners react to those.
+
+Also you can see how you can unregister the listeners when they are no longer interested in receiving further events.
+
+In particular, when executing the program you will get:
+
+```
+Listener [first] received event: ALL event broadcast
+Listener [second] received event: ALL event broadcast
+Listener [second] received event: SINGLE event broadcast
+Listener [second] received event: ALL event broadcast #2
+```
+
+| EXAMPLE: |
+| :------- |
+| See [08: A minimal implementation of an event bus](08-rxjs-event-bus) for a runnable example. |
 
 ## You know you've mastered this chapter when...
 
@@ -555,15 +788,36 @@ Illustrates how to handle errors in *Observables*.
 ### [05: Observables returning Observables](05-rxjs-observables-returning-observables)
 Illustrates a situation in which Observables return Observables and `mergeMap()` operator.
 
+### [06: The `concatMap()` operator](06-hello-rxjs-concat-map)
+Illustrates the `concatMap()` operator.
+
+### [07: `forkJoin()`](07-hello-rxjs-fork-join)
+Illustrates the `jorkJoin()` function, which lets you *combine* several *Observable streams* and will wait for them to complete before executing the `subscribe()` callback.
+
+### [08: A minimal implementation of an event bus](08-rxjs-event-bus)
+Illustrates how to use the `Subject` of *RxJS* to build a minimal *event bus*.
+
+### [e01: Using *Observables* to transform data &mdash; Using `map()` to return tuples](e01-rxjs-map-to-tuples)
+Illustrates how to use the `map()` operator to return tuples by implementing the following exercise:
+
+Create an *Observable* that emits the values 1 through 10 and use `pipe()` and `map()` so that the *observers* get a tuple `[num, str]` where str indicates if the `num` is even or odd.
+
+### [e02: Review of *literals*]()
+Reviewing *literals* in the context of an *RxJS* example.
+
+Create an *Observable* that returns an stream of numbers one through 10, which pipes the number into the strings `'even'` or `'odd'`. Verify that the TypeScript system assumes the *Observable* to be of type `'even' | 'odd'` rather than `string`.
+
+### [e03: Using *Observables* to transform data &mdash; Error Management in Observables](e03-rxjs-error-management)
+Removing the deprecation from [04: Handling errors in *Observables*](../04-hello-rxjs-observable-errors)
+
+In [04: Handling errors in *Observables*](../04-hello-rxjs-observable-errors) there is a deprecation error found in the way in which `subscribe()` is written. Fix it and update the code so that it works in the same way but using the new approach.
+
 #### ToDo
-
-- [ ] Create an observable that emits the values 1 through 10 and use `pipe()` and `map()` to arrange that the observers get a tuple `[num, str]` where str indicates if the number is even or odd.
-
-- [ ] Review union types when emitting literals such as `even` and `odd`.
-
-- [ ] Observables with separate callback arguments are now deprecated. Change the `catchError` example so that it no longer features the deprecation warning.
-Instead of passing separate callback arguments, use an observer argument. Signatures taking separate callback arguments will be removed in v8. Details: https://rxjs.dev/deprecations/subscribe-arguments */
 
 - [ ] Using Observables make the consumption of data more flexible. Illustrate with an example what we're seeing in the example 5 (which does not seem so clear).
 
 - [ ] Review syntax for type annotations with lambdas as in `(value: IProductId): Observable<IProductDescription> => getProductDetails(value.id)`
+
+- [ ] Read through https://www.bigbinary.com/blog/understanding-bind-and-bindall-in-backbone to understand about `_.bindAll()`
+
+- [ ] Enhance the event bus to allow custom listener functions and custom events.
