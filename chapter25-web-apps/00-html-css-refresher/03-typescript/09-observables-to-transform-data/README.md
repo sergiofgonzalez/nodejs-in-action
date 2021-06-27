@@ -771,6 +771,13 @@ Listener [second] received event: ALL event broadcast #2
 
 ## You know you've mastered this chapter when...
 
++ You are comfortable reading the examples using *RxJS*.
+
++ You understand the concepts of *Observables* and *Observers (listeners)*.
+
++ You're comfortable using `pipe()` and `map()` when working with streams of *Observables*.
+
+
 ## Exercises, code examples, and mini-projects
 
 ### [01: Hello, *RxJS*!](01-hello-rxjs)
@@ -819,8 +826,15 @@ In the example, we implement in three different ways a process that simulates th
 + you query the database and obtain a list of corresponding product Ids
 + you then use each of the product Ids to fetch each of the product details
 
-#### ToDo
+### [e05: Using *Observables* to transform data &mdash; Hello, `_.bindAll()`](e05-hello-underscore-bindall)
+Grokking the need for `_.bindAll()` when binding listeners in *RxJS*.
 
-- [ ] Read through https://www.bigbinary.com/blog/understanding-bind-and-bindall-in-backbone to understand about `_.bindAll()`
+Examples and some written docs inspired from the article [Understanding `bind` and `bindAll` in Backbone.js (https://www.bigbinary.com/blog/understanding-bind-and-bindall-in-backbone) but exercised in the context of Node.js instead of the browser.
 
-- [ ] Enhance the event bus to allow custom listener functions and custom events.
+
+### [e06: Using *Observables* to transform data &mdash; Enhancing the *RxJS* event bus](e06-rxjs-event-bus)
+Enhancing the example [08: A minimal implementation of an event bus](08-rxjs-event-bus)
+
+An exercise in which we enhance the *RxJS event bus* from the concepts section with the following capabilities:
++ allow custom listener functions
++ allowing custom events
