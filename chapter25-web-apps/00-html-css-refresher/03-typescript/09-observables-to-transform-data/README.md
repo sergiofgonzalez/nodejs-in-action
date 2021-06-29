@@ -1,5 +1,5 @@
 # TypeScript: Chapter 09 &mdash; Using *Observables* to transform data
-> TBD
+> Practising the *Observable* pattern using *RxJS* library
 
 ## Contents
 + An introduction *Observables*
