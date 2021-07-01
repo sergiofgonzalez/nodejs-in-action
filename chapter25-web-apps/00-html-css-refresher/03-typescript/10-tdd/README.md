@@ -223,25 +223,434 @@ describe('another group of tests (forced)', () => {
 
 #### `toBe()`
 
-The `toBe()` matcher checks for object equality
+The `toBe()` matcher checks for object equality. This means that two objects with the same shape will not match:
+
+```typescript
+  it('failed test with numbers', () => {
+    expect(1).toBe(2);  // fails
+  });
+
+  it('passed test with numbers', () => {
+    expect(5).toBe(5);  // pass
+  });
+
+  it('passed: toBe checks for object equality', () => {
+    const obj1 = { id: 1 };
+    const obj1Ref = obj1;
+    expect(obj1).toBe(obj1Ref); // pass
+  });
+
+  it('failed: toBe checks for object equality', () => {
+    const obj1 = { id: 1 };
+    const obj2 = { id: 1 };
+    expect(obj1).toBe(obj2);  // fails
+  });
+```
+
+### `toEqual()` and `toStrictEqual()`
+
+The matchers `toEqual()` and `toStrictEqual()` will check for equality based on the object properties.
+
+```typescript
+it('passed: toEqual checks for properties equality', () => {
+  const obj1 = { id: 1, person: { name: 'Jason Isaacs', age: 53 } };
+  const obj1Ref = obj1;
+  expect(obj1).toEqual(obj1Ref);
+});
+
+it('passed: toEqual checks for properties equality', () => {
+  const obj1 = { id: 1, person: { name: 'Jason Isaacs', age: 53 } };
+  const obj2 = { id: 1, person: { name: 'Jason Isaacs', age: 53 } };
+  expect(obj1).toEqual(obj2);
+});
+```
+
+Note that the need for `toStrictEqual()` is not so big in TypeScript as the type system will pick up things like `true == 1`.
+
+### `toContain()` and `toContainEqual()`
+
+You can use `toContain()` to check for the existence of a substring in a string and for checking the existence of an object in a list (using object equality):
+
+```typescript
+  test('pass: list contains an item (object equality)', () => {
+    const obj1 = { id: 1 };
+    const obj2 = { id: 2 };
+    const list = [ obj1, obj2 ];
+    expect(list).toContain(obj1);
+  });
+
+  test('fail: list contains an item (object shape)', () => {
+    const list = [ { id: 1 }, { id: 2 } ];
+    expect(list).toContain({ id: 1 });
+  });
+```
+
+You can also use `toContainEqual()` if you want to check the object shape (properties and their values) rather than object equality:
+
+```typescript
+  test('pass: list contains an item (object shape)', () => {
+    const list = [ { id: 1 }, { id: 2 } ];
+    expect(list).toContainEqual({ id: 1 });
+  });
+
+```
+
+#### Using `not`
+
+You can reverse expectations using `not`:
+
+```typescript
+  test('pass: test with numbers', () => {
+    expect(1).not.toBe(2);
+  });
+
+
+  test('pass: list does not contains an item (object shape)', () => {
+    const list = [ { id: 1 }, { id: 2 } ];
+    expect(list).not.toContainEqual({ id: 3 });
+  });
+```
+
+#### Using `toThrowError()`
+
+You can use `toThrowError()` when you expect that a certain operation throws an exception:
+
+```typescript
+test('pass: should throw specific error', () => {
+  expect(() => {
+    throw new Error('fabricated error');
+  }).toThrowError(new Error('fabricated error'));
+});
+
+test('pass: should throw any error', () => {
+  expect(() => {
+    throw new Error('fabricated error');
+  }).toThrowError();
+});
+```
+
+| EXAMPLE: |
+| :------- |
+| See ### [05: *Jest* matchers](05-jest-matchers)
+for a sandbox that illustrates the matchers of this section, and where you can include additional tests and test suites. |
 
 ### Test setup and teardown
 
+*Jest* has very good support to configure setup and teardown tasks for tests and test suites.
+
+Consider the following test the illustrates how to test a simple `GlobalCounter` class:
+
+```typescript
+// src/lib/global-counter.ts
+export class GlobalCounter {
+  count = 0;
+  increment(): void {
+    this.count++;
+  }
+}
+
+// test/global-counter.test.ts
+describe('GlobalCounter Test Suite with test setup and teardown', () => {
+  let globalCounter: GlobalCounter;
+
+  beforeAll(() => {
+    globalCounter = new GlobalCounter();
+  });
+
+  beforeEach(() => {
+    globalCounter.count = 0;
+  });
+
+  afterEach(() => {
+    console.log(`globalCounter count after test was: `, globalCounter.count);
+  });
+
+  test('should increment', () => {
+    globalCounter.increment();
+    expect(globalCounter.count).toBe(1);
+  });
+
+  test('should increment twice', () => {
+    globalCounter.increment();
+    globalCounter.increment();
+    expect(globalCounter.count).toBe(2);
+  });
+});
+```
+
+As you can see, *Jest* provides `beforeAll()`, `afterAll()`, `beforeEach()` and `afterEach()` to accommodate these activities.
+
+| EXAMPLE: |
+| :------- |
+| See [06: *Jest* test setup and teardown](06-jest-setup-teardown-tasks) for a runnable example. |
+
 ### Data-driven tests
 
+Consider the following test, in which we feed several values to a given test:
+
+```typescript
+describe('data driven test suite', () => {
+  [1, 2, 3, 4, 5].forEach((value: number) => {
+    test(`${ value } must be less than 5`, () => {
+      expect(value).toBeLessThan(5);
+    });
+  });
+});
+```
+
+This will generate several individual tests as can be seen in the *Jest* test report:
+
+```
+ FAIL  app/test/data-driven.test.ts
+  data driven test suite
+    ✓ 1 must be less than 5 (2 ms)
+    ✓ 2 must be less than 5
+    ✓ 3 must be less than 5
+    ✓ 4 must be less than 5
+    ✕ 5 must be less than 5 (2 ms)
+```
+
+This idea can be enhanced to accommodate more complex use cases:
+
+```typescript
+describe('Hello multiple data driven test cases', () => {
+
+  function testUsing<T>(values: T[], func: Function) {
+    for (const value of values) {
+      func.apply(Object, [value]);
+    }
+  }
+
+  testUsing([
+    [ undefined, false ],
+    [ null, false ],
+    [ ' ', false ],
+    [ '  ', false ],
+    [ ' a ', true ],
+    ['a', true ],
+    ['a ', true ],
+    [' a', true]
+  ], ([value, expectedFuncRetValue]: [string, boolean]) => {
+    test(`"${ value }" is not empty string should be ${ expectedFuncRetValue }`, () => {
+      expectedFuncRetValue ?
+        expect(isNotEmptyString(value)).toBeTruthy() :
+        expect(isNotEmptyString(value)).toBeFalsy();
+    });
+  });
+});
+```
+
+| EXAMPLE: |
+| :------- |
+| See [07: *Jest* data-driven tests](07-jest-data-driven-tests) for a runnable example. |
+
 ### Jest mocks
+*Jest* also provides support for mocks.
+
+```typescript
+// src/lib/my-class.ts
+export class MyClass {
+  executeCb(value: string, cb: (value: string) => null): void {
+    console.log(`executeCb: invoking callback`);
+    cb(value);
+  }
+}
+
+// src/test/my-class.test.ts
+describe('Hello, mocks!', () => {
+
+  test('should invoke callback', () => {
+    const mock = jest.fn();
+
+    const myClassObj = new MyClass();
+    myClassObj.executeCb('test', mock);
+
+    expect(mock).toHaveBeenCalled();
+  });
+
+
+  test('should invoke callback with given args', () => {
+    const mock = jest.fn();
+
+    const myClassObj = new MyClass();
+    myClassObj.executeCb('arg-value', mock);
+
+    expect(mock).toHaveBeenCalledWith('arg-value');
+  });
+
+});
+```
+| EXAMPLE: |
+| :------- |
+| See [08: *Jest* mocks](08-jest-mocks) for a runnable example. |
+
 
 ### Jest spies
 
-#### Spies returning values
+*Jest* provides support for *spies* too, that can be used to validate that a particular class method has been called.
+
+Consider the following snippet that features the tests of a simple class using spies and mocks:
+
+
+
+```typescript
+// src/lib/my-class.ts
+export class MyClass {
+  testFunction(): void {
+    console.log(`testFunction() called`);
+    this.someOtherFunction();
+  }
+
+  someOtherFunction(): void {
+    console.log(`someOtherFunction() called`);
+  }
+
+  functionReturningValue(): number {
+    return 5;
+  }
+}
+
+// test/my-class.test.ts
+import { MyClass } from '../src/lib/my-class';
+
+describe('Hello, spies!', () => {
+
+  test('should invoke someOtherFunction()', () => {
+    const myClassObj = new MyClass();
+    const testFunctionSpy = jest.spyOn(
+      myClassObj, 'someOtherFunction'
+    );
+
+    myClassObj.testFunction();
+    expect(testFunctionSpy).toHaveBeenCalled();
+  });
+
+  test('should call testFunction()', () => {
+    const myClassObj = new MyClass();
+    const testFunctionSpy = jest.spyOn(
+      myClassObj, 'testFunction'
+    ).mockImplementation(() => {
+      console.log(`mockImplementation called`);
+    });
+
+    myClassObj.testFunction();
+    expect(testFunctionSpy).toHaveBeenCalled();
+  });
+
+
+  test('should return value', () => {
+    const myClassObj = new MyClass();
+    jest.spyOn(
+      myClassObj, 'functionReturningValue'
+    ).mockImplementation(() => {
+      return 10;
+    });
+
+    expect(myClassObj.functionReturningValue()).toEqual(10);
+  });
+});
+```
+
+In the first test, you create a *spy* on a class method to validate that it is actually invoked.
+
+In the second one, you create a *spy* for a function and provide a *mocked* implementation.
+
+In the third one, you do something similar but the mock implementation returns a value.
+
+When you create a *spy* on a method, you will be able to check whether the method was invoked and check the parameters received. However, a *spy* does call the actual method. If you want to override the logic of the function you will have to provide a *mock* implementation.
+
+An example in which *mocking* will be helpful, is when you want to prevent a certain method to access the database. As seen in the third test, you can even provide a *mock implementation* that returns values so that you can test the different types of situations you might find when interacting with external services like databases (no data, single record, multiple records, error thrown, etc.) without really sending requests to the database.
+
+| EXAMPLE: |
+| :------- |
+| See [09: Test-driven development &mdash; *Jest* spies](09-jest-spies) for a runnable example. |
 
 ## Asynchronous tests
 
-### Using done
+Consider the following class that provides a method that executes a callback asynchronously with a given fixed value:
 
-### Using async/await
+```typescript
+// app/src/lib/my-class.ts
+export class MyClass {
+  executeCbAsynchronously(cb: (value: string) => void): void {
+    setTimeout(() => {
+      cb(`completed!`);
+    }, 1000);
+  }
+}
+```
+
+Let's assume that you have to write a test to validate that the callback is invoked with the given argument.
+
+The first attempt might look something like this:
+
+```typescript
+describe('Hello, async tests!', () => {
+  test('fails: should wait for callback to complete', () => {
+    const myClassObj = new MyClass();
+    let valueReceivedInCb!: string;
+    myClassObj.executeCbAsynchronously((value: string) => {
+      valueReceivedInCb = value;
+    });
+    expect(valueReceivedInCb).toBe('completed!');
+  });
+});
+```
+
+It is fairly obvious that the test will fail, as the expectation will be executed before we have assigned the value to `valueReceivedInCb` variable.
+
+This can be fixed using `done()`. This function is used to notify *Jest* that the async test has completed and that the expectations can take place.
+
+Note that we will need to rewrite the test as follows:
+
+```typescript
+describe('Hello, async tests with done!', () => {
+  let valueReceivedInCb!: string;
+
+  beforeEach((done: jest.DoneCallback) => {
+    const myClassObj = new MyClass();
+    myClassObj.executeCbAsynchronously((value: string) => {
+      valueReceivedInCb = value;
+      done();
+    });
+  });
+
+  test('pass: should wait for callback to complete', () => {
+    expect(valueReceivedInCb).toBe('completed!');
+  });
+});
+```
+
+| NOTE: |
+| :---- |
+| By default, *Jest* will wait for 5 seconds before causing a timeout failure when using `done()`. |
+
+
+You can use *async/await* in the same way you'd use it in your application code:
+
+```typescript
+// src/lib/my-class.ts
+export class MyClass {
+  delayedPromise(): Promise<string> {
+    return new Promise<string>((resolve) => {
+      setTimeout(() => {
+        resolve('completed!');
+      }, 1000);
+    });
+  }
+}
+
+describe('Hello, async/await tests', () => {
+  test('should resolve after some time', async () => {
+    const myClassObj = new MyClass();
+    const result = await myClassObj.delayedPromise();
+    expect(result).toEqual('completed!');
+  });
+});
+```
 
 ## HTML-based tests
+301/539
 
 ### DOM events
 
@@ -267,3 +676,22 @@ Illustrates how to group tests into test suites.
 
 ### [04: Forcing and skipping tests in *Jest*](04-jest-forcing-and-skipping-tests)
 Illustrates how to use `test.only()`, `fit()` and `fdescribe()` to force tests and `xit()` to skip tests, and how *Jest* behaves when forcing and skipping tests.
+
+### [05: *Jest* matchers](05-jest-matchers)
+A sandbox that illustrates *Jest* matchers.
+
+### [06: *Jest* test setup and teardown](06-jest-setup-teardown-tasks)
+Running setup and teardown activities for tests and test suites.
+
+### [07: *Jest* data-driven tests](07-jest-data-driven-tests)
+Running multiple tests based on data.
+
+### [08: *Jest* mocks](08-jest-mocks)
+Practising *Jest* mocks.
+
+### [09: Test-driven development &mdash; *Jest* spies](09-jest-spies)
+Practising *Jest* spies and mock implementations.
+
+## ToDo
+
+- [ ] Summarize the known info about mocks, stubs and spies and compare with Jest concepts.

@@ -1,0 +1,43 @@
+{
+  "name": "ndps",
+  "version": "0.1.0",
+  "description": "Illustrating Node.js advanced techniques and patterns",
+  "main": "main.js",
+  "engines": {
+    "node": ">=14.17.0",
+    "npm": ">=7.6.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {
+    "tsc_outDir": "dist/"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "26.0.23",
+    "@types/node": "15.12.5",
+    "@typescript-eslint/eslint-plugin": "4.28.1",
+    "@typescript-eslint/parser": "4.28.1",
+    "eslint": "7.29.0",
+    "jest": "27.0.6",
+    "ts-jest": "27.0.3",
+    "typescript": "4.3.4"
+  },
+  "scripts": {
+    "reset": "rm -rf node_modules && npm run clean-dist && npm install",
+    "clean-dist": "rm -rf ${npm_package_config_tsc_outDir}",
+    "freshen-deps": "./scripts/freshen.sh",
+    "lint": "node_modules/.bin/tsc --noEmit && node_modules/.bin/eslint app/src/",
+    "build": "npm run lint && node_modules/.bin/tsc",
+    "start": "npm run build && node dist/main.js",
+    "test": "jest --verbose",
+    "test-watch": "jest --watchAll --verbose --testTimeout=30000"
+  }
+}

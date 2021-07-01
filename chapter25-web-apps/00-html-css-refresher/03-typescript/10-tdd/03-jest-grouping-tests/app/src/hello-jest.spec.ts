@@ -6,5 +6,5 @@ describe('a group of tests', () => {
 
   test('second test', () => {
     expect('abc').not.toEqual('def');
-  })
+  });
 });

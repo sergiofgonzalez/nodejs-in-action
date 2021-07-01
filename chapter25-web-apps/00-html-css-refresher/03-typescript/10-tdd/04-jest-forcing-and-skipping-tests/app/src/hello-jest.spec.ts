@@ -11,7 +11,7 @@ describe('a group of tests', () => {
 
   fit('second test (forced)', () => {
     expect('abc').not.toEqual('def');
-  })
+  });
 
   test('third test (implicitly skipped)', () => {
     expect(false).toBeFalsy();
@@ -30,9 +30,9 @@ fdescribe('another group of tests (forced)', () => {
 
   it('another second test', () => {
     expect('abc').not.toEqual('def');
-  })
+  });
 
-  xit('another third test', () => {
+  xit('another third test (explicitly skipped)', () => {
     expect(true).toBeFalsy();
   });
 });
@@ -48,7 +48,7 @@ describe('yet another group of tests (implictly skipped)', () => {
 
   it('yet another second test', () => {
     expect('abc').not.toEqual('def');
-  })
+  });
 
   it('yet another third test', () => {
     expect(true).toBeFalsy();
