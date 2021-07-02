@@ -1,3 +1,3 @@
-# 09: Test-driven development &mdash; *Jest* spies
-> practising *Jest* spies and mock implementations.
+# 10: Test-driven development &mdash; Asynchronous tests with *Jest*
+> practising asynchronous tests with *Jest*
 

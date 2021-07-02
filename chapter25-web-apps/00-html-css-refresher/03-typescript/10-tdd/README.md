@@ -15,7 +15,7 @@ Most of the modern world of JavaScript is based in frameworks that embrace some 
 
 ## The *TDD* testing paradigm
 
-The *TDD* testing paradigm is about starting with tests, and drive the implementation of functionality through these tests:
+The *Test-Driven Development (TDD)* testing paradigm is about starting with tests, and drive the implementation of functionality through these tests:
 + Write a test that fails.
 + Run the test to ensure it fails.
 + Write code to make the test pass.
@@ -648,20 +648,169 @@ describe('Hello, async/await tests', () => {
   });
 });
 ```
+| EXAMPLE: |
+| :------- |
+| See [10: Asynchronous tests with *Jest*](10-jest-async-tests) for a runnable example. |
 
 ## HTML-based tests
-301/539
+
+*Jest* uses a library named [`jsdom`](https://github.com/jsdom/jsdom) for testing HTML elements and interactions.
+
+Note that *jsdom* is not a browser, but a library that implements the DOM API. The benefit of this approach is the speed at which you can run your test, and the fact that you don't have to provide a full-blown environment to run your browser like you'd need when using other approaches.
+
+In order to run you will need to do:
+
+```bash
+npm install --save-dev jsdom @types/jsdom
+```
+
+Then, you will need to update your `jest.config.js` configuration to enable the *jsdom* environment (instead of node)
+
+```javascript
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json'
+    }
+  },
+  moduleFileExtensions: [
+    'ts',
+    'js'
+  ],
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest'
+  },
+  testMatch: [
+    '**/test/**/*.test.(ts|js)'
+  ]
+};
+
+```
+
+With *jsdom* installed, and *Jest* set up, you can now write tests that check whether the *DOM* has been updated.
+
+Consider the following simple function that sets the content of a `<div>`:
+
+```typescript
+function setTestDivContents(text: string) {
+  const div = document.querySelector('#test_div');
+  const pNode = document.createElement('p');
+  pNode.textContent = text;
+  div?.appendChild(pNode);
+}
+```
+
+Then, we can write a test that validates that the function works as expected:
+
+```typescript
+describe('HTML test suite', () => {
+  test('should set text on div', () => {
+    document.body.innerHTML = `<div id="test_div"></div>`;
+    const divElement = document.querySelector('#test_div');
+    expect(divElement).not.toBeNull();
+
+    setTestDivContents('Hello to Jason Isaacs!');
+    expect(divElement?.textContent).toContain('Hello to Jason');
+  });
+});
+```
+
 
 ### DOM events
 
+There are times when we also need to test DOM events like the ones triggered when an user clicks on a button. The *jsdom* library will parse the script tags and JavaScript functions and execute them.
+
+This is illustrated in the following snippet:
+
+```typescript
+describe('DOM events test suite', () => {
+
+  const htmlBodyWithClickEventHandling = `
+  <body>
+    <button>Click me!</button>
+    <script type="text/javascript">
+      function clickEventHandler() {
+        console.log('clickEventHandler called!');
+      }
+      const btn = document.querySelector('button');
+      btn.addEventListener('click', clickEventHandler);
+    </script>
+  </body>
+  `;
+
+
+  test('should trigger a click DOM event', () => {
+    const dom = new JSDOM(htmlBodyWithClickEventHandling, { runScripts: 'dangerously' });
+
+    const button = <HTMLElement>dom.window.document.querySelector('button');
+    const buttonSpy = jest.spyOn(button, 'click');
+    button.click();
+    expect(buttonSpy).toHaveBeenCalled();
+  });
+});
+```
+
+The first section defines the body of a simple HTML document that contains a clickable button. Then we set up a tst on which the document is laid out using *jsdom*, and then we simulate user interaction.
+
+This technique can be extended to other DOM events, will give us the opportunity to construct snippets of HTML with JavaScript and test them.
+
+| EXAMPLE: |
+| :------- |
+| See [11: HTML testing with *Jest* and *jsdom*](11-jest-jsdom-html) for a runnable example illustrating both examples of this section. |
+
 ## Protractor
+
+[*Protractor*](https://github.com/angular/protractor) is a Node-based test runner that is used to perform end-to-end or automated acceptance testing. With *Protractor*, you have the capability to control a web browser programmatically.
+
+You can install *Protractor* using:
+
+```bash
+npm install protractor
+```
+
+| NOTE: |
+| :---- |
+| *Protractor* is a program built on top of *WebDriverJS*. |
+
 
 ### Selenium
 
-### Finding page elements
+*Selenium* is a driver for web browsers. That is, it is engine that runs under the hood of *Protractor to handle the interaction with the browser.
+
+| NOTE: |
+| :---- |
+| *Selenium* not only provides programmatic in JavaScript, but also in other programming languages like Python and Java. |
+
+*Selenium* requires a Java runtime.
+
+
+| NOTE: |
+| :---- |
+| There are no examples on Protractor/Selenium as it is not clear the approach for WSL2. |
 
 ## You know you've mastered this chapter when...
 
++ You understand what the *Test Driven Development (TDD)* entails.
+
++ You understand the different types of tests (unit/integration/acceptance) and its categorization (black-box/white-box).
+
++ You're familiar with *Jest* and *ts-jest* and know about the different configuration pieces.
+
++ You know how to create *Jest* tests and test suites for TypeScript in *Node.js* and *jsdom* environments.
+
++ You are aware of how to perform the following in *Jest*
+  + Force and skip tests
+  + Use the *Jest* matchers
+  + Perform the test setup and teardown for test suites and tests
+  + Perform data-driven tests
+  + Use *Jest mocks and spies*
+  + Write tests for async code (callback-based with `done()` and async/await)
+
++ You know how to write HTML tests, and how to integrate with *jsdom* to simulate user interactions.
+
++ You're aware that *Protractor* is an end-to-end testing tool that can be integrated with *Jest*.
 
 ## Exercises, code examples, and mini-projects
 
@@ -692,6 +841,19 @@ Practising *Jest* mocks.
 ### [09: Test-driven development &mdash; *Jest* spies](09-jest-spies)
 Practising *Jest* spies and mock implementations.
 
+### [10: Asynchronous tests with *Jest*](10-jest-async-tests)
+Practising asynchronous tests with *Jest*.
+
+### [11: HTML testing with *Jest* and *jsdom*](11-jest-jsdom-html)
+Introducing HTML testing and DOM event testing with *Jest* and *jsdom*.
+
+
 ## ToDo
 
 - [ ] Summarize the known info about mocks, stubs and spies and compare with Jest concepts.
+
+- [ ] Investigate why the timeout does not seem to be honored
+
+- [ ] Explore Jest coverage capabilities
+
+- [ ] Investigate how to run e2e tests with *Protractor/Selenium* on WSL2 (maybe using Docker is a better option in order not to screw WSL2 environment).
