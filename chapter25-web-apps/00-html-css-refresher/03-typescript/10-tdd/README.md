@@ -621,9 +621,19 @@ describe('Hello, async tests with done!', () => {
 });
 ```
 
-| NOTE: |
-| :---- |
-| By default, *Jest* will wait for 5 seconds before causing a timeout failure when using `done()`. |
+By default, *Jest* will wait for 5 seconds before causing a timeout failure when using `done()`.
+
+If you want to increase the timeout you have to update your `jest.config.js` file adding:
+
+```javascript
+module.exports = {
+  testTimeout: 5000,
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+...
+  testTimeout: 20000
+};
+```
 
 
 You can use *async/await* in the same way you'd use it in your application code:
@@ -851,8 +861,6 @@ Introducing HTML testing and DOM event testing with *Jest* and *jsdom*.
 ## ToDo
 
 - [ ] Summarize the known info about mocks, stubs and spies and compare with Jest concepts.
-
-- [ ] Investigate why the timeout does not seem to be honored
 
 - [ ] Explore Jest coverage capabilities
 
