@@ -1,5 +1,5 @@
 # TypeScript: Chapter 10 &mdash; Test-driven development
-> TBD
+> using *Jest* testing framework in TypeScript projects (Node.js and browser)
 
 ## Contents
 
@@ -444,6 +444,7 @@ describe('Hello multiple data driven test cases', () => {
 | :------- |
 | See [07: *Jest* data-driven tests](07-jest-data-driven-tests) for a runnable example. |
 
+
 ### Jest mocks
 *Jest* also provides support for mocks.
 
@@ -564,6 +565,17 @@ An example in which *mocking* will be helpful, is when you want to prevent a cer
 | EXAMPLE: |
 | :------- |
 | See [09: Test-driven development &mdash; *Jest* spies](09-jest-spies) for a runnable example. |
+
+#### Note: about *mocks*, *spies*, *stubs* and *fakes*
+
+Each testing library use slightly different concepts about their mocking abstractions.
+
+In *Jest*:
+
++ *Spies* are functions that wrap other functions so that you can do assertions about the arguments they receive, returned values, exceptions thrown, and whether they have been called or not. *Spying* on a function do not change the behavior of the function. As a result, you should use *spies* for the *function under test*.
+
++ *Mocks* are *spies* that replace existing functions. You can opt to also provide an implementation to change the control flow, for example, to test an error branch that you wouldn't be able to test otherwise. You shouldn't use *mocks* for the *function under test*.
+
 
 ## Asynchronous tests
 
@@ -857,11 +869,9 @@ Practising asynchronous tests with *Jest*.
 ### [11: HTML testing with *Jest* and *jsdom*](11-jest-jsdom-html)
 Introducing HTML testing and DOM event testing with *Jest* and *jsdom*.
 
+### [e01: Test-driven development &mdash; Long-running tests with *Jest*](e01-jest-long-tests)
+Illustrates how to configure *Jest* for long-running tests, by adding the `testTimeout` property in the `jest.config.js` file.
 
 ## ToDo
-
-- [ ] Summarize the known info about mocks, stubs and spies and compare with Jest concepts.
-
-- [ ] Explore Jest coverage capabilities
 
 - [ ] Investigate how to run e2e tests with *Protractor/Selenium* on WSL2 (maybe using Docker is a better option in order not to screw WSL2 environment).

@@ -38,6 +38,7 @@
     "build": "npm run lint && node_modules/.bin/tsc",
     "start": "npm run build && node dist/main.js",
     "test": "jest --verbose",
-    "test-watch": "jest --watchAll --verbose"
+    "test-watch": "jest --watchAll --verbose",
+    "test-coverage": "jest --verbose --coverage"
   }
 }

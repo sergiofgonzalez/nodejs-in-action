@@ -13,3 +13,4 @@
 + [08 &mdash; Strict compiler options](08-strict-compiler-options)
 + [09 &mdash; Using observables to transform data](09-observables-to-transform-data)
 + [10 &mdash; Test-driven development](10-tdd)
++ [11 &mdash; Angular](11-angular)
