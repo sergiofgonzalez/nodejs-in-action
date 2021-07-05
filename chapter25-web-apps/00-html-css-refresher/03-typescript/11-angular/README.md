@@ -264,15 +264,402 @@ If you then run: `npm start` you will se how the toolbar was added:
 | :------- |
 | See [03: Hello, *Angular Material*!](03-hello-angular-material) for a runnable example. |
 
-### A shared module
+### A *shared module*
+
+The integration path of the Angular Material toolbar, although viable, does not scale well: adding each of them to the `app.module.ts` module file can become quite tedious and complicates unit testing.
+
+Alternatively, you can create a *shared module* that contains all of the *Angular Material modules* in one shot, and then all we need to do is to import this shared module when we require access to *Angular Material* components.
+
+First, you'll need to use the CLI to create the shared module:
+
+```bash
+cd angular-app
+
+
+# add @angular/material (if not already there)
+./ng add @angular/material # ng is a symlink to the local ng
+
+# generate a module named 'shared'
+./ng generate module shared # ng is a symlink to the local ng
+CREATE src/app/shared/shared.module.ts (192 bytes)
+```
+
+Now, we can go to the `shared/` directory and import all the *Angular Material modules* that we want to use in our application.
+
+```typescript
+// src/app/shared/shared.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
+@NgModule({
+  declarations: [],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatSidenavModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
+  ],
+  exports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatSidenavModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
+  ]
+})
+export class SharedModule { }
+```
+
+What you're doing is creating the `SharedModule` class, which is using the `@NgModule` decorator to declare a module. It is using the `imports` array to import all of the *Angular Material* modules that we will be using, and then using the `exports` array to re-export all of these modules, so that they are available to other modules that reference this shared modules.
+
+Next, you need to update the `app.module.ts` to use this shared module:
+
+```typescript
+// src/app/app.module.ts
+import { NgModule } from '@angular/core';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { HeaderComponent } from './header/header.component';
+
+import { SharedModule } from './shared/shared.module';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HeaderComponent
+  ],
+  imports: [
+    AppRoutingModule,
+    SharedModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+Then, you just have to update the `header.component.html`:
+
+```html
+<mat-toolbar color="primary">
+  <span>Switch sales</span>
+  <span class="example-spacer"></span>
+</mat-toolbar>
+```
+
+And you will get the same result as in the previous section, but this time using the *shared module*.
+
+![Hello, Angular Material Toolbar!](images/hello-angular-material.png)
+
+| EXAMPLE: |
+| :------- |
+| See [04: Hello, *Angular Shared Modules*!](04-hello-shared-module) for a runnable example. |
 
 ## An *Angular* application
 
+In this section you will be building an application. The application will handle user log in and log out process.
+
+The application will feature a toolbar at the top of the page. On the right hand-size you will include the username, a shopping cart icon, and a login and logout buttons.
+
+You will also include a sliding panel from the left when a user clicks on the Login button, which will be a login form. The login form will include a Username entry field and a Password field, along with a login button.
+
+The application will be structured in four main components:
++ `AppComponent` &mdash; will house the entire page itself, and will be responsible for any major changes to the body of the HTML page.
+
++ `HeaderComponent` &mdash; responsible for rendering the header panel at the top of the page.
+
++ `UserDetailsComponent` &mdash; that will sit inside the `HeaderComponent` and will provide the username and buttons on the top right of the header panel. This component must communicate with other page elements when a user has clicked on any of the buttons that are available.
+
++ `LoginComponent` &mdash; responsible for presenting the login form, and capturing the input values for the Username and Password, and for reacting to the Login button event click.
+
 ### *Angular* DOM events
+
+Let's generate a *user details* component to understand how we can render *Angular Material* icons and register handlers for DOM events when a user clicks on these icons.
+
+The first thing you have to do is use the *Angular CLI* to generate a new component named `user-details`:
+
+```bash
+# generate component user-details
+./ng generate component user-details # ./ng is a symlink to the local ng
+```
+
+Then, we will add the newly created component to the existing header:
+
+```html
+<!-- src/app/header/header.component.html -->
+<mat-toolbar color="primary">
+  <span>Switch sales</span>
+  <span class="example-spacer"></span>
+  <app-user-details></app-user-details>
+</mat-toolbar>
+```
+
+Then, for proper alignment we will make the `example-spacer` to take as much space as possible, thus pushing the user details to the right.
+
+```css
+/* src/app/header/header.component.scss */
+.example-spacer {
+  flex: 1 1 auto;
+}
+```
+
+![User details CSS](images/header-user-details.png)
+
+With the content properly aligned, you can start working on the *user details* component itself.
+
+First, you will need to add some content to the HTML: you will place the username, the shopping cart icon and the login and logout buttons:
+
+```html
+<!-- src/app/user-details.component.html -->
+
+<span class="username-span">{{loggedInUsername}}</span>
+
+<button mat-icon-button color="white">
+  <mat-icon>shopping_cart</mat-icon>
+</button>
+
+<button mat-icon-button color="white">
+  <mat-icon>logout</mat-icon>
+</button>
+
+<button mat-icon-button color="white" (click)="onLoginClicked()">
+  <mat-icon>login</mat-icon>
+</button>
+```
+
+First of all, you add the *logged in username* as some text within a `<span>`. Note that the syntax to *inject* the value of a property is using double curly-braces. Angular will take care of updating the DOM with the correct value whenever it detects a change in that property (that will be defined in the component's class).
+
+Then, we add a couple of buttons with no handler, and finally you register a handler for the `'click'` event by doing:
+
+```html
+<button mat-icon-button color="white" (click)="onLoginClicked()">
+```
+
+The only thing left to do is populate the `UserDetailsComponent` class so that it features the `loggedInUsername` property and the `onLoginClicked()` function:
+
+```typescript
+// src/app/user-details/user-details.component.ts
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-user-details',
+  templateUrl: './user-details.component.html',
+  styleUrls: ['./user-details.component.scss']
+})
+export class UserDetailsComponent implements OnInit {
+
+  loggedInUsername = 'logged_in_user';
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  onLoginClicked() {
+    console.log(`UserDetailsComponent: onLoginClicked()`);
+  }
+}
+```
+
+For simplicity, you'll just display some information on the console when the user clicks on the login button:
+
+![Angular event hangler](images/login_click_event_handler.png)
 
 ### *Angular EventEmitter*
 
+You now need to show the login panel as the corresponding action when a user clicks on the login button. You know how to *trap* the click event on the button, you now need to emit an event from the *user details* component, so that any other component interested in that *click* can receive the notification and respond with an action.
+
+The first part is sending the event, which you'll do from the *user details* component, by creating a new `EventEmitter` and using it in `OnLoginClicked()` to trigger an event:
+
+```typescript
+// src/app/user-details/user-details.component.ts
+
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-user-details',
+  templateUrl: './user-details.component.html',
+  styleUrls: ['./user-details.component.scss']
+})
+export class UserDetailsComponent implements OnInit {
+
+  loggedInUsername = 'logged_in_user';
+  @Output() notify = new EventEmitter();
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  onLoginClicked() {
+    console.log(`UserDetailsComponent: onLoginClicked()`);
+    this.notify.emit('UserDetailsComponent: emit value');
+  }
+}
+```
+
+Note that you have to import the `EventEmitter` class from `@angular/core`, and then create an instance of that class, and use it in the click event handler. You have to use the `@Output()` decorator to mark the `notify` property as an output property.
+
+Right after that, we need to consume that event. Angular lets you do that through the `(notify)` HTML template event, which is available on the parent component of the component that is emitting the event: the *header* component in your case.
+
+As a result, you need to modify the *header* component HTML to register an event handler:
+
+```html
+<!-- src/app/header/header.component.html -->
+<mat-toolbar color="primary">
+  <span>Switch sales</span>
+  <span class="example-spacer"></span>
+  <app-user-details (notify)='onUserDetailsEvent($event)'>
+  </app-user-details>
+</mat-toolbar>
+```
+
+Note that we declare which function should be receiving the notifications from the *user details* component, and use the syntax `$event` to correctly bind the content of the event.
+
+Next step consists in defining that function:
+
+```typescript
+// src/app/header/header.component.ts
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
+})
+export class HeaderComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  onUserDetailsEvent(event: any) {
+    console.log(`header received onUserDetailsEvent: event=${event}`);
+  }
+}
+```
+
+![Triggering and Receiving Events](images/triggering_events.png)
+
+Note however that you might need to set up a complicated structure of *chained* components if you'd like to communicate to a component that is not the direct parent. Also, see that the `event` is declared of type `any`, which is a *code smell* telling you that you're not using the TypeScript strict type checking system like you should.
+
+| EXAMPLE: |
+| :------- |
+| See [05: Hello, *Angular DOM events*!](05-hello-angular-dom-events) for a runnable example. |
+
 ### *Angular Services*
+The *Domain Events Design Pattern* provides a better solution to the event notification mechanism we saw in the previous section. This pattern allows various classes to register their interest in an event, or to generate domain events.
+
+For example, this means that if a user has clicked a button to add an item to their shopping cart, the class handling that processing can broadcast an event to any interested listeners to notify them that fact.
+
+The basic structure of the *Domain Events Design Pattern* consists in creating a single event bus that all classes have access to.
+In Angular, this can be implemented with *services*.
+
+> A service is a singleton instance that is available to all the classes with an application.
+
+To create the service you have to use the *Angular CLI* doing:
+
+```bash
+cd angular-app
+./ng generate service services/broadcast
+```
+
+This will create a `services/` directory within the `src/app/`. Inside it, we can include our *RxJS* event bus implementation with almost no change:
+
+```typescript
+// src/app/services/broadcast.service.ts
+
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+
+export interface IBroadcastEvent {
+  key: EventKeys;
+  data?: any;
+}
+
+
+export enum EventKeys {
+  ALL = 'all-events',
+  LOGIN_BUTTON_CLICKED = 'login_button_clicked',
+  USER_LOGIN_EVENT = 'user_login_event'
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BroadcastService {
+
+  private eventBus = new Subject<IBroadcastEvent>();
+
+  on(key: EventKeys): Observable<string> {
+    return this.eventBus.asObservable().pipe(
+      filter(event => event.key === key || event.key === EventKeys.ALL),
+      map(event => event.data)
+    );
+  }
+
+  broadcast(key: EventKeys, data: string) {
+    this.eventBus.next({ key, data });
+  }
+}
+```
+
+Finally, you will need to register this service so that all components and classes can get a reference to it. The place to do it is in the `app.module.ts` file:
+
+```typescript
+import { NgModule } from '@angular/core';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { HeaderComponent } from './header/header.component';
+import { BroadcastService } from './services/broadcast.service';
+
+import { SharedModule } from './shared/shared.module';
+import { UserDetailsComponent } from './user-details/user-details.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    UserDetailsComponent
+  ],
+  imports: [
+    AppRoutingModule,
+    SharedModule
+  ],
+  providers: [
+    BroadcastService    /* ADDED! */
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
 ### *Angular* dependency injection
 
@@ -305,6 +692,12 @@ Illustrates how to add a component to an existing Angular application using the 
 
 ### [03: Hello, *Angular Material*!](03-hello-angular-material)
 Illustrates how to add a toolbar component from *Angular Material* to an existing Angular application using the *Angular CLI*.
+
+### [04: Hello, *Angular Shared Modules*!](04-hello-shared-module)
+Illustrates how to define a shared module to an existing Angular application using the *Angular CLI* so that you can include all the components referenced in the shared module in one shot.
+
+### [05: Hello, *Angular DOM events*!](05-hello-angular-dom-events)
+Illustrates how to register event handlers and emit events in an *Angular* application.
 
 ## ToDo
 
