@@ -1,2 +1,2 @@
 # 06: Angular &mdash; Hello, *Angular services*!
-> Illustrates how to create and use *Angular services* by creating a `BroadcastService` event bus.
+> Illustrates how to create and use *Angular services* by creating a `BroadcastService` event bus. Note that this is an intermediate step as the bus is created but no one uses it at this step.

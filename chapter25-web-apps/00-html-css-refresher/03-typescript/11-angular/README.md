@@ -661,11 +661,147 @@ import { UserDetailsComponent } from './user-details/user-details.component';
 export class AppModule { }
 ```
 
+| EXAMPLE: |
+| :------- |
+| See [06: Angular &mdash; Hello, *Angular services*!](06-hello-angular-services) for an example in which the *event bus* is configured (although at this point no one is using it). |
+
 ### *Angular* dependency injection
+Angular uses *Dependency Injection (DI)* to provide services to components.
+
+Let's see with an example how the `UserDetailsComponent` can grab a reference to the `BroadcastService` using this approach:
+
+
+```typescript
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { BroadcastService, EventKeys } from '../services/broadcast.service';
+
+@Component({
+  selector: 'app-user-details',
+  templateUrl: './user-details.component.html',
+  styleUrls: ['./user-details.component.scss']
+})
+export class UserDetailsComponent implements OnInit {
+
+  loggedInUsername = 'logged_in_user';
+  @Output() notify = new EventEmitter();
+
+  constructor(private broadcastService: BroadcastService) { }
+
+  ngOnInit(): void {
+  }
+
+  onLoginClicked() {
+    console.log(`UserDetailsComponent: onLoginClicked()`);
+    this.notify.emit('UserDetailsComponent: emit value');
+
+    this.broadcastService.broadcast(
+      EventKeys.LOGIN_BUTTON_CLICKED,
+      'UserDetailsComponent: LOGIN_BUTTON_CLICKED'
+    );
+  }
+}
+```
+
+Note that the *Dependency Injection* engine will provide an instance of the *Broadcast service* just by adding a member variable through the class constructor.
+
+Then, in the `OnLoginClicked()` function we trigger a `LOGIN_BUTTON_CLICKED` event with some data (for debugging purposes).
 
 ### Child components
 
+With the *Broadcast service* in place, and the domain event triggered from the *User Details component*, you can create some logic to react to this event.
+
+In your case, the *App component* is the one that will feature the *Angular Material Sidenav* to either show or hide the panel that will allow the user to log in. Therefore, it will be the *App component* the one that must handle the `LOGIC_BUTTON_CLICKED` event.
+
+Let's modify the content of the `app.component.html` first to implement that sliding panel:
+
+```html
+<!-- src/app/app.component.html -->
+<app-header></app-header>
+
+<mat-sidenav-container class="full-height-container">
+  <mat-sidenav #sidenav mode="over"
+    class="content-padding"
+    [fixedInViewport]="true"
+    [fixedTopGap]="60"
+    [fixedBottomGap]="0"
+    [opened]="false">
+    Login form will go here!
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="content-padding">
+      Main Content will go here.
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<router-outlet></router-outlet>
+```
+
+In the `app.component.html` we have added a `<mat-sidenav-container>` element, and within it, a `<mat-sidenav>` and `<mat-sidenav-content>` element. Those will work together to provide a side navigation panel that will slide in from the left. The `<mat-sidenav>` element will hold the side navigation panel itself (where you will create the login form), while the `<mat-sidenav-content>` will hold the main content of the page.
+
+Also note that in the line:
+
+```html
+<mat-sidenav #sidenav ...
+```
+
+you are giving this component and id attribute `sidenav` that *Angular* will use to bind the HTML elements to the objects in the corresponding child definition.
+
+That is, we can now get a reference to this control in our component doing:
+
+```typescript
+// src/app/app.component.ts
+
+import { Component, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+import { BroadcastService, EventKeys } from './services/broadcast.service';
+import * as _ from 'underscore';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  title = 'angular-app';
+
+  @ViewChild('sidenav') sidenav: MatSidenav | null = null;
+
+  constructor(broadcastService: BroadcastService) {
+    _.bindAll(this, 'onLoginClicked');
+    broadcastService.on(EventKeys.LOGIN_BUTTON_CLICKED)
+      .subscribe(this.onLoginClicked);
+  }
+
+  onLoginClicked(event: string) {
+    console.log(`AppComponent received: ${ event }`);
+    this.sidenav?.open();
+  }
+}
+```
+
+You have added a class member variable named `sidenav` of type `MatSidenav` (or `null`). The variable has been decorated with `@ViewChild('sidenav')` wich will effectively *bind* the `#sidenav` HTML control state from the template. Note that the component is set to `null` when the class is constructed and will become populated once the HTML view is rendered.
+
+In the constructor, we use *Dependency Injection* again to get a reference to the *BroadcastService* and use it to subscribe to the `LOGIN_BUTTON_CLICKED` event, using the same code we used in the *RxJS* chapter.
+
+In the event handler, you just print some basic info in the console, and then invoke the `open()` function, which will slide the control in from the left.
+
+With that we can start our application, which will show the sliding panel when clicking in the right-most icon (login):
+
+![Sliding Panel](images/hello-sliding-panel.png)
+
+In order to make the sliding panel wider, you can add some CSS to the `app.component.scss` file:
+
+```css
+/* app.component.scss */
+mat-sidenav {
+  width: 60%;
+}
+```
+
 ## *Angular* forms
+
+Angular uses
 
 ### Reactive forms
 
@@ -698,6 +834,9 @@ Illustrates how to define a shared module to an existing Angular application usi
 
 ### [05: Hello, *Angular DOM events*!](05-hello-angular-dom-events)
 Illustrates how to register event handlers and emit events in an *Angular* application.
+
+### [06: Angular &mdash; Hello, *Angular services*!](06-hello-angular-services)
+Illustrates how to create and use *Angular services* by creating a `BroadcastService` event bus. Note that this is an intermediate step as the bus is created but no one uses it at this step.
 
 ## ToDo
 
