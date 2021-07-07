@@ -799,17 +799,248 @@ mat-sidenav {
 }
 ```
 
+| EXAMPLE: |
+| :------- |
+| See [07: Angular &mdash; Hello, *Angular Dependency Injection*!](07-hello-angular-di) for a runnable example. |
+
 ## *Angular* forms
 
-Angular uses
+Angular uses a *two-way data binding process* to link the values that are entered on a form to variables within a component itself. The mechanism is *two-way* because Angular will take care of synchronizing what is shown in the DOM with the member variables of a component, and it will also update the variable values with the information entered by the user.
+
+Angular supports two different methods of establishing this two-way databinding with forms.
+
+The first one, known as *template forms* allows you to bind an input control directly to a property on your class:
+
+```html
+<!-- the input value of the control will be synced with a property `name` -->
+<input type="text" [(ngModel)]="name">
+```
+
+```typescript
+@Component({ ... })
+export class SampleComponent {
+  name: string = "";  /* this will be synched with the control above */
+}
+```
+
+This first way is very simple, but lacks the flexibility to perform extra validation that forms might need, or implement certain actions such as hide form fields as a response to a given user action.
+
+The second way is known as *reactive forms*.
 
 ### Reactive forms
 
+> *Reactive forms* are forms that are defined in code, rather than being defined as individually bound member variables.
+
+Let's start by creating a *login* component, which you will embed in our `<mat-sidenav>` element in our *app* component:
+
+```bash
+cd angular-app
+./ng generate component login
+```
+
+```html
+<!-- src/app/app.component.html -->
+<app-header></app-header>
+
+<mat-sidenav-container class="full-height-container">
+  <mat-sidenav #sidenav mode="over"
+    class="content-padding"
+    [fixedInViewport]="true"
+    [fixedTopGap]="60"
+    [fixedBottomGap]="0"
+    [opened]="false">
+    <app-login></app-login> <!-- Added the login component -->
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="content-padding">
+      Main Content will go here.
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<router-outlet></router-outlet>
+```
+
+The implementation for the `LoginComponent` will be as follows:
+
+```typescript
+// src/app/login/login.component.ts
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { BroadcastService } from '../services/broadcast.service';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
+})
+export class LoginComponent implements OnInit {
+
+  loginForm: FormGroup | null = null;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private broadcastService: BroadcastService
+  ) { }
+
+  ngOnInit(): void {
+    this.buildForm();
+  }
+
+  buildForm() {
+    const form = {
+      username: new FormControl({}, Validators.required),
+      password: new FormControl({}, Validators.required)
+    };
+
+    const formState = {
+      username: {
+        value: '',
+        disabled: false
+      },
+      password: {
+        value: '',
+        disabled: false
+      }
+    };
+
+    this.loginForm = this.formBuilder.group(form);
+    this.loginForm.reset(formState);
+  }
+
+  isFormValid() {
+    return this.loginForm?.valid;
+  }
+}
+```
+
+On the *skeleton* provided by Angular, you have to create a member variable named `loginForm` of type `FormGroup` (or null).
+
+Then you have to use *DI* to get a reference to an instance of the `FormBuilder` class and `BroadcastService`.
+
+Right after that, we have configured the function `buildForm()` in our `ngOnInit()` method. This will be called at initialization time of the component.
+
+The `buildForm()` method creates a `form` object with two properties that correspond with each of the fields of the form. Each of those properties is an instance of the `FormControl` class, whose constructor is taking a blank object as first argument, and a `Validators.require` static function reference that is used to mark the field as required in the form. This will ensure that the form will only be able to be submitted when both properties are populated.
+
+Then you define an object `formState`, which specifies the value of those fields and its *disabled* status. This state will be helpful to reset the form to a known state.
+
+Then, you build the form using the form builder, and reset the values using the `reset()` method.
+
+Finally, you create a method `isFormValid()` that returns the value of the `valid` property of the `loginForm`.
+
 ### Reactive form templates
+
+Now it is time to create the HTML template for the form in the `login.component.html`:
+
+```html
+<!-- src/app/login/login.component.html -->
+<div class="login-container">
+  <div *ngIf="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username">
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password">
+      </mat-form-field>
+      <br>
+      <button mat-button color="primary" type="submit" [disabled]="!isFormValid()">
+        Login
+      </button>
+    </form>
+  </div>
+</div>
+```
+
+These are the relevant parts of the form template:
++ You use the *Angular directive* `*ngIf=<expression>` to ensure that the form is displayed only if the result of the expression is *true*. In our case, the `<div>` will render only if the property `loginForm` is not null or undefined. That will make Angular not to show the dive while it loads the component class, parse the HTML, etc.
+
++ You use the [formGroup]="loginForm" in the `<form>` element, which will set up the two-way databinding between our `loginForm` class member and the HTML elements on the screen.
+
++ In the same `<form>` element you have used `(ngSubmit)="onSubmit()` &mdash; this links the method `onSubmit()` (not yet written) to the `ngSubmit` event that will be triggered when the form is submitted.
+
++ In the `<input>` elements you have used `formControlName=<field-name>"` to set the name of the class property that will be bound to the contents of the field.
+
++ Finally, you've used: `[disabled]="!isFormValid()"`, which will disable the button if the form is not valid.
 
 ### Reading form values
 
+You have configured `onSubmit()` in the HTML form template as the function that will receive the control when the form is valid and has been submitted.
+
+The implementation will be as follows:
+
+```typescript
+// app/src/login/login.component.ts
+
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { BroadcastService, EventKeys } from '../services/broadcast.service';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
+})
+export class LoginComponent implements OnInit {
+
+  loginForm: FormGroup | null = null;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private broadcastService: BroadcastService
+  ) { }
+
+  ngOnInit(): void {
+    this.buildForm();
+  }
+
+  buildForm() {
+    const form = {
+      username: new FormControl({}, Validators.required),
+      password: new FormControl({}, Validators.required)
+    };
+
+    const formState = {
+      username: {
+        value: '',
+        disabled: false
+      },
+      password: {
+        value: '',
+        disabled: false
+      }
+    };
+
+    this.loginForm = this.formBuilder.group(form);
+    this.loginForm.reset(formState);
+  }
+
+  isFormValid() {
+    return this.loginForm?.valid;
+  }
+
+  onSubmit() {
+    console.log(`onSubmit: username=${ this.loginForm?.value.username }`);
+    console.log(`onSubmit: password=${ this.loginForm?.value.password }`);
+
+    this.broadcastService.broadcast(
+      EventKeys.USER_LOGIN_EVENT,
+      this.loginForm?.value.username
+    );
+  }
+}
+```
+
+Now, you can run our application and check everything is correctly wired:
+
+![Reactive Forms](images/hello-reactive-forms.png)
+
+
 ### Angular unit testing
+339
 
 ### Unit testing forms
 
@@ -838,5 +1069,10 @@ Illustrates how to register event handlers and emit events in an *Angular* appli
 ### [06: Angular &mdash; Hello, *Angular services*!](06-hello-angular-services)
 Illustrates how to create and use *Angular services* by creating a `BroadcastService` event bus. Note that this is an intermediate step as the bus is created but no one uses it at this step.
 
+### [07: Angular &mdash; Hello, *Angular Dependency Injection*!](07-hello-angular-di)
+Illustrates how Angular uses dependency injection to grab references to existing services at runtime. In the example, we grab references to a *BroadcastService* using *DI*.
+
 ## ToDo
+
+- [ ] Build the AngularJS ToDo app with Angular
 
