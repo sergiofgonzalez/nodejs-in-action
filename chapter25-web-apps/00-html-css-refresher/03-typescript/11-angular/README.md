@@ -1039,12 +1039,223 @@ Now, you can run our application and check everything is correctly wired:
 ![Reactive Forms](images/hello-reactive-forms.png)
 
 
+| EXAMPLE: |
+| :------- |
+| See [08: Hello, *Angular Reactive Forms*!](08-hello-angular-reactive-forms) for a runnable example. |
+
 ### Angular unit testing
-339
+Angular provides a rich set of unit testing components that enable us to unit test all aspects of our application.
+
+For example, for the *Login component* you have recently introduced you need to validate that:
++ when the form is first presented, both the username and password fields should be blank.
+
++ if only the username is filled in, then *Login* button should be disabled.
+
++ If both the username and password fields are filled in, then the *Login* button should be enabled.
+
++ When the *Login* button is clicked, a domain event should be broadcast with the correct event key and data.
+
+When you use the *Angular CLI*, an `spec.ts` will be automatically generated for you with the following contents:
+
+```typescript
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { LoginComponent } from './login.component';
+
+describe('LoginComponent', () => {
+  let component: LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ LoginComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LoginComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+```
+
+The test source code shows the basic structure of an Angular unit test. It starts by defining a vaiable named `component` of type `LoginComponent`. The test then defines a variable `fixture` of type `ComponentFixture<LoginComponent>` which will hold the rendered HTML template for the login component, and can be used to query or manipulate the DOM.
+
+Then, there is a `beforeEach()` function that which is used to provide any class instances that are required by the *DI* framework, and to declare any imports or services the class might need.
+
+Then, there is another `beforeEach()` that instantiates the fixture and the component and then invokes `fixture.detectChanges()` which will bootstrap the *Angular change detection* on the HTML, but for the purposes of the test.
+
+Right after that, a simple unit test is defined that validates that the component is not null.
+
+In order to run the test you will have to do:
+
+```bash
+npm test
+```
+
+If you run the tests, you will find a few errors and warnings. In particular, regarding our `LoginComponent` we see a:
+
+```
+NullInjectorError: No provider for FormBuilder!
+```
+
+| NOTE: |
+| :---- |
+| See [09: Angular &mdash; Hello, *Angular Unit Testing*!](09-hello-angular-unit-testing) for a runnable example of the app with all the tests passing.<br>Note that you might need to perform some additional configuration steps if you are using *WSL2* as your runtime (see [Configuring the tests for *WSL2* section](#configuring-the-tests-for-wsl2) for details). |
+
+This happens because your `LoginComponent` requires a `FormBuilder` instance. This can be fixed with the following changes in the `beforeEach()` method:
+
+```typescript
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ SharedModule ],
+      declarations: [ LoginComponent ],
+      providers: [ FormBuilder, BroadcastService ]
+    })
+    .compileComponents();
+  });
+```
 
 ### Unit testing forms
+With the `LoginComponent` test correctly configured, we can start adding more tests to check for the expected behaviors.
+
+The following snippet shows the final source code for the *Login component* test:
+
+```typescript
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { BroadcastService, EventKeys } from '../services/broadcast.service';
+import { SharedModule } from '../shared/shared.module';
+
+import { LoginComponent } from './login.component';
+
+describe('LoginComponent', () => {
+  let component: LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
+  let broadcastService: BroadcastService;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ SharedModule ],
+      declarations: [ LoginComponent ],
+      providers: [ FormBuilder, BroadcastService ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LoginComponent);
+    component = fixture.componentInstance;
+    broadcastService = TestBed.inject(BroadcastService);
+    spyOn(broadcastService, 'broadcast');
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should set form fields correctly on startup', () => {
+    expect(component.loginForm).toBeDefined();
+    expect(component.loginForm?.value.username).toEqual('');
+    expect(component.loginForm?.value.password).toEqual('');
+  });
+
+  it('should set form validity correctly', () => {
+    expect(component.isFormValid()).toBeFalse();
+    component.loginForm?.controls['username'].setValue('test_username');
+    expect(component.isFormValid()).toBeFalse();
+    component.loginForm?.controls['password'].setValue('test_password');
+    expect(component.isFormValid()).toBeTrue();
+  });
+
+  it('should broadcast an event when the Login button is clicked', () => {
+    component.loginForm?.controls['username'].setValue('test_username');
+    component.loginForm?.controls['password'].setValue('test_password');
+
+    fixture.detectChanges();
+
+    const loginButton = fixture.debugElement.nativeElement.querySelector('#submit_button');
+    expect(loginButton.disabled).toBeFalsy();
+
+    loginButton.click();
+
+    expect(broadcastService.broadcast).toHaveBeenCalledWith(EventKeys.USER_LOGIN_EVENT, 'test_username');
+  });
+});
+```
+
+First of all note that you have to grab a reference to the `BroadcastService`, in which you will set up a *spy* to validate that the service is called with the expected elements.
+
+Then, we include several test cases for the individual behaviors we want to validate. Note that you can read the value of a control in the form using:
+
+```typescript
+expect(component.loginForm?.value.username).toEqual('');
+```
+
+And you can set the same value doing:
+
+```typescript
+component.loginForm?.controls['username'].setValue('test_username');
+```
+
+You can invoke component methods using:
+
+```typescript
+expect(component.isFormValid()).toBeTrue();
+```
+
+You can grab a reference to an existing HTML element via the `fixture` and use it to validate behaviors (such as `click()`)
+
+```typescript
+const loginButton = fixture.debugElement.nativeElement.querySelector('#submit_button');
+loginButton.click();
+```
+
+### Configuring the tests for *WSL2*
+
+When running on *Windows Subsystem for Linux (WSL2)*, you will need to perform some additional configuration so that the process running on WSL2 can communicate with the browser running as a Windows process.
+
+First, you will need to create a folder in your Windows system so that Angular test runner can keep some temporary information:
+
+```batchfile
+md c:\tmp
+```
+
+Then, you will need to run the test task with the variable `CHROME_BIN` pointing to the location of *Chrome* browser in your Windows machine, but using the Linux syntax:
+
+```bash
+CHROME_BIN='/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe' npm test
+```
+
+If everything goes according to plan, you will see a message in your terminal telling you that all the tests have been successfully executed:
+
+```
+...
+Executed 9 of 9 SUCCESS (0.254 secs / 0.171 secs)
+TOTAL: 9 SUCCESS
+...
+```
+
+And a browser window would have opened also listing that the tests have run successfully:
+
+![Angular tests](images/hello_unit_testing.png)
+
+| EXAMPLE: |
+| :------- |
+| See [09: Angular &mdash; Hello, *Angular Unit Testing*!](09-hello-angular-unit-testing) for the runnable example. |
 
 ### Reacting to domain events
+
+344
+
+
 
 ## You know you've mastered this chapter when...
 
@@ -1066,11 +1277,17 @@ Illustrates how to define a shared module to an existing Angular application usi
 ### [05: Hello, *Angular DOM events*!](05-hello-angular-dom-events)
 Illustrates how to register event handlers and emit events in an *Angular* application.
 
-### [06: Angular &mdash; Hello, *Angular services*!](06-hello-angular-services)
+### [06: Hello, *Angular services*!](06-hello-angular-services)
 Illustrates how to create and use *Angular services* by creating a `BroadcastService` event bus. Note that this is an intermediate step as the bus is created but no one uses it at this step.
 
-### [07: Angular &mdash; Hello, *Angular Dependency Injection*!](07-hello-angular-di)
+### [07: Hello, *Angular Dependency Injection*!](07-hello-angular-di)
 Illustrates how Angular uses dependency injection to grab references to existing services at runtime. In the example, we grab references to a *BroadcastService* using *DI*.
+
+### [08: Hello, *Angular Reactive Forms*!](08-hello-angular-reactive-forms)
+Illustrates how to work with forms in *Angular*.
+
+### [09: Angular &mdash; Hello, *Angular Unit Testing*!](09-hello-angular-unit-testing)
+Illustrates how to write and run unit tests in the browser for Angular components.
 
 ## ToDo
 
