@@ -1,0 +1,4 @@
+.example-spacer {
+  /* this will push user-details to the right */
+  flex: 1 1 auto; /* flex shorthand takes 3 values: {unitless proportion} {second unitless proportion for overflow} {minimum size value} */
+}

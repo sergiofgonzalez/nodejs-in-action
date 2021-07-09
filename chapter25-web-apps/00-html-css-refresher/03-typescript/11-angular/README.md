@@ -1253,8 +1253,115 @@ And a browser window would have opened also listing that the tests have run succ
 
 ### Reacting to domain events
 
-344
+You still need to round out a few more things before considering the application finished:
++ the login sidebar should close and show the main content once the user has logged in.
++ the *user details* component should be updated to show the currently logged-in user.
 
+All these things will occur as a reaction to the `USER_LOGIN_EVENT` event.
+
+Firstly, on the *App component* we will subscribe to the `USER_LOGIN_EVENT` and close the side nav bar when received:
+
+```typescript
+import { Component, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+import { BroadcastService, EventKeys } from './services/broadcast.service';
+import * as _ from 'underscore';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  title = 'angular-app';
+
+  @ViewChild('sidenav') sidenav: MatSidenav | null = null;
+
+  constructor(broadcastService: BroadcastService) {
+    _.bindAll(this, 'onLoginClicked');
+    broadcastService.on(EventKeys.LOGIN_BUTTON_CLICKED)
+      .subscribe(this.onLoginClicked);
+    broadcastService.on(EventKeys.USER_LOGIN_EVENT)
+      .subscribe(this.onLoginEvent);
+  }
+
+  onLoginClicked(event: string) {
+    console.log(`AppComponent received: ${ event }`);
+    this.sidenav?.open();
+  }
+
+  onLoginEvent(event: string) {
+    this.sidenav?.close();
+  }
+}
+```
+
+Then, on the *User Details component* you have to subscribe to the `USER_LOGIN_EVENT` and implement the handler for that event, which will consist in filling out the value of the username and set to true the boolean variable used to track if anyone has logged in already. Also, we define a method for the logout, which will be invoked directly by the logout button:
+
+```typescript
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import * as _ from 'underscore';
+import { BroadcastService, EventKeys } from '../services/broadcast.service';
+
+@Component({
+  selector: 'app-user-details',
+  templateUrl: './user-details.component.html',
+  styleUrls: ['./user-details.component.scss']
+})
+export class UserDetailsComponent implements OnInit {
+
+  loggedInUsername = 'logged_in_user';
+  isLoggedIn: boolean = false;
+  @Output() notify = new EventEmitter();
+
+  constructor(private broadcastService: BroadcastService) {
+    _.bindAll(this, 'loginSuccessful');
+    this.broadcastService.on(EventKeys.USER_LOGIN_EVENT)
+      .subscribe(this.loginSuccessful);
+  }
+
+  ngOnInit(): void {
+  }
+
+  onLoginClicked() {
+    console.log(`UserDetailsComponent: onLoginClicked()`);
+    this.notify.emit('UserDetailsComponent: emit value');
+
+    this.broadcastService.broadcast(
+      EventKeys.LOGIN_BUTTON_CLICKED,
+      'UserDetailsComponent: LOGIN_BUTTON_CLICKED'
+    );
+  }
+
+  loginSuccessful(event: any): void {
+    console.log(`UserDetailsComponent: loginSuccessful(): ${ event }`);
+    this.isLoggedIn = true;
+  }
+
+  onLogoutClicked(): void {
+    this.loggedInUsername = '';
+    this.isLoggedIn = false;
+  }
+}
+```
+
+Finally, you will need to update the *User Details HTML template* to add the final directives and wiring to the corresponding logout method you included:
+
+```html
+<span *ngIf="isLoggedIn" class="username-span">{{loggedInUsername}}</span>
+
+<button *ngIf="isLoggedIn" mat-icon-button color="white">
+  <mat-icon>shopping_cart</mat-icon>
+</button>
+
+<button *ngIf="isLoggedIn" mat-icon-button color="white"  (click)="onLogoutClicked()">
+  <mat-icon>logout</mat-icon>
+</button>
+
+<button *ngIf="!isLoggedIn" mat-icon-button color="white" (click)="onLoginClicked()">
+  <mat-icon>login</mat-icon>
+</button>
+```
 
 
 ## You know you've mastered this chapter when...
@@ -1289,7 +1396,13 @@ Illustrates how to work with forms in *Angular*.
 ### [09: Angular &mdash; Hello, *Angular Unit Testing*!](09-hello-angular-unit-testing)
 Illustrates how to write and run unit tests in the browser for Angular components.
 
-## ToDo
+### Miniproject: ToDo List in Angular
 
-- [ ] Build the AngularJS ToDo app with Angular
+In this miniproject, you build a simple, all-frontend-based ToDo app using Angular.
+
+The sections below are accompanied by a source code project and concepts.
+
+#### e01-todo-angular: setting up shop
+
+1: npx --package=@angular/cli ng new angular-app
 
