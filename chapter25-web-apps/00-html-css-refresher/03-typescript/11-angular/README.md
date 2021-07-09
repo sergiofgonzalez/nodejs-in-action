@@ -1402,7 +1402,630 @@ In this miniproject, you build a simple, all-frontend-based ToDo app using Angul
 
 The sections below are accompanied by a source code project and concepts.
 
-#### e01-todo-angular: setting up shop
+To keep the application simple, it is assumed that there is only one user and you don't have to worry about preserving the state of the data in the application &mdash; all the information will be lost if you reload or close your browser.
 
-1: npx --package=@angular/cli ng new angular-app
+#### Step 1: Setting up shop
 
+In the first step, you have to:
+
++ Initialize a new Angular application named `todo-app` using the *Angular CLI* tooling.
+
++ Create a symlink for `ng` so that you can use it without installing it globally.
+
++ Starting the project and validating the browser displays it correctly.
+
+##### Solution
+
+First of all, you have to do:
+
+```bash
+npx --package=@angular/cli ng new todo-app
+```
+
+Then, to create the *symlink*:
+
+```bash
+cd todo-app
+ln -s node_modules/.bin/ng ng
+```
+
+Finally, you just have to type the following command in the `todo-app` directory:
+```bash
+npm start
+```
+| EXAMPLE: |
+| :------- |
+| See [e01: Angular &mdash; ToDo List: Setting up shop!](e01-todo-angular-setting-up-shop) for a runnable example. |
+
+
+#### Step 2: First steps into the To-Do List application
+
+In the second step you will modify the initial *templates* (source code, HTML and resources) and create the data model that will hold the state for the application.
+
++ Create the data model classes `TodoItem` and `TodoList` that will model an individual task and the corresponding list of tasks.
+  + `TodoItem` &mdash; will contain a string describing the task, and a boolean indicating the completion status of the task.
+  + `TodoList` &mdash; will hold a reference to a list of items. Also, to make it future-proof, it will associate the list to a username.
+
++ Modify the `AppComponent` class so that:
+  + Initializes a `TodoList` instance with a few tasks.
+  + Provides a getter for a property `username` which returns the name of the user who owns the `TodoList` instance.
+  + Provides a getter for a property `itemCount` which returns the number of items that haven't been completed.
+
+> An *Angular component* is a piece of TypeScript code responsible for managing an HTML template and providing it with the data and logic it needs.<br>In this application it acts as a *bridge between the data model classes* and the *HTML template*.
+
++ Modify the *template* associated to the *App component* so that it displays the name of the user, and the number of outstanding items in the list using one-way data binding with `{{ }}`
+
+> A *template*, in an Angular application, is a fragment of HTML that contains expressions that are evaluated by Angular and assembled into the final content that is sent to the browser.
+
++ Add a custom `favicon.ico`.
+
++ Modify `index.html` to use a more friendly title such as *To-Do App.*
+
+##### Solution
+
+Let's start by creating a the file `src/app/todo-item.ts` which will hold the definition of the `TodoItem` class.
+
+```typescript
+// src/app/todo-item.ts
+export class TodoItem {
+  constructor(public task: string, public complete: boolean = false) {  }
+}
+```
+
+You can keep it fairly minimalist, as you just need a placeholder for a piece of data that holds the description of the task, and whether the task is still outstanding or not.
+
+Then, you can go ahead and define the file that will hold the definition of the `TodoList` class:
+
+```typescript
+// src/app/tolod-list.ts
+
+import { TodoItem } from './todo-item';
+
+export class TodoList {
+  constructor(public user: string, private todoItems: TodoItem[] = []) {
+  }
+
+  get items(): readonly TodoItem[] {
+    return this.todoItems;
+  }
+
+  addItem(task: string) {
+    this.todoItems.push(new TodoItem(task));
+  }
+}
+```
+
+You have to create the class according to the given specifications, so that the list of items `todoItems: TodoItem[]` is bound to a string `user`.
+Additionally, for convenienve, we definde a `items` *getter* and will return a readonly reference to the array of items, and an `addItem()` method that is used to append items to the existing list.
+
+
+Then, you can update the `AppComponent` class so that according to the instructions:
+
+```typescript
+import { Component } from '@angular/core';
+import { TodoItem } from './todo-item';
+import { TodoList } from './todo-list';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  private list = new TodoList('<your-name-here>', [
+    new TodoItem('Go for a run', true),
+    new TodoItem('Get flowers'),
+    new TodoItem('Collect tickets')
+  ]);
+
+  get username(): string {
+    return this.list.user;
+  }
+
+  get itemCount(): number {
+    return this.list.items.filter(item => !item.complete).length;
+  }
+}
+```
+
+Within the class, you initialize a private member `list` of type `TodoList` with a few items of type `TodoItem`, and then provide a getter for the username and number of outstanding items.
+
+Right after that you can update the *template* associated to `AppComponent`:
+
+```html
+<!-- src/app/app.component.html -->
+<h3>
+  {{ username }}'s To-Do List
+  <h6>{{ itemCount }} Incomplete Items</h6>
+</h3>
+```
+
+Note how we can use in the template one-way databindings to properties/getters found in the corresponding component class.
+
+###### About the decorator `@Component()` and the corresponding element
+
+The decorator `@Component()` marks the class as a *component* so that *Angular* can handle it correctly. The `@Component()` decorator specifies three properties: `selector`, `templateUrl` and `styleUrls`.
+
+The `selector` property specifies a CSS selector that matches the HTML element to which the component will be applied &mdash; `<app-root>` element in this case. This element can be found in the `src/index.html` file:
+
+```html
+<!-- src/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>To-Do App</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
+```
+
+The `<app-root></app-root>` line tells Angular that the content generated by the `AppComponent`, should be inserted into the `app-root` element. That includes the *template*, the associated CSS, and the logic/behaviors implemented by `AppComponent` class.
+
+If everything goes according to plan, you would be able to start the application using `npm start` and you will see:
+
+![ToDo APP: Step 2](images/todo-app-step2-first-steps.png)
+
+| EXAMPLE: |
+| :------- |
+| See [e02: ToDo List: First steps!](e02-todo-angular-first-steps) for the runnable example. |
+
+#### Step 3: Styling the HTML with Bootstrap
+
+In this step, you will add *Bootstrap* CSS framework to the list of project dependencies, and then modify the application configuration so that Angular identifies from where it can load the Bootstrap styles.
+
++ Install Bootstrap as a project dependency (HINT: use `npm` instead of a CDN).
+
++ Modify the project configuration to make Angular aware that you want to use Bootstrap (HINT: inspect `angular.json`).
+
++ Update the app *template* to use Bootstrap classes
+
+##### Solution
+
+The first step consists in installing Bootstrap. While you have previously followed the guidelines from [Bootstrap](https://getbootstrap.com/) and installed the library using a CDN, with Angular we can rely on the build system and include Bootstrap as a dependency using:
+
+```bash
+cd todo-app
+npm install bootstrap
+```
+
+That will download and install Bootstrap in `node_modules`, and Angular will be able to use it from there.
+
+Once installed, you need to make Angular aware of where Bootstrap can be found. This is done in the `angular.json` file:
+
+```json
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+...
+  "projects": {
+    "todo-app": {
+      "projectType": "application",
+      ...
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            ...
+            "styles": [
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+            ],
+            ...
+            "scripts": []
+          },
+    ...
+}
+```
+
+See how you have to add the specific location at which NPM downloaded the Bootrap library (`"node_modules/bootstrap/dist/css/bootstrap.min.css"`).
+
+Finally, you can start using *Bootstrap* classes in the *App component*:
+
+```html
+<h3 class="bg-primary text-center text-white p-2">
+  {{ username }}'s To-Do List
+  <h6 class="mt-1">{{ itemCount }} Incomplete Items</h6>
+</h3>
+```
+
+Once finalized, you will be able to do `npm start` and you will get:
+
+![Step 3: Styling](images/todo-app-step3-styling-with-bootstrap.png)
+
+| EXAMPLE: |
+| :------- |
+| See [e03: ToDo List: Styling the HTML with Bootstrap](e03-todo-angular-styling-with-bootstrap) for a runnable example. |
+
+#### Step 4: Displaying the list
+
+In this step, you have to display the list of items so that it is visible in the browser.
+
++ Update the *App* component so that it provides access to the list of items.
+
++ Update the *template* so that it displays a simple HTML table with the contents of the list.
+
+##### Solution
+
+The first hing is to modify the `AppComponent` class, so that it exposes a reference to the list of items:
+
+```typescript
+// src/app/app.component.ts
+import { Component } from '@angular/core';
+...
+  get items(): readonly TodoItem[] {
+    return this.list.items;
+  }
+}
+```
+
+Note how we use the `readonly` modifier to indicate that the reference should not be changed.
+
+
+With the `items` property available, you can proceed to modify the corresponding *template*. You have to insert an HTML table, in which the table elements will be provided by the component.
+
+```html
+<h3 class="bg-primary text-center text-white p-2">
+  {{ username }}'s To-Do List
+  <h6 class="mt-1">{{ itemCount }} Incomplete Items</h6>
+</h3>
+
+<!-- Added for Step 4: init -->
+<table class="table table-striped table-bordered table-sm">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Description</th>
+      <th>Done</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of items; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ item.task }}</td>
+      <td [ngSwitch]="item.complete">
+        <span *ngSwitchCase="true">Yes</span>
+        <span *ngSwitchCase="false">No</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- Added for Step 4: end -->
+```
+
+The `*ngFor` expression which lets you iterate over a collection of elements and creating HTML element while doing so, is an example of an *Angular directive*.
+
+The expression:
+```html
+<tr *ngFor="let item of items; let i = index">
+```
+
+tells Angular to treat the `tr` element as a template that should be repeated for every object returned by the component's `items` property. In the expression, we indicate that `item` will be the placeholder variable that will hold a reference to each of the items of the `items` collection, and that `i` will be the placeholder variable that will keep the iteration index.
+
+Then, within the next block you can use binding to both `item` and `i`.
+
+Right after that, we use the following *template expression*:
+
+```html
+<td [ngSwitch]="item.complete">
+  <span *ngSwitchCase="true">Yes</span>
+  <span *ngSwitchCase="false">No</span>
+</td>
+```
+
+`ngSwitch` can be used to conditionally insert different sets of elements based on a condition. In this particular case, you can use it to show *Yes/No* instead of *true/false*.
+
+With those changes in place, the application will show:
+
+![ToDo app: Step 4](images/todo-app-step4-displaying-the-list.png)
+
+| EXAMPLE: |
+| :------- |
+| See [e04: ToDo List: Displaying the list of items!] for a runnable example. |
+
+#### Step 5: Adding two-way data bindings
+
+In this step, you have to modify the *template* so that it includes an extra column in the table with a checkbox. The checkboxes must keep a *two-way data binding* with the completion status of the corresponding item.
+
++ Modify the template to includes an extra column with a checkbox.
+
++ Update the *App* module, to enable the `FormsModule`
+
+##### Solution
+
+The first thing you have to do is to include an extra column in the template, in which we will place a checkbox bound to each of the items `complete` property.
+
+```html
+<!-- app/src/app.component.html -->
+
+<h3 class="bg-primary text-center text-white p-2">
+  {{ username }}'s To-Do List
+  <h6 class="mt-1">{{ itemCount }} Incomplete Items</h6>
+</h3>
+
+<table class="table table-striped table-bordered table-sm">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Description</th>
+      <th colspan="2">Done</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of items; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ item.task }}</td>
+      <td><input type="checkbox" [(ngModel)]="item.complete"></td>
+      <td [ngSwitch]="item.complete">
+        <span *ngSwitchCase="true">Yes</span>
+        <span *ngSwitchCase="false">No</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+```
+
+Note how the data binding syntax in this case is:
+
+```html
+<input type="checkbox" [(ngModel)]="item.complete">
+```
+
+Two-way data binding means that initially, the checkbox will reflect the `item.complete` initial value, but if the user clicks on the checkbox, then Angular will update the the `complete` value of the corresponding item as well.
+
+Then, you have to perform the following modification in the `src/app/app.module.ts` file:
+
+```typescript
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule  /* added in Step 5 */
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+That file represents the *root* module, which is used to configure the application, has to be updated to enable the two-way data binding used in forms, and that lets you use the `[(ngModel)]` expressions.
+
+With all the modifications done, you should be seeing something like:
+
+![Step 5: two-way data binding](images/todo-app-step5-two-way-data-binding.png)
+
+| EXAMPLE: |
+| :------- |
+| See [e05: ToDo List: Two-way data bindings!](e05-todo-angular-two-way-data-binding) for a runnable example. |
+
+
+#### Step 6: Hiding completed items
+
+In this step, you have to filter out the completed items, so that they don't show up in the table.
+
++ Modify the `AppComponent` class, so that the items property only returns the items that have not been completed.
+
+##### Solution
+
+The only change needed is in the `AppComponent` class, where you have to update a little bit the implementation of the getter for the `items` property:
+
+```typescript
+// src/app/app.component.ts
+
+import { Component } from '@angular/core';
+...
+  get items(): readonly TodoItem[] {
+    return this.list.items.filter(item => !item.complete);
+  }
+}
+```
+
+Once done, the application will show as:
+
+![Step 6: Hiding completed items](images/todo-app-step6-hiding-completed-items.png)
+
+
+| EXAMPLE: |
+| :------- |
+| See [e06: ToDo List: Hiding complete items!](e06-todo-angular-hiding-completed-items) for a runnable example. |
+
+
+#### Step 7: Adding items to the list
+
+In this step, you have to enable the user to add new items to the existing list.
+
++ Update the `AppComponent` class to expose a method that handles the addition of a new task to the existing list.
+
++ Modify the *template* so that it displays a *text input* and a *button*, and *wire* the click on the button to the newly exposed method.
+
+##### Solution
+
+The first thing you have to do is modify the `AppComponent` to expose a method that adds a new item to the list:
+
+```typescript
+// src/app/app.component.ts
+
+import { Component } from '@angular/core';
+
+...
+  addItem(newItem: string) {
+    if (newItem != '') {
+      this.list.addItem(newItem);
+    }
+  }
+}
+```
+
+As we haven't introduced validation yet, we add a little bit of defensive programming to prevent empty items to be added to the list.
+
+Then, you just have to update the *template* to include the text input and button:
+
+```html
+<!-- src/app/app.component.html -->
+
+<h3 class="bg-primary text-center text-white p-2">
+  {{ username }}'s To-Do List
+  <h6 class="mt-1">{{ itemCount }} Incomplete Items</h6>
+</h3>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <input class="form-control" placeholder="Enter task here" #todoText>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" (click)="addItem(todoText.value)">
+        Add
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="m-2">
+  <table class="table table-striped table-bordered table-sm">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Description</th>
+        <th colspan="2">Done</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.task }}</td>
+        <td><input type="checkbox" [(ngModel)]="item.complete"></td>
+        <td [ngSwitch]="item.complete">
+          <span *ngSwitchCase="true">Yes</span>
+          <span *ngSwitchCase="false">No</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+Note that we rely on Bootstrap grid system, to position the *input* and the *button*.
+
+The section that is most relevant, from *Angular learnings* perspective is:
+
+```html
+...
+<input class="form-control" placeholder="Enter task here" #todoText>
+<button class="btn btn-primary" (click)="addItem(todoText.value)">
+  Add
+</button>
+```
+
+Note that in the *input*, we use the syntax `#todoText`. That syntax defines a variable with name `todoText` that holds a reference to the `<input>`.
+
+That variable is then used in the button. First of all, we use the syntax `(click)="<expression>"` to wire the execution of expression the `'click'` event handler of the button. Note also, that we use the `todoText` variable that holds a reference to the previous `<input>` as an argument to the method exposed from the `AppComponent` to add new items.
+
+With that in place you will see:
+
+![Step 7: Adding items](images/todo-app-step7-adding-items.png)
+
+
+| EXAMPLE: |
+| :------- |
+| See [e07: ToDo List: Adding items!](e07-todo-angular-adding-items) for a runnable example. |
+
+#### Step 8: Showing the completed items
+
+In this step, you add checkbox at the bottom of the page to filter/unfilter the completed items, so that the user can decide where to hide/show the tasks that have been completed.
+
++ Update the `AppComponent` class to define a new attribute `showComplete` to hold the user choice regarding whether to show or not completed tasks.
+
++ Update the `items` getter to enable awareness of `showComplete`.
+
++ Modify the *template* to add the checkbox, at the bottom of the page, and add the two-way data binding with the `showComplete` property.
+
++ Remove from the *template* the column that displayed *Yes/No*, leaving only the *Done* column with the checkboxes.
+
+##### Solution
+
+The first thing you have to do is update the `AppComponent` class:
+
+```typescript
+// src/app/app.component.ts
+
+import { Component } from '@angular/core';
+...
+  get items(): readonly TodoItem[] {
+    return this.list.items.filter(item => this.showComplete || !item.complete);
+  }
+...
+
+  showComplete: boolean = false;
+}
+```
+
+See how you have to add a simple public property `showComplete: boolean`, and then modified the `items` *getter* so that it returns all the items if `showComplete` is true, or only the not-complete otherwise.
+
+Then, you can go and modify the *template*:
+
+
+```html
+<!-- src/app/app.component.html -->
+
+<h3 class="bg-primary text-center text-white p-2">
+  {{ username }}'s To-Do List
+  <h6 class="mt-1">{{ itemCount }} Incomplete Items</h6>
+</h3>
+...
+<div class="m-2">
+  <table class="table table-striped table-bordered table-sm">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Description</th>
+        <th>Done</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.task }}</td>
+        <td><input type="checkbox" [(ngModel)]="item.complete"></td>
+        <!-- <td [ngSwitch]="item.complete">
+          <span *ngSwitchCase="true">Yes</span>
+          <span *ngSwitchCase="false">No</span>
+        </td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="bg-secondary text-white text-center p-2">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" [(ngModel)]="showComplete" id="defaultCheck1">
+    <label class="form-check-label" for="defaultCheck1">
+      Show completed tasks
+    </label>
+  </div>
+</div>
+```
+
+Note that you have to remove the `colspan="2"`, and commented out the column that displayed whether the item was completed as a string.
+
+Finally, we add at the bottom of the page a checkbox with a label, and perform the two-way data binding to the `showComplete` property recently defined.
+
+With all those changes done, you should see:
+
+![Step 8: Showing completed items](images/todo-app-step8-showing-completed-items.png)
+
+| EXAMPLE: |
+| :------- |
+| See [e08:ToDo List: Showing completed items!](e08-todo-angular-showing-completed-tasks) for a runnable example. |
