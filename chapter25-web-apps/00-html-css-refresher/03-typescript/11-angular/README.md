@@ -580,7 +580,7 @@ For example, this means that if a user has clicked a button to add an item to th
 The basic structure of the *Domain Events Design Pattern* consists in creating a single event bus that all classes have access to.
 In Angular, this can be implemented with *services*.
 
-> A service is a singleton instance that is available to all the classes with an application.
+> A service is a singleton instance that is available to all the classes within an application.
 
 To create the service you have to use the *Angular CLI* doing:
 
@@ -1366,6 +1366,37 @@ Finally, you will need to update the *User Details HTML template* to add the fin
 
 ## You know you've mastered this chapter when...
 
++ You have some basic ideas about the *Angular framework*
+
++ You know how to interact with *Angular CLI*
+  + Create new app &mdash; `npx --package=@angular/cli ng new <app_name>`
+  + Start the app (in dev mode, http://localhost:4200) &mdash; `npm start`
+  + Add a new module &mdash; `./ng generate module <module-name>`
+  + Add a new component &mdash; `./ng generate component <component-name>`
+
++ You're familiar with the structure of an Angular application
+
++ You're aware about the *root component*, which is referenced in the `index.html` page and defined in `src/app/app.component.ts`.
+
++ You're familiar with *Angular modules* (grouping of *Angular components*).
+
++ You're aware of *Angular Material*, the set of user interface components for use within Angular.
+
++ You're familiar with *Angular components*, and how they let you structure your application in *framgments*.
+
++ You know how to register DOM event handlers in components, and how to wire in the *templates* how to invoke them when those are triggered.
+
++ You're aware about the *Angular EventEmitter* which lets you send business events from the TypeScript code, but are aware that it can only be used to communicate *bubble up* events from a child component to its parent.
+
++ You're aware of *Angular services* (singleton instances that are available to all the classes within an application).
+
++ You're familiar with the basics of *Angular Dependency Injection (DI)* system.
+
++ You're familiar with one-way and two-way data bindings.
+
++ You're aware of *Reactive forms*, and understand those are much more powerful that regular forms.
+
++ You know the basics of *Angular unit testing*.
 
 ## Exercises, code examples, and mini-projects
 
@@ -2029,3 +2060,19 @@ With all those changes done, you should see:
 | EXAMPLE: |
 | :------- |
 | See [e08:ToDo List: Showing completed items!](e08-todo-angular-showing-completed-tasks) for a runnable example. |
+
+
+#### Step 9: Showing the completed items
+
+In this step, you add checkbox at the bottom of the page to filter/unfilter the completed items, so that the user can decide where to hide/show the tasks that have been completed.
+
++ Update the `AppComponent` class to define a new attribute `showComplete` to hold the user choice regarding whether to show or not completed tasks.
+
++ Update the `items` getter to enable awareness of `showComplete`.
+
++ Modify the *template* to add the checkbox, at the bottom of the page, and add the two-way data binding with the `showComplete` property.
+
++ Remove from the *template* the column that displayed *Yes/No*, leaving only the *Done* column with the checkboxes.
+
+##### Solution
+
