@@ -4,8 +4,11 @@
 ## Contents
 
 + A quick tour of Express
-+ Building an Express-based web server
-+ Building a functional Express app
++ Express Router
++ Using a template engine for your HTML views
++ Serving static resources
++ Form and session management
+
 
 ## Hello, Express!!
 
@@ -405,7 +408,7 @@ Let's start with the template:
 
 The relevant difference with the other template is that this one features a basic form. Note that it uses template bindings for the `title` and `errorMessage`, so those will be the pieces of information that you will need to send from your Express app.
 
-You will now need to update the handler for the `login/` route as it will need to respond to an initial HTTP GET request to show the form, and a subsequent HTTP POST request to process the form after the user has populated the fields and clicked on the submit button.
+You will now need to update the handler for the `/login` route as it will need to respond to an initial HTTP GET request to show the form, and a subsequent HTTP POST request to process the form after the user has populated the fields and clicked on the submit button.
 
 ```typescript
 // app/src/routes/login.ts
@@ -474,12 +477,168 @@ In this section, you will wrap up our Express app with a few additional capabili
 
 First of all, we will use the `express-session` module to persist pieces of data, such as the username, across screens. A session object will be bound to the request object in order to do that.
 
-## Summary
+The first step to enable the session management is to configure the `express-session` middleware:
+
+```bash
+npm install --save express-session
+npm install --save-dev @types/express-session
+```
+
+Then:
+
+```typescript
+// app/src/main.ts
+import express from 'express';
+import expressSession from 'express-session';
+...
+
+/* middleware setup */
+...
+app.use(expressSession({
+  secret: 'qwerty',         /* key used to sign the session object */
+  resave: false,            /* save session to the store on each request */
+  saveUninitialized: true   /* automatically save new sessions in the store */
+}));
+
+...
+```
+
+Then, before using it, you need to create an interface that will define the shape of the information that will be encoded in the session, in our case, only the `username`:
+
+```typescript
+// app/src/routes/session-data.ts
+import { Session } from 'express-session';
+
+export interface ISessionData extends Session {
+  username: string;
+}
+```
+
+By doing so we can ensure typesafe access to the elements of the session:
+
+```typescript
+// app/src/routes/login.ts
+import express from 'express';
+import { ISessionData } from './session-data';
+
+const router = express.Router();
+
+...
+
+router.post('/login', (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.log(`req.body.username:`, );
+  if (req.body.username?.length > 0) {
+    console.log(`found username in request:`, req.body.username);
+    (<ISessionData>req.session).username = req.body.username;
+    res.redirect('/');
+  } else {
+    console.error(`username not found in request: resending login page with errorMessage`);
+    res.render('login', { title: 'Express Login', errorMessage: 'Please enter a username and password' });
+  }
+});
+
+export { router };
+```
+
+In the logic, we inspect the username that is coming in the request (if any). If none is found, we set up an error message and re-display the login page with that error.
+
+If a username is received, you set up the username into the `session.username` field using a cast, and then redirect the user to the home page.
+
+Now, you can update the home page, so that it will display the username for logged in users, or display a link to users that have not logged in yet:
+
+```html
+<!-- app/src/views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link href="stylesheets/styles.css" rel="stylesheet">
+    <script src="ts/app.js" type="module" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1><%= welcomeMsg %></h1>
+    </header>
+    <main>
+      <% if (username) { %>
+        <p>User: <%= username %> logged in!</p>
+      <% } else { %>
+        <p>Click <a href="/login">here</a> to log in</p>
+      <% } %>
+    </main>
+  </body>
+</html>
+```
+
+Note how you can use embedded JavaScript in the template to control when to show certain parts of the HTML.
+
+Finally, you can update the `/index` handler so that it retrieves the `username` from the *session* and send it to the view:
+
+```typescript
+import express from 'express';
+import { ISessionData } from './session-data';
+
+const router = express.Router();
+
+router.get('/', (req: express.Request, res: express.Response) => {
+  console.log(`Processing request in Index module for `, req.url );
+  res.render('index',
+    {
+      title: 'Express app',
+      welcomeMsg: 'Hello to Jason Isaacs from an Express app',
+      username: (<ISessionData>req.session).username
+    }
+  );
+});
+
+export { router };
+```
+
+With those changes in place, you can start the application, which will behave as follows.
+
+When you open the homepage by pointing your browser to http://localhost:5000 it will display the welcome page inviting you to log in. This happens because there is no username in the session yet.
+
+![Initial: no login](images/initial_no_login.png)
+
+If you click on the link, you will be redirected to the login page, where the login form will be presented:
+
+![Login form](images/login_form.png)
+
+If you click right away on the *Login* button, an error message will be displayed to the user:
+
+![Login form: error](images/login_form_error.png)
+
+If you populate the username and click on submit, you will be redirected to the home page, where your name will be displayed instead of the login link:
+
+![Login form: logging in](images/login_form_logging_in.png)
+
+![Index: logged in](images/initial_logged_in.png)
+
+Now, if you open another browser tab, you will see that the username will still be there:
+
+![Index: logged in](images/initial_logged_in.png)
+
+However, if you open a private browser session and log in again with another username, you'll see that the session is not shared:
+
+![Index: logged in (another user)](images/initial_logged_in_another_user.png)
+
+| EXAMPLE: |
+| :------- |
+| See [07: Hello, *Express* session management and redirects in TypeScript!!](07-hello-express-session-redirects) for a runnable example. |
 
 
 ## You know you've mastered this chapter when...
 
-+ You have some basic ideas about the *Angular framework*
++ You setup a Express application starter using TypeScript.
++ You understand why the Express Router object helps you modularize your endpoint definitions and are comfortable using it.
++ You're comfortable using configuration packages such as `dotenv` in your Express starter project.
++ You know how to configure and use a template engine such as *EJS* in your Express application.
++ You're aware of how to configure your *Express* application to serve static resources, and can configure a project that contains stylesheets, images, and even TypeScript/JavaScript frontend code.
++ You are comfortable using `express-session` module and understand what it provides.
++ You are comfortable doing form management (session management, redirection, basic error reporting) in your Express application.
+
 
 ## Exercises, code examples, and mini-projects
 
@@ -500,6 +659,9 @@ A simple *Express server* in which serving static files is enabled on top of the
 
 ### [06: Hello, *Express* form management in TypeScript!!](06-hello-express-form-management)
 A simple *Express server* in which form management is illustrated.
+
+### [07: Hello, *Express* session management and redirects in TypeScript!!](07-hello-express-session-redirects)
+A simple *Express server* in which session management and redirection capabilities are illustrated.
 
 ## ToDo
 - [ ] Add more serious Jest based tests for Express applications (review blog on correctly testing Express apps)
