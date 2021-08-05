@@ -367,7 +367,112 @@ See how you can now include links to a favicon, stylesheets, and JavaScript...
 
 ### Express forms
 
+In this section, you will create a `login.ejs` template that will be used from the login handler when a POST request is received.
+
+Let's start with the template:
+
+```html
+<!-- app/src/views/login.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link href="stylesheets/styles.css" rel="stylesheet">
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <script src="ts/app.js" type="module" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Login</h1>
+    </header>
+    <main>
+      <form method="POST">
+        <p><%= errorMessage %></p>
+        <p>
+          Username: <input name="username">
+        </p>
+        <p>
+          Password: <input name="password" type="password">
+        </p>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+    </main>
+  </body>
+</html>
+```
+
+The relevant difference with the other template is that this one features a basic form. Note that it uses template bindings for the `title` and `errorMessage`, so those will be the pieces of information that you will need to send from your Express app.
+
+You will now need to update the handler for the `login/` route as it will need to respond to an initial HTTP GET request to show the form, and a subsequent HTTP POST request to process the form after the user has populated the fields and clicked on the submit button.
+
+```typescript
+// app/src/routes/login.ts
+import express from 'express';
+
+const router = express.Router();
+
+router.get('/login', (req: express.Request, res: express.Response) => {
+  res.render('login', { title: 'Express Login', errorMessage: null });
+});
+
+router.post('/login', (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.log(`req.body.username:`, req.body.username);
+});
+
+export { router };
+```
+
+Note that for now, the handling of the form consists in displaying on the server console the username received in the request.
+
+Finally, you need to wire the necessary middleware to handle non-empty request in our Express app.
+
+```typescript
+// app/src/main.ts
+import express from 'express';
+import dotenv from 'dotenv';
+import path from 'path';
+import * as Index from './routes/index';
+import * as Login from './routes/login';
+
+
+dotenv.config(); // bootstrap configuration
+export const app = express();
+
+
+/* templating engine setup */
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+/* middleware setup */
+process.env.STATIC_RESOURCES_PATH = path.join(__dirname, process.env.PUBLIC_STATIC_RESOURCES_PATH ?? 'public');
+app.use(express.static(process.env.STATIC_RESOURCES_PATH));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+/* route declarations */
+app.use('/', Index.router);
+app.use('/', Login.router);
+
+const port = process.env.PORT ?? 3000;
+
+export const server = app.listen(port, () => {
+  console.log(`HTTP server listening on port ${ port }`);
+});
+```
+
+Note that the `express.json()` and `express.urlencoded()` middleware have to be placed before the route declarations. Otherwise, that functionality will not affect them.
+
+| EXAMPLE: |
+| :------- |
+| See [06: Hello, *Express* form management in TypeScript!!](06-hello-express-form-management) for a runnable example. |
+
 ### Express session data and redirects
+
+In this section, you will wrap up our Express app with a few additional capabilities.
+
+First of all, we will use the `express-session` module to persist pieces of data, such as the username, across screens. A session object will be bound to the request object in order to do that.
 
 ## Summary
 
@@ -381,18 +486,20 @@ See how you can now include links to a favicon, stylesheets, and JavaScript...
 ### [01: Hello, *Express* in TypeScript!!](01-hello-express-ts)
 First express server and sample test spec to illustrate how to use *Express* in a TypeScript project.
 
-### [02: Express &mdash; Hello, *Express Router* in TypeScript!!](02-hello-express-router-ts)
+### [02: Hello, *Express Router* in TypeScript!!](02-hello-express-router-ts)
 A simple *Express server* using the *Router* object to split endpoint declaration across multiple files.
 
-### [03: Express &mdash; Hello, configuring *Express* with `dotenv` in TypeScript!!](03-hello-express-config-dotenv-ts)
+### [03: Hello, configuring *Express* with `dotenv` in TypeScript!!](03-hello-express-config-dotenv-ts)
 A simple *Express server* in which `dotenv` module to handle configuration is enabled.
 
-### [04: Express &mdash; Hello, *Express* templating with `ejs` in TypeScript!!](04-hello-express-templating-ejs-ts)
+### [04: Hello, *Express* templating with `ejs` in TypeScript!!](04-hello-express-templating-ejs-ts)
 A simple *Express server* in which `ejs` is used as the templating engine for HTML pages.
 
-### [05: Express &mdash; Hello, *Express* static file serving in TypeScript!!](05-hello-express-static-files)
+### [05: Hello, *Express* static file serving in TypeScript!!](05-hello-express-static-files)
 A simple *Express server* in which serving static files is enabled on top of the previous example.
 
+### [06: Hello, *Express* form management in TypeScript!!](06-hello-express-form-management)
+A simple *Express server* in which form management is illustrated.
 
 ## ToDo
 - [ ] Add more serious Jest based tests for Express applications (review blog on correctly testing Express apps)
