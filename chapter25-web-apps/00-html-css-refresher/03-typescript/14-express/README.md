@@ -260,9 +260,6 @@ Now, you're ready to create our first template:
   <head>
     <meta charset="utf-8">
     <title><%= title %></title>
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <link href="stylesheets/styles.css" rel="stylesheet">
-    <script src="ts/app.js" type="module" defer></script>
   </head>
   <body>
     <header>
@@ -271,8 +268,6 @@ Now, you're ready to create our first template:
   </body>
 </html>
 ```
-
-Note that now it looks like a full-fledged HTML page in which we are using the additional tags `<%= %>` to bind some values managed in the Express app.
 
 The final step consists in modifying the index route handler, so that it sends those values:
 
@@ -297,7 +292,78 @@ export { router };
 
 At this point, you will be able to start the Express app, and it will work, but you will find some errors related to the CSS and favicon not being retrieved. This is because you haven't configured the static file handling yet.
 
+| EXAMPLE: |
+| :------- |
+| See [04: Express &mdash; Hello, *Express* templating with `ejs` in TypeScript!!](04-hello-express-templating-ejs-ts) for a runnable example. |
+
 ### Static files
+
+The next step consists of making the necessary additions so that static resources intended to be run on the browser are correctly served by our Express app.
+
+As a side effect, this will allow us to improve our views to reference images, fonts, CSS files, etc.
+
+In order to enable serving static files, you just have to register the `express.static()` middleware passing the location where you intend to place the static resources:
+
+```typescript
+// app/src/main.ts
+import express from 'express';
+import dotenv from 'dotenv';
+import path from 'path';
+import * as Index from './routes/index';
+import * as Login from './routes/login';
+
+
+dotenv.config(); // bootstrap configuration
+export const app = express();
+
+
+/* templating engine setup */
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+/* route declarations */
+app.use('/', Index.router);
+app.use('/', Login.router);
+
+/* serving static files enablement */
+process.env.STATIC_RESOURCES_PATH = path.join(__dirname, process.env.PUBLIC_STATIC_RESOURCES_PATH ?? 'public');
+app.use(express.static(process.env.STATIC_RESOURCES_PATH));
+
+const port = process.env.PORT ?? 3000;
+
+export const server = app.listen(port, () => {
+  console.log(`HTTP server listening on port ${ port }`);
+});
+```
+
+Note that we allow the location of static resources to be configured, and otherwise we will use the `app/src/public/` directory.
+
+Once enabled, we can update the view:
+
+```html
+<!-- app/src/views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link href="stylesheets/styles.css" rel="stylesheet">
+    <script src="ts/app.js" type="module" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1><%= welcomeMsg %></h1>
+    </header>
+  </body>
+</html>
+```
+
+See how you can now include links to a favicon, stylesheets, and JavaScript...
+
+| EXAMPLE: |
+| :------- |
+| See [05: Express &mdash; Hello, *Express* static file serving in TypeScript!!](05-hello-express-static-files) for a runnable example. |
 
 ### Express forms
 
@@ -320,6 +386,13 @@ A simple *Express server* using the *Router* object to split endpoint declaratio
 
 ### [03: Express &mdash; Hello, configuring *Express* with `dotenv` in TypeScript!!](03-hello-express-config-dotenv-ts)
 A simple *Express server* in which `dotenv` module to handle configuration is enabled.
+
+### [04: Express &mdash; Hello, *Express* templating with `ejs` in TypeScript!!](04-hello-express-templating-ejs-ts)
+A simple *Express server* in which `ejs` is used as the templating engine for HTML pages.
+
+### [05: Express &mdash; Hello, *Express* static file serving in TypeScript!!](05-hello-express-static-files)
+A simple *Express server* in which serving static files is enabled on top of the previous example.
+
 
 ## ToDo
 - [ ] Add more serious Jest based tests for Express applications (review blog on correctly testing Express apps)
