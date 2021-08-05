@@ -164,9 +164,138 @@ In this section you will build a basic *Express* application with two pages that
 
 ### Express templating
 
-### Handlebars configuration
+The first step consists in setting up a templating engine for the Express application. You will be using [Embedded JavaScript templates (*EJS*)](https://www.npmjs.com/package/ejs) but there are many other options.
+
+When using *EJS* you can create your HTML pages using some specific syntax that lets you mix HTML elements with JavaScript logic and bindings.
+
+In your simple case, we will be *binding* variables used in our Express application to certain *expressions* used in our HTML pages as seen below:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+  </head>
+  <body>
+    <header>
+      <h1><%= welcomeMsg %></h1>
+    </header>
+  </body>
+</html>
+```
+
+See how the binding is being done via `<%= title %>` and `<%= welcomeMsg %>` expressions. That will have the effect of displaying the *escaped output* of the variables `title` and `welcomeMsg` replacing the `<%= >` tags.
+
+Then, you will find to add [*EJS*](https://www.npmjs.com/package/ejs) as a dependency:
+
+```bash
+npm install --save ejs
+```
+
+And tell *Express* that you want to use *EJS* as the templating engine, and where you're going to place the views:
+
+```typescript
+// app/src/main.ts
+import express from 'express';
+import dotenv from 'dotenv';
+import path from 'path';
+import * as Index from './routes/index';
+import * as Login from './routes/login';
+
+
+dotenv.config(); // bootstrap configuration
+export const app = express();
+
+
+/* templating engine setup */
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+```
+In your case, you will be placing the views in `app/src/views/`. As a result, you will need to create a script that copies that directory from `app/src/views/` to `dist/` so that is found in the final transpiled source code.
+
+That can easily be achieved using modules such as [`shelljs`](https://www.npmjs.com/package/shelljs).
+
+First you add `shelljs` to the list of development dependencies:
+
+```bash
+npm install --save-dev shelljs @types/shelljs ts-node
+```
+
+| NOTE: |
+| :---- |
+| [`ts-node`](https://www.npmjs.com/package/ts-node) provides a TypeScript execution environment. You will use it to run a TypeScript file directly from your command line. |
+
+And then create a simple script that performs the copy:
+
+```typescript
+// scripts/copy-static-assets.ts
+import * as shell from 'shelljs';
+
+shell.cp('-R', 'app/src/views', 'dist/');
+```
+
+Finally, you wire it in the build process updating your `package.json`:
+
+```json
+"scripts": {
+...
+  "copy-static-assets": "ts-node scripts/copy-static-assets.ts",
+...
+  "build": "npm run lint && node_modules/.bin/tsc && npm run copy-static-assets",
+...
+}
+```
+
+Note that we're invoking the `copy-static-assets.ts` TypeScript program using `ts-node` with no further configuration.
 
 ### Using templates
+
+Now, you're ready to create our first template:
+
+```html
+<!-- app/src/views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link href="stylesheets/styles.css" rel="stylesheet">
+    <script src="ts/app.js" type="module" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1><%= welcomeMsg %></h1>
+    </header>
+  </body>
+</html>
+```
+
+Note that now it looks like a full-fledged HTML page in which we are using the additional tags `<%= %>` to bind some values managed in the Express app.
+
+The final step consists in modifying the index route handler, so that it sends those values:
+
+```typescript
+// app/src/routes/index.ts
+import express from 'express';
+
+const router = express.Router();
+
+router.get('/', (req: express.Request, res: express.Response) => {
+  console.log(`Processing request in Index module for `, req.url );
+  res.render('index',
+    {
+      title: 'Express app',
+      welcomeMsg: 'Hello to Jason Isaacs from an Express app'
+    }
+  );
+});
+
+export { router };
+```
+
+At this point, you will be able to start the Express app, and it will work, but you will find some errors related to the CSS and favicon not being retrieved. This is because you haven't configured the static file handling yet.
 
 ### Static files
 
@@ -197,3 +326,5 @@ A simple *Express server* in which `dotenv` module to handle configuration is en
 - [ ] Review Microsoft starter on Express: how is the structure for routes? is Router used?
 - [ ] Create template with the whole 9-yards (pino, middleware, etc.)
 - [ ] Check the recommended way to bootstrap dotenv.
+- [ ] Add serving the favicon from the Express app for the Express views
+- [ ] Using bootstrap from node_modules
