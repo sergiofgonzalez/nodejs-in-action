@@ -17,10 +17,6 @@ app.set('view engine', 'ejs');
 app.use('/', Index.router);
 app.use('/', Login.router);
 
-/* additional middleware */
-process.env.STATIC_RESOURCES_PATH = path.join(__dirname, process.env.PUBLIC_STATIC_RESOURCES_PATH ?? 'public');
-app.use(express.static(process.env.STATIC_RESOURCES_PATH));
-
 const port = process.env.PORT ?? 3000;
 
 export const server = app.listen(port, () => {
