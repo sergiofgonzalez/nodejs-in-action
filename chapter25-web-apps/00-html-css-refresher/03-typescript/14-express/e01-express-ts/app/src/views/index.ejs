@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link href="stylesheets/styles.css" rel="stylesheet">
+    <script src="ts/app.js" type="module" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1><%= welcomeMsg %></h1>
+    </header>
+    <main>
+      <% if (username) { %>
+        <p>User: <%= username %> logged in!</p>
+      <% } else { %>
+        <p>Click <a href="/login">here</a> to log in</p>
+      <% } %>
+    </main>
+  </body>
+</html>

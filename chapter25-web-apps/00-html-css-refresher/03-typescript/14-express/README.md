@@ -664,9 +664,10 @@ A simple *Express server* in which form management is illustrated.
 A simple *Express server* in which session management and redirection capabilities are illustrated.
 
 ## ToDo
-- [ ] Add more serious Jest based tests for Express applications (review blog on correctly testing Express apps)
-- [ ] Review Microsoft starter on Express: how is the structure for routes? is Router used?
+
+- [X] Review Microsoft starter on Express: how is the structure for routes? is Router used?
 - [ ] Create template with the whole 9-yards (pino, middleware, etc.)
 - [ ] Check the recommended way to bootstrap dotenv.
-- [ ] Add serving the favicon from the Express app for the Express views
-- [ ] Using bootstrap from node_modules
+- [ ] Add more serious Jest based tests for Express applications (review blog on correctly testing Express apps)
+- [X] Add serving the favicon from the Express app for the Express views
+- [X] Using bootstrap from node_modules
