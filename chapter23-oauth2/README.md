@@ -1,5 +1,8 @@
 # Chapter 23 &mdash; OAuth2
-> Node.js applications dealing with OAuth2 flows
+> OAuth2 in detail using Node.js applications
 
-## [01-hello-authorization-code-grant](./01-hello-authorization-code-grant/)
-The simplest setup in Node.js to implement the *authorization code grant*. It includes an **Authorization Server**, a **Client** and a **Protected Resource**.
+
+## [Part 1 &mdash; OAuth2: Basic concepts](01-oauth2-basic-concepts)
+An overview of the OAuth2 protocol basic concepts.
+
+

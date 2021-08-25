@@ -15,7 +15,7 @@ This chapter aims to provide a complete understanding of Node.js streams &mdash;
 We will start with an introduction to the main ideas, terminology and libraries backing the Node.js streams, and then we will cover more advanced topics including useful streaming patterns that can make your programs more elegant and effective.
 
 ### Discovering the importance of streams
-Node.js is an event-based platform. As such, the most efficient way to handle is I/O in real time &mdash; consuming the available input as soon as it is available and sending the output as soon as the application produces it.
+Node.js is an event-based platform. As such, the most efficient way to handle I/O is in real time &mdash; consuming the available input as soon as it is available and sending the output as soon as the application produces it.
 
 This section will give an initial introduction to Node.js and their strengths to make real-time I/O processing a reality.
 
@@ -39,7 +39,7 @@ As soon as a new *chunk of data* is received from the resource, it is immediatel
 
 There are three main advantages of streams vs. buffering:
 + spatial efficiency &mdash; no need to materialize the whole contents of the resource before it can be processed.
-+ time efficiency &mdash; information can be processed as soon as it is produced by the resource, rather than having to wait until it is materialized
++ time efficiency &mdash; information can be processed as soon as it is produced by the resource, rather than waiting until the whole of the information is available.
 + composability
 
 
@@ -110,7 +110,7 @@ Let's implement a more complex example involving an application with two subcomp
 
 The client side of the application will compress a file, and send it to a remote HTTP server. In turn, the server side of the application will be listening for incoming requests that will assume to be gzipped files that it will decompress and save into the file system.
 
-Obviously, this is a textbook scenario for streams, as we wouldn't want the client to materialize the file before being able to send it to the server, and we wouldn't want the server to recreate the file in memory before it can save it (imagine with multiple concurrent requests involving large file!).
+Obviously, this is a textbook scenario for streams, as we wouldn't want the client to materialize the file before being able to send it to the server, and we wouldn't want the server to recreate the file in memory before it can save it (imagine with multiple concurrent requests involving large files!).
 
 Therefore:
 + on the client side we will use streams to allow compressing the information and sending data chunks as soon as they are read from the filesystem.
@@ -145,7 +145,7 @@ server.listen(5000, () => console.log(`INFO: listening on http://localhost:5000`
 
 Note that the `req` object is actually a *stream*, so we can use it to receive the chunks of data right away from the network and act upon them without having to materialize the whole file.
 
-This processing consists in the decompression and write on a given location.
+The processing in this case consists in the decompressing and writing on a given location.
 
 Let's now deal with the client part:
 
@@ -180,7 +180,7 @@ createReadStream(filename)
   .on('finish', () => console.log(`INFO: file ${ filename } successfully sent`));
 ```
 
-We are again using taking advantage that the HTTP request object `req` is a stream, and therefore, we read the file, compress it and send it to the server as soon as a every chunk is available.
+We are again taking advantage that the HTTP request object `req` is a stream, and therefore, we read the file, compress it and send it to the server as soon as a chunk is available.
 
 | EXAMPLE: |
 | :------- |
@@ -213,7 +213,7 @@ Streams features a uniform API that makes it possible, with the only constraint 
 To further demonstrate the composability, let's add an encryption layer to our [04 &mdash; GZIP client/server with streams](04-gzip-client-server), starting with the client side.
 
 
-You can review all the implementation details in [05 &mdash; GZIP client/server with an encryption layer](05-gzip-encryption-client-server), but in summary in, once all the crypto initialization is correctly performed do the following on the server side and client side respectively:
+You can review all the implementation details in [05 &mdash; GZIP client/server with an encryption layer](05-gzip-encryption-client-server), but in summary, once all the crypto initialization is correctly performed we do the following on the server side and client side respectively:
 
 ```javascript
 req
@@ -252,7 +252,7 @@ Every *stream* in Node.js is an implementation of one of the following four base
 + `Duplex`
 + `Transform`
 
-In turn, each `stream` class inherit from `EventEmitter` and produce several types of events including:
+In turn, each `stream` class inherits from `EventEmitter` and produces several types of events including:
 + `'end'` &mdash; when a `Readable` stream has finished reading
 + `'finish'` &mdash; when a `Writable` stream has finished writing
 + `'error'` &mdash; when an unexpected situation is found
@@ -316,7 +316,7 @@ You can call `setEncoding(...)` as many times as needed on a `Readable` stream. 
 | See [06 &mdash; Reading from stdin as a stream](06-read-stdin) for a runnable example. |
 
 ##### Reading from a stream: *flowing* mode
-An alternative way to read from a stream is the *flowing* mode which consists in attaching a listener to the `'data'` event. When using this mode, the data is not pulled using `read()`, but instead, it is pushed to the data listener as soon as it arrived.
+An alternative way to read from a stream is the *flowing* mode which consists in attaching a listener to the `'data'` event. When using this mode, the data is not pulled using `read()`, but instead, it is pushed to the data listener as soon as it arrives.
 
 ```javascript
 process.stdin
@@ -403,7 +403,7 @@ At the top of the file we load our dependencies.
 
 | NOTE: |
 | :---- |
-| `chance` is an npm utility module to generate random value of different classes (number, strings, sentences....). |
+| `chance` is an npm utility module to generate random values of different types (number, strings, sentences....). |
 
 Then we define our constructor, that calls `super(...)` to invoke the constructor of the parent class so that the underlying `Readable` stream is properly initialized.
 
