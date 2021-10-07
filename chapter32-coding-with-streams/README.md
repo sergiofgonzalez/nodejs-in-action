@@ -1129,7 +1129,7 @@ stream1
   .on('error', () => { /* handle error */ });
 ```
 
-The `'error'` event listener will only catch the errors coming from `stream2`. Therefore, we will need to do the followin to catch errors from both streams:
+The `'error'` event listener will only catch the errors coming from `stream2`. Therefore, we will need to do the following to catch errors from both streams:
 
 ```javascript
 stream1
