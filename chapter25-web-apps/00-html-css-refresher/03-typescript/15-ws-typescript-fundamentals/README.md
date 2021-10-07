@@ -1,13 +1,24 @@
 # TypeScript: Chapter 15 &mdash; Workshop: TypeScript Fundamentals
-> TypeScript fundamentals in action (44/715 - ex 1.02)
+> TypeScript fundamentals in action
 
 ## Contents
-
++ First steps into TypeScript type system: type annotationes and type inference
++ Function types in TypeScript
++ Object types in TypeScript: *duck-typing* and interfaces for literal objects
++ TypeScript basic types
++ Arrays in TypeScript
++ Tuples
++ Enums
++ Suspending TypeScript type system with `any` and `unknown`
++ `null` and `undefined`
++ `never`
++ Function types in TypeScript
++ Making your own types with classes, interfaces and type aliases.
 
 
 ## Types and their uses
 
-TypeScript is a strongly typed lanugage. To bind a variable to a type you can *annotate* the variable with the type:
+TypeScript is a strongly typed language. To bind a variable to a type you can *annotate* the variable with the type:
 
 ```typescript
 // type annotation
@@ -229,7 +240,7 @@ Effectively, `any` will revert the checks performed on the variables annotated w
 
 | NOTE: |
 | :---- |
-| `any` negates most of the TypeScript's type checking benefits. It should be used as seldom as possible, and only when absolutely necessary. It can be a powerfull tool to use when you are upgrading existing JavaScript code into TypeScript. |
+| `any` negates most of the TypeScript's type checking benefits. It should be used as seldom as possible, and only when absolutely necessary. It can be a powerful tool to use when you are upgrading existing JavaScript code into TypeScript. |
 
 TypeScript introduced the `unknown` type to address some of the problems of `any`. While still dynamic, the `unknown` type is much more constricted in what can be done with it:
 
@@ -358,10 +369,42 @@ type Person = {
 type FilterFunction = (person: Person) => boolean;
 ```
 
+## Summary
+In this chapter you got familiarized yourself with TypeScript and started to learn about its type system. You learned how to write your first basic programs, as a stepping stone to do more interesting things.
+
 ## You know you've mastered this chapter when...
 
-+ You setup a Express application starter using TypeScript.
++ You're comfortable creating type annotations in your programs for the variable and function declarations that you do in your programs.
 
++ You understand that many times, explicit type annotations are not needed because TypeScript can infer the type of a variable and bound it to the variable implicitly. You're aware that it doesn't mean that you can change the underlying type of a variable.
+
++ You're aware that TypeScript will enforce that function calls happen with the expected number of arguments and type.
+
++ You understand that TypeScript will apply *duck-typing* when working with object literals: this means that if a particular object literal properties have been given types (either explicitly through an interface definition or implicitly via assignment) an object with matching types will be subject of being used whenever the original one is used.
+
++ You're comfortable creating basic interfaces in TypeScript and using them to annotate object literal, functions, etc.
+
++ You're familiar with the basic types of TypeScript (that can be obtained via the `typeof` operator): `number`, `string`, `boolean`, `undefined`, `object` and `function`.
+
++ You're comfortable defining arrays using the syntax: `number[]` or the generic type syntax `Array<number>`.
+
++ You're familiar with the concept of tuples &mdash; collections with heterogenous items. You know how to declare the types of a tuple explictly (`const person: [string, string, number]`), and how to create arrays of tuples.
+
++ You're familiar with *enums* to define enumerations. You understand how to use them and adjust their values to specific numbers or strings.
+
++ You're familiar with `any` as a way to disable TypeScript type checking engine, but understand that it debunks the benefits of TypeScript and should be used as seldom as possible, and only when there is no other option. You understand that annotating a variable as `any` has a tendency to propagate to lots of places, so that the actual damage tends to be bigger than initially planned.
+
++ You understand that `unknown` is a much safer alternative to `any`, as it forces you to explicitly test the type of an `unknown` variable before it can be properly used as a variable of that type.
+
++ You understand that `null` and `undefined` share the same meaning in JavaScript and TypeScript, and understand that both mean that there is no value, but if you find a variable whose value is `null` there is some piece of code that is explicitly setting that value to that variable.
+
++ You understand that `never` type (specific to TypeScript) is used to represent a value that will never occur such as code that will never be reached or functions that throw an exception in all cases.
+
++ You are comfortable using the syntax that lets you define the type of a function, and know how to use it to declare function parameters that expect functions as arguments.
+
++ You're familiar with the concept of classes and interfaces in TypeScript, and understand the interfaces are checked statically and do not generate code. You understand that there is way to define class properties in TypeScript in constructors.
+
++ You're familiar with the `type` keyword that lets you give a name to an existing type, so that it is easier to refer to it. That can be useful to simplify type annotations of arrays of tuples (for examples).
 
 ## Exercises, code examples, and mini-projects
 
@@ -389,4 +432,3 @@ Illustrates how define a function that take the operands and operation as parame
 
 ## ToDo
 
-## Next: Activity 1.01 (80)
