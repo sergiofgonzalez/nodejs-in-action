@@ -11,9 +11,9 @@
 
 ## Declaration files
 
-In order to use JavaScript within a TypeScript project, you will need a declaration file that tells the compiler what functions or object are made available and what types are there.
+In order to use JavaScript within a TypeScript project, you will need a declaration file that tells the compiler what functions or objects are made available and what types are there.
 
-A declaration file is a pecial type of file used by the TypeScript compiler during the compilation step as a sort of reference to describe JavaScript code.
+A declaration file is a special type of file used by the TypeScript compiler during the compilation step as a sort of reference to describe JavaScript code.
 
 These files are similar to the header files in C/C++, in the sense that they just describe the structure of available *entities* without providing an implementation.
 
@@ -69,7 +69,7 @@ This is solved by creating a declaration file for the globals named `globals.d.t
 declare const CONTACT_EMAIL_ARRAY: string[];
 ```
 
-Note, that we had previously configure our `tsconfig.json` with:
+Note, that we had previously configured our `tsconfig.json` with:
 
 ```json
     "paths": {
@@ -89,7 +89,7 @@ If we compile the project again after doing those changes, we can successfully c
 
 ### Finding declaration files
 
-Soon after TypeScript was releases, Boris Yankov set up a GitHub repository to house TypeScript declaration files for popular 3rd party JavaScript libraries.
+Soon after TypeScript was released, Boris Yankov set up a GitHub repository to house TypeScript declaration files for popular 3rd party JavaScript libraries.
 
 This repository, named *Definitely Typed*, is now the go-to repository for declaration files.
 
@@ -106,9 +106,9 @@ If for some reason there is a 3rd party lib for which there is no associated `@t
 declare module '<lib>';
 ```
 
-Note also that currently many libraries include the declaration types themselves, so that you do not even need to use install them separately.
+Note also that currently many libraries include the declaration types themselves, so that you do not even need to install them separately.
 
-Finally, if you want to search if the declaration files are available you can use go to [Type Search](https://www.typescriptlang.org/dt/search)
+Finally, if you want to search if the declaration files are available you can go to [Type Search](https://www.typescriptlang.org/dt/search)
 
 ### Writing declaration files
 
@@ -251,7 +251,7 @@ declare module ErrorHelper {
 }
 ```
 
-Similarly, you can now example what would be the appropriate type for the parameter of the `trace()` function:
+Similarly, you can now analyze what would be the appropriate type for the parameter of the `trace()` function:
 
 ```javascript
 if (ErrorHelper.containsErrors(failureMessage)) {

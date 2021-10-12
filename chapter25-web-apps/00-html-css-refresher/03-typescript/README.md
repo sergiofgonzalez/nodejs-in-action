@@ -20,3 +20,4 @@
 
 ### Part 2 &mdash; workshop
 + [15 &mdash; TypeScript Fundamentals](15-ws-typescript-fundamentals)
++ [16 &mdash; TypeScript Functions](16-ws-typescript-functions)

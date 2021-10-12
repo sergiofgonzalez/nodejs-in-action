@@ -429,6 +429,8 @@ Illustrates how to use arrays and tuples to create an efficient sorting algorith
 ### [06: Making a calculator function](06-calculator-function)
 Illustrates how define a function that take the operands and operation as parameters
 
+### [e01: TypeScript Fundamentals &mdash; Creating a library for working with strings](e01-library-for-strings)
+Illustrates how to create a TypeScript library consisting of a series of simple functions that operate on strings.
 
 ## ToDo
 
