@@ -2,7 +2,7 @@
 > Node.js applications and AWS
 
 ## [Section 0: Previous & misc works](00-previous-works)
-A misc collection of Node.js apps and libraries used in the past or that does not have a direct relationship with with any other specific section.
+A misc collection of Node.js apps and libraries used in the past or that does not have a direct relationship with any other specific section.
 
 ## [Section 1: Intro to AWS](01-intro-to-aws)
 Basic concepts about AWS and the cloud

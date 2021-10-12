@@ -45,14 +45,14 @@ In order to obtain help you should type:
 
 + `aws help` &mdash; for general help on the `aws` command.
 + `aws {service} help` &mdash; to obtain help on a particular *AWS service*.
-+ `aws {service} {action} help &mdash; to obtain help on a particular action for an *AWS service*.
++ `aws {service} {action} help` &mdash; to obtain help on a particular action for an *AWS service*.
 
 ### Programming with the SDK
 AWS offers SDKs for a number of programming languages and platforms. Those SDK facilitate the interaction with AWS by taking care of things such as HTTP communication, result serialization, authentication, etc.
 
 The main page for all things relates to AWS SDK is: https://aws.amazon.com/tools/.
 
-Most of the examples in this section are written in Node.js. You can find all the related information here: https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/getting-started-nodejs.html. As of March 1, 2021, the AWS SDK for JavaScript V3 is the latest release and provides a different approach to interact with AWS resources.
+Most of the examples in this section are written in Node.js. You can find all the related information here: https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/getting-started-nodejs.html. As of March 1, 2021, the AWS SDK for JavaScript V3 is the latest release and provides quite a different approach to interact with AWS resources from the one used for the previous version of the SDK.
 
 You can find the details in the following links:
 
@@ -67,7 +67,7 @@ You can find the details in the following links:
 + [AWS SDK v3 examples](https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/javascriptv3/example_code) &mdash; GitHub repository with examples using the AWS SDK v3 for JavaScript.
 
 ### *AWS CloudFormation*: using a blueprint to start a VM
-*AWS CloudFormation* are based on artifacts that describe the infrastructure and that let you automate its creation, update, or deletion. Those artifacts are called *templates*.
+*AWS CloudFormation* is based on artifacts that describe the infrastructure and that let you automate its creation, update, or deletion. Those artifacts are called *templates*.
 
 A template is nothing more than a description of the different resources of your solution written in JSON or YAML in a way that can be interpreted by *CloudFormation*.
 
@@ -146,7 +146,7 @@ The following table lists the valid parameter types:
 | AWS::EC2::VPC::Id<br>List<AWS::EC2::VPC::Id> | A *VPC ID* or a list of *VPC IDs*. |
 | AWS::Route53::HostedZone::Id<br>List<AWS::Route53::HostedZone::Id> | A *DNS zone ID* or a list of *DNS zone IDs*. |
 
-A parameter can be enhanved with the following properties:
+A parameter can be enhanced with the following properties:
 
 | Property | Description | Example |
 | :------- | :---------- | :------ |

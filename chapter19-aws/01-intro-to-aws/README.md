@@ -45,7 +45,7 @@ The following diagram depicts the different ways you can use to interact with AW
 
 AWS Cloud infrastructure is built around *AWS Regions* and *Availability Zones*.
 
-> An *AWS Region* is a physical location in the world where AWS have multiple *Availability Zones*. Each *AWS Region* is designed to be completely isolated from other *AWS Regions*.
+> An *AWS Region* is a physical location in the world where AWS has multiple *Availability Zones*. Each *AWS Region* is designed to be completely isolated from other *AWS Regions*.
 
 > An *Availability Zone* consists of one or more concrete discrete data centers, each with redundant power, networking, and connectivity, housed in separate facilities. Each *Availability Zone* is designed as an independent failure zone: each *Availability Zone* is isolated, but the *Availability Zones* within a *AWS Region* are connected through low-latency links.
 

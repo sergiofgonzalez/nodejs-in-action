@@ -43,7 +43,7 @@ Apart from the infrastructure services described above, there's a plethora of ot
 This is a fundamental piece for *automating* your infrastructure deployments, both for creation and update. It is also a great option for deleting your infrastructure when implementing a *proof-of-concept*.
 
 #### Resource Groups: grouping your infrastructure
-A **Resource Group* is a collection of AWS resources that are identified as belonging to a particular set. In particular, all AWS resources can be identified and tagged using *key-value pairs*, and *resource groups* specify which tags are needed for a resource to belong to a particular group.
+A **Resource Group** is a collection of AWS resources that are identified as belonging to a particular set. In particular, all AWS resources can be identified and tagged using *key-value pairs*, and *resource groups* specify which tags are needed for a resource to belong to a particular group.
 
 
 #### AWS Pricing Calculator: estimating your costs
