@@ -1,5 +1,5 @@
 # e01: TypeScript functions &mdash; Building a flight booking system with functions
->
+> learning how to structure a program in modules and functions
 
 ## Activity 3.01
 

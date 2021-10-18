@@ -21,3 +21,5 @@
 ### Part 2 &mdash; workshop
 + [15 &mdash; TypeScript Fundamentals](15-ws-typescript-fundamentals)
 + [16 &mdash; TypeScript Functions](16-ws-typescript-functions)
++ [17 &mdash; TypeScript Classes and Objects](17-ws-typescript-classes-and-objects)
++ [18 &mdash; Interfaces and inheritance in TypeScript](17-ws-typescript-interfaces-and-inheritance)

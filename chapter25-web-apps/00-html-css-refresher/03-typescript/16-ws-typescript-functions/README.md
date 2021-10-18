@@ -2,7 +2,13 @@
 > TypeScript functions
 
 ## Contents
-+ First steps into TypeScript type system: type annotationes and type inference
++ Defining functions in TypeScript: parameters and types
++ Functions with variable number of arguments
++ Functions returning multiple values
++ Function expressions and arrow functions
++ Understanding `this` in TypeScript
++ Closures and scopes
++ Currying
 
 ### The `function` keyword
 
@@ -50,7 +56,7 @@ function getGreeting(name?: string = 'stranger'): string {
 
 ### Rest parameters
 
-The *spread operator** (`...`) can be used as the final parameter to a function. This will take all arguments passed into the function and place them in an array:
+The **spread operator** (`...`) can be used as the final parameter to a function. This will take all arguments passed into the function and place them in an array:
 
 ```typescript
 function sum(num1: number, num2: number, ...restNums: number[]): number {
@@ -94,10 +100,10 @@ This will provide the DX (developer's experience) that you're returning multiple
 Consider the following function that classifies a variable number of numbers according to their parity:
 
 ```typescript
-function paritySort(...numbers: number[]): { evens: number[], odd: number[] } => {
+function paritySort(...numbers: number[]): { evens: number[], odds: number[] } {
   return {
-    evens: numbers.filter(n % 2 === 0),
-    odds: numbers.filter(n % 2 !== 0)
+    evens: numbers.filter(n => n % 2 === 0),
+    odds: numbers.filter(n => n % 2 !== 0)
   };
 }
 ```
@@ -240,7 +246,7 @@ const outer = (): void => {
   console.log(`${ hello } ${ world }`); // -> Hello world!
 };
 ```
-### Currying (150)
+### Currying
 
 Currying is a functional programming technique in which a function is applied multiple argument lists of a single argument instead of just one list with multiple arguments.
 
@@ -291,13 +297,36 @@ const curriedSum = (x: number) => (y: number) => x + y;
 Currying is a powerful technique for *caching* partially applied functions. It also provides a great DX (developer's experience) as it is easy for the user to get reference to individual functions.
 
 
-## Unit testing with `ts-jest`
-
-## Error handling
-
-## Summary
-
 ## You know you've mastered this chapter when...
++ You are comfortable writing functions in TypeScript, including parameter annotations, and return types.
+
++ You understand the difference between function *parameters* and *arguments*
+  + parameter &mdash; the placeholder found in the function definition
+  + argument &mdash; the value passed to a function when invoking it
+
++ You are comfortable defining functions that take a variable number of arguments using the *spread operator* (`...`). You understand that the type when using the spread operator must be an array as in `...restNums: number[]`.
+
++ You are familiar with return type annotations in TypeScript when returning objects: you can specifiy the shape of the object you're returning as in:
+
+```typescript
+function myFunction(): { prop1: number[], prop2: string } {}
+```
+
++ You're comfortable using function expressions and arrow functions in TypeScript.
+
++ You're comfortable using `this` in functions and object literals with methods, and understand that the TypeScript compiler facilitates the identification of use cases in which might not be what it seems.
+
++ You're familiar with the recommendations with respect to `this`:
+  + when using `this` &mdash; use function expressions for objects and class methods, and use arrow functions for any callbacks used within the methods.
+
++ You're familiar with the concept of closure.
+
++ You're familiar with the concept of currying and understand how to refactor a function with multiple arguments into a curried function and its benefits.
+
++ In the exercises, activities and mini-projects you've learnt to:
+  + use `import` and `export` to create modules in TypeScript
+  + create TypeScript projects that can be unit tested with Jest
+  + refactor existing JavaScript code into TypeScript using interfaces, type annotations, etc.
 
 ## Exercises, code examples, and mini-projects
 
@@ -328,8 +357,17 @@ Illustrates how to refactor functions with multiple arguments into curried funct
 ### [09: Refactoring JavaScript into TypeScript](09-refactoring-js-into-ts)
 An example illustrating how to rewrite a pure JavaScript code into TypeScript.
 
-### [10: TypeScript functions &mdash; `import` and `export`](10-import-and-export)
+### [10: `import` and `export`](10-import-and-export)
 Refactoring a program into a module and importing the functions from it.
+
+### [11: Hello, unit testing with Jest](11-hello-jest)
+Writing a simple test case with jest.
+
+### [e01: Building a flight booking system with functions](e01-flight-booking-system)
+Learning how to structure a program in modules and functions.
+
+### [e02: Writing unit tests for the Flight Booking System](e02-flight-booking-system-tests)
+Configuring and implementing Jest testing in a TypeScript project
 
 ## ToDo
 
