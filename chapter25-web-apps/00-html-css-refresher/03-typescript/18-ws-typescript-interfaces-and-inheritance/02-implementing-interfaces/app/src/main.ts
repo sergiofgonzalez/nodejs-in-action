@@ -1,39 +1,49 @@
-interface ProductObjectTemplate {
-  height: number;
-  width: number;
-  color: string;
+type BlogPost = {
+  post: string,
+  timestamp: number,
+  user: string
 }
 
-interface ProductFunctionTemplate {
-  (product: ProductObjectTemplate): void;
+interface AddToPost {
+  (post: BlogPost): BlogPost[]
 }
 
-interface ProductClassTemplate {
-  makeProduct: ProductFunctionTemplate;
-  allProducts(): ProductObjectTemplate[];
+interface IBlogPost {
+  allPosts: BlogPost[];
+  addToPost: AddToPost;
 }
 
-class Product implements ProductClassTemplate {
-  products: ProductObjectTemplate[];
+class BlogPostClass implements IBlogPost {
+  allPosts: BlogPost[] = []; // static initialization to empty array
 
-  constructor() {
-    this.products = [];
-  }
-
-  makeProduct(product: ProductObjectTemplate) {
-    this.products.push(product);
-  }
-
-  allProducts(): ProductObjectTemplate[] {
-    return this.products;
+  addToPost(post: BlogPost): BlogPost[] {
+    this.allPosts.push(post);
+    return this.allPosts;
   }
 }
 
-const productInstance: ProductClassTemplate = new Product();
-productInstance.makeProduct({
-  color: 'red',
-  height: 10,
-  width: 14
-});
+const blog = new BlogPostClass();
 
-console.log(productInstance.allProducts());
+const post1: BlogPost = {
+  post: 'Hello, blog',
+  timestamp: 12345,
+  user: 'user1'
+};
+
+const post2: BlogPost = {
+  post: 'Hello to Jason!',
+  timestamp: 67890,
+  user: 'user2'
+};
+
+const post3: BlogPost = {
+  post: 'Hello to chuckles!',
+  timestamp: 135711,
+  user: 'user3'
+};
+
+console.log(blog.addToPost(post1));
+console.log(blog.addToPost(post2));
+
+blog.addToPost(post3);
+console.log(blog.allPosts);

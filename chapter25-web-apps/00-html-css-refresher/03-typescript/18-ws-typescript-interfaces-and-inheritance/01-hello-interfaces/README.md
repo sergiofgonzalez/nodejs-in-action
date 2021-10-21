@@ -1,5 +1,5 @@
 # 01: Interfaces and inheritance in TypeScript &mdash; Hello, interfaces!
-> writing your first interface
+> writing your first interface to model products
 
 ## Description
 
