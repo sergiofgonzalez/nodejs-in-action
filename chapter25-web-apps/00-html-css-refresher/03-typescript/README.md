@@ -22,4 +22,9 @@
 + [15 &mdash; TypeScript Fundamentals](15-ws-typescript-fundamentals)
 + [16 &mdash; TypeScript Functions](16-ws-typescript-functions)
 + [17 &mdash; TypeScript Classes and Objects](17-ws-typescript-classes-and-objects)
-+ [18 &mdash; Interfaces and inheritance in TypeScript](17-ws-typescript-interfaces-and-inheritance)
++ [18 &mdash; Interfaces and inheritance in TypeScript](18-ws-typescript-interfaces-and-inheritance)
++ [19 &mdash; Advanced Types](19-ws-typescript-advanced-types)
++ [20 &mdash; Decorators](20-ws-typescript-decorators)
+
+#### ToDo
+- [ ] Express with TypeScript (strong typed!)
