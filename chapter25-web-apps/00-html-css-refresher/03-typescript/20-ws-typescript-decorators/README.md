@@ -398,9 +398,93 @@ You do that by using the `value` property of a method property descriptor when d
 
 There's an ongoing proposal to add proper metadata support to JavaScript. In the meantime, you can rely on the [`reflect-metadata`](https://www.npmjs.com/package/reflect-metadata) to obtain that information that also requires setting to true the `emitDecoratorMetadata` flag in your `tsconfig.json`.
 
-### Reflect object
+| NOTE: |
+| :---- |
+| To enable these capabilities you have to also include in your program `import 'reflect-metadata'`. |
 
-## Property decorators
+The following methods are the ones you'll use more frequently:
+
++ `Reflect.defineMetadata` &mdash; defines a piece of metadata on a class or method.
++ `Reflect.hasMetadata` &mdash; returns a boolean indicating whether a certain piece of metadata is present.
++ `Reflect.getMetadata` &mdash; returns the actual piece of metadata, if present.
+
+Consider the following `Teacher` class, that we will use to define some pieces of metadata:
+
+```typescript
+import 'reflect-metadata';
+
+class Teacher {
+  #title = '';
+
+  constructor(public name: string) {}
+
+  get title() {
+    return this.#title;
+  }
+
+  set title(value: string) {
+    this.#title = value;
+  }
+
+  teach() {
+    console.log(`${ this.name } is teaching`);
+  }
+}
+```
+
+To define a piece of metadata called `instance-count` at the class level you would do:
+
+```typescript
+Reflect.defineMetadata('instance-count', 0, Teacher);
+```
+
+To define a similar piece of metadata at the method level you would do:
+
+```typescript
+Reflect.defineMetadata('call-count', 0, Teacher, 'teach');
+```
+
+| NOTE: |
+| :---- |
+| Note that in the snippet above you are defining `call-count` **also** at the class level, only that you're binding the metadata to a method name, rather than to the class itself. |
+
+
+Also, you can also bind a piece of metadata for a method at the instance-level:
+
+```typescript
+const teacher = new Teacher('Jason Isaacs');
+const currValue = Reflect.defineMetadata('call-count', this, 'teach');
+```
+
+
+Similarly, to read the `instance-count` you'd do:
+
+```typescript
+if (Reflect.hasMetadata('instance-count', Teacher)) {
+  const value = Reflect.getMetadata('call-count', Teacher);
+}
+```
+
+And to read `call-count` at the class level you'd do:
+```typescript
+if (Reflect.hasMetadata('instance-count', Teacher, 'teach')) {
+  const value = Reflect.getMetadata('call-count', Teacher, 'teach');
+}
+```
+
+And to read `call-count` at the instance level:
+
+```typescript
+if (Reflect.hasMetadata('instance-count', teacher, 'teach')) {
+  const value = Reflect.getMetadata('call-count', teacher, 'teach');
+}
+```
+
+| EXAMPLE: |
+| :------- |
+| See [13: Adding and reading metadata in a class and its methods](13-adding-and-reading-metadata-in-class-and-methods) for a runnable example illustrating how to use those methods. See also [e02: Decorators &mdash; Decorators and Reflection metadata](e02-adding-metadata-using-decorators) for an exercise illustrating how to set the metadata via decorators. |
+
+## Property decorators (323)
 
 ## Parameter decorators
 
@@ -445,6 +529,19 @@ Illustrates how to define and use a static method decorator]
 ### [11: Method Decorators: Method wrapping decorator](11-method-decorator-method-wrapping)
 Illustrates how to define a method decorator that wraps the original instance/static method or property accessor with additional logging.
 
+### [12: Decorators &mdash; Hello, metadata!](12-hello-metadata)
+Illustrates how to use `Reflect.defineMetadata`, `Reflect.hasMetadata`, and `Reflect.getMetadata` to read metadata bound to classes and methods at the class level, and to read metadata bound to a method at the instance level.
+
+### [13: Adding and reading metadata in a class and its methods](13-adding-and-reading-metadata-in-class-and-methods)
+Illustrates how to use `Reflect.hasMetadata()`, `Reflect.defineMetadata()`, and `Reflect.getMetadata()` at the class level and its methods (at the class level).
+
+### [e01: Decorators &mdash; Method Decorators: Instance and call counting](e01-method-decorator-instance-and-call-counting)
+Wrapping class decorators and wrapping method decorators in action.
+
+### [e02: Decorators &mdash; Decorators and Reflection metadata](e02-adding-metadata-using-decorators)
+Adding metadata to to classes and methods using decorators.
+
 ## ToDo
 - [ ] Review concepts on decorators from the book
 - [ ] Review https://github.com/microsoft/TypeScript/issues/40805 to see if you can get rid of `any` in the specs.
+- [ ] Create a summary of the recipes

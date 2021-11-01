@@ -1,4 +1,4 @@
-# 12: Decorators &mdash; Method Decorators: Instance and call counting
+# e01: Decorators &mdash; Method Decorators: Instance and call counting
 > wrapping class decorators and wrapping method decorators in action
 
 ## Activity 7.01
