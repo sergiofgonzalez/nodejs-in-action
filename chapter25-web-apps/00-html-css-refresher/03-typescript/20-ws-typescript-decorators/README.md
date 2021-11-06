@@ -1,8 +1,14 @@
 # TypeScript: Chapter 20 &mdash; Workshop: Decorators
-> tbd
+> TypeScript decorators and Reflection metadata in action
 
 ## Contents
-
++ Introduction to the role of decorators
++ Decorators and decorator factories
++ Class decorators and their use cases
++ Method/accessor decorators and their use cases
++ Property decorators and their use cases
++ Method parameter decorators and their use cases
++ TypeScript reflection and metadata system
 
 ## Importance of decorators
 
@@ -49,6 +55,8 @@ function ClassDecorator(constructor: Function) {}
 function AccessDecorator(target: any, propertyName: string, descriptor: PropertyDescriptor) {}
 
 function MethodDecorator(target: any, propertyName: string, descriptor: PropertyDescriptor) {}
+
+function PropertyDecorator(target: any, propertyName: string) {}
 
 function ParameterDecorator(target: any, propertyName: string, parameterIndex: number) {}
 ```
@@ -484,15 +492,474 @@ if (Reflect.hasMetadata('instance-count', teacher, 'teach')) {
 | :------- |
 | See [13: Adding and reading metadata in a class and its methods](13-adding-and-reading-metadata-in-class-and-methods) for a runnable example illustrating how to use those methods. See also [e02: Decorators &mdash; Decorators and Reflection metadata](e02-adding-metadata-using-decorators) for an exercise illustrating how to set the metadata via decorators. |
 
-## Property decorators (323)
+## Property decorators
+
+A property decorator is a decorator you apply to a single property of a class. Such decorator is typically used to observe that property.
+
+A property decorator is a function that receives:
+
++ `target` &mdash; can be either the prototype of the class for instance properties, or the constructor of the class for static properties.
++ `propertyKey` &mdash; the name of the property you're decorating.
+
+The return value of a property decorator is ignored, as there is nothing to replace.
+
+The following snippet illustrates the shape of a property decorator factory:
+
+```typescript
+function PropertyDecorator(message: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return function (target: any, propertyKey: string) {
+    console.log(`${ target.constructor.name }.${ propertyKey } decorated with ${ message }`);
+  };
+}
+```
+
+We can then use it to decorate the properties of a class:
+
+```typescript
+class Teacher {
+
+  @PropertyDecorator('ID')
+  id: number;
+
+  @PropertyDecorator('NAME')
+  name: string;
+
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+}
+```
+
+Note that the decorator functions will be invoked without even creating an instance of the class. That is why these type of decorators are known as *passive* as they're invoked by the engine.
+
+| EXAMPLE: |
+| :------- |
+| See [14: Property Decorator: hello, property decorators!](14-property-decorator-hello) for a runnable example. See also [15: Property Decorators: creating and using a property decorator](15-property-decorator-creating-and-using) for an example illustrating how to mix metadata and property decorators. |
 
 ## Parameter decorators
 
+A parameter decorator is a decorator function applied to a single parameter of a funcion call. Just like property decorators, parameter decorators are *passive* and should only be used to observe values, and not to inject and execute code.
+
+The return value of a parameter decorator is also ignored.
+
+When a parameter decorator is called, it receives three arguments:
++ `target` &mdash; can be either the prototype of the class for instance properties, the constructor of the class for static properties, or the class itself when decorating a constructor parameter.
++ `propertyKey` &mdash; the name of the method whose parameter you're decorating, or `undefined` when decorating a constructor parameter.
++ `parameterIndex` &mdash; ordinal index of the parameter in the function's parameter list (starting from zero).
+
+
+Therefore, an example of a parameter decorator can be:
+
+```typescript
+function ParameterDecorator(target: any, propertyName: string, parameterIndex: number) {
+  console.log(`Target is:`, target);
+  console.log(`Property name is: `, propertyName);
+  console.log(`Parameter index is:`, parameterIndex);
+}
+```
+
+and the things that are received in the `target`, `propertyName`, and `parameterIndex` will vary depending on where the `@ParameterDecorator` is applied.
+
+
+| EXAMPLE: |
+| :------- |
+| See [16: Parameter Decorators: Hello, parameter decorators!](16-parameter-decorator-hello) for a runnable example. See also [17: Parameter Decorators: using parameter and method decorators to implement validation](17-parameter-decorator-required-param) for an example in which parameter decorators, method decorators, and metadata are used to implement validation. |
+
 ## Application of multiple decorators on a single target
+
+It's common to apply more than one decorator on a single target. In essence, decorators are functions, and the rule of functional composition is applied so that the decorators are evaluated bottom-up. This means that the decorator closest to the target is evaluated first.
+
+There is a catch though when using decorator factories, as the factories are regular functions that are executed in source code order.
+
+Consider the following snippet in which two decorator factories are defined and applied to the same target:
+
+```typescript
+function First() {
+  console.log(`In the first Decorator factory...`);
+  // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-unused-vars
+  return function (constructor: Function) {
+    console.log(`First decorator`);
+  };
+}
+
+function Second() {
+  console.log(`In the second Decorator factory...`);
+  // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-unused-vars
+  return function (constructor: Function) {
+    console.log(`Second decorator`);
+  };
+}
+
+
+@First()
+@Second()
+class Target {}
+```
+
+If we run the code we will see:
+
+```
+In the first Decorator factory...
+In the second Decorator factory...
+Second decorator
+First decorator
+```
+
+So, the first decorator factory is executed first, followed by the second decorator factory, but then the decorators are applied according to the bottom-up rule.
+
+
+| EXAMPLE: |
+| :------- |
+| See [18: Decorators &mdash; Decorator factories composition](18-decorator-factories-composition) for a runnable example. |
+
 
 ## Summary
 
+This section summarizes the most common practices in relation to decorators and metadata.
+
+TypeScript allows you to use decorators in classes, properties, methods (instance and static methods), accessors, properties and method parameters:
+
+```typescript
+@ClassDecorator
+class MyClass {
+  @PropertyDecorator
+  myPublicProperty: number = 0;
+
+  #myPrivateProperty: number = 0;
+
+  @AccessorDecorator
+  public get myPrivateProperty() { return this.#myPrivateProperty };
+
+  @MethodDecorator
+  public myMethod(@ParameterDecorator myParam: string) {}
+}
+```
+
+The decorators are regular functions with a specific signature. The parameters are injected into the functions by TypeScript engine:
+
+```typescript
+function ClassDecorator(constructor: Function) {}
+
+function AccessDecorator(target: any, propertyName: string, descriptor: PropertyDescriptor) {}
+
+function MethodDecorator(target: any, propertyName: string, descriptor: PropertyDescriptor) {}
+
+function PropertyDecorator(target: any, propertyName: string) {}
+
+function ParameterDecorator(target: any, propertyName: string, parameterIndex: number) {}
+```
+
+
+### Class decorator factories
+
+Class decorator factories are used to create class decorators that accept parameters and that typically enhances the original class constructor with additional cross-cutting concerns such as authorization, logging, etc.
+
+```typescript
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
+type Constructable = {
+  new(...args: []): {}
+}
+
+function ClassDecorator(message: string) {
+  return function <T extends Constructable>(constructor: T) {
+    const wrappedConstructor: any = function (...args: any[]) {
+      ...cross-cutting concerns...
+
+      /* invoke the original constructor */
+      return new constructor(...args);
+    };
+  };
+  /* replace the constructor of the original class with the wrapped one */
+  wrappedConstructor.prototype = constructor.prototype;
+
+  return wrappedConstructor;
+}
+```
+
+By doing so, the cross-cutting logic will be executed each time `new` is invoked.
+
+
+Another common use case involves injecting a property through a class decorator factory:
+
+```typescript
+function ClassDecorator(message: string) {
+  return function <T extends Constructable>(constructor: T) {
+    return class extends constructor {
+      newProperty: newPropertyType = propertyValue;
+    };
+  }
+}
+```
+
+### Class decorators
+
+Class decorators are used to enhance classes with functionality that do not require parameter customization.
+
+They are typically used to inject additional properties in a class:
+
+```typescript
+function ClassDecorator(constructor: Function) {
+  constructor.prototype.newProperty = valueForNewProperty;
+}
+```
+
+### Method decorators
+
+Method decorators are used to create decorators that do not require parameters and that can be bound to instance, static methods, or getters/setters of a given property. They are typically used to wrap existing methods with additional cross-cutting logic that can be applied before and after the original method is invoked.
+
+```typescript
+function MethodDecorator(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+
+  /* applied to instance method? */
+  if (descriptor.value) {
+    const original = descriptor.value;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    descriptor.value = function (...args: any[]) {
+      ...pre-invocation logic...
+
+      /* original method invocation */
+      const result = original.apply(this, args);
+
+      ...post-invocation logic...
+
+      /* return result (might have ben modified) ^*/
+      return result;
+    };
+  }
+
+  // getter
+  if (descriptor.get) {
+    const original = descriptor.get;
+    descriptor.get = function () {
+      ...pre-invocation logic...
+
+      /* original setter invocation */
+      const result = original.apply(this, []);
+
+      ...post-invocation logic...
+
+      /* return result (might have ben modified) ^*/
+      return result;
+    };
+  }
+
+  // setter
+  if (descriptor.set) {
+    const original = descriptor.set;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    descriptor.set = function (value: any) {
+      ...pre-invocation logic...
+
+      /* original setter invocation */
+      const result = original.apply(this, [value]);
+
+      ...post-invocation logic...
+
+      /* return result (might have ben modified) ^*/
+      return result;
+    };
+  }
+}
+```
+
+******************************************************************************************************* REview and include the same in property
+Note that `target` is the prototype of the class for instance methods and the constructor of the class for static methods. Effectively, this means that `typeof target === 'function'` for static methods and `typeof target === 'object'` for instance methods.
+
+As a result, you can have function that works for both static and instance methods:
+
+```typescript
+function
+```
+
+### Method decorator factories
+
+Method decorator factories are used to create decorators that accept parameters.
+
+```typescript
+function MethodDecorator(message: string) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    /* regular method decorator (see prev section) */
+  };
+}
+```
+
+See [Method decorators](#method-decorator) for information on how to implement method decorators.
+
+### Parameter decorators
+
+Parameter decorators are used to decorate parameters of a method. As those are executed only once without requiring method invocation or instantiation of the associated class they are typically used as *anchors* for method decorators. As such, you would typically used them to bind metadata information about the parameter that can be subsequently used by other decorators.
+
+```typescript
+function ParameterDecorator(target: any, propertyName: string, parameterIndex: number) {
+  ...metadata binding logic here...
+}
+```
+
+See [Metadata binding](#metadata-binding) for further information on how to bind metadata to classes and methods.
+
+
+### Property decorator factories
+
+Property decorator factories are used to decorate the properties of a class with parameters. These decorators are executed only once without requiring class instatiation. As a result, these decorators are typically used as *anchors* to inject metadata at the corresponding property level.
+
+```typescript
+function PropertyDecorator(message: string) {
+  return function (target: any, propertyKey: string) {
+    ...metadata binding logic here...
+  };
+}
+```
+
+
+*************************************************************************************** Review
+
+Note that `target` is the prototype of the class for instance methods and the constructor of the class for static methods. Effectively, this means that `typeof target === 'function'` for static properties and `typeof target === 'object'` for instance properties.
+
+```typescript
+function PropertyDecorator(target: any, propertyName: string) {
+  if (typeof target === 'function') {
+    ... logic for static properties ...
+  } else if (typeof target === 'object') {
+    ... logic for instance properties ...
+  } else {
+    throw new Error('Unexpected typeof for target');
+  }
+}
+```
+
+
+### Metadata binding
+
+The following recipes can be used when interacting with the metadata system in TypeScript.
+
+Note that to enable the metadata system you need to:
++ Enable `"emitDecoratorMetadata": true` in the `tsconfig.json`.
++ Include the `reflect-metadata` dependency in your project and activate it using `import 'reflect-metadata`.
+
+| NOTE: |
+| :---- |
+| Support for decorators and metadata is experimental and it is subject to change until it is standardized by the TC39 committee in charge of JavaScript language. |
+
+#### General approach
+
+The general approach includes the following steps:
++ Check if a piece of metadata has been bound to the target using `Reflect.hasMetadata()`.
+  + If the metadata value is found:
+    + Read the value asociated to the metadata key, and update it as needed.
+    + Write the updated value (optionally)
+  + Otherwise, create the metadata value using `Reflect.defineMetadata()`.
+
+```typescript
+if (Reflect.hasMetadata('metadata-key', target, propertyKey)) {
+  const currValue = <cast>Reflect.getMetadata('metadata-key', target, propertyKey);
+  const updatedValue = transform(currValue);
+  Reflect.defineMetadata('metadata-key', updatedValue, target, propertyKey);
+} else {
+  Reflect.defineMetadata('metadata-key', initialValue, target, propertyKey);
+}
+```
+
+#### Binding metadata to a class explicitly
+
+You can bind a piece of metadata to a class explicitly using the name of the class:
+
+```typescript
+class A { }
+Reflect.defineMetadata('metadata-key', initialValue, A);
+```
+
+#### Binding metadata to a class dinamically
+
+When you don't have access to the class (as it happens when binding metadata from a generic decorator) you can use the constructor to dynamically bind metadata to a class:
+
+```typescript
+function ClassDecorator(...) {
+  return function <T extends Constructable>(constructor: T) {
+    const wrappedConstructor: any = function (...args: any[]) {
+      ...
+      Reflect.hasMetadata('metadata-key', wrappedConstructor);
+      Reflect.getMetadata('metadata-key', wrappedConstructor);
+      Reflect.defineMetadata('metadata-key', value, wrappedConstructor);
+      ...
+    };
+  }
+}
+```
+
+#### Binding metadata to a class instance method from a method decorator
+
+You will typically bind metadata to a class instance method within a method decorator. In that case, you just have to use the parameters received in the decorator function:
+
+```typescript
+function MethodDecorator(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  ...
+  Reflect.hasMetadata('metadata-key', target, propertyKey);
+  Reflect.getMetadata('metadata-key', target, propertyKey);
+  Reflect.defineMetadata('metadata-key', initialValue, target, propertyKey);
+  ...
+}
+```
+
+### Binding metadata to a class instance method from a parameter decorator
+
+It is an usual practice to bind metadata information to an instance method related to the method parameters (mainly because you cannot create metadata associated to parameters themselves).
+
+This is typically performed from a method parameter decorator:
+
+```typescript
+function ParameterDecorator(target: any, propertyKey: string, parameterIndex: number) {
+  ...
+  Reflect.hasMetadata('metadata-key', target, propertyKey);
+  Reflect.getMetadata('metadata-key', target, propertyKey);
+  Reflect.defineMetadata('metadata-key', initialValue, target, propertyKey);
+  ...
+}
+```
+
+### Binding metadata to a class property from a property decorator
+
+It is an usual practice to bind metadata information to a class property in a property decorator:
+
+```typescript
+function PropertyDecorator(target: any, propertyKey: string) {
+  ...
+  Reflect.hasMetadata('metadata-key', target, propertyKey);
+  Reflect.getMetadata('metadata-key', target, propertyKey);
+  Reflect.defineMetadata('metadata-key', value, target, propertyKey);
+  ...
+}
+```
+
 ## You know you've mastered this chapter when...
+
++ You understand what needs to be done to enable decorators and the metadata system. You're aware that both capabilities have not been standardized yet.
+
++ You're aware of the different types of decorators that are available in JavaScript:
+  + class decorators
+  + method and accessor decorators
+  + property decorators
+  + method parameter decorators
+
++ You're aware that each type of decorator is represented by a regular TypeScript function with a specific signature.
+
++ You understand that decorator factories have to be used when you need to customize a decorator with additional parameters.
+
++ You're comfortable using class decorators and class decorator factories for:
+  + property injection
+  + constructor wrapping
+
++ You're comfortable using method/accesor decorators for instance method, static methods and setters/getters of a particular property.
+  + method wrapping
+
++ You're aware of the metadata and reflection capabilities, and you're comfortable using them in decorators.
+
++ You're comfortable using property decorators and know how to bind metadata to them.
+
++ You're comfortable using parameter decorators and know how to bind metadata to them.
+
++ You understand that decorators are applied in a bottom-up fashion, as if they were functions that are composed.
 
 ## Exercises, code examples, and mini-projects
 
@@ -535,13 +1002,28 @@ Illustrates how to use `Reflect.defineMetadata`, `Reflect.hasMetadata`, and `Ref
 ### [13: Adding and reading metadata in a class and its methods](13-adding-and-reading-metadata-in-class-and-methods)
 Illustrates how to use `Reflect.hasMetadata()`, `Reflect.defineMetadata()`, and `Reflect.getMetadata()` at the class level and its methods (at the class level).
 
-### [e01: Decorators &mdash; Method Decorators: Instance and call counting](e01-method-decorator-instance-and-call-counting)
+### [14: Property Decorator: hello, property decorators!](14-property-decorator-hello)
+Illustrates how to create property decorators.
+
+### [15: Property Decorators: creating and using a property decorator](15-property-decorator-creating-and-using)
+Illustrates how to mix metadata and property decorators.
+
+### [16: Parameter Decorators: Hello, parameter decorators!](16-parameter-decorator-hello)
+illustrates how to define parameter decorators and the different types of arguments it receives.
+
+### [17: Parameter Decorators: using parameter and method decorators to implement validation](17-parameter-decorator-required-param)
+An example in which parameter decorators, method decorators and metadata to implement validations.
+
+### [18: Decorators &mdash; Decorator factories composition](18-decorator-factories-composition)
+Illustrates how the composition works when applying multiple decorators to a single target via decorator factories.
+
+### [e01: Method Decorators: Instance and call counting](e01-method-decorator-instance-and-call-counting)
 Wrapping class decorators and wrapping method decorators in action.
 
-### [e02: Decorators &mdash; Decorators and Reflection metadata](e02-adding-metadata-using-decorators)
+### [e02: Decorators and Reflection metadata](e02-adding-metadata-using-decorators)
 Adding metadata to to classes and methods using decorators.
 
+### [e03: Decorators &mdash; Using decorators to apply cross-cutting concerns](e03-using-decorators-for-cross-cutting-concerns)
+Summary exercise illustrating the use of decorators for classes, methods and parameters, along with metadata and reflection in a more contrived example.
+
 ## ToDo
-- [ ] Review concepts on decorators from the book
-- [ ] Review https://github.com/microsoft/TypeScript/issues/40805 to see if you can get rid of `any` in the specs.
-- [ ] Create a summary of the recipes

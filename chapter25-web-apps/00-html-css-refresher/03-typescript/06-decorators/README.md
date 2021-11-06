@@ -55,7 +55,7 @@ class MyClass {
 
 If we execute the program as-is, we will see that even when we haven't instantiated any instance of `MyClass`, the decorator function is being called.
 
-That means that you haven't had to wait until the class is created &mdash; the runtime has invoked the *decorator* function as soon as it has seen the class definition.
+That means that you don't have to wait until the class is created &mdash; the runtime invokes the *decorator* function as soon as it has seen the class definition.
 
 That also means, that the decorator will be called only once, and before any of the instances are created.
 
