@@ -842,7 +842,7 @@ These limitations of this option become apparent if we want to mock our database
 #### Dependency injection
 While the Node.js module system and the *singleton dependencies* pattern are great tools for organizing and wiring together the components of an application, they introduce very tight *coupling* between components.
 
-To illustrate that coupling, simply think in our previous scenario: `blog.js` cannot work without the `database.js` module, and it cannot use a different database module if necessary either. The **Dependency Injection** pattern help address that coupling.
+To illustrate that coupling, simply think in our previous scenario: `blog.js` cannot work without the `database.js` module, and it cannot use a different database module if necessary either. The **Dependency Injection** pattern helps you addressing that coupling.
 
 > **Dependency Injection** is a pattern in which the dependencies of a component are *provided as inputs* by an external entity, often referred to as the **injector**.
 
@@ -856,7 +856,7 @@ When using *DI*, each dependency, instead of being hardcoded into the module, is
 
 The diagram above illustrates what the *Dependency Injection* pattern provides:
 + a *Service* expects a dependency with a predetermined interface.
-+ an *Injector* retrieves a creates an actual concrete instance that implements such an interface, and passes it (*injects it*) into the *Service*. That is, the *Injector* is responsible for providing an instance that fulfills the dependency fro the service.
++ an *Injector* retrieves and creates an actual concrete instance that implements such an interface, and passes it (*injects it*) into the *Service*. That is, the *Injector* is responsible for providing an instance that fulfills the *Service* dependency.
 
 To demonstrate this pattern, let's rework our simple blogging system using *DI* to wire its modules.
 

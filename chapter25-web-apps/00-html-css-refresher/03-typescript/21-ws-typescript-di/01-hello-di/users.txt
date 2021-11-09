@@ -1,0 +1,5 @@
+{"email":"jason.isaacs@ecample.com","password":"$2b$10$QSBygQPC1mDVa1oIKyhEZuY6HwPd9Z5L29JXHxVtZJUDldViWqnC."}
+{"email":"jason.isaacs@ecample.com","password":"$2b$10$wtrn5cMAfIZJaWmbw0K4oOqn9ZcFNbXsgHTFiji51ZuBNjmij1HMG"}
+{"email":"jason.isaacs@ecample.com","password":"$2b$10$Zu8YGGOjrnVMufXbI5H/Pu8w6Gxh16jr2jkhZ4yuCOuj.Sg7B1iUS"}
+{"email":"jason.isaacs@ecample.com","password":"$2b$10$3qKaw/kBglwAv/zkRxkifOzBvn3xnk8MaqOE8wYacqhKcDV8yvnXa"}
+{"email":"jason.isaacs@ecample.com","password":"$2b$10$YUC5E6wKZWoouXydKxJWveA8uDZsYPCKtkn.sh5UNSuOz/VTgYa7O"}

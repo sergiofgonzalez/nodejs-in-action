@@ -25,6 +25,7 @@
 + [18 &mdash; Interfaces and inheritance in TypeScript](18-ws-typescript-interfaces-and-inheritance)
 + [19 &mdash; Advanced Types](19-ws-typescript-advanced-types)
 + [20 &mdash; Decorators](20-ws-typescript-decorators)
-+ 338
++ [21 &mdash; Dependency Injection](21-ws-typescript-di)
+
 #### ToDo
 - [ ] Express with TypeScript (strong typed!)

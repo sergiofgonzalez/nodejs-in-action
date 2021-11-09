@@ -1,0 +1,2 @@
+{"email":"jason.isaacs@example.com","password":"$2b$10$MVoCLlWVdsW03tz3mf/EA.zsYgzUVSdptptumOy5PWksMt5pXY8mC"}
+{"email":"jason.isaacs@example.com","password":"$2b$10$adtSmcsH6qFfTrzKGJTdMeNvSwx0MMjgRI547upteIKPVrJ2RGq8a"}
