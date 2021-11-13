@@ -1,5 +1,5 @@
 # TypeScript: Chapter 21 &mdash; Workshop: Dependency Injection in TypeScript
-> TBD
+> Dependency Injection and IoC in TypeScript
 
 ## Contents
 + The Dependency Injection (DI) design pattern

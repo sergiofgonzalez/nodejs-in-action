@@ -26,6 +26,9 @@
 + [19 &mdash; Advanced Types](19-ws-typescript-advanced-types)
 + [20 &mdash; Decorators](20-ws-typescript-decorators)
 + [21 &mdash; Dependency Injection](21-ws-typescript-di)
++ [22 &mdash; Generics and Conditional Types](22-ws-typescript-generics-and-conditional-types)
+
 
 #### ToDo
 - [ ] Express with TypeScript (strong typed!)
+- [ ] Express with InversifyJS

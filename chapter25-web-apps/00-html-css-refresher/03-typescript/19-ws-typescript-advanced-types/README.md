@@ -177,7 +177,7 @@ Index types allow you to create objects that have flexibility as regards the nam
 
 In practice, you will be giving the shape of your type using an interface in a way that will allow your type to have a flexible number of properties.
 
-Consider the snippet below, which defines such an interface representing the shape of an object that will be a collection of error messages. Obviously, this use case qualifies as an index types, as you will be adding more messages as you build your application, but all of them will have the same shape:
+Consider the snippet below, which defines such an interface representing the shape of an object that will be a collection of error messages. Obviously, this use case qualifies as an index type, as you will be adding more messages as you build your application, but all of them will have the same shape:
 
 ```typescript
 interface ErrorMessage {
