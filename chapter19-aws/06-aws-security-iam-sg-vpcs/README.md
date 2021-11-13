@@ -5,7 +5,7 @@
 ### Summary
 + AWS Security Model
 + IAM: users and roles
-+ Security Groups to control inbound/outbound traffic
++ Security Groups: controlling inbound/outbound traffic
 + Security and network design: private and public subnets in AWS
 
 ### Intro
@@ -24,9 +24,9 @@ This section deals with the most basic (and important) techniques that you will 
 
 ### AWS Security: AWS *shared responsibility model*
 
-AWS defines security in terms of a *shared responsibility model. While AWS is responsible for the *security of the cloud*, you, as an AWS user, are responsible for the *security in the cloud*.
+AWS defines security in terms of a *shared responsibility model*. While AWS is responsible for the *security of the cloud*, you, as an AWS user, are responsible for the *security in the cloud*.
 
-This means that you retain control of the security you choose to implement to protect your own content, platform, applications, system, and networks in the same you'd do in an *on-premises* data center.
+This means that you retain control of the security you choose to implement to protect your own content, platform, applications, systems, and networks in the same way you'd do in an *on-premises* data center.
 
 For example, as part of the *shared responsibility model* you will be responsible for:
 
@@ -38,7 +38,7 @@ For example, as part of the *shared responsibility model* you will be responsibl
 
 + Encrypting data in your stateful systems (enabling *encryption at rest* for the given services such as EBS volumes, databases, S3...).
 
-+ Keeping your OS and applications up to date with your VMs, containers, lambda functions...
++ Keeping your OS and applications up to date in your VMs, containers, lambda functions...
 
 In turn, AWS provides the necessary security-specific tools, features, and services across network security, configuration management, access control, and data encryption so that you can implement the strictest security measures you can think of.
 
@@ -53,7 +53,7 @@ In the *shared security responsibility model* in AWS, you will be responsible fo
 + Software libraries like Java, Python, Node.js...
 + Application software like PostgreSQL, WordPress, etc.
 
-In order to check what packages require a security update you can do:
+In order to check what packages require a security update when using Amazon Linux you can do:
 
 ```bash
 $ yum --security check-update
@@ -108,7 +108,7 @@ To authenticate as a root user or normal user an attacker will need your credent
 
 As a result, as basic security measures you should:
 + Enable MFA for your *root* user.
-+ Do not use your *root* user for regular AWS tasks, and use a regular user with appropriate permissions instead.
++ Do not use your *root* user for day-to-day AWS tasks, and use a regular user with appropriate permissions instead.
 + Enable MFA for your *regular* (non-root) users.
 + Tailor the permissions for your *regular* users following the *Principle of Least Privilege*.
 + Tailor the permissions of your generated access/secret keys, so that if they get stolen the damages can be contained.
@@ -144,7 +144,7 @@ The following diagram shows an overview of all the core concepts of the *AWS IAM
 
 + IAM role &mdash; the concept used to identify resources and bind them with a set of permissions (e.g. EC2 instance with access to *CloudFormation* to create stacks).
 
-+ IAM policy &mdash; the document that defines the permissions for an *IAM user*, *IAM group*, or *IAM role*.
++ IAM policy &mdash; the artifact that defines the permissions for an *IAM user*, *IAM group*, or *IAM role*.
 
 | NOTE: |
 | :---- |
@@ -292,7 +292,7 @@ There are two types of policies:
 
 | NOTE: |
 | :---- |
-| With *AWS CloudFormation it's easy to maintain inline policies. |
+| With *AWS CloudFormation* it's easy to maintain inline policies. |
 
 #### Users for authentication, groups to organize users
 
@@ -385,9 +385,9 @@ You only want traffic to enter or leave a particular machine if it has to do so.
 
 The same applies to resources on AWS. You are given tools to open only the ports that must be accessible and close down all other ports.
 
-Before network traffic can enter or leave your AWS resource, it goes through a firewall provided by AWS. This filrewall inspects the network traffic and uses rules to decide whether the traffic is allowed or denied.
+Before network traffic can enter or leave your AWS resource, it goes through a firewall provided by AWS. This firewall inspects the network traffic and uses rules to decide whether the traffic is allowed or denied.
 
-This firewall is implemented in AWS through the concept of *Security Groups*. By default, a *Security Group* does not allow any inbound traffic (you must add your own rules to allow specific incoming traffic), and a rule that allows all outbound traffic by default.
+This firewall is implemented in AWS through the concept of *Security Groups*. By default, a *Security Group* does not allow any inbound traffic (you must add your own rules to allow specific incoming traffic), and allows all outbound traffic (you must add your own rules to restrict egress traffic).
 
 | NOTE: |
 | :---- |
@@ -405,9 +405,9 @@ You can associate a *security group* with AWS resources such as *EC2 instances* 
 
 The *security group* will let you define two sets of rules:
 
-+ *inbound rules* &mdash; filter traffic based on its source. It can be either an IP address or another *security group*. The effect of adding inbound rules will consist in allowing incoming traffic only from a specific source IP address range.
++ *inbound rules* &mdash; filter traffic based on its source. It can be either an IP address, an IP address range, or another *security group*. The effect of adding inbound rules will consist in allowing incoming traffic only from a specific source IP address range.
 
-+ *outbound rules* &mdash; filter traffic based on its destination. It can be either an IP address or a security group. The effect of adding outbound rules will consists in allowing outgoing traffic to only a specific destination IP address range.
++ *outbound rules* &mdash; filter traffic based on its destination. It can be either an IP address, an IP address range, or a security group. The effect of adding outbound rules will consist in allowing outgoing traffic to only a specific destination IP address range.
 
 Each rule will be specified using the following information:
 + Direction &mdash; inbound or outbound
@@ -519,7 +519,7 @@ Resources:
 
 It is also possible to allow traffic from a *source/destination security group*. This is useful when the IP address range that you want to allow traffic in or out is already configured with an specific *security group* (such as an *RDS* database instance). This will make the rule definition more flexible as it will survive IP changes.
 
-Specifying a security group as a source for an inbound security rule can be done usin the following snippet:
+Specifying a security group as a source for an inbound security rule can be done using the following snippet:
 
 ```yaml
   SecurityGroup:
@@ -543,24 +543,24 @@ Specifying a security group as a source for an inbound security rule can be done
     ...
 ```
 
-For a simple scenario that spins up an *EC2 instance* attached with security groups please see [03 &mdash; CloudFormation: Instance attached with Security Group](03-lab6.2-cloudformation-instance-security-group) for a runnable example.
+For a simple scenario that spins up an *EC2 instance* attached with security groups please see [03 &mdash; CloudFormation: Instance attached with Security Group](03-lab6.2-cloudformation-instance-security-group).
 
 For a more complicated scenario involving several instances and a bastion host please see: [04 &mdash; CloudFormation: Infrastructure with bastion host](04-lab6.3-cloudformation-infra-bastion-host)
 
 ##### Networking basics in AWS
 
-The next section will deal with all the details about networking, but in the meantime it is importanto to understand the difference between public and private IP addresses and the *CIDR notation*.
+The next section will deal with all the details about networking. As a prerequisite for that section it is important to have a solid understanding of some basic networking concepts such as the difference between public and private IP addresses, and the *CIDR notation*.
 
 On your home network, you will be assigned an IP address that most likely will start with `192.168.0.*`. All the devices within your local network will be assigned an IP address that follows that pattern (phones, tablets, SmartTV sets, Videogame consoles...). Those are known as *private IP addresses*.
 
-However, when you access the Internet, all your devices will use the same *public IP address*. That is because only your *home router* has a *public IP address*, and all requests no matter from which device had been originated are redirected by the gateway. Your home network does not know about the *public IP address*, but instead, know that the *Internet Gateway* (that is, your home router) is reachable in a particular *private IP address* such as `192.168.0.1`. Once a request is sent to the *Internet Gateway*, a mechanism known as *network address translation* kicks in, which will wrap the device request and *forward* it under the *public IP address*.
+However, when you access the Internet, all your devices will use the same *public IP address*. That is because only your *home router* has a *public IP address*, and all requests no matter from which device they had been originated are forwarded by the gateway. Your home network does not know about the *public IP address*, but instead, knows that the *Internet Gateway* (that is, your home router) is reachable in a particular *private IP address* such as `192.168.0.1`. Once a request is sent to the *Internet Gateway*, a mechanism known as *network address translation (NAT)* kicks in, which will wrap the device request and *forward* it under the *public IP address*.
 
 | NOTE: |
 | :---- |
 | To find your *public IP address* you can visit [ipify](https://www.ipify.org/), or type `curl 'https://api64.ipify.org?format=json'` or `curl 'https://api64.ipify.org?format=text'`. |
 
 
-You saw in the last YAML snippet that the specification of a single IP address was written as `${IpForSSH}/32`, while when we wanted to allow any IP address we used `0.0.0.0/0`. This notation is known as *Classless Inter-Domain Routing (CIDR)*. The `/32` and `/0` portion defines how many bits (32 and 0, in these case) should be used to form a range of addresses. Therefore, when using `/32` we are specifying an *exact* IP address, while `/0` we are not fixing any bit and therefore we are describing a range that contains every possible IP address.
+You saw in the YAML snippet from the previous section that the specification of a single IP address was written as `${IpForSSH}/32`, while we used `0.0.0.0/0` to allow traffic from any IP. This notation is known as *Classless Inter-Domain Routing (CIDR)*. The `/32` and `/0` portion defines how many bits (32 and 0, in these cases) should be fixed when building a range of addresses. As a result, when using `/32` we are specifying an *exact* IP address, while with `/0` we are not fixing any bit and therefore we are describing a range that contains every possible IP address.
 
 The amount of bits we fix is not limited to `/0` or `/32`. For example, you can do:
 
@@ -570,7 +570,35 @@ The amount of bits we fix is not limited to `/0` or `/32`. For example, you can 
 
 + `10.0.0.0/24` to specify a range that goes from `10.0.0.0` to `10.0.0.255`.
 
-An you are not bound either to binary boundaries such as 8, 16, 24, 32, although typically it is easier to make sense of IP ranges when doing so.
+You are not bound either to binary boundaries such as 8, 16, 24, 32, although typically it is easier to make sense of IP ranges when doing so.
+
+IPv4 addresses have been classified historically into private and public according to these rules:
++ Private IPv4 address space ranges are:
+  + `10.0.0.0/8` (2^24 hosts)
+  + `172.16.0.0/12` (2^20 hosts)
+  + `192.168.0.0/16` (2^16 hosts)
++ Public IPv4 address space consists of all `w.x.y.z`, with w=[1..126, 128..223] except for the corresponding IPv4 private address space for w={10, 172, 192}.
+
+Note that when using CIDR notation `w.x.y.z/N`, an IPv4 address can be interpreted as:
+```
+[subnet_prefix][host_bits]
+```
+where the `subnet_prefix` is the *fixed* part of the range &mdash; the first *N* bits.
+
+A few additional rules must be followed when calculating the hosts on a given subnet.
+
+Given an IPv4 address range:
+  + the first host results from setting all host bits to 0, except for the lowest order bit, which must be one.
+  + the last host results from setting all host bits to 1, except for the lowest order one, which must be 0.
+
+For example, let's consider the IPv4 range `192.168.16.0/20`:
+  + first host: `192.168.16.1`
+  + last host: `192.168.31.254`
+
+
+Note that:
++ The hosts, identified by the `host_bits` must be unique within a subnet.
++ Subnets, identified by the `subnet_prefix` bits must be unique within a network.
 
 #### The *bastion host* (*jumpbox*) concept
 
@@ -602,7 +630,7 @@ This infrastructure requires the following resources:
 
 | NOTE: |
 | :---- |
-| Additionally, you can configure the *bastion host* to use a mechanism known as *Agent Forwarding*, which lets you authenticte with the same key you used to log in to the bastion host for further SSH logins initiated from that *bastion hosts* without requiring additional authentication. However, *agent forwarding* represents a security risk because when using this mechanism, the *bastion host* is able to read the private key from your computer. As a consequence, if the *bastion host* is compromised, an attacker would have access to your private key.<br>An alternative, more secure approach, consists in using the bastion host as a proxy using the command `ssh -J ec2-user@BastionHostPublicName ec2-user@Instance1PublicName`. The argument `-J` for *jump* lets you connect to the target host by first making a *ssh* connection to the jump host described after the `-J` argument, and then establishing a TCP forwarding to the ultimate destination from there.<br>To be able to use `ssh -J` you will have to add the key to your agent using `ssh-add path/to/key.pem`. That will also relieve your from having to type `ssh -i path/to/key.pem ...` every time. |
+| Additionally, you can configure the *bastion host* to use a mechanism known as *Agent Forwarding*, which lets you authenticate with the same key you used to log in to the bastion host for further SSH logins initiated from that *bastion hosts* without requiring additional authentication. However, *agent forwarding* represents a security risk because when using this mechanism, the *bastion host* is able to read the private key from your computer. As a consequence, if the *bastion host* is compromised, an attacker would have access to your private key.<br>An alternative, more secure approach, consists in using the bastion host as a proxy using the command `ssh -J ec2-user@BastionHostPublicName ec2-user@Instance1PublicName`. The argument `-J` for *jump* lets you connect to the target host by first making an *ssh* connection to the jump host described after the `-J` argument, and then establishing a TCP forwarding to the ultimate destination from there.<br>To be able to use `ssh -J` you will have to add the key to your agent using `ssh-add path/to/key.pem`. That will also relieve your from having to type `ssh -i path/to/key.pem ...` every time. |
 
 | TIP: |
 | :---- |
