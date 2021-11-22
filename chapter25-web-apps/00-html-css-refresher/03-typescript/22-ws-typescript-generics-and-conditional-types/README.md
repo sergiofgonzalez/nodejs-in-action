@@ -1,7 +1,11 @@
-# TypeScript: Chapter 22 &mdash; Workshop: Dependency Injection in TypeScript
-> TBD
+# TypeScript: Chapter 22 &mdash; Workshop: Generics and Conditional Types
+> an introduction to advanced types
 
 ## Contents
++ Introducing generics
++ Generics constraints
++ Generics defaults
++ Conditional types
 
 ## Introduction
 
@@ -167,15 +171,304 @@ Note how in the implementation of the `map` function, we're using the `T` placeh
 | :------- |
 | See [05: Generic functions](05-generic-functions) for a runnable example. |
 
-### Generic constraints (384)
+### Constraining generic placeholders
+
+TypeScript allows you to constrain a generic placeholder to some subset of types.
+
+The snippet above defines a `getLength()` that will work for any kind of array or strings, but not for other types.
+
+```typescript
+function getLength<T extends any[] | string>(x: T): number {
+  return x.length;
+}
+```
+
+In the following example we define a function that accepts a generic argument of either `Date` or `number`:
+
+```typescript
+function toDate<T extends Date | number>(x: T): Date {
+  if (x instanceof Date) {
+    return x;
+  }
+  return new Date(x);
+}
+```
+
+| NOTE: |
+| :---- |
+| Note that `x instanceof type` is a great way to instrospect about the type of an object. |
+
+
+| EXAMPLE: |
+| :------- |
+| See [06: Hello, generic constraints](06-hello-generic-constraints) for a runnable example. See also [07: A generic memoize function](07-generic-memoize) for a comprehensive example using constraints, utility types, etc.|
 
 ### Generic defaults
 
+Generic defaults are used when you want to allow for generics, but you don't want to make them mandatory and instead want to provide sensible defaults that could be overridden as needed.
+
+The following snippet illustrates how to do that
+
+```typescript
+interface Identifiable<Id extends string | number = number> {
+  id: Id;
+}
+
+interface Person extends Identifiable {
+  name: string;
+  age: number;
+}
+
+interface Car extends Identifiable<string> {
+  make: string;
+}
+
+const p: Person = {
+  id: 1,
+  age: 55,
+  name: 'Jason Isaacs'
+};
+
+const c: Car = {
+  id: 'W12',
+  make: 'Mercedes'
+};
+```
+
+This is extensively used in React components, in which they allow you to declare a component with properties and state, but only if you need it:
+
+```typescript
+interface Component<P = {}, S = {}> {
+  ...
+}
+```
+
+This is a custom example illustrating this approach with generic defaults:
+
+```typescript
+interface Component<P = {}, S = {}> {
+  id: string;
+  update() : void;
+  properties?: P;
+  state?: S;
+}
+
+const mySpanComponent: Component = {
+  id: 'span1',
+  update: () => { console.log(`${ mySpanComponent.id } has been updated`); }
+};
+
+mySpanComponent.update();
+
+const myButtonComponent: Component<{ color: string, label: string }, { isDisabled: boolean, isPressed: boolean }> = {
+  id: 'btn1',
+  properties: {
+    color: 'blue',
+    label: 'Press me!'
+  },
+  state: {
+    isDisabled: false,
+    isPressed: false
+  },
+  update: () => { console.log(`${ myButtonComponent.id } has been updated`); }
+};
+```
+
+See how the interface defines generic defaults for the types `P` and `S` that model the properties and state of the component. Then, simple components, don't need to use them and their use is very simple, while more complicated ones can provide their own properties and status.
+
+| EXAMPLE: |
+| :------- |
+| See [08: Hello, generic defaults!](08-hello-generic-defaults) for a runnable example. |
+
 ## Conditional types
 
-## Summary
+Conditional types let you create type definitions with logic baked into them. It lets you use syntax such as `T extends U ? X : Y`.
+
+Consider the following snippet, which defines a type for non-null values:
+
+```typescript
+type NotNull<T> = T extends null | undefined ? never : T;
+```
+
+The type definition then can be used in functions as seen below, where we define a `isNotNull` function that takes a generic element and returns a `NotNull<T>`.
+
+```typescript
+function isNotNull<T>(x: T): x is NotNull<T> {
+  return x !== null && x !== undefined;
+}
+
+const items = [1, 2, null, 3, undefined, 4];
+
+const nonNullItems = items.filter(isNotNull); // -> [1, 2, 3, 4]
+```
+
+Note the return type of the function is annotated as `x is NotNull<T>`. This is type guard: a expression that performs a runtime check to guarantee that the type in some scope (See [More on type guards](#more-on-type-guards) section below).
+
+The function `isNotNull()` is our type predicate, and we're telling the system that `isNotNull()` will return `true` when `x` is of type `NotNull<T>` for some `T`.
+
+Note that the use case above is only an example, and a proper `NonNullable<T>` type is provided by TypeScript itself:
+
+```typescript
+/* There's already a built-in type for that anyways */
+
+function isNotNullable<T>(x: T): x is NonNullable<T> {
+  return x !== null && x !== undefined;
+}
+
+console.log(items.filter(isNotNullable));
+```
+
+| EXAMPLE: |
+| :------- |
+| See [09: Hello, conditional types!](09-hello-conditional-types) for a runnable example on the example above, and also on type guards. |
+
+Apart from the `is` keyword for type predicated, TypeScript also features the `infer` keyword which lets you infer the type of a type from another type:
+
+```typescript
+type ArrayItem<T extends any[]> = T extends Array<infer U> ? U : never;
+```
+
+The previous snippet let us access the inner type of an array via the wrapping array.
+
+For example:
+
+```typescript
+type ExtractedPerson = ArrayItem<Team>; // ExtractedPerson == Person
+
+function processPerson(p: ExtractedPerson) {
+  console.log(`${ p.name } (${ p.age })`);
+}
+
+const actors: Team = [
+  { name: 'Jason Isaacs', age: 57 },
+  { name: 'Idris Elba', age: 52 }];
+
+for (const p of actors) {
+  processPerson(p);
+}
+```
+
+| NOTE: |
+| :---- |
+| The previous definition is equivalent to `ArrayItem<T extends any[]> = T[number]`. |
+
+
+That type of construct is also be useful to *unbox* a type that does not come from an array:
+
+```typescript
+type PromiseValueType<T> = T extends Promise<infer U> ? U : never;
+
+console.log(`\n=== unboxing a promise with infer`);
+type PromisedPerson = Promise<Person>;
+type UnpromisedPerson = PromiseValueType<PromisedPerson>; /* it is a Person */
+
+function printPersonInfo(p: UnpromisedPerson) {
+  console.log(p.name);
+  console.log(p.age);
+}
+```
+
+Note that something like:
+
+```typescript
+type IncorrectPromiseValueType<T> = T extends Promise<any> ? U : never;
+```
+will not do the unboxing, that is, if you don't use `infer`, the type `IncorrectPromiseValueType<Promise<Person>>` will be `Promise<Person>` and not `Person`.
+
+### More on type guards
+
+Consider the following example that defines two distinct types and a function that randomly returns an object of either type:
+
+```typescript
+interface Fish {
+  swim(): void;
+}
+
+interface Bird {
+  fly(): void;
+}
+
+
+function getSmallPet(): Fish | Bird {
+  const randomBoolean = Math.random() < 0.5;
+  if (randomBoolean) {
+    return {
+      swim: () => { console.log(`swim()`); }
+    };
+  } else {
+    return {
+      fly: () => { console.log(`swim()`); }
+    };
+  }
+}
+```
+
+In our code, if we want to understand what type of pet we're dealing with, we will need to do something like the following:
+
+```typescript
+const pet = getSmallPet();
+if ('swim' in pet) {
+  console.log(`It is a fish!`);
+} else if ('fly' in pet) {
+  console.log(`It is a bird!`);
+} else {
+  console.log(`It is a gremlin!`);
+}
+```
+
+This is quite ugly, as the writer needs to understand the underlying shape of both `Fish` and `Bird`.
+
+
+TypeScript type-guards provide a much cleaner approach to these use cases. Type-guards involve creating a function with this shape:
+
+```typescript
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+```
+
+The function above leverages a *type predicate*. A predicate takes the form `parameterName is Type` where `parameterName` must be the name of a parameter of the function signature.
+
+The function itself returns a boolean, but what we're indicating above is that when the function returns `true` the argument will be a `Fish`.
+
+Then, we can use it to provide a much cleaner code:
+
+```typescript
+if (isFish(pet)) {
+  pet.swim();
+} else {
+  pet.fly();
+}
+```
+
+Notice that TypeScript not only knows that `pet` is a `Fish`, but also that the `else` branch is a `Bird`. This saves use from any additional casting.
+
+
+We can use the type-guard function to filter out/classify the elements in our array:
+
+```typescript
+const pets: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet(), getSmallPet(), getSmallPet()];
+const fishPets: Fish[] = pets.filter(isFish);
+const birdPets: Bird[] = pets.filter((pet): pet is Bird => !isFish(pet));
+```
+
+| EXAMPLE: |
+| :------- |
+| See [09: Hello, conditional types!](09-hello-conditional-types) for a runnable example on the example above, and also on type guards. |
+
 
 ## You know you've mastered this chapter when...
++ You're familiar with generics and conditional types, and understand their benefits.
+
++ You're comfortable reading and writing code with generic placeholders in interfaces, classes, types and functions/methods.
+
++ You're aware of generic constraints, and how you can use it to narrow down the type of a generic place holder (`T extends ...`).
+
++ You're aware of generic defaults, and how it can be used to simplify the developer experience when using generics (`T extends string | number = number`).
+
++ You're aware of conditional types, you know how to read them and you feel comfortable creating simple conditional types.
+
++ You're aware of type guards and type predicates to create your own user-defined type guard functions.
 
 ## Exercises, code examples, and mini-projects
 
@@ -194,5 +487,22 @@ Illustrates how to implement a *Set* class with a generic type placeholder
 ### [05: Generic functions](05-generic-functions)
 Illustrates how to implement a generic function, and how generic placeholders can be used in inner functions.
 
+### [06: Hello, generic constraints](06-hello-generic-constraints)
+Simple examples illustrating how to establish constraints on generic types.
+
+### [07: A generic memoize function](07-generic-memoize)
+A very detailed walkthrough on how to create a generic, type-safe `memoize()` function, in which type-safety is achieved through utility types (i.e. *mapped types*) such as `Record<K,V>`, `Parameters<T>`, and `ReturnType<T>`.
+
+### [08: Hello, generic defaults!](08-hello-generic-defaults)
+Illustrates how to use generic defaults so that you can provide a default value for a generic placeholder.
+
+### [09: Hello, conditional types!](09-hello-conditional-types)
+Illustrates the use of conditional types and types predicates and type guards, and how to infer/unbox inner types from arrays and promises using `infer`.
+
+### [e01: Hello, Partial Type!](e01-hello-partial)
+Illustrates the use of the utility type `Partial<Type>` which constructs a type from another type in which all the properties are set to optional.
+
+### [e02: Creating a `DeepPartial<T>` type](e02-deep-partial-type)
+A detailed example with step by step information about how to create a complex type `DeepPartial<T>`.
 
 ## ToDo

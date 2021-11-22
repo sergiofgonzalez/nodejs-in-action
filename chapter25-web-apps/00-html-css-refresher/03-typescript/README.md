@@ -27,6 +27,7 @@
 + [20 &mdash; Decorators](20-ws-typescript-decorators)
 + [21 &mdash; Dependency Injection](21-ws-typescript-di)
 + [22 &mdash; Generics and Conditional Types](22-ws-typescript-generics-and-conditional-types)
++ [23 &mdash; Event loop and async behavior](23-ws-typescript-event-loop-and-async)
 
 
 #### ToDo
