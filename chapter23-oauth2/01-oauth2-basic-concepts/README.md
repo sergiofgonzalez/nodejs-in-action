@@ -15,15 +15,17 @@
 *OAuth2* is a delegation protocol &mdash; a means of letting someone who controls a resource allow a software application to access that resource on their behalf without impersonating them.
 
 OAuth is was designed to solve problems like the following (the *canonical* photo printing scenario):
-> You have subscribed to a cloud "photo-storage" service and to a "photo-printing" service.<br>You want to be able to use your "photo-printing" subscription service for the photos you have stored in your "photo-storage" service.<br>Your cloud "photo-printing" service can communicate with your cloud "photo-storage" service using an API.<br>Both services are run by different companies, with no connection between them.<br>OAuth defines how you can delegate access to your photos in your "photo-storage" service to the "photo-printing" service without giving your "photo-storage" password away to the "photo-printing" service. |
+> You have subscribed to a cloud "photo-storage" service and to a "photo-printing" service.<br>You want to be able to use your "photo-printing" subscription service for the photos you have stored in your "photo-storage" service.<br>Your cloud "photo-printing" service can communicate with your cloud "photo-storage" service using an API.<br>Both services are run by different companies, with no connection between them.
+
+OAuth defines how you can delegate access to your photos in your "photo-storage" service to the "photo-printing" service without giving your "photo-storage" password away to the "photo-printing" service.
 
 In technical terms:
-> The OAuth 2.0 authorization framework enables a 3rd party application to obtain limited access to an HTTP service, either on behalf of a resource owner by orchestrating an approval interaction between the reource owner and the HTTP service, or by allowing the 3rd party application to obtain access on its own behalf.
+> The OAuth 2.0 authorization framework enables a 3rd party application to obtain limited access to an HTTP service, either on behalf of a resource owner by orchestrating an approval interaction between the resource owner and the HTTP service, or by allowing the 3rd party application to obtain access on its own behalf.
 
 The following diagram depicts the goal of Auth2 protocol:
 ![Goal of OAuth2](docs/images/goal_of_oauth2.png)
 
-> The goal of Auth2 is to give the **client application**  **access** to a **protected resource** on behalf of a **resource owner** (usually the end user).
+> The goal of Auth2 is to give the **client application** access to a **protected resource** on behalf of a **resource owner** (usually the end user).
 
 It introduces the following participants:
 
@@ -53,7 +55,7 @@ Note that to keep accessing the API without further user intervention, the **cli
 
 Also, the **client** will need to store the user's password in some sort of replayable fashion (plaintext/reversible encryption), which is a vulnerability.
 This approach also rules out a large variety of ways the user can log in (e.g. MFA, federated login, etc.)
-Additionally, as the protected resource has no way of distinguishing if the call comes directly from the user or the client, the protected resource will expose the whose set of actions (e.g. uploading photos, deleting photos, etc.) instead of granting read-only permissions for accessing the photos.
+Additionally, as the protected resource has no way of distinguishing if the call comes directly from the user or the client, the protected resource will expose the whole set of actions (e.g. uploading photos, deleting photos, etc.) instead of granting read-only permissions for accessing the photos.
 If the user does not trust the **client** application, the only way to prevent further impersonation would be for the user to change the password on the **protected resource**, which as a side-effect will disable the delegated access.
 
 ### Option 3: Using a universal key
@@ -66,7 +68,7 @@ This is not a good solution if the **client** can't be fully trusted by the **pr
 Note that even in the context of a single organization, if the developer's key is compromised, the impact will be catastrophic as the owner of the key will be able to access the **protected resource** indefinitely, and for all the users' content.
 
 ### Option 4: Per-user key
-In this approach, the **protected resource** gives the users a special individual key that will be only used for allowing 3rd party services (such as the "photo-printing" service) access the **protected resource**. This key won't be valid to log in themselves on the client or protected resource.
+In this approach, the **protected resource** gives the users a special individual key that will be used only for allowing 3rd party services (such as the "photo-printing" service) access the **protected resource**. This key won't be valid to log in themselves on the client or protected resource.
 + This requires the user to interact with the **protected resource** to generate, acquire, and manage those special credentials in addition to their primary credentials, which complicates the user experience (UX).
 
 Despite the UX, this is the option with less drawbacks. Although it would be better if we could:
@@ -86,9 +88,9 @@ The **authorization server** is trusted by the **protected resource** to issue s
 The following diagram is an overview of how the OAuth protocol works:
 ![OAuth flow overview](docs/images/oauth_flow_overview.png)
 
-1. To acquire a token, the **client** first must send the **resource owner** to the authorization server in order to request that the **resource owner** authorizes this client.
+1. To acquire a token, the **client** first must send the **resource owner** to the **authorization server** in order to request that the **resource owner** authorizes this client.
 2. The **resource owner** authenticates to the **authorization server**, and is then generally presented with a choice of whether to authorize the **client** who initiated the request. The **client** is able to ask for a subset of functionality (**scopes**), which the **resource owner** must be able to further diminish.
-3. Once the authorization grant has been made, the **client** can then request an **access token** from the **authorization service**.
+3. Once the authorization grant has been made, the **client** can then request an **access token** from the **authorization server**.
 4. If everything checks out, the **client** will receive the access token.
 5. The client will be able to present that access token at the **protected resource** to access the API, which will grant the **client** the necessary permissions that were configured by the **resource owner** on the step 2.
 
@@ -99,7 +101,7 @@ Note that:
 
 ## What OAuth2 isn't
 
-+ OAuth should be seen as a *delegation protocol* that provides a way to carry authorization information across systems. It helps not to see it as a pure authorization protocol*.
++ OAuth should be seen as a *delegation protocol* that provides a way to carry authorization information across systems. It does not help to think of OAuth as a pure *authorization protocol*.
 
 + OAuth is mostly about how to get a token and how to use a token. OAuth is not an authentication protocol, even though it can be used to build one (it can be used in a larger recipe to provide authentication capabilities).
 

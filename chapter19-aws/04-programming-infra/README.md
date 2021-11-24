@@ -920,7 +920,7 @@ main()
 
 | EXAMPLE: |
 | :------- |
-| See [02 &mdash; SDK: Spin up a VM](02-lab4.5-sdk-spin-up-vm) for a runnable example. |
+| See [02 &mdash; SDK: Spin up a VM](02-lab4.5-sdk-spin-up-vm) for a runnable example. You can also review [e01 &mdash; SDK: Spin up a VM using TypeScript](e01-lab4.5-sdk-spin-up-vm-ts) for a more modern example using TypeScript. |
 
 #### Labs 4.6: CloudFormation: spin up a VM with a template
 
@@ -981,8 +981,11 @@ Illustrates how to use the CLI to spin up a new VM.
 #### [02 &mdash; SDK: Spin up a VM](02-lab4.5-sdk-spin-up-vm)
 Illustrates how to use the AWS SDK for Node.js (v3) to spin up a new VM.
 
-#### [03 &mdash; CloudFormation: Spin up a VM](chapter19-aws/04-programming-infra/03-lab4.6-cloudformation-spin-up-vm)
+#### [03 &mdash; CloudFormation: Spin up a VM](03-lab4.6-cloudformation-spin-up-vm)
 A simple CloudFormation template to spin up a VM.
+
+#### [e01 &mdash; SDK: Spin up a VM using TypeScript](e01-lab4.5-sdk-spin-up-vm-ts)
+Illustrates how to use the AWS SDK for Node.js (v3) to spin up a new VM using TypeScript.
 
 ### Services used in this chapter
 

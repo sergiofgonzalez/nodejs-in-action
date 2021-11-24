@@ -224,3 +224,10 @@ A sandbox to practice TypeScript static type system.
 
 ### [03 &mdash; Hello, NPM modules!](03-hello-npm-modules)
 A sandbox to practice NPM modules in TypeScript projects.
+
+### [e01: &mdash; TypeScript Node.js starter project](e01-ts-nodejs-template)
+Starter project for Node.js development using TypeScript.
+
+### [e02: &mdash; TypeScript static Express template](e02-ts-static-express-template)
+Starter project for pure vanilla frontend development on a Express server using TypeScript
+
