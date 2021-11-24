@@ -143,7 +143,7 @@ AWS groups its data centers into *AWS Regions* such as "US East, North Virgina" 
 ### EC2 pricing model
 The machines you launch when you need them on AWS are known as *on-demand instances*, and they're billed for every second or hour the machine is running.
 
-Two reduce costs there are two options: *spot instances* and *reserved instances*.
+To reduce costs there are two options: *spot instances* and *reserved instances*.
 
 With *spot instances* you bid for unused capacity in an AWS data center, with the price based on the laws of supply and demand. If the price of your bid is fulfilled, a VM will start and billed at the spot price. Once the spot price exceeds your bid, the VM will be *terminated* after two minutes. This options is best suited to asynchronous tasks like ML, data encoding, etc.
 
@@ -199,8 +199,12 @@ Logging into an EC2 instance requires a key. This labs details the steps to crea
 
 5. Download the key.
 
-6. (Optional) Store it with the rest of your SSH keys under `~/.ssh` with a `400` so that only your user could read it.
+6. (Optional) Store it with the rest of your SSH keys under `~/.ssh` with a `400` (or `600` for rw) so that only your user could read it.
 
+
+| NOTE: |
+| :---- |
+| The general approach does not change for the more compact *ed25519* key type recently added to AWS. |
 
 ### Lab 3.2: Launching an EC2 instance from the AWS Console
 
@@ -223,10 +227,17 @@ You will then need to follow these steps:
 
 8. (Optional) Once running, you will be able to connect to your EC2 instance using the command `ssh -i {path-to-key} {username}@{public-DNS}. Each AMI might require a different username when connecting to it. You can find such information by navigating to the *Instances* group of options, clicking on *Instances* and within the main page, clicking on the *Connect* button.
 
-For example, for a key with a pem file named `awsia.pem` with IP address `3.87.27.209` and user
+For example, for a key with a pem file named `awsia.pem` with IP address `3.87.27.209` and user ec2-user
 ```bash
 ssh -i ~/.ssh/awsia.pem \
 ec2-user@ec2-3-87-27-209.compute-1.amazonaws.com
+```
+
+Note that if you choose an Ubuntu OS, the username will be different:
+
+```bash
+ ssh -i ~/.ssh/awsia.pem \
+ ubuntu@ec2-3-87-27-209.compute-1.amazonaws.com
 ```
 
 #### Lab 3.3: Obtaining the system logs of an EC2 instance
@@ -241,7 +252,7 @@ If you find a problem with your VM and cannot connect to it using the usual meth
 
 #### Lab 3.4: Installing an Apache HTTP server on an EC2 instance with an *Elastic IP*
 
-The first task is to launch an EC2 instance in the same way we did for [Lab 3.2](#lab-3.2-launching-an-ec2-instance-from-the-aws-console)
+The first task is to launch an EC2 instance in the same way we did for [Lab 3.2](#lab-3.2-launching-an-ec2-instance-from-the-aws-console). Make sure to enable in the security group SSH access from your IP address, as well as HTTP access from everywhere.
 
 Then you need to install and start the Apache HTTP server:
 
@@ -253,6 +264,10 @@ $ sudo systemctl status httpd
 ```
 
 If everything goes well, you will be able to see the *Test Page* from Apache when you open your browser and type the *public DNS* of the EC2 instance.
+
+Note that the actions to carry out the same tasks in Ubuntu are similar with only a few changes:
++ Run `sudo apt update && sudo apt install apache2 -y` to install Apache
++ Run `sudo systemctl status apache2` to validate that Apache HTTP server is running.
 
 As discussed on the concepts section, When you stop and start a VM you will be assigned a different public IP address. If you want to host your application with a fixed IP address you have to use a service called *Elastic IP*.
 
@@ -301,6 +316,15 @@ eth0 ...
 eth1 ...
 ...
 ```
+
+#### Cleaning up checklist
+EC2 service:
+- [ ] No EC2 instances should be in state other than terminated.
+- [ ] No **Volumes** should be available
+- [ ] Only the default security group should be defined
+- [ ] ElasticIPs addresses listing should be empty
+- [ ] Network Interfaces listing should be empty
+- [ ] Only `awsia` key-pair should be available
 
 ### You know you've mastered this section when...
 

@@ -21,7 +21,7 @@ let commandLineArgs;
 if (process.argv.length > 2) {
   commandLineArgs = process.argv.slice(2);
 } else {
-  console.error(`ERROR: Usage node.js main {key-pair-name} [{profile}]`);
+  console.error(`ERROR: Usage node main.js {key-pair-name} [{profile}]`);
   process.exit(1);
 }
 
@@ -92,7 +92,7 @@ async function getFirstSubnet(vpcId) {
       throw new Error(`Could not find the first subnet in VPC ${ vpcId }`);
     }
   } catch (err) {
-    console.error(`ERROR: getDefaultVPC: Could not obtain default VPC info: ${ err.message }`);
+    console.error(`ERROR: getFirstSubnet: Could not obtain default VPC info: ${ err.message }`);
     throw new Error(err.message);
   }
 }

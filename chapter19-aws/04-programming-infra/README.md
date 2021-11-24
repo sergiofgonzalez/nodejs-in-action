@@ -11,7 +11,7 @@
 
 ### Intro
 
-AWS provides an API that control every part of AWS over HTTP. As this options requires a lot of repititive work, ant it is very low-level, AWS offers several tools on top of the HTTP API to facilitate the job of interacting with AWS programmatically:
+AWS provides an API that controls every part of AWS over HTTP. As this option requires a lot of repititive work, ant it is very low-level, AWS offers several tools on top of the HTTP API to facilitate the job of interacting with AWS programmatically:
 
 + Command-line interface (CLI) &mdash; that allows you to interact with AWS from your terminal and shell scripts.
 
@@ -91,7 +91,7 @@ There are several added benefits when using *CloudFormation*:
 
 #### Anatomy of a CloudFormation Template
 
-A *CloudFormation* template is structured into five parts:
+A *CloudFormation* template is *roughly* structured into five parts:
 
 1. Format version &mdash; version specification of the template.
 2. Description &mdash; free text describing the template.
@@ -151,9 +151,9 @@ A parameter can be enhanced with the following properties:
 | Property | Description | Example |
 | :------- | :---------- | :------ |
 | Default  | A default value for the parameter | `Default: 'm5.large'` |
-| NoEcho   | Hides the parameter value in graphical tools (for PII info) | `NoEcho: true |
+| NoEcho   | Hides the parameter value in graphical tools (for PII info) | `NoEcho: true` |
 | AllowedValues | Specifies possible values for a parameter | `AllowedValues: [1, 2, 3]` |
-| AllowedPattern | Specifies a regex for the possible values of a parameters | `AllowedPattern: '[A-Za-z0-9]*` |
+| AllowedPattern | Specifies a regex for the possible values of a parameters | `AllowedPattern: '[A-Za-z0-9]*'` |
 | MinLength | Defines the min length of a parameter | `MinLength: 5` |
 | MaxLength | Defines the max length of a parameter | `MaxLength: 5` |
 | MinValue | Used in combination with the `Number` type to define the min value for a parameter | `MinValue: 100` |
@@ -321,7 +321,9 @@ To create a new user and attach to it those access and secret access key you nee
 
 5. Select programmatic access.
 
-6. In the permissions sections, select *Attach existing policies directly* and check *AdministratorAccess*. ![Admin Access](images/cli_admin.png)
+6. In the permissions sections, select *Attach existing policies directly* and check *AdministratorAccess*.
+
+![Admin Access](images/cli_admin.png)
 
 7. Review the details and click on *Create User*.
 
