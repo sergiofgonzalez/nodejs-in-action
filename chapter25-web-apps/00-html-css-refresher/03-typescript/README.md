@@ -29,8 +29,10 @@
 + [22 &mdash; Generics and Conditional Types](22-ws-typescript-generics-and-conditional-types)
 + [23 &mdash; Event loop and async behavior](23-ws-typescript-event-loop-and-async)
 + [24 &mdash; Higher-order functions and callbacks](24-ws-typescript-higher-order-functions-and-callbacks)
++ [25 &mdash; Using promises in TypeScript](25-ws-typescript-promises)
 
 
 #### ToDo
-- [ ] Express with TypeScript (strong typed!)
+- [ ] Express with TypeScript (strong typed!) (https://dev.to/macmacky/get-better-with-typescript-using-express-3ik6)
 - [ ] Express with InversifyJS
+- [ ] Create the moviedb ui example

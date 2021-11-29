@@ -38,6 +38,11 @@ By default, browsers prevent cross-origin requests to be performed. **CORS** is 
 | :------- |
 | See [04: Hello, CORS!](04-cors) for a detailed discussion on cross-origin requests and CORS, and runnable code to see those concepts in action. |
 
+### Hello, WebSockets!
+
+WebSockets is a protocol that enables a full-duplex persistent connection to be established between a client application running in the browser, and a server application.
+
+WebSockets open a lot interesting scenarios, such as a server sending updates to a client without client requesting such information from the server (push notifications), or communicating two clients running in the browser.
 
 ## Exercises, code examples, and mini-projects
 
@@ -52,5 +57,8 @@ A collection of examples illustrating some simple capabilities of types and inte
 
 ### [04: Hello, CORS!](04-cors)
 A gentle introduction to *same-origin policy* in the browser and the *CORS* mechanism, with some simple runnable examples.
+
+### [05: Hello, WebSockets!](05-hello-websockets)
+A very simple introduction to WebSockets.
 
 ## ToDo

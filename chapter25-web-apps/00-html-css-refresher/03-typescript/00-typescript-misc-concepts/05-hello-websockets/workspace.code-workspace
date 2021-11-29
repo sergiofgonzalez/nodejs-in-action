@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "site2-client-app/app/src/public"
+		}
+	],
+	"settings": {},
+	"launch": {}
+}
