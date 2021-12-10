@@ -1,7 +1,10 @@
-# TypeScript: Chapter 25 &mdash; Workshop:  Using promises in TypeScript
-> TBD
+# TypeScript: Chapter 25 &mdash; Workshop: Using promises in TypeScript
+> writing async code using promises without async/await
 
 ## Contents
++ Remembering promise basic concepts
++ Type safe promises with `Promise<T>`
++ Practical examples: databases, backends and frontends
 
 ## Anatomy of a Promise
 
@@ -186,9 +189,18 @@ The example [11: Building a RESTful API server](11-restful-api-server) illustrat
 The example [12: Vanilla TypeScript UI for a REST API](12-vanilla-ts-ui-for-rest-api) illustrates how to create a very basic Vanilla TypeScript UI for the REST API implemented in [11: Building a RESTful API server](/11-restful-api-server).
 
 
-## Summary
-
 ## You know you've mastered this chapter when...
++ You're comfortable using `Promise<T>` in TypeScript.
++ You know how to create Promises from scratch, and how to use `then`, `catch`, and `finally`.
++ You're comfortable using:
+  + `Promise.all`
+  + `Promise.allSettled`
+  + `Promise.any`
+  + `Promise.race`
++ You're comfortable writing asynchronous code without using async/await for:
+  + interacting with databases, namely SQLite
+  + building a backend RESTFul API using Node.js' `http` module
+  + building a frontend using vanilla TypeScript
 
 ## Exercises, code examples, and mini-projects
 
