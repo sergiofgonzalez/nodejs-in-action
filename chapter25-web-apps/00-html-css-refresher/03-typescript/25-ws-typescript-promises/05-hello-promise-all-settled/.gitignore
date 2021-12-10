@@ -1,0 +1,8 @@
+# Environment configuration
+.env
+
+# VS Code workspace configuration
+workspace.code-workspace
+
+# Ignore built ts files
+dist/**/*

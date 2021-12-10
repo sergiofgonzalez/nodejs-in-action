@@ -131,33 +131,60 @@ getValuePromiseThatMightFail(0)
   .finally(() => console.log(`process finished!`));
 ```
 
-### Promise.all
+| EXAMPLE: |
+| :------- |
+| See [02: Using `then` and `catch` to solve the callback hell](02-using-then-and-catch) for a runnable example. |
 
-### Promise.allSettled
+### `Promise.all`
 
-### Promise.any
+`Promise.all(...)` takes an iterable of promises as an argument and resolves them when all the individual promises have been resolved.
 
-### Promise.race
+| EXAMPLE: |
+| :------- |
+| See [03: Hello, `Promise.all`](03-hello-promise-all) and [04: Recursive `Promise.all`](04-recursive-promise-all) for runnable examples illustrating `Promise.all()`. |
 
-## Enhancing Promises with Types
+### `Promise.allSettled`
 
-## Libraries and native promises
+`Promise.allSettled` is a variation on `Promise.all` that resolves when the iterable promises received as arguments are resolved either succefully or rejected.
 
-## Promisify
+Note that each of the elements resolved by `Promise.allSettled()` will look like:
 
-## Asynchronous file system
++ fulfilled promise: `{ status: 'fulfilled', value: <fulfilled-value> }`
++ rejected promise: `{ status: 'rejected', reason: <rejected-value> }`
 
-### fs.readFile
+| EXAMPLE: |
+| :------- |
+| See [05: Hello, `Promise.allSettled`](05-hello-promise-all-settled) and [06: Combining `Promise.all` and `Promise.allSettled`](06-combining-promising-all-settled) for runnable examples. |
 
-### fs.readFileSync
 
-### The fs promises API
+### `Promise.any`
+
+`Promise.any` takes an iterable of promises and will resolve to the value of the first promise that resolves successfully. If no promises in the iterable fullfill (i.e. all the promises are rejected), then the returned promise is rejected with an `AggregateError`, which groups together the individual errors.
+
+| EXAMPLE: |
+| :------- |
+| See [07: Hello, `Promise.any`](07-hello-promise-any) for a runnable example. |
+
+### `Promise.race`
+
+`Promise.race` takes an iterable of promises and fulfills or rejects as soon as one of the promises in the iterable fulfills or rejects with the value of reason from that promise.
+
+| EXAMPLE: |
+| :------- |
+| See [08: Hello, `Promise.race`](08-hello-promise-race) for a runnable example. |
 
 ## Working with databases
 
-## Developing with REST
+The examples [09: Hello, `sqlite3` with callbacks](09-hello-sqlite3) and [10: Hello, `sqlite` with promises](10-hello-sqlite) illustrate how to work with SQLite using callback and promises.
 
-## Putting it all together
+## Building a RESTful API without a web server framework
+
+The example [11: Building a RESTful API server](11-restful-api-server) illustrates how to build an HTTP server that exposes a CRUD API using the `http` module. The server uses SQLite in-memory database for persistence concerns.
+
+## Building a vanilla-TS UI for a Restful API
+
+The example [12: Vanilla TypeScript UI for a REST API](12-vanilla-ts-ui-for-rest-api) illustrates how to create a very basic Vanilla TypeScript UI for the REST API implemented in [11: Building a RESTful API server](/11-restful-api-server).
+
 
 ## Summary
 
@@ -168,5 +195,37 @@ getValuePromiseThatMightFail(0)
 ### [01: Hello, promise from scratch!](01-hello-new-promise)
 Illustrates how to create a promise from scratch using `new` in TypeScript.
 
+### [02: Using `then` and `catch` to solve the callback hell](02-using-then-and-catch)
+Illustrates how to use `then()` and `catch()` in promises.
+
+### [03: Hello, `Promise.all`](03-hello-promise-all)
+Illustrates how to use `Promise.all`.
+
+### [04: Recursive `Promise.all`](04-recursive-promise-all)
+Illustrates how to use recursive calls to improve [03: Hello, `Promise.all`](../03-hello-promise-all)
+
+### [05: Hello, `Promise.allSettled`](05-hello-promise-all-settled)
+Illustrates how to use `Promise.allSettled()` which returns a promise that resolves when all the given promises are either resolved or rejected.
+
+### [06: Combining `Promise.all` and `Promise.allSettled`](06-combining-promising-all-settled)
+Illustrates how to combine `Promise.all` and `Promise.allSettled`.
+
+### [07: Hello, `Promise.any`](07-hello-promise-any)
+Illustrates the behavior of `Promise.any`, which resolves to the first iterable that resolves or rejects if none of the promises is fulfilled.
+
+### [08: Hello, `Promise.race`](08-hello-promise-race)
+Illustrates the behavior of `Promise.race`, which resolves to the first iterable that either resolves or rejects.
+
+### [09: Hello, `sqlite3` with callbacks](09-hello-sqlite3)
+Illustrates how to work with SQLite using the asynchronous, callback based API of [`sqlite3`](npmjs.com/package/sqlite3).
+
+### [10: Hello, `sqlite` with promises](10-hello-sqlite)
+Illustrates how to work with SQLite using the asynchronous, promised based API of [`sqlite`](npmjs.com/package/sqlite).
+
+### [11: Building a RESTful API server](11-restful-api-server)
+Creating a REST API using the Node.js `http` module, backed by SQLite.
+
+### [12: Vanilla TypeScript UI for a REST API](12-vanilla-ts-ui-for-rest-api)
+Creating a Vanilla TypeScript UI for a REST API.
 
 ## ToDo

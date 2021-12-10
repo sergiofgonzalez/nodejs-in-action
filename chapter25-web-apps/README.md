@@ -33,7 +33,7 @@ A simple Vanilla JavaScript project that illustrates how *event propagation* (al
 # [09 &mdash; Hello, Object URL!](09-hello-object-url)
 > A simple Vanilla JavaScript project that illustrates how to use object URLs to display images.
 
-# [10 &mdash; Hello, Boostrap pop-up modal!](10-hello-bootstrap-pop-up-model)
+# [10 &mdash; Hello, Boostrap pop-up modal!](10-hello-bootstrap-pop-up-modal)
 A simple Vanilla JavaScript project that display an image into a Bootstrap v4 pop-up modal dialog.
 
 ## [99-express-esm-template](./99-express-esm-template/)

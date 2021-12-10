@@ -1,5 +1,5 @@
 # 02: Using promises in TypeScript &mdash; Using `then` and `catch` to solve the callback hell
-> illustrates how to create a promise from scratch using `new` in TypeScript
+> illustrates how to use `then()` and `catch()` in promises
 
 ### Exercise 12.1
 

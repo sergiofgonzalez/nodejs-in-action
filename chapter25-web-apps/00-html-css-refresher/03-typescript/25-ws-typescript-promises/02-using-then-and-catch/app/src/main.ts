@@ -1,7 +1,5 @@
 /* we first define the `getValue` function */
 
-import { rejects } from 'assert';
-
 type GetValueFn = (output: number) => number | void;
 
 function getValue(val: number, cb: GetValueFn) {
