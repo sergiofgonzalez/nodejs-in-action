@@ -1,6 +1,6 @@
 import { getValidatedHtmlElement } from './lib/get-validated-html-element';
 
-console.log(`Everything's perfectly all right now. We're fine. We're all fine here now, thank you. How are you?`);// interface OpenLibraryAuthor {
+console.log(`Everything's perfectly all right now. We're fine. We're all fine here now, thank you. How are you?`);
 
 
 interface ToDoTask {
@@ -165,7 +165,7 @@ function handleTaskUpdate() {
 
     import { Modal } from 'bootstrap';
     ...
-    
+
     const bsModalDiv = document.getElementById('editModal');
     if (!bsModalDiv) {
       console.error(`ERROR: not found`);
