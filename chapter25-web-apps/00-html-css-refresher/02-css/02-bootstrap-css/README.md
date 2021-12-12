@@ -2,13 +2,24 @@
 > Bootstrap v5 CSS frameworks and concepts
 
 ## Table of Contents
++ Bootstrap v5 first steps: Breakpoints and containers
+  + Breakpoints
+  + Containers
++ Basics of Bootstrap's grid system
+  + Using *t-shirt sizes* in the column specification
+  + Aligning columns vertically and horizontally
+  + Spacing your columns with gutters
+    + A few words on utility classes: remembering the CSS box model
+    + Horizontal and vertical gutters
++ Buttons
 
 
-## Concepts
+
+## Bootstrap v5 first steps: Breakpoints and containers
 
 Bootstrap is the most popular CSS framework. It enables web developers to quickly design responsive, mobile-first sites.
 
-### Bootstrap v5 first steps: Breakpoints and containers
+### Breakpoints
 
 Bootstrap define a series of *t-shirt sizes* for the dimensions of the screen. Those are used to control how the layout *responds* to different screen sizes. These are known as breakpoints.
 
@@ -28,6 +39,8 @@ The following table illustrates this idea:
 | NOTE: |
 | :---- |
 | Breakpoints can be customized, but there is no reason to do so. |
+
+### Containers
 
 Containers are the most basic element in Bootstrap, and are required when using Bootstrap's grid system.
 
@@ -84,7 +97,7 @@ As a summary:
 | :------- |
 | See [02: Hello, Bootstrap containers!](02-hello-containers) for a runnable example illustrating these concepts. |
 
-### Basics of Bootstrap's Grid System
+## Basics of Bootstrap's Grid System
 
 The grid system is the fundamental mechanism in Bootstrap to build mobile-first layouts. It lets you structure a page in a responsive way as a series of rows and columns.
 
@@ -215,6 +228,8 @@ The grid system also allows you *not* to use the whole units and leave space to 
 
 See how this time we define our second to be 2 units wide, so that 6 units are left unused to the right of the row.
 
+### Using t-shirt sizes in the column specification
+
 The latest feature with regards to the grid system consists in also using the *t-shirt sizes* so that you not only specify how you want to look in larger screens, but also how they should be accommodated on smaller ones.
 
 | NOTE: |
@@ -265,6 +280,7 @@ The previous code snippet will behave as follows:
 
 ![Multiple specs: small](images/grid_multiple_specs_small.png)
 
+### Aligning columns vertically and horizontally
 
 You will also need to know how to align your columns both vertically and horizontally.
 
@@ -335,14 +351,16 @@ And you can use the following classes to align to the left, right, or to distrib
 
 ![Horizontal alignment: other](images/grid_horizontal_alignment_other.png)
 
+### Spacing your columns with gutters
 
-Finally, the gutters, which are uses to introduce padding between your column content, in a responsive way.
+Gutters are used to introduce padding between your column content, in a responsive way.
 
+#### A few words on utility classes
 The gutters use a mechanism that is also used in many other places in Bootstrap, the *utility classes*.
 
 In particular, you can use something like `my-*`, with `*` being a number to add margin in the y-axis, and `mx-*` to add margin in the x-axis. Similarly, you can use `py-*` and `px-*` for the padding.
 
-![Parts of a CSS block box](../01-vanilla-css/images/parts_of_block_box.png)
+![Parts of a CSS box](../01-vanilla-css/images/parts_of_block_box.png)
 
 In the standard box model, the `width` and `height` attribute defines the width and height of the content box. As a result, to get the total size taken by an element you have to add the padding and border.
 
@@ -379,6 +397,8 @@ In summary, by using:
 ```
 
 We are ensuring 5 units of margin between the contents of the `<h2>` and the subsequent container.
+
+#### Horizontal and vertical gutters
 
 Now, back to the gutters. Gutters are applied in the rows to apply spacing between the columns.
 These are used to maintain the space in the x- and y- axis in the complex scenarios:
@@ -469,6 +489,71 @@ Using Bootstrap's grid system, reproduce the following layout:
 | :------- |
 | See [e01: Practicing the Grid layout!](e01-practicing-grid-layout) for the solution. |
 
+## Buttons
+
+Buttons are one of the most popular components of Bootstraps.
+
+They include several predefined styles that allows you to give semantic purpose to them, and they also come in different sizes and appearance.
+
+The following snippet shows how to create regular buttons.
+
+```hmtl
+<div class="container">
+  <button type="button" class="btn btn-primary">Primary</button>
+  <button type="button" class="btn btn-secondary">Secondary</button>
+  <button type="button" class="btn btn-success">Success</button>
+  <button type="button" class="btn btn-danger">Danger</button>
+  <button type="button" class="btn btn-warning">Warning</button>
+  <button type="button" class="btn btn-info">Info</button>
+  <button type="button" class="btn btn-light">Light</button>
+  <button type="button" class="btn btn-dark">Dark</button>
+  <button type="button" class="btn btn-link">Link</button>
+</div>
+```
+
+You can also create those same buttons with different appearance (outline).
+
+```html
+<div class="container">
+  <button type="button" class="btn btn-outline-primary">Primary</button>
+  <button type="button" class="btn btn-outline-secondary">Secondary</button>
+  <button type="button" class="btn btn-outline-success">Success</button>
+  <button type="button" class="btn btn-outline-danger">Danger</button>
+  <button type="button" class="btn btn-outline-warning">Warning</button>
+  <button type="button" class="btn btn-outline-info">Info</button>
+  <button type="button" class="btn btn-outline-light">Light</button>
+  <button type="button" class="btn btn-outline-dark">Dark</button>
+  <button type="button" class="btn btn-outline-link">Link</button>
+</div>
+```
+
+Buttons come in three different sizes: `.btn-lg`, `.btn-sm` and the regular one:
+
+```hmtl
+<div class="container">
+  <button type="button" class="btn btn-primary btn-lg">Large button</button>
+  <button type="button" class="btn btn-primary">Regular button</button>
+  <button type="button" class="btn btn-primary btn-sm">Small button</button>
+</div>
+```
+
+Buttons can be disabled using the `disabled` attribute as seen below:
+
+```html
+<div class="container">
+  <button type="button" class="btn btn-primary" disabled>Disabled button</button>
+  <button type="button" class="btn btn-primary">Enabled button</button>
+</div>
+```
+
+
+![Buttons](images/buttons.png)
+
+
+| EXAMPLE: |
+| :------- |
+| See [05: Buttons in action!](05-buttons) for a runnable example. |
+
 
 ## Examples, Exercises and mini-projects
 
@@ -483,6 +568,9 @@ Illustrates the basic concepts of the Bootstrap grid system, including layout, s
 
 ### [04: More on gutters!](04-more-on-gutters)
 Illustrates the basics of gutters to control the spacing between columns in the grid system.
+
+### [05: Buttons in action!](05-buttons)
+Illustrates the basics of Bootstrap buttons.
 
 ### [e01: Practicing the Grid layout!](e01-practicing-grid-layout)
 Using the grid system to obtain three different layouts.
