@@ -1,0 +1,10 @@
+/* Additional styles here */
+
+/*
+  Custom styling to facilitate viewing the columns
+  [class*="col"] applies to any HTML element featuring
+  class and value that contains col in any position.
+*/
+.container {
+  margin: .5rem;
+}

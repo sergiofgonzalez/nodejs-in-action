@@ -1,0 +1,17 @@
+/* Additional styles here */
+
+/*
+  Custom styling to facilitate viewing the columns
+  [class*="col"] applies to any HTML element featuring
+  class and value that contains col in any position.
+*/
+[class*="col"] {
+  padding: 1rem;
+  background-color: rebeccapurple;
+  border: 2px solid black;
+  color: white;
+}
+
+.col-content {
+  background-color: plum;
+}

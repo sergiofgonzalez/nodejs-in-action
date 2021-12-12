@@ -1,4 +1,4 @@
-# 01: &mdash; Hello, Bootstrap v5 refresher
+# 01: Bootstrap v5 &mdash; Hello, Bootstrap v5 refresher
 > starter project for Bootstrap v5 examples, backed by a Express server that exposes the `public/` directory for frontend development.
 
 ## Description

@@ -1,0 +1,12 @@
+import path from 'path';
+import express from 'express';
+
+const PORT = process.env.PORT ?? 8080;
+
+const app = express();
+app.use(express.static(path.join(__dirname, 'public')));
+
+export const server = app.listen(PORT, () => {
+  console.log(`INFO: serving static content on port ${ PORT }`);
+});
+

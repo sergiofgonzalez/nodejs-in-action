@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  <!-- favico -->
+  <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
+
+  <!-- Additional custom styling -->
+  <link href="stylesheets/styles.css" rel="stylesheet">
+
+  <!-- TypeScript: you may want to consider Browserify for complex projects -->
+  <script src="ts/client.js" type="module" defer></script>
+
+  <title>More on Gutters</title>
+</head>
+<body>
+  <!-- Horizontal gutters: default -->
+  <h2 class="text-center">Horizontal Gutters: default settings</h2>
+  <div class="container border">
+    <div class="row">
+      <div class="col">
+        <div class="border bg-light">Col 1 content with default gutters</div>
+      </div>
+      <div class="col">
+        <div class="border bg-light">Col 2 content with default gutters</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horizontal gutters: gx-5 -->
+  <h2 class="text-center mt-5">Horizontal Gutters: .gx-5</h2>
+  <div class="container border">
+    <div class="row gx-5">
+      <div class="col">
+        <div class="border bg-light">Col 1 content with .gx-5</div>
+      </div>
+      <div class="col">
+        <div class="border bg-light">Col 2 content with .gx-5</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vertical gutters: default -->
+  <h2 class="text-center mt-5">Vertical Gutters: Default settings</h2>
+  <div class="container border">
+    <div class="row">
+      <div class="col-6">
+        <div class="border bg-light">Col 1 content with default gutters</div>
+      </div>
+      <div class="col-6">
+        <div class="border bg-light">Col 2 content with default gutters</div>
+      </div>
+      <div class="col-6">
+        <div class="border bg-light">Col 3 content with default gutters</div>
+      </div>
+      <div class="col-6">
+        <div class="border bg-light">Col 4 content with default gutters</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vertical gutters: gy-5 -->
+  <h2 class="text-center mt-5">Vertical Gutters: .gy-5</h2>
+  <div class="container border">
+    <div class="row gy-5">
+      <div class="col-6">
+        <div class="border bg-light">Col 1 content with .gy-5</div>
+      </div>
+      <div class="col-6">
+        <div class="border bg-light">Col 2 content with with .gy-5</div>
+      </div>
+      <div class="col-6">
+        <div class="border bg-light">Col 3 content with with .gy-5</div>
+      </div>
+      <div class="col-6">
+        <div class="border bg-light">Col 4 content with with .gy-5</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vertical and horizontal gutters: g-5 -->
+  <h2 class="text-center mt-5">Vertical and Horizontal Gutters: .g-5</h2>
+  <div class="container border">
+    <div class="row g-5">
+      <div class="col-6">
+        <div class="border bg-light">Col 1 content with .g-5</div>
+      </div>
+      <div class="col-6">
+        <div class="border bg-light">Col 2 content with with .g-5</div>
+      </div>
+      <div class="col-6">
+        <div class="border bg-light">Col 3 content with with .g-5</div>
+      </div>
+      <div class="col-6">
+        <div class="border bg-light">Col 4 content with with .g-5</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- gutters in a real scenario -->
+  <h2 class="text-center mt-5">Gutters in a real scenario: .g-5</h2>
+  <div class="container border">
+    <div class="row g-5">
+      <div class="col-md-6">
+        <div class="border bg-light">Col 1 content with .g-5</div>
+      </div>
+      <div class="col-md-6">
+        <div class="border bg-light">Col 2 content with with .g-5</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
