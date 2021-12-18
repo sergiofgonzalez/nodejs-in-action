@@ -2,10 +2,13 @@
 
 import { Toast } from 'bootstrap';
 
+import { sayHello } from './lib/greeter';
 
 console.log(`Everything's perfectly all right now. We're fine. We're all fine here now, thank you. How are you?`);
 
-const toastBtn: HTMLButtonElement = getValidatedHtmlElement(`liveToastBtn`);
+sayHello(`Jason`);
+
+const toastBtn: HTMLButtonElement = getValidatedHtmlElement(`#liveToastBtn`);
 const toast: HTMLElement = getValidatedHtmlElement(`#liveToast`);
 
 toastBtn.addEventListener('click', () => {
@@ -14,7 +17,7 @@ toastBtn.addEventListener('click', () => {
 });
 
 
-function getValidatedHtmlElement<T extends Element>(htmlSelector: string): T {
+export function getValidatedHtmlElement<T extends Element>(htmlSelector: string): T {
   const elem = document.querySelector(htmlSelector);
   if (!elem) {
     console.log(`ERROR: ${ htmlSelector } was not found in the HTML`);
