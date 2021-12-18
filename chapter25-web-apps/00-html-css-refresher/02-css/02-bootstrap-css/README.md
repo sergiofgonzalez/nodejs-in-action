@@ -12,6 +12,7 @@
     + A few words on utility classes: remembering the CSS box model
     + Horizontal and vertical gutters
 + Buttons
++ Cards
 
 
 
@@ -360,11 +361,27 @@ The gutters use a mechanism that is also used in many other places in Bootstrap,
 
 In particular, you can use something like `my-*`, with `*` being a number to add margin in the y-axis, and `mx-*` to add margin in the x-axis. Similarly, you can use `py-*` and `px-*` for the padding.
 
+
+##### The CSS Box Model in a nutshell
+
+An element in HTML is made of two major components:
++ the **content** box
++ the **border** box &mdash; a rectangular border that surrounds the content.
+
+These components demarcate a few additional areas of interest:
++ the **padding** &mdash; the area between the content and the border.
++ the **margin** &mdash; the area surrounding the border that creates the space between adjacent HTML elements.
+
+
 ![Parts of a CSS box](../01-vanilla-css/images/parts_of_block_box.png)
 
-In the standard box model, the `width` and `height` attribute defines the width and height of the content box. As a result, to get the total size taken by an element you have to add the padding and border.
 
-However, Bootstrap uses the `.border-box` alternative CSS box model. This means that for an element such as the following:
+There are two ways of specifying the dimensions of a given element:
++ **The standard box model** &mdash; the `width` and `height` attribute of the element defines the width and height of the content box. When using this model, to get the total size taken by an element on the screen. you have to add the padding and border.
+
++ **The alternative box model**/**border-box model** &mdash; the `width` and `height` includes the padding and the border:
+
+Bootstrap uses the `.border-box`, alternative CSS box model. This means that in Bootstrap, an element with the following CSS rule:
 
 ```css
 .box {
@@ -376,12 +393,12 @@ However, Bootstrap uses the `.border-box` alternative CSS box model. This means 
 }
 ```
 
-We will have:
+will have:
 
 ![CSS alternative box model](../01-vanilla-css/images/css_alternative_box_model.png)
 
 
-That is, the `width` and `height` include the padding and the border.
+
 
 
 | NOTE: |
@@ -497,7 +514,7 @@ They include several predefined styles that allows you to give semantic purpose 
 
 The following snippet shows how to create regular buttons.
 
-```hmtl
+```html
 <div class="container">
   <button type="button" class="btn btn-primary">Primary</button>
   <button type="button" class="btn btn-secondary">Secondary</button>
@@ -529,7 +546,7 @@ You can also create those same buttons with different appearance (outline).
 
 Buttons come in three different sizes: `.btn-lg`, `.btn-sm` and the regular one:
 
-```hmtl
+```html
 <div class="container">
   <button type="button" class="btn btn-primary btn-lg">Large button</button>
   <button type="button" class="btn btn-primary">Regular button</button>
@@ -554,6 +571,815 @@ Buttons can be disabled using the `disabled` attribute as seen below:
 | :------- |
 | See [05: Buttons in action!](05-buttons) for a runnable example. |
 
+## Cards
+
+Cards provide a very flexible way to host content for your pages. It includes options to include images, headers and footers, etc.
+
+The most basic card markup for the card follows below:
+
+```html
+<div class="container my-5">
+  <div class="card" style="width: 18rem;">
+    <img src="https://picsum.photos/300/200" class="card-img-top" alt="Lorem picsum 300x200">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+        Asperiores optio a blanditiis voluptatibus ea aperiam id
+        velit eos ipsam?
+      </p>
+    </div>
+  </div>
+</div>
+```
+
+![Card with image](images/card_img_top_fixed_width.png)
+
+
+See how you have to specify the width. If you don't specify the size, the image will take the whole available width.
+
+For the sizing there are a few available options:
++ use the `style="width= nrem;"` as seen above
++ you can use the grid system as seen in the first example below
+
+
+```html
+<div class="container my-5">
+  <div class="row">
+    <div class="col-4">
+      <div class="card">
+        <img src="https://picsum.photos/300/200" class="card-img-top" alt="Lorem picsum 300x200">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          </p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+The snippet above creates a card that takes 1/3 of the space, as it uses `col-4`.
+
+![Card sizing: grid](images/card_sizing_grid.png)
+
+
++ you can use the utility classes like `w-75`:
+
+```html
+<div class="container my-5">
+    <div class="card w-75">
+      <img src="https://picsum.photos/300/200" class="card-img-top" alt="Lorem picsum 300x200">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+        </p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+</div>
+```
+
+In this example, we create a card that takes up 75% of the available width.
+
+![Card sizing: grid](images/card_sizing_utilities.png)
+
+One of the powerful features of cards is that you can compose a very complex card using flexible markup. For example, a bare-bones `.card` will create a panel:
+
+```html
+<div class="container my-5">
+  <div class="row">
+    <div class="col-6">
+      <div class="card text-center">
+        Lorem ipsum dolor sit amet.
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+![Card: barebone panel](images/card_barebones_panel.png)
+
+
+Just by adding a `.card-body` markup, the panel will look much nicer:
+
+```html
+<div class="container my-5">
+  <div class="row">
+    <div class="col-6">
+      <div class="card text-center">
+        <div class="card-body">
+          Lorem ipsum dolor sit amet.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+![Card: with card body](images/card_with_card_body.png)
+
+And if you just add an `<img>` element on top of your card body, you'll obtain a simple card with an image and a body:
+
+```html
+<div class="container my-5">
+  <div class="row">
+    <div class="col-6">
+      <img src="https://picsum.photos/300/200" class="card-img-top" alt="Lorem picsum 300x200">
+      <div class="card text-center">
+        <div class="card-body">
+          Lorem ipsum dolor sit amet.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+![Card: panel with image](images/card_panel_with_image.png)
+
+
+Or you can add a header and a footer:
+
+```html
+<div class="container my-5">
+  <h2>A panel with an image and some text</h2>
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">Card header</div>
+        <div class="card-body">
+          Lorem ipsum dolor sit amet.
+        </div>
+        <div class="card-footer text-muted">Card footer</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+![Card: header and footer](images/card_header_and_footer.png)
+
+You get the idea, you can compose your card just by adding more and more markup: from the bare-bones panel, to the card with header, footer, image, etc.
+
+You can also change the default layout to create horizontal cards:
+
+```html
+<div class="container my-5">
+  <div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-4">
+        <img src="https://picsum.photos/200/300" class="img-fluid rounded-start" alt="Lorem picsum 200x300">
+      </div>
+      <div class="col-8">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis maiores est nam ipsa totam, dolorem accusantium voluptate incidunt tempora voluptates!</p>
+          <p class="card-text"><small class="text-muted">Last updated 5 centuries ago</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+![Card: horizontal](images/card_horizontal.png)
+
+
+Or create groups of cards and set them out side-by-side:
+
+```html
+<div class="container my-5">
+  <div class="card-group">
+    <div class="card">
+      <img src="https://picsum.photos/300/200" class="card-img-top" alt="Lorem picsum 300x200">
+      <div class="card-body">
+        <h5 class="card-title">Left card title</h5>
+        <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur modi numquam nam doloremque, quas nemo accusamus ea quisquam ullam temporibus.</p>
+        <p class="card-text"><small class="text-muted">Last updated 5 seconds ago</small></p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://picsum.photos/300/200" class="card-img-top" alt="Lorem picsum 300x200">
+      <div class="card-body">
+        <h5 class="card-title">Middle card title</h5>
+        <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia, architecto deserunt totam rem animi veniam?</p>
+        <p class="card-text"><small class="text-muted">Last updated 5 mins ago</small></p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://picsum.photos/300/200" class="card-img-top" alt="Lorem picsum 300x200">
+      <div class="card-body">
+        <h5 class="card-title">Right card title</h5>
+        <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, eaque?</p>
+        <p class="card-text"><small class="text-muted">Last updated 5 hours ago</small></p>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+![Card group](images/card_group.png)
+
+
+You can also customize the color of your card using Bootstrap semantic color schemes:
+
+```html
+<div class="container my-5">
+  <div class="row">
+    <div class="col-4">
+      <div class="card text-white bg-primary mb-3">
+        <div class="card-header">Primary color header</div>
+        <div class="card-body">
+          <h5 class="card-title">Primary card title</h5>
+          <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae sint ipsa atque.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+![Card_colors](images/card_colors.png)
+
+See that the markup uses the `.bg-primary` class to display the card using the primary color.
+
+Similarly, you can adjust only the outline using `.border-primary`
+
+```html
+<div class="container my-5">
+  <div class="row">
+    <div class="col-4">
+      <div class="card border-primary mb-3">
+        <div class="card-header">Primary color header</div>
+        <div class="card-body text-primary">
+          <h5 class="card-title">Primary card title</h5>
+          <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae sint ipsa atque.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+![Card: border color](images/card_border_color.png)
+
+
+See that it uses `.border-primary` to specify the color of the border and then `.text-primary` to adjust the color of the card body text.
+
+| EXAMPLE: |
+| :------- |
+| See [06: Cards in action!](06-cards) for a runnable example in which you can see cards in action and practice the different concepts of the previous section. |
+
+## Typography
+
+Bootstraps sets some basic styling regarding typography, so that you don't have to provide your own.
+
+Headers require no classes, only HTML markup:
+
+```html
+<div class="container my-5">
+  <h1>Header 1</h1>
+  <h2>Header 2</h2>
+  <h3>Header 3</h3>
+  <h4>Header 4</h4>
+  <h5>Header 5</h5>
+  <h6>Header 6</h6>
+</div>
+```
+
+![Headers](images/headers.png)
+
+Note also that the actual computed sizes of the headers are adjusted with the viewport size.
+
+For convenience, Bootstrap also defines some classes that you can use to obtain the same styling as the real headers for other HTML elements, for example, paragraphs:
+
+```html
+<div class="container my-5">
+  <p class="h1">Heading 1 look-alike</p>
+  <p class="h2">Heading 2 look-alike</p>
+  <p class="h3">Heading 3 look-alike</p>
+  <p class="h4">Heading 4 look-alike</p>
+  <p class="h5">Heading 5 look-alike</p>
+  <p class="h6">Heading 6 look-alike</p>
+</div>
+```
+
+Bootstrap also comes with display headings with a slightly bigger style to make them stand out:
+
+```html
+<div class="container my-5">
+  <h1 class="display-1">Heading 1</h1>
+  <h2 class="display-2">Heading 2</h2>
+  <h3 class="display-3">Heading 3</h3>
+  <h4 class="display-4">Heading 4</h4>
+  <h5 class="display-5">Heading 5</h5>
+  <h6 class="display-6">Heading 6</h6>
+</div>
+```
+
+![Display headings](images/headings_display.png)
+
+
+Bootstrap also features a lot of inline elements for semantic and styling purposes:
+
+```html
+  <div class="container my-5">
+
+    <!-- highlight -->
+    <p>Lorem ipsum <mark>dolor</mark> sit amet.</p>
+
+    <!-- deleted & striked-out text -->
+    <p>Lorem ipsum <del>dolor sit</del> amet.</p>
+    <p>Lorem ipsum <s>dolor sit</s> amet.</p>
+
+    <!-- inserted & underlined text -->
+    <p>Lorem ipsum <ins>dolor sit</ins> amet.</p>
+    <p>Lorem ipsum <u>dolor sit</u> amet.</p>
+
+    <!-- small -->
+    <p>Lorem ipsum <small>dolor sit</small> amet.</p>
+
+    <!-- strong (will show in bold)-->
+    <p>Lorem ipsum <strong>dolor sit</strong> amet.</p>
+
+    <!-- emphasis (will show in italics)-->
+    <p>Lorem ipsum <em>dolor sit</em> amet.</p>
+  </div>
+```
+
+![Inline styles](images/inline_styles.png)
+
+It is recommended to use that markup according to its semantic use. For the purpose of styling Bootstrap also provide equivalent classes such as `.mark`, `.del`, etc.
+
+
+Another interesting example is the blockquote element:
+
+```html
+<div class="container my-5">
+  <div class="row">
+    <!-- Regular blockquote -->
+    <div class="col-4">
+      <blockquote class="blockquote">
+        <p>Lorem ipsum dolor sit amet.</p>
+      </blockquote>
+    </div>
+
+    <!-- Styled blockquote with footer -->
+    <div class="col-4">
+      <figure>
+        <blockquote class="blockquote">
+          <p>Lorem ipsum dolor sit amet.</p>
+        </blockquote>
+        <figcaption class="blockquote-footer">
+          Lorem ipsum <cite title="source title">dolor</cite> sit amet.
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- Styled blockquote with footer, and text alignment -->
+    <div class="col-4">
+      <figure class="text-end">
+        <blockquote class="blockquote">
+          <p>Lorem ipsum dolor sit amet.</p>
+        </blockquote>
+        <figcaption class="blockquote-footer">
+          Lorem ipsum <cite title="source title">dolor</cite> sit amet.
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+```
+
+![Blockquotes](images/blockquotes.png)
+
+
+Finally, we also have lists. The following block of code creates a list with 5 items that include a sublist. The list is *unstyled* so that it doesn't feature any bullets:
+
+```html
+<div class="container my-5">
+  <div class="row">
+    <ul class="list-unstyled">
+      <li>List item #1</li>
+      <li>List item #2</li>
+      <li>List item #3</li>
+      <li>List item #4</li>
+      <li>List item #5</li>
+      <ul>
+        <li>Sublist item #1</li>
+        <li>Sublist item #2</li>
+        <li>Sublist item #3</li>
+      </ul>
+    </ul>
+  </div>
+</div>
+```
+
+Note that the `.list-unstyled` does not apply to the sublist items:
+
+![List + sublist unstyles](images/list+sublist_unstyled.png)
+
+| NOTE: |
+| :---- |
+| You can use Emmet to quicly create lists with sample content using `li*5>{List item #$}`. |
+
+Lists are often used to create navigation bars. In those cases, the lists have to arranged horizontally as inline items. This can be achieved using the code below:
+
+```html
+<div class="container my-5">
+  <ul class="list-inline">
+    <li class="list-inline-item">inline list item 1</li>
+    <li class="list-inline-item">inline list item 2</li>
+    <li class="list-inline-item">inline list item 3</li>
+    <li class="list-inline-item">inline list item 4</li>
+    <li class="list-inline-item">inline list item 5</li>
+  </ul>
+</div>
+```
+
+![Lists: inline](images/list_inline.png)
+
+
+| EXAMPLE: |
+| :------- |
+| See [07: Hello, Boostrap typography!](07-typography) for a runnable example illustrating the basics of this section. |
+
+## Images
+
+Bootstrap provides support for images, so that controlling sizing and overflow becomes a breeze.
+
+Dealing with images has been traditionally challenging, as seen in the snippet below:
+
+```html
+<div class="container my-5">
+  <div style="width: 25%; border: 2px solid rebeccapurple">
+    <img src="images/food_small.jpg" alt="food">
+  </div>
+</div>
+```
+
+Here, we are setting up a `<div>` which will take 25% of the viewport width and we are trying to use it as a container for an image.
+
+However, we can see that the image overflows:
+
+![Image overflow](images/images_overflow.png)
+
+
+Bootstrap helps you accomplish that, so that you can size images according to the container div using `.img-fluid`:
+
+```html
+<div class="container my-5">
+  <div style="width: 25%; border: 2px solid rebeccapurple">
+    <img class="img-fluid" src="images/food_small.jpg" alt="food">
+  </div>
+</div>
+```
+
+![Images: fluid](images/images_resize_on_parent_div.png)
+
+Note that adding `.img-fluid` to the image will also make the image responsive.
+
+
+The class `.img-thumbnail` can be used to create a sort of frame around the picture:
+
+```html
+<div class="container my-5">
+  <div style="width: 25%">
+    <img class="img-thumbnail" src="images/food_small.jpg" alt="food">
+  </div>
+</div>
+```
+
+![Image thumbnail](images/images_thumbnail.png)
+
+To align the images you have to use the float utility:
+
+```html
+<div class="container my-5">
+  <img class="float-end w-25" src="images/food_small.jpg" alt="food">
+</div>
+```
+
+| NOTE: |
+| :---- |
+| The `.w-25` CSS class is used to reduce the image in width to 25%. |
+
+![Images: align end](images/images_alignment_end.png)
+
+
+Note that when using `.float` you need to use `.clearfix` right afterwards to prevent breaking the normal flow of the document as seen below:
+
+
+```html
+<div class="container my-5">
+  <img class="float-end w-25" src="images/food_small.jpg" alt="food">
+</div>
+<!-- this demonstrates how using float breaks the normal flow of the document -->
+<p>
+  ...really long text that should be place below previous <div>...
+</p>
+```
+
+![Images: float overflowing](images/images_float_overflowing.png)
+
+See how the text, that was supposed to be placed right below the `<div>` containing the image is surrounding the `<img>`, thus breaking the expected flow of the HTML document.
+
+
+The following fixes that problem:
+
+```html
+<div class="container my-5">
+  <h2 class="bg-light">Image alignment: right</h2>
+  <img class="float-end w-25" src="images/food_small.jpg" alt="food">
+</div>
+<!--
+  Comment the next div to see the results with and without clearfix
+  this demonstrates how using float breaks the normal flow of the document
+-->
+<div class="clearfix"></div>
+<p>
+  ...really long text that should be place below previous...
+</p>
+```
+
+![Images: clearfix](images/images_clearfix.png)
+
+Therefore, `.clearfix` reestablish the normal flow of the document.
+
+
+You can also align images in the center of the container `<div>` using Flexbox utilities:
+
+
+```html
+<div class="container my-5">
+  <img class="d-block mx-auto w-25" src="images/food_small.jpg" alt="food">
+</div>
+```
+
+![Images: alignment center](images/images_alignment_center.png)
+
+Finally, Bootstrap also provides a class to add a rounded corners to a given image simply adding the `.rounded` class:
+
+```html
+<div class="container my-5">
+  <img class="d-block mx-auto w-25 rounded" src="images/food_small.jpg" alt="food">
+</div>
+```
+
+![Images: rounded corners](images/images_rounded_corners.png)
+
+
+| EXAMPLE: |
+| :------- |
+| See [08: Images in action!](08-images) for a runnable example that illustrates the concepts of this section. |
+
+
+## Utilities
+
+Bootstrap provides a wide range of *utility classes* to control concerns such as spacing, alignment, visibility, etc.
+
+All of them use a consistent notation, so that they become really easy to use.
+
+### Spacing utilities
+
+Bootstrap spacing utilities provide a way to control margin, padding.
+
+The general notation is:
+
+```
+{property}{sides}[-{breakpoint}]-{size}
+```
+
+where property is shorthand for:
++ `m` &mdash; margin
++ `p` &mdash; padding
+
+where sides is shorthand for:
++ `t` &mdash; for top
++ `b` &mdash; for bottom
++ `s` &mdash; for start
++ `e` &mdash; for end
++ `x` &mdash; for horizontal axis
++ `y` &mdash; for vertical axis
++ `` (blank) &mdash; to set on all sides of an element
+
+where `{breakpoint}` is `sm`, `md`, `lg`, `xl`, and `xxl` (blank means is the xs breakpoint < 576px).
+
+where `{size}` is:
++ `0` &mdash; to eliminate (e.g. marging/padding)
++ numbers from `1` to `5` &mdash; different degrees of spacing
++ `auto` &mdash; shorthand for properties that accept this value (e.g. `margin: auto`)
+
+ For example:
+ | spacing utility class | description |
+ | :-------------------- | :---------- |
+ | mt-5 | apply the largest margin top |
+
+
+The spacing utilities are also used for alignment, such as horizontal centering of elements and content.
+
+For example, the following markup uses `mx-auto` to center a div horizontally on the available space:
+
+```html
+<div class="mx-auto mt-5 border border-1 border-dark w-50">
+```
+
+### Border utilities
+
+The border utilities let you apply borders to HTML elements using classes.
+
+For example, the following markup defines a dark border of size 1 to a `<div>`:
+
+```html
+<div class="border border-1 border-dark">
+  ...
+</div>
+```
+
+### Color utilities
+
+Bootstrap color utilities define a few semantic properties that can be used for both the foreground and background of elements, as well as for text. The suffixes are used in all the corresponding components that accepts colors such as borders, buttons, cards, etc.
+
+Note that you can also specify gradients and opacity, to obtain variants on a given color.
+
+### Sizing utilities
+
+Bootstrap sizing utilities let you specify the size of an element (width/height) using classes:
+
+```html
+<div class="w-50 border border-1 border-dark">
+  ...
+</div>
+```
+
+The previous snipped sets the width of the div to 50% of width of the parent.
+
+### Display utilities
+
+Bootstrap display utilities let you change the display properties of an object using predefined classes.
+
+For example, you can use `.d-none` on an object to make it disappear:
+
+```html
+<!-- This paragraph won't show up -->
+<p class="d-none">
+  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+</p>
+```
+
+The twist, is that Bootstrap allows you to mix display utilities like `.d-none` with the t-shirt size breakpoints to make items appear/disappear depending on the screen size.
+
+For example, the following markup hides the paragraph on screens larger than the *md* breakpoint (768 px):
+
+```html
+<!-- hidden on screens larger than 768px -->
+<p class="m-5 d-md-none">
+  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+</p>
+```
+
+The usual case would be the opposite: hide an element below a certain screen size (e.g. below 768px screens)
+
+```html
+<p class="m-5 d-none d-md-block d-lg-block d-xl-block d-xxl-block">
+  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+</p>
+```
+
+
+Use `.d-block` to make an inline element behave as a block element (e.g. usefult to make an inline element take all the available space):
+
+```html
+<span class="bg-dark text-white">
+  span!
+</span>
+<span class="d-block bg-dark text-center text-white">
+  span with <code>.dblock</code>!
+</span>
+```
+
+![Display: .d-block](images/display_d-block.png)
+
+
+Or `.d-inline` for the opposite:
+
+```html
+<div class="d-inline bg-dark text-white mx-1">
+  div with <code>.d-inline</code>!
+</div>
+<div class="d-inline bg-dark text-white mx-1">
+  div with <code>.d-inline</code>!
+</div>
+```
+
+| EXAMPLE: |
+| :------- |
+| See [09: Hello, display utilities!](09-hello-display-utilities) for a runnable example illustrating several examples of the display utilities. |
+
+### Flex utilities
+
+Bootstrap provides a set of classes to manage the flebox capabilities.
+
+### Interactions
+
+The interactions utility classes can be used to change the way certain elements behaves to user actions, such as when a user clicks on a paragraph, etc.
+
+```html
+<p class="user-select-all m-5">
+  This paragraph will be entirely selected when the user clicks on it.
+</p>
+
+<p class="user-select-none m-5">
+  This paragraph won't be selectable when clicked.
+</p>
+```
+
+| EXAMPLE: |
+| :------- |
+| See [10: Hello, interaction utilities!](10-interactions) for a runnable example on interaction utilities. |
+
+### Opacity utilities
+
+Opacity utilities allow you to change the opacity of elements using CSS classes.
+
+### Overflow utilities
+
+Bootstrap overflow utilities give you a simple way to control how the content of an element overflows the container using simple CSS classes:
+
+```html
+  <div class="container my-5">
+    <h2 class="text-center">Using Bootstrap overflow utilities</h2>
+    <div class="row">
+      <div class="col-3">
+        <div class="overflow-auto" style="height: 100px">
+          ... will display scroll bar when content overflows ...
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="overflow-hidden" style="height: 100px">
+          ... will automatically hide the content that overflows ...
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="overflow-visible border bg-light" style="height: 100px">
+          ... will display the text that overflows ...
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="overflow-scroll" style="height: 100px">
+          ... will display the scroll bars even when content does not overflow...
+        </div>
+      </div>
+    </div>
+  </div>
+```
+
+![Utilities: overflow](11-overflow/docs/images/overflow_utilities.png)
+
+| EXAMPLE: |
+| :------- |
+| See [11: Hello, interaction utilities!](11-overflow) for a runnable example. |
+
+
+### Shadow utilities
+
+Bootstrap features to apply shadows to elements:
+
+```html
+<div class="container my-5">
+  <div class="shadow-sm bg-body rounded p-3 mb-5">
+    small shadow
+  </div>
+  <div class="shadow bg-body rounded p-3 mb-5">
+    regular shadow
+  </div>
+  <div class="shadow-lg bg-body rounded p-3 mb-5">
+    large shadow
+  </div>
+</div>
+```
+
+| EXAMPLE: |
+| :------- |
+| See [12: Bootstrap v5 &mdash; Hello, shadow utilities!](12-shadows) for a runnable example. |
+
+### Visibility utilities
+
+The visibility utilities are similar to the `.d-none` and related utilities seen on the [Display utilities](#display-utilities) section, but in this case, the elements are simply hidden without modifying their display properties.
+
+As a result, elements will still take place on the layout:
+
+```html
+<div class="visible">...this will be shown...</div>
+<div class="invisible">
+  ...this won't be shown, but will take space on the page...
+</div>
+```
 
 ## Examples, Exercises and mini-projects
 
@@ -572,5 +1398,35 @@ Illustrates the basics of gutters to control the spacing between columns in the 
 ### [05: Buttons in action!](05-buttons)
 Illustrates the basics of Bootstrap buttons.
 
+### [06: Cards in action!](06-cards)
+Illustrates the basics of Bootstrap cards.
+
+### [07: Hello, Boostrap typography!](07-typography)
+Illustrates the basics of Bootstrap typography utilities.
+
+### [08: Images in action!](08-images)
+Illustrates the basics of Bootstrap image utilities.
+
+### [09: Hello, display utilities!](09-hello-display-utilities)
+Illustrates the basics of Bootstrap display utilities
+
+### [10: Hello, interaction utilities!](10-interactions)
+Illustrates the basics of Bootstrap interaction utilities.
+
+### [11: Hello, overflow utilities!](11-overflow)
+Illustrates the basics of Bootstrap overflow utilities
+
+### [12: Bootstrap v5 &mdash; Hello, shadow utilities!](12-shadows)
+Illustrates the basics of Bootstrap shadow utilities
+
 ### [e01: Practicing the Grid layout!](e01-practicing-grid-layout)
 Using the grid system to obtain three different layouts.
+
+### [e02: Images in action!](e02-practicing-utilities)
+Illustrates the basics of Bootstrap image utilities
+
+## Todo
+
++ [ ] Grokking display utilities: using `d-none` linked to a button to toggle the visibility of elements (e.g. completed
+todo tasks)
++ [ ] Review flexbox from vanilla CSS and see how to replicate using Bootstrap flex utilities.

@@ -5,5 +5,5 @@
 CSS concepts and examples not using any framework or library.
 
 ## [02 &mdash; Bootstrap](02-bootstrap-css)
-Bootstrap v5 CSS framework concepts and examples-
+Bootstrap v5 CSS framework concepts and examples.
 

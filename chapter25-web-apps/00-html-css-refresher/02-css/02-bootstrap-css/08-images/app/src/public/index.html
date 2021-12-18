@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  <!-- favico -->
+  <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
+
+  <!-- Additional custom styling -->
+  <link href="stylesheets/styles.css" rel="stylesheet">
+
+  <!-- TypeScript: you may want to consider Browserify for complex projects -->
+  <script src="ts/client.js" type="module" defer></script>
+
+  <title>Hello, Images!</title>
+</head>
+<body>
+  <!-- Images without Bootstrap classes -->
+  <div class="container my-5">
+    <h2 class="bg-light">Raw images (no Bootstrap)</h2>
+    <div style="width: 25%; border: 2px solid rebeccapurple">
+      <img src="images/food_small.jpg" alt="food">
+    </div>
+  </div>
+
+  <!-- Resizing image according to the parent div -->
+  <div class="container my-5">
+    <h2 class="bg-light">Fluid images resized to fit in parent container</h2>
+    <div style="width: 25%; border: 2px solid rebeccapurple">
+      <img class="img-fluid" src="images/food_small.jpg" alt="food">
+    </div>
+  </div>
+
+  <!-- thumbnail -->
+  <div class="container my-5">
+    <h2 class="bg-light">Image thumbnail</h2>
+    <div style="width: 25%">
+      <img class="img-thumbnail" src="images/food_small.jpg" alt="food">
+    </div>
+  </div>
+
+  <!-- Image alignment: right -->
+  <div class="container my-5">
+    <h2 class="bg-light">Image alignment: right</h2>
+    <img class="float-end w-25" src="images/food_small.jpg" alt="food">
+  </div>
+  <!--
+    Comment the next div to see the results with and without clearfix
+    this demonstrates how using float breaks the normal flow of the document
+  -->
+  <div class="clearfix"></div>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium labore illum minima quas itaque commodi aperiam voluptatibus minus a deleniti inventore, id aspernatur quibusdam repellat quos repellendus iusto molestiae, excepturi animi eligendi iste vitae corporis consectetur. Culpa, consequuntur inventore autem non sint dolores commodi minus voluptatum ab necessitatibus maiores eius tenetur voluptatibus doloribus ad a sed ratione! Recusandae fugiat nesciunt autem cupiditate doloribus esse suscipit nisi, laborum reiciendis numquam consequatur, voluptatum quis modi culpa tenetur nobis nemo molestiae maxime quo optio perferendis quod iusto? Saepe inventore voluptas officiis voluptatibus, assumenda amet quos. Sit quasi sint commodi laudantium nesciunt praesentium accusantium, molestiae repellat earum dolorum, quod odio natus, reprehenderit labore libero incidunt illum excepturi iste! Atque fugit, ullam impedit quae reiciendis doloremque, odio voluptates consequuntur in dicta, beatae mollitia. Facere neque unde quisquam earum iste labore rem porro quo illo sed dolores quidem sapiente, cumque beatae. Quae placeat repellendus soluta hic!
+  </p>
+
+  <!-- Image alignment: center -->
+  <div class="container my-5">
+    <h2 class="bg-light">Image alignment: center</h2>
+    <img class="d-block mx-auto w-25" src="images/food_small.jpg" alt="food">
+  </div>
+
+
+  <!-- Image: rounded corners -->
+  <div class="container my-5">
+    <h2 class="bg-light">Image: rounded corners</h2>
+    <img class="d-block mx-auto w-25 rounded" src="images/food_small.jpg" alt="food">
+  </div>
+
+</body>
+</html>

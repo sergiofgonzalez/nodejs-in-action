@@ -44,6 +44,10 @@ WebSockets is a protocol that enables a full-duplex persistent connection to be 
 
 WebSockets open a lot interesting scenarios, such as a server sending updates to a client without client requesting such information from the server (push notifications), or communicating two clients running in the browser.
 
+| EXAMPLE: |
+| :------- |
+| See [05: Hello, WebSockets!](05-hello-websockets) for a runnable example illustrating how a client and a server can communicate through the WebSockets protocol. |
+
 ## Exercises, code examples, and mini-projects
 
 ### [01: Hello, `Partial<T>`!](01-hello-partial)
