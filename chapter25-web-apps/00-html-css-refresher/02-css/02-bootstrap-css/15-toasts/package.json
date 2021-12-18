@@ -1,0 +1,57 @@
+{
+  "name": "ndps",
+  "version": "0.1.0",
+  "description": "Illustrating Node.js advanced techniques and patterns",
+  "main": "main.js",
+  "engines": {
+    "node": ">=14.17.4",
+    "npm": ">=7.20.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofgonzalez/nodejs-in-action.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@gmail.com"
+  },
+  "config": {
+    "tsc_outDir": "dist/",
+    "chrome_path": "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+    "wsl_path_prefix": "wsl$/Ubuntu-20.04"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bootstrap": "5.1.6",
+    "@types/express": "4.17.13",
+    "@types/jest": "27.0.3",
+    "@types/node": "17.0.0",
+    "@types/shelljs": "0.8.10",
+    "@typescript-eslint/eslint-plugin": "5.7.0",
+    "@typescript-eslint/parser": "5.7.0",
+    "eslint": "8.5.0",
+    "jest": "27.4.5",
+    "shelljs": "0.8.4",
+    "shx": "0.3.3",
+    "ts-jest": "27.1.2",
+    "ts-node": "10.4.0",
+    "typescript": "4.5.4"
+  },
+  "scripts": {
+    "reset": "npx --yes shx rm -rf node_modules coverage && npm run clean-dist && npm install",
+    "clean-dist": "npx shx rm -rf ${npm_package_config_tsc_outDir}",
+    "freshen-deps": "./scripts/freshen.sh",
+    "lint": "node_modules/.bin/tsc --noEmit && node_modules/.bin/eslint app/src/",
+    "copy-static-assets": "ts-node scripts/copy-static-assets.ts",
+    "build": "npm run lint && node_modules/.bin/tsc && npm run copy-static-assets",
+    "start": "npm run build && node dist/main.js",
+    "test": "jest --verbose",
+    "test-watch": "jest --watchAll --verbose",
+    "test-coverage": "jest --verbose --coverage && \"${npm_package_config_chrome_path}\" file://${npm_package_config_wsl_path_prefix}/${PWD}/coverage/index.html"
+  },
+  "dependencies": {
+    "bootstrap": "5.1.3",
+    "express": "4.17.2"
+  }
+}

@@ -1905,6 +1905,66 @@ Note that you have to add more classes, as well as include a button so that the 
 | :------- |
 | See [14: Hello, alerts!](14-alerts) for a runnable example to practice the concepts of this section. |
 
+## Toasts
+
+*Toasts* are advanced lightweight Bootstrap components frequently used to show notifications.
+
+Even the simplest of Toasts require complicated markup and TypeScript.
+
+Let's start with the markup:
+
+```html
+<div class="container my-5">
+  <!-- This button is used to show the toast below -->
+  <button type="button" class="btn btn-primary" id="liveToastBtn">Show toast!</button>
+
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index:11">
+    <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <img src="https://picsum.photos/64" class="rounded me-2" alt="Toast header image">
+        <strong class="me-auto">Toast header!</strong>
+        <small>pushed 11 hours ago</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div> <!-- toast-header -->
+      <div class="toast-body">
+        This is the toast body. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempora perspiciatis non a natus adipisci nisi dignissimos laborum eligendi omnis voluptas.
+      </div>
+    </div> <!-- toast -->
+  </div>
+</div>
+```
+
+See how the toast is contained on a div that is use to specify its placement (bottom right in this example). Also, toasts are not displayed by default, and therefore, in the example we set out a button which will trigger the following TypeScript code on click:
+
+```typescript
+import { Toast } from 'bootstrap';
+
+
+const toastBtn: HTMLButtonElement = getValidatedHtmlElement(`liveToastBtn`);
+const toast: HTMLElement = getValidatedHtmlElement(`#liveToast`);
+
+toastBtn.addEventListener('click', () => {
+  const bsToast = new Toast(toast);
+  bsToast.show();
+});
+
+function getValidatedHtmlElement<T extends Element>(htmlSelector: string): T {
+  const elem = document.querySelector(htmlSelector);
+  if (!elem) {
+    console.log(`ERROR: ${ htmlSelector } was not found in the HTML`);
+    throw new Error(`Missing element ${ htmlSelector } in HTML`);
+  }
+  return elem as T;
+}
+```
+
+See how the event handler creates a new instance of the toast and shows it.
+
+| EXAMPLE: |
+| :------- |
+| See [15: Hello, Toasts!](15-toasts) for a runnable example illustrating the concepts above, and ready to use for experimenting more advanced scenarios for toasts. |
+
+
 ## Examples, Exercises and mini-projects
 
 ### [01: Hello, Bootstrap v5 refresher](01-hello-bootstrap-v5)
@@ -1948,6 +2008,9 @@ Illustrates the basics of Bootstrap tables.
 
 ### [14: Hello, alerts!](14-alerts)
 Illustrates the basics of Bootstrap alerts.
+
+### [15: Hello, Toasts!](15-toasts)
+Illustrates the basics of Bootstrap Toasts, a modern component for notifications.
 
 ### [e01: Practicing the Grid layout!](e01-practicing-grid-layout)
 Using the grid system to obtain three different layouts.
