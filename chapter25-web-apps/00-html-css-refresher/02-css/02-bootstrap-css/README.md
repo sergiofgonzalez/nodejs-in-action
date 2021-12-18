@@ -1381,6 +1381,530 @@ As a result, elements will still take place on the layout:
 </div>
 ```
 
+## Tables
+
+Bootstrap offers a wide range of customization capabilities for your tables.
+
+In its simplest form, Bootstrap tables only require you to add the `.table` class to the `<table>` HTML element:
+
+```html
+<div class="container my-5">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Heading #1</th>
+        <th scope="col">Heading #2</th>
+        <th scope="col">Heading #3</th>
+        <th scope="col">Heading #4</th>
+        <th scope="col">Heading #5</th>
+        <th scope="col">Heading #6</th>
+        <th scope="col">Heading #7</th>
+        <th scope="col">Heading #8</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Cell row 1, col 1</td>
+        <td>Cell row 1, col 2</td>
+        <td>Cell row 1, col 3</td>
+        <td>Cell row 1, col 4</td>
+        <td>Cell row 1, col 5</td>
+        <td>Cell row 1, col 6</td>
+        <td>Cell row 1, col 7</td>
+        <td>Cell row 1, col 8</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Cell row 2, col 1</td>
+        <td>Cell row 2, col 2</td>
+        <td>Cell row 2, col 3</td>
+        <td>Cell row 2, col 4</td>
+        <td>Cell row 2, col 5</td>
+        <td>Cell row 2, col 6</td>
+        <td>Cell row 2, col 7</td>
+        <td>Cell row 2, col 8</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Cell row 3, col 1</td>
+        <td>Cell row 3, col 2</td>
+        <td>Cell row 3, col 3</td>
+        <td>Cell row 3, col 4</td>
+        <td>Cell row 3, col 5</td>
+        <td>Cell row 3, col 6</td>
+        <td>Cell row 3, col 7</td>
+        <td>Cell row 3, col 8</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+![Tables: simplest](images/tables_simplest.png)
+
+
+You can also make a table responsive by placing the table on a container div featuring the `.table-responsive` class:
+
+```html
+<div class="container my-5">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Heading #1</th>
+          <th scope="col">Heading #2</th>
+          <th scope="col">Heading #3</th>
+          <th scope="col">Heading #4</th>
+          <th scope="col">Heading #5</th>
+          <th scope="col">Heading #6</th>
+          <th scope="col">Heading #7</th>
+          <th scope="col">Heading #8</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Cell row 1, col 1</td>
+          <td>Cell row 1, col 2</td>
+          <td>Cell row 1, col 3</td>
+          <td>Cell row 1, col 4</td>
+          <td>Cell row 1, col 5</td>
+          <td>Cell row 1, col 6</td>
+          <td>Cell row 1, col 7</td>
+          <td>Cell row 1, col 8</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Cell row 2, col 1</td>
+          <td>Cell row 2, col 2</td>
+          <td>Cell row 2, col 3</td>
+          <td>Cell row 2, col 4</td>
+          <td>Cell row 2, col 5</td>
+          <td>Cell row 2, col 6</td>
+          <td>Cell row 2, col 7</td>
+          <td>Cell row 2, col 8</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Cell row 3, col 1</td>
+          <td>Cell row 3, col 2</td>
+          <td>Cell row 3, col 3</td>
+          <td>Cell row 3, col 4</td>
+          <td>Cell row 3, col 5</td>
+          <td>Cell row 3, col 6</td>
+          <td>Cell row 3, col 7</td>
+          <td>Cell row 3, col 8</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+```
+
+As seen below, this will include a scrollbar so that you can review all of the table information:
+
+![Table: responsive](images/tables_responsive.png)
+
+
+You can also specify the t-shirt size beyond where the table will become responsive:
+
+```html
+<div class="container my-5">
+  <div class="table-responsive-sm">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Heading #1</th>
+          <th scope="col">Heading #2</th>
+          <th scope="col">Heading #3</th>
+          <th scope="col">Heading #4</th>
+          <th scope="col">Heading #5</th>
+          <th scope="col">Heading #6</th>
+          <th scope="col">Heading #7</th>
+          <th scope="col">Heading #8</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Cell row 1, col 1</td>
+          <td>Cell row 1, col 2</td>
+          <td>Cell row 1, col 3</td>
+          <td>Cell row 1, col 4</td>
+          <td>Cell row 1, col 5</td>
+          <td>Cell row 1, col 6</td>
+          <td>Cell row 1, col 7</td>
+          <td>Cell row 1, col 8</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Cell row 2, col 1</td>
+          <td>Cell row 2, col 2</td>
+          <td>Cell row 2, col 3</td>
+          <td>Cell row 2, col 4</td>
+          <td>Cell row 2, col 5</td>
+          <td>Cell row 2, col 6</td>
+          <td>Cell row 2, col 7</td>
+          <td>Cell row 2, col 8</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Cell row 3, col 1</td>
+          <td>Cell row 3, col 2</td>
+          <td>Cell row 3, col 3</td>
+          <td>Cell row 3, col 4</td>
+          <td>Cell row 3, col 5</td>
+          <td>Cell row 3, col 6</td>
+          <td>Cell row 3, col 7</td>
+          <td>Cell row 3, col 8</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+```
+
+In the example above, the table will display a scrollbar for screens narrower than the *sm* breakpoint (576px).
+
+
+You can use additional classes to change the appearance of the table:
+
+```html
+<div class="container my-5">
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Heading #1</th>
+        <th scope="col">Heading #2</th>
+        <th scope="col">Heading #3</th>
+        <th scope="col">Heading #4</th>
+        <th scope="col">Heading #5</th>
+        <th scope="col">Heading #6</th>
+        <th scope="col">Heading #7</th>
+        <th scope="col">Heading #8</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Cell row 1, col 1</td>
+        <td>Cell row 1, col 2</td>
+        <td>Cell row 1, col 3</td>
+        <td>Cell row 1, col 4</td>
+        <td>Cell row 1, col 5</td>
+        <td>Cell row 1, col 6</td>
+        <td>Cell row 1, col 7</td>
+        <td>Cell row 1, col 8</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Cell row 2, col 1</td>
+        <td>Cell row 2, col 2</td>
+        <td>Cell row 2, col 3</td>
+        <td>Cell row 2, col 4</td>
+        <td>Cell row 2, col 5</td>
+        <td>Cell row 2, col 6</td>
+        <td>Cell row 2, col 7</td>
+        <td>Cell row 2, col 8</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Cell row 3, col 1</td>
+        <td>Cell row 3, col 2</td>
+        <td>Cell row 3, col 3</td>
+        <td>Cell row 3, col 4</td>
+        <td>Cell row 3, col 5</td>
+        <td>Cell row 3, col 6</td>
+        <td>Cell row 3, col 7</td>
+        <td>Cell row 3, col 8</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+For example, the `.table-dark` class will make the table look like the image below:
+
+![Table: dark](images/tables_dark.png)
+
+
+You can create borders around the cells using `.table-bordered`:
+
+```html
+<div class="container my-5">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Heading #1</th>
+        <th scope="col">Heading #2</th>
+        <th scope="col">Heading #3</th>
+        <th scope="col">Heading #4</th>
+        <th scope="col">Heading #5</th>
+        <th scope="col">Heading #6</th>
+        <th scope="col">Heading #7</th>
+        <th scope="col">Heading #8</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Cell row 1, col 1</td>
+        <td>Cell row 1, col 2</td>
+        <td>Cell row 1, col 3</td>
+        <td>Cell row 1, col 4</td>
+        <td>Cell row 1, col 5</td>
+        <td>Cell row 1, col 6</td>
+        <td>Cell row 1, col 7</td>
+        <td>Cell row 1, col 8</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Cell row 2, col 1</td>
+        <td>Cell row 2, col 2</td>
+        <td>Cell row 2, col 3</td>
+        <td>Cell row 2, col 4</td>
+        <td>Cell row 2, col 5</td>
+        <td>Cell row 2, col 6</td>
+        <td>Cell row 2, col 7</td>
+        <td>Cell row 2, col 8</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Cell row 3, col 1</td>
+        <td>Cell row 3, col 2</td>
+        <td>Cell row 3, col 3</td>
+        <td>Cell row 3, col 4</td>
+        <td>Cell row 3, col 5</td>
+        <td>Cell row 3, col 6</td>
+        <td>Cell row 3, col 7</td>
+        <td>Cell row 3, col 8</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+![Tables: bordered](images/tables_bordered.png)
+
+You can also create hover effects over the rows with `.table-hover`. Note also that you can mix and match several of the classes seen above. For example, below you have a table featuring the dark theme, with bordered cells and hover effect (on the third row):
+
+```html
+<div class="container my-5">
+  <table class="table table-dark table-bordered table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Heading #1</th>
+        <th scope="col">Heading #2</th>
+        <th scope="col">Heading #3</th>
+        <th scope="col">Heading #4</th>
+        <th scope="col">Heading #5</th>
+        <th scope="col">Heading #6</th>
+        <th scope="col">Heading #7</th>
+        <th scope="col">Heading #8</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Cell row 1, col 1</td>
+        <td>Cell row 1, col 2</td>
+        <td>Cell row 1, col 3</td>
+        <td>Cell row 1, col 4</td>
+        <td>Cell row 1, col 5</td>
+        <td>Cell row 1, col 6</td>
+        <td>Cell row 1, col 7</td>
+        <td>Cell row 1, col 8</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Cell row 2, col 1</td>
+        <td>Cell row 2, col 2</td>
+        <td>Cell row 2, col 3</td>
+        <td>Cell row 2, col 4</td>
+        <td>Cell row 2, col 5</td>
+        <td>Cell row 2, col 6</td>
+        <td>Cell row 2, col 7</td>
+        <td>Cell row 2, col 8</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Cell row 3, col 1</td>
+        <td>Cell row 3, col 2</td>
+        <td>Cell row 3, col 3</td>
+        <td>Cell row 3, col 4</td>
+        <td>Cell row 3, col 5</td>
+        <td>Cell row 3, col 6</td>
+        <td>Cell row 3, col 7</td>
+        <td>Cell row 3, col 8</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+![Tables: mix and match](images/tables_mix_and_match.png)
+
+
+You can also create striped tables with `.table-striped`. Note that also the color of the table was adjusted using semantic colors to `.table-info`:
+
+```html
+<div class="container my-5">
+  <table class="table table-striped table-info">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Heading #1</th>
+        <th scope="col">Heading #2</th>
+        <th scope="col">Heading #3</th>
+        <th scope="col">Heading #4</th>
+        <th scope="col">Heading #5</th>
+        <th scope="col">Heading #6</th>
+        <th scope="col">Heading #7</th>
+        <th scope="col">Heading #8</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Cell row 1, col 1</td>
+        <td>Cell row 1, col 2</td>
+        <td>Cell row 1, col 3</td>
+        <td>Cell row 1, col 4</td>
+        <td>Cell row 1, col 5</td>
+        <td>Cell row 1, col 6</td>
+        <td>Cell row 1, col 7</td>
+        <td>Cell row 1, col 8</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Cell row 2, col 1</td>
+        <td>Cell row 2, col 2</td>
+        <td>Cell row 2, col 3</td>
+        <td>Cell row 2, col 4</td>
+        <td>Cell row 2, col 5</td>
+        <td>Cell row 2, col 6</td>
+        <td>Cell row 2, col 7</td>
+        <td>Cell row 2, col 8</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Cell row 3, col 1</td>
+        <td>Cell row 3, col 2</td>
+        <td>Cell row 3, col 3</td>
+        <td>Cell row 3, col 4</td>
+        <td>Cell row 3, col 5</td>
+        <td>Cell row 3, col 6</td>
+        <td>Cell row 3, col 7</td>
+        <td>Cell row 3, col 8</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+![Table: striped + info color](images/tables_striped_info.png)
+
+| EXAMPLE: |
+| :------- |
+| See [13: Hello, tables!](13-tables) for a runnable example illustrating the basics of tables. |
+
+## Alerts
+
+You can use the alert components to create notifications on the screen.
+
+The markup below demonstrates how to create simple alert:
+
+```html
+<div class="container my-5">
+  <div class="alert alert-primary" role="alert">
+    An alert using the primary theme!
+  </div>
+  <div class="alert alert-secondary" role="alert">
+    Another alert using the secondary theme!
+  </div>
+</div>
+```
+
+![Alerts: simple](images/alerts_simple.png)
+
+You can make them a little bit more appealing using icons:
+
+```html
+<div class="container my-5">
+  <div class="alert alert-danger d-flex align-items-center" role="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+      <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+    </svg>
+    <div>
+      An alert danger with an icon!
+    </div>
+  </div>
+</div>
+```
+
+![Alerts: icons](images/alerts_icon_danger.png)
+
+The technique above uses a one-off SVG icon. But you can also create *sprites* so that you can more easily reference your SVG icons, as seen below:
+
+```html
+<div class="container my-5">
+  <!-- creating sprites -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+    </symbol>
+    <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+    </symbol>
+  </svg>
+
+  <div class="alert alert-primary d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+    <div>
+      An informational alert with an icon referenced as a sprite!
+    </div>
+  </div>
+
+  <div class="alert alert-success d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+    <div>
+      A success alert with another icon referenced as a sprite!
+    </div>
+  </div>
+</div>
+```
+
+Note how we first define the sprites, and then reference them in our alerts. That fosters reusability.
+
+![Images: sprites as icons](images/alerts_icons_sprites.png)
+
+
+Also, when using the Bootstrap JavaScript bundle, you can create dismissable alerts with the markup below:
+
+```html
+<div class="container my-5">
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Click the button to dismiss!</strong> Once you click the element will be removed from the page.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
+```
+
+![Alerts: dismiss](images/alerts_dismiss.png)
+
+Note that you have to add more classes, as well as include a button so that the user can dismiss.
+
+| EXAMPLE: |
+| :------- |
+| See [14: Hello, alerts!](14-alerts) for a runnable example to practice the concepts of this section. |
+
 ## Examples, Exercises and mini-projects
 
 ### [01: Hello, Bootstrap v5 refresher](01-hello-bootstrap-v5)
@@ -1414,10 +1938,16 @@ Illustrates the basics of Bootstrap display utilities
 Illustrates the basics of Bootstrap interaction utilities.
 
 ### [11: Hello, overflow utilities!](11-overflow)
-Illustrates the basics of Bootstrap overflow utilities
+Illustrates the basics of Bootstrap overflow utilities.
 
-### [12: Bootstrap v5 &mdash; Hello, shadow utilities!](12-shadows)
-Illustrates the basics of Bootstrap shadow utilities
+### [12: Hello, shadow utilities!](12-shadows)
+Illustrates the basics of Bootstrap shadow utilities.
+
+### [13: Hello, tables!](13-tables)
+Illustrates the basics of Bootstrap tables.
+
+### [14: Hello, alerts!](14-alerts)
+Illustrates the basics of Bootstrap alerts.
 
 ### [e01: Practicing the Grid layout!](e01-practicing-grid-layout)
 Using the grid system to obtain three different layouts.
