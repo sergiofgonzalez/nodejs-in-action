@@ -29,7 +29,7 @@ echo -e " * Image Name  : ${BOLD_START}${GREEN_START}${IMAGE_NAME}${STYLE_END}"
 read -p "Are you sure you want to continue (y/n)? " -n 1 -r
 echo ""
 if [[ $REPLY =~ ^[Nn]$ ]]; then
-    echo "${BOLD_START}${RED_START}ERROR${STYLE_END}: operation aborted by the user"
+    echo -e "${BOLD_START}${RED_START}ERROR${STYLE_END}: operation aborted by the user"
     exit 1
 fi
 
