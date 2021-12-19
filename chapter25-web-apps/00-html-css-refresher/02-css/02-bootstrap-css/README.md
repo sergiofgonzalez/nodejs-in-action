@@ -2211,6 +2211,66 @@ The navbar will stick to the top even when scrolling, but the text that we place
 
 ![Navbar: fixed top](images/navbars_fixed_top.png)
 
+This can be fixed using `.sticky-top` instead:
+
+```html
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="https://picsum.photos/32" alt="brand image" width="32" height="32">
+      Navbar
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">Disabled</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+```
+
+![Navbars: sticky top](images/navbars_sticky_top.png)
+
+See how in this case, the navbar stays on top while the regular document flow is not broken, and you can see the content right below the navbar without making more adjustments.
+
+Note that if you need to use fixed top, you can fix it adjusting the padding-top on the body:
+
+
+```css
+<style>
+  body {
+    padding-top: 10rem;
+  }
+</style>
+```
+
+![Navbar: fix for fixed-top](images/navbars_fixed_top_padding_fix.png)
 
 Bootstrap v5 features several navbar variations, such as the *Offcanvas navbar*:
 
