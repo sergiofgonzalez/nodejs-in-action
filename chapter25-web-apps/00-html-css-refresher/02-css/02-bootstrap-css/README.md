@@ -2326,6 +2326,95 @@ Note that it uses `.fixed-top` and therefore requires you to adjust your content
 | :------- |
 | See [16: Hello, navbar!](16-navbars) for a runnable example. |
 
+## Navs and tabs
+
+Bootstrap provides also several CSS components to add navs to your page.
+
+Navs are typically included in your page for navigation purposes. For instance, in Amazon.com you can find navs right below the navbar on top:
+
+![Amazon navbar and navs](images/amazon_navbar_navs.png)
+
+Basic navs require very little markup. They are based on unordered lists:
+
+```html
+<div class="container">
+  <ul class="nav">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href='#'>Active</a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link">Link</a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link">Another link</a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link disabled">Disabled link</a>
+    </li>
+  </ul>
+</div>
+```
+
+![Navs: basic](images/navs_basic.png)
+
+Bootstrap also provides an easy way to handle tabs via CSS + JavaScript plugin:
+
+```html
+<div class="container">
+  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Home</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">Home tab content</div>
+    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">Profile tab content</div>
+    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">Contact tab content</div>
+  </div>
+</div>
+```
+
+![Navs and tabs: tabs](17-navs-and-tabs/docs/images/navs_and_tabs_tabs.png)
+
+
+The library also provides an easy way to transform the previous horizontal tabs into a vertical tabs using the flex utilities:
+
+```html
+<div class="container">
+  <div class="d-flex align-items-start">
+    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</button>
+      <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
+      <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
+      <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
+      <button class="nav-link" id="v-pills-other-tab" data-bs-toggle="pill" data-bs-target="#v-other-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Other</button>
+    </div>
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">Home tab content</div>
+      <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">Profile tab content</div>
+      <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">Messages tab content</div>
+      <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">Settings tab content</div>
+      <div class="tab-pane fade" id="v-other-settings" role="tabpanel" aria-labelledby="v-other-settings-tab">Other tab content</div>
+    </div>
+  </div>
+</div>
+```
+
+![Navs and tabs: tabs (vertical)](17-navs-and-tabs/docs/images/navs_and_tabs_tabs_vertical.png)
+
+
+| EXAMPLE: |
+| :------- |
+| See [17: Hello, navs and tabs!](17-navs-and-tabs) for a runnable example. |
+
+## Icons
+
 ## Examples, Exercises and mini-projects
 
 ### [01: Hello, Bootstrap v5 refresher](01-hello-bootstrap-v5)
@@ -2376,6 +2465,9 @@ Illustrates the basics of Bootstrap Toasts, a modern component for notifications
 ### [16: Hello, navbar!](16-navbars)
 Illustrates the basics of Bootstrap navbar component.
 
+### [17: Hello, navs and tabs!](17-navs-and-tabs)
+Illustrates the basics of Bootstrap navs and tabs components.
+
 ### [e01: Practicing the Grid layout!](e01-practicing-grid-layout)
 Using the grid system to obtain three different layouts.
 
@@ -2385,5 +2477,5 @@ Illustrates the basics of Bootstrap image utilities
 ## Todo
 
 + [ ] Grokking display utilities: using `d-none` linked to a button to toggle the visibility of elements (e.g. completed
-todo tasks)
+todo tasks) vs. `d-invisible`
 + [ ] Review flexbox from vanilla CSS and see how to replicate using Bootstrap flex utilities.
