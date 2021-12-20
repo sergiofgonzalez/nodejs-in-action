@@ -2415,6 +2415,13 @@ The library also provides an easy way to transform the previous horizontal tabs 
 
 ## Icons
 
+Bootstrap used to come with their own icon set. Then, they decided not to include it anymore, so that you had to rely on external icon libraries such as [Font Awesome](https://fontawesome.com/).
+
+Bootstrap v5 does not feature any icon library either, but the twist is that they now provide first-class support for a very good icon library also developed by the Bootstrap team as a separate project: [Bootstrap icons](https://icons.getbootstrap.com/)
+
+
+From there you can search for icons, and you have detailed information about how to include it in your application as font, or as svg.
+
 ## Examples, Exercises and mini-projects
 
 ### [01: Hello, Bootstrap v5 refresher](01-hello-bootstrap-v5)
