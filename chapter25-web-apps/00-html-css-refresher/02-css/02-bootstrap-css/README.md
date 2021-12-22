@@ -2422,6 +2422,485 @@ Bootstrap v5 does not feature any icon library either, but the twist is that the
 
 From there you can search for icons, and you have detailed information about how to include it in your application as font, or as svg.
 
+In order to use a single SVG icon, you don't need to include any kind of styleshee, you just need to use the following markup:
+
+```html
+<div class="container bg-light">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-controller" viewBox="0 0 16 16">
+    <path d="M11.5 6.027a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2.5-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm-6.5-3h1v1h1v1h-1v1h-1v-1h-1v-1h1v-1z"/>
+    <path d="M3.051 3.26a.5.5 0 0 1 .354-.613l1.932-.518a.5.5 0 0 1 .62.39c.655-.079 1.35-.117 2.043-.117.72 0 1.443.041 2.12.126a.5.5 0 0 1 .622-.399l1.932.518a.5.5 0 0 1 .306.729c.14.09.266.19.373.297.408.408.78 1.05 1.095 1.772.32.733.599 1.591.805 2.466.206.875.34 1.78.364 2.606.024.816-.059 1.602-.328 2.21a1.42 1.42 0 0 1-1.445.83c-.636-.067-1.115-.394-1.513-.773-.245-.232-.496-.526-.739-.808-.126-.148-.25-.292-.368-.423-.728-.804-1.597-1.527-3.224-1.527-1.627 0-2.496.723-3.224 1.527-.119.131-.242.275-.368.423-.243.282-.494.575-.739.808-.398.38-.877.706-1.513.773a1.42 1.42 0 0 1-1.445-.83c-.27-.608-.352-1.395-.329-2.21.024-.826.16-1.73.365-2.606.206-.875.486-1.733.805-2.466.315-.722.687-1.364 1.094-1.772a2.34 2.34 0 0 1 .433-.335.504.504 0 0 1-.028-.079zm2.036.412c-.877.185-1.469.443-1.733.708-.276.276-.587.783-.885 1.465a13.748 13.748 0 0 0-.748 2.295 12.351 12.351 0 0 0-.339 2.406c-.022.755.062 1.368.243 1.776a.42.42 0 0 0 .426.24c.327-.034.61-.199.929-.502.212-.202.4-.423.615-.674.133-.156.276-.323.44-.504C4.861 9.969 5.978 9.027 8 9.027s3.139.942 3.965 1.855c.164.181.307.348.44.504.214.251.403.472.615.674.318.303.601.468.929.503a.42.42 0 0 0 .426-.241c.18-.408.265-1.02.243-1.776a12.354 12.354 0 0 0-.339-2.406 13.753 13.753 0 0 0-.748-2.295c-.298-.682-.61-1.19-.885-1.465-.264-.265-.856-.523-1.733-.708-.85-.179-1.877-.27-2.913-.27-1.036 0-2.063.091-2.913.27z"/>
+  </svg>
+</div>
+```
+
+
+Note that the `<svg>` tag includes `width` and `height` attributes, as well as a `class` attribute that identifies the icon. The values for `width` and `height` can be adjusted to create larger icons.
+
+```html
+<div class="container bg-light mt-5">
+  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-controller" viewBox="0 0 16 16">
+    <path d="M11.5 6.027a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2.5-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm-6.5-3h1v1h1v1h-1v1h-1v-1h-1v-1h1v-1z"/>
+    <path d="M3.051 3.26a.5.5 0 0 1 .354-.613l1.932-.518a.5.5 0 0 1 .62.39c.655-.079 1.35-.117 2.043-.117.72 0 1.443.041 2.12.126a.5.5 0 0 1 .622-.399l1.932.518a.5.5 0 0 1 .306.729c.14.09.266.19.373.297.408.408.78 1.05 1.095 1.772.32.733.599 1.591.805 2.466.206.875.34 1.78.364 2.606.024.816-.059 1.602-.328 2.21a1.42 1.42 0 0 1-1.445.83c-.636-.067-1.115-.394-1.513-.773-.245-.232-.496-.526-.739-.808-.126-.148-.25-.292-.368-.423-.728-.804-1.597-1.527-3.224-1.527-1.627 0-2.496.723-3.224 1.527-.119.131-.242.275-.368.423-.243.282-.494.575-.739.808-.398.38-.877.706-1.513.773a1.42 1.42 0 0 1-1.445-.83c-.27-.608-.352-1.395-.329-2.21.024-.826.16-1.73.365-2.606.206-.875.486-1.733.805-2.466.315-.722.687-1.364 1.094-1.772a2.34 2.34 0 0 1 .433-.335.504.504 0 0 1-.028-.079zm2.036.412c-.877.185-1.469.443-1.733.708-.276.276-.587.783-.885 1.465a13.748 13.748 0 0 0-.748 2.295 12.351 12.351 0 0 0-.339 2.406c-.022.755.062 1.368.243 1.776a.42.42 0 0 0 .426.24c.327-.034.61-.199.929-.502.212-.202.4-.423.615-.674.133-.156.276-.323.44-.504C4.861 9.969 5.978 9.027 8 9.027s3.139.942 3.965 1.855c.164.181.307.348.44.504.214.251.403.472.615.674.318.303.601.468.929.503a.42.42 0 0 0 .426-.241c.18-.408.265-1.02.243-1.776a12.354 12.354 0 0 0-.339-2.406 13.753 13.753 0 0 0-.748-2.295c-.298-.682-.61-1.19-.885-1.465-.264-.265-.856-.523-1.733-.708-.85-.179-1.877-.27-2.913-.27-1.036 0-2.063.091-2.913.27z"/>
+  </svg>
+</div>
+```
+
+Alternatively, you can create a CSS class and reference it in your SVG:
+
+```html
+<style>
+  .icon-xxl {
+    width: 128px;
+  }
+</style>
+
+<div class="container bg-light mt-5">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+    class="bi bi-controller icon-xxl" viewBox="0 0 16 16">
+    <path d="M11.5 6.027a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2.5-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm-6.5-3h1v1h1v1h-1v1h-1v-1h-1v-1h1v-1z" />
+    <path d="M3.051 3.26a.5.5 0 0 1 .354-.613l1.932-.518a.5.5 0 0 1 .62.39c.655-.079 1.35-.117 2.043-.117.72 0 1.443.041 2.12.126a.5.5 0 0 1 .622-.399l1.932.518a.5.5 0 0 1 .306.729c.14.09.266.19.373.297.408.408.78 1.05 1.095 1.772.32.733.599 1.591.805 2.466.206.875.34 1.78.364 2.606.024.816-.059 1.602-.328 2.21a1.42 1.42 0 0 1-1.445.83c-.636-.067-1.115-.394-1.513-.773-.245-.232-.496-.526-.739-.808-.126-.148-.25-.292-.368-.423-.728-.804-1.597-1.527-3.224-1.527-1.627 0-2.496.723-3.224 1.527-.119.131-.242.275-.368.423-.243.282-.494.575-.739.808-.398.38-.877.706-1.513.773a1.42 1.42 0 0 1-1.445-.83c-.27-.608-.352-1.395-.329-2.21.024-.826.16-1.73.365-2.606.206-.875.486-1.733.805-2.466.315-.722.687-1.364 1.094-1.772a2.34 2.34 0 0 1 .433-.335.504.504 0 0 1-.028-.079zm2.036.412c-.877.185-1.469.443-1.733.708-.276.276-.587.783-.885 1.465a13.748 13.748 0 0 0-.748 2.295 12.351 12.351 0 0 0-.339 2.406c-.022.755.062 1.368.243 1.776a.42.42 0 0 0 .426.24c.327-.034.61-.199.929-.502.212-.202.4-.423.615-.674.133-.156.276-.323.44-.504C4.861 9.969 5.978 9.027 8 9.027s3.139.942 3.965 1.855c.164.181.307.348.44.504.214.251.403.472.615.674.318.303.601.468.929.503a.42.42 0 0 0 .426-.241c.18-.408.265-1.02.243-1.776a12.354 12.354 0 0 0-.339-2.406 13.753 13.753 0 0 0-.748-2.295c-.298-.682-.61-1.19-.885-1.465-.264-.265-.856-.523-1.733-.708-.85-.179-1.877-.27-2.913-.27-1.036 0-2.063.091-2.913.27z" />
+  </svg>
+</div>
+```
+
+![Icons: SVG](18-icons/docs/images/icons_svg.png)
+
+Alternatively, you can link to a font stylesheet to use it the icons, and then reference the icon via `<i>` with the corresponding CSS class:
+
+```html
+<head>
+...
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+...
+</head>
+<body>
+    <div class="container bg-light">
+    <i class="bi bi-card-checklist"></i>
+  </div>
+</body>
+```
+
+To make the icon bigger you have to use the related font CSS properties:
+
+```html
+<div class="container bg-light">
+  <i class="bi bi-card-checklist" style="font-size: 64px;"></i>
+</div>
+```
+
+Or you can define a CSS rule and then apply it to the icon `class` property:
+
+```html
+<style>
+  .icon-purple-xxl {
+    font-size: 128px;
+    color: rebeccapurple;
+  }
+</style>
+...
+
+<div class="container bg-light">
+  <i class="bi bi-card-checklist icon-purple-xxl" style="font-size: 64px;"></i>
+</div>
+```
+
+| EXAMPLE: |
+| :------- |
+| See [18: Hello, Bootstrap icons!](18-bootstrap-icons) for a runnable example. |
+
+
+## Forms
+
+Bootstrap provides first class support for forms. As a matter of facts they have recently dedicated a top-level section in the documentation for forms and form components.
+
+Creating basic forms only requires a little bit of Bootstrap CSS to do the styling:
+
+```html
+<div class="container">
+  <div class="text-center">
+    <h2>Get in touch!</h2>
+    <p class="lead">Got any questions? Do not hesitate to contact us!</p>
+  </div>
+  <div class="row justify-content-center my-5">
+    <div class="col-lg-6">
+      <form action="">
+        <!-- Email -->
+        <label for="emailInput" class="form-label">Email</label>
+        <input type="email" id="emailInput" class="form-control" placeholder="me@example.com">
+
+        <!-- Name -->
+        <label for="nameInput" class="form-label">Name</label>
+        <input type="text" id="nameInput" class="form-control" placeholder="your name here">
+
+        <!-- Category -->
+        <label for="categorySelect" class="form-label">Category</label>
+        <select name="category" id="categorySelect" class="form-select">
+          <option value="pricing">Pricing</option>
+          <option value="technical">Technical</option>
+          <option value="general" selected>General</option>
+        </select>
+
+        <!-- Message -->
+        <label for="messageTextarea" class="form-label">Write a message</label>
+        <textarea name="messageTextarea" id="messageTextarea" cols="30" rows="10" class="form-control" placeholder="Type your message here..."></textarea>
+
+        <!-- Send button -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Send</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+```
+
+The markup below is used to render a basic contact form as showing below:
+
+![Basic contact form](19-forms/docs/images/forms_basic.png)
+
+The most relevant parts are:
++ The form header is outside of `<form>` and uses headings and `.lead` class.
++ The form element does not include any classes.
++ Each input control typically consists on a `<label>` element styled with the `.form-label` class and the corresponding input/textarea with the `.form-control` class.
++ The select control also features a label like the input, and a `<select>` styled with the `form-select` class.
++ The form placement is controlled with the Bootstrap grid, using the `.justify-content-center` for horizontal alignment.
+
+
+With some simple changes, the previous form can be tuned to make it more visually appealing with floating labels and animations:
+
+```html
+<div class="container">
+  <div class="text-center">
+    <h2>Get in touch!</h2>
+    <p class="lead">Got any questions? Do not hesitate to contact us!</p>
+  </div>
+  <div class="row justify-content-center my-5">
+    <div class="col-lg-6">
+      <form action="">
+        <div class="form-floating my-5">
+          <!-- Email -->
+          <input type="email" id="emailInput" class="form-control" placeholder="me@example.com">
+          <label for="emailInput" class="form-label">Email</label>
+        </div>
+
+        <div class="form-floating my-5">
+          <!-- Name -->
+          <input type="text" id="nameInput" class="form-control" placeholder="your name here">
+          <label for="nameInput" class="form-label">Name</label>
+        </div>
+
+        <div class="form-floating my-5">
+          <!-- Category -->
+          <select name="category" id="categorySelect" class="form-select">
+            <option value="pricing">Pricing</option>
+            <option value="technical">Technical</option>
+            <option value="general" selected>General</option>
+          </select>
+          <label for="categorySelect" class="form-label">Category</label>
+        </div>
+
+        <div class="form-floating my-5">
+          <!-- Message -->
+          <textarea name="messageTextarea" id="messageTextarea" class="form-control" placeholder="something" style="height: 15rem;"></textarea>
+          <label for="messageTextarea" class="form-label">Write a message</label>
+        </div>
+
+        <!-- Send button -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Send</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+```
+
+The previous markup will result in:
+
+![Forms: floating labels](19-forms/docs/images/forms_tune_up.png)
+
+Note that only a few extra `<div>`s with `.form-floating` class and a bit of reorganization was needed to accomplish the tuning up of the previous basic form.
+
+The following section illustrate some form controls individually.
+
+
+### Inputs
+
+Inputs (text, email, password) use the following simple markup:
+
+```html
+<div class="mb-3">
+  <label for="inputPassword" class="form-label">Password</label>
+  <input type="password" class="form-control" id="inputPassword">
+</div>
+```
+
+![Forms: input](images/forms_input.png)
+
+### Checkboxes
+
+Checkboxes use the following markup:
+
+```html
+<div class="mb-3 form-check">
+  <input type="checkbox" class="form-check-input" id="check">
+  <label class="form-check-label" for="check">Check me out</label>
+</div>
+```
+
+![Forms: checkbox](images/forms_checkbox.png)
+
+By default, a checkbox will show up in an unchecked status. If you want to be checked by default, make sure to include the `checked` attribute as shown below:
+
+```html
+<div class="form-check">
+  <input type="checkbox" class="form-check-input" value="" id="checkedCheckbox" checked>
+  <label for="checkedCheckbox" class="form-check-label">Checked checkbox</label>
+</div>
+```
+
+You can disaable a checked box in the same way using the `disabled` property:
+
+```html
+<div class="form-check">
+  <input type="checkbox" class="form-check-input" value="" id="disabledCheckCheckbox" checked disabled>
+  <label for="disabledCheckCheckbox" class="form-check-label">Disabled and checked checkbox</label>
+</div>
+```
+
+![Forms: disabled and checked checkbox](images/forms_checkbox_disabled_checked.png)
+
+
+You can also have indeterminate checkboxes, but you need TypeScript to set them, as there is not HTML attribute to set them:
+
+```html
+<div class="form-check">
+  <input type="checkbox" class="form-check-input" value="" id="indeterminateCheckbox">
+  <label for="indeterminateCheckbox" class="form-check-label">Indeterminate checkbox</label>
+</div>
+```
+
+```typescript
+const indeterminateCheckbox: HTMLInputElement = getValidatedHtmlElement('#indeterminateCheckbox');
+
+indeterminateCheckbox.indeterminate = true;
+
+function getValidatedHtmlElement<T extends Element>(htmlSelector: string): T {
+  const elem = document.querySelector(htmlSelector);
+  if (!elem) {
+    console.log(`ERROR: ${ htmlSelector } was not found in the HTML`);
+    throw new Error(`Missing element ${ htmlSelector } in HTML`);
+  }
+  return elem as T;
+}
+```
+
+
+### Radio buttons
+
+Groups of radio buttons use the following markup:
+
+```html
+<div class="form-check">
+  <input type="radio" class="form-check-input" name="radioDefault" id="radioDefault1">
+  <label for="radioDefault1" class="form-check-label">Default radio</label>
+</div>
+
+<div class="form-check">
+  <input type="radio" class="form-check-input" name="radioDefault" id="radioDefault2" checked>
+  <label for="radioDefault2" class="form-check-label">Default checked radio</label>
+</div>
+
+<div class="form-check">
+  <input type="radio" class="form-check-input" name="radioDefault" id="radioDefault3" checked disabled>
+  <label for="radioDefault3" class="form-check-label">Default checked and disabled radio</label>
+</div>
+```
+
+![Forms: radio buttons](images/forms_radios.png)
+
+See how the group share the same name, with individual `id`s.
+
+#### Inline variant for checkboxes and radio buttons
+
+You can use the following markup to display checkboxes and radios on a single line, rather that in an vertical fashion:
+
+```html
+<div>
+  <div class="form-check form-check-inline">
+    <input type="checkbox" class="form-check-input" id="inlineCheckbox1" value="option1">
+    <label class="form-check-label" for="inlineCheckbox1">1</label>
+  </div>
+
+  <div class="form-check form-check-inline">
+    <input type="checkbox" class="form-check-input" id="inlineCheckbox2" value="option2">
+    <label class="form-check-label" for="inlineCheckbox2">2</label>
+  </div>
+
+  <div class="form-check form-check-inline">
+    <input type="checkbox" class="form-check-input" id="inlineCheckbox3" value="option3" disabled>
+    <label class="form-check-label" for="inlineCheckbox3">3 (disabled)</label>
+  </div>
+</div>
+
+<div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadios" id="inlineRadio1" value="option1">
+    <label class="form-check-label" for="inlineRadio1">1</label>
+  </div>
+
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadios" id="inlineRadio2" value="option2">
+    <label class="form-check-label" for="inlineRadio2">2</label>
+  </div>
+
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadios" id="inlineRadio3" value="option3" disabled>
+    <label class="form-check-label" for="inlineRadio3">3 (disabled)</label>
+  </div>
+</div>
+```
+
+![Forms: inline variant](images/forms_inline_checkboxes_radios.png)
+
+### Switches
+
+Switches are checkboxes that feature a different appearance:
+
+```html
+<!-- Unchecked Switch -->
+<div class="form-check form-switch">
+  <input type="checkbox" class="form-check-input" id="switchCheckbox">
+  <label for="switchCheckbox" class="form-check-label">Default switch checkbox input</label>
+</div>
+
+<!-- Checked Switch -->
+<div class="form-check form-switch">
+  <input type="checkbox" class="form-check-input" id="switchCheckedCheckbox" checked>
+  <label for="switchCheckedCheckbox" class="form-check-label">Default switch checkbox checked input</label>
+</div>
+
+<!-- Disabled Unchecked Switch -->
+<div class="form-check form-switch">
+  <input type="checkbox" class="form-check-input" id="switchCheckboxDisabled" disabled>
+  <label for="switchCheckboxDisabled" class="form-check-label">Default switch checkbox disabled input</label>
+</div>
+
+<!-- Disabled Checked Switch -->
+<div class="form-check form-switch">
+  <input type="checkbox" class="form-check-input" id="switchCheckedDisabled" disabled checked>
+  <label for="switchCheckedDisabled" class="form-check-label">Default switch checkbox checked and disabled input</label>
+</div>
+```
+
+![Forms: switches](images/forms_switches.png)
+
+
+### File input
+
+File inputs use very little markup:
+
+```html
+<div>
+  <label for="formfile" class="form-label">Default file input example</label>
+  <input type="file" class="form-control" id="formfile">
+</div>
+```
+
+![Form: file input](images/forms_file.png)
+
+
+### Range control
+
+Range control can be used to provide a numeric value in a certain range. The markup is very simple:
+
+```html
+<label for="customRange" class="form-label">Example range</label>
+<input type="range" class="form-range" id="customRange">
+```
+
+![Forms: range](images/forms_range.png)
+
+
+### Validation components
+
+Bootstrap provides a rich set of validation components used to provide feedback to the user about the text they are typing or the selections they are doing.
+
+The validation requires a bit of markup, and a bit of TypeScript.
+
+Let's start with the markup of a simple input:
+
+```html
+<form class="row g-3 needs-validation" novalidate>
+
+  <div class="col-md-4">
+    <label for="firstName" class="form-label">First name</label>
+    <input type="text" class="form-control" id="firstName" placeholder="your name here..." required>
+    <div class="valid-feedback">Looks good!</div>
+    <div class="invalid-feedback">First name is required</div>
+  </div>
+
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">Submit form</button>
+  </div>
+</form>
+```
+
+The previous snippet illustrates a form with a single text input allowing the user to type their first name.
+
+Note the following:
++ There is a `<form>` element with the `novalidate` attribute. This is required to perform validation on-demand.
++ The element to validate features a `required` attribute. This signals the browser that this element requires validation.
++ Two `<div>`s are added in the same container as the input that is validated: One is associated with the `.valid-feedback` class, the other with the `.invalid-feedback` class. Those will be displayed and styled appropriately if the field passes or fails validation respectively.
++ The validation visual cues will be in effect after the first submission. Before that, nothing happens (see first image below).
++ Although not evident from the markup, the element itself will be styled appropriately with green/red icons to give proper feedback to the user (see 2nd and 3rd image below).
+
+![Forms: validation initial state](images/forms_validation_initial.png)
+
+![Forms: validation success](images/forms_validation_success.png)
+
+![Forms: validation failure](images/forms_validation_failure.png)
+
+
+In order to make this work, you also need a bit of TypeScript:
+
+```typescript
+const forms: HTMLFormElement[] = getValidatedHtmlElements('.needs-validation');
+
+for (const form of forms) {
+  form.addEventListener('submit', (event) => {
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    form.classList.add('was-validated');
+  }, false);
+}
+
+
+
+function getValidatedHtmlElements<T extends Element>(htmlSelector: string): T[] {
+  const elems = document.querySelectorAll(htmlSelector);
+  if (!elems) {
+    console.log(`ERROR: ${ htmlSelector } was not found in the HTML`);
+    throw new Error(`Missing element ${ htmlSelector } in HTML`);
+  }
+  return [...elems] as T[];
+}
+```
+
+First of all you retrieve all the forms to be validated, and then bind each one of them with a simple event handler for the `'submit'` event that:
+  + disables the submission if the form is not valid, which is checked using `form.checkValidity()`
+  + adds the class `.was-validated` to the form, so that the interactive visual cues are activated after the first submission.
+
+
+| EXAMPLE: |
+| :------- |
+| See [19: Hello, Bootstrap forms!](19-forms) for a runnable example illustrating all the concepts of this section, along with a more complex validation form. |
+
 ## Examples, Exercises and mini-projects
 
 ### [01: Hello, Bootstrap v5 refresher](01-hello-bootstrap-v5)
@@ -2474,6 +2953,12 @@ Illustrates the basics of Bootstrap navbar component.
 
 ### [17: Hello, navs and tabs!](17-navs-and-tabs)
 Illustrates the basics of Bootstrap navs and tabs components.
+
+### [18: Hello, Bootstrap icons!](18-bootstrap-icons)
+Illustrates the basics of Bootstrap Icons project, and the different ways to consume those icons and style them.
+
+### [19: Hello, Bootstrap forms!](19-forms)
+Illustrates the basics of Bootstrap forms
 
 ### [e01: Practicing the Grid layout!](e01-practicing-grid-layout)
 Using the grid system to obtain three different layouts.
