@@ -2901,6 +2901,157 @@ First of all you retrieve all the forms to be validated, and then bind each one 
 | :------- |
 | See [19: Hello, Bootstrap forms!](19-forms) for a runnable example illustrating all the concepts of this section, along with a more complex validation form. |
 
+## other components
+
+The components we've see so far are the ones you'll use more often, but Bootstrap comes with many other components that will come in handy in many situations.
+
+By now, you should be proficient enough in Bootstrap to be able to introduce your components in your project, setting them out in the page according to your needs.
+
+## Flexbox in Bootstrap
+
+Bootstrap provides a set of utilities to manage the layout, alignment, sizing of grid columns...
+
+Let's first refresh the concept of *Flexbox*.
+
+### Flexbox in a nutshell
+
+The CSS language provides a `display` property that allows you to change the default way something is displayed. All the elements have a value for this property (`display: block` for block elements, `display: inline` for inline elements). Additionally, there is an `inline-block` mode which configures an element as `inline`, but makes the element observe a few block related properties such as width and height.
+
+You can change the default layout behavior of an element overwriting this value.
+
+Apart from that, the `display` property is used to enable the *Flexbox layout (`display: flex`) and the *Grid layout* (`display: grid`).
+
+*Flexbox* is a one-dimensional layout method for setting out items in rows or columns.
+
+Using *Flexbox* will enable advanced layout capabilities in your page such as:
++ vertically centering a block of content inside its parent.
++ making all the children of a container take up an equal amount of the available width/heigh regardless of how much width/height is available.
++ making all the columns in a multi-column layout adopt the same height independently of their content.
+
+Consider the following web page, that in normal flow is displayed as:
+
+![Flexbox: no flex](e03-bs-flex/docs/images/flexbox_no_flex.png)
+
+
+The markup includes a `<header>` element, and a `<section>` element with 3 `<article>`s.
+
+You can make the articles to be laid out in a single row, by simply using the `.d-flex` class on the `<section>`:
+
+```html
+<body>
+  <div class="container">
+    <header class="bg-secondary m-2 p-3 text-center text-white">
+      <h1>Simple flexbox example</h1>
+    </header>
+
+    <section class="d-flex">
+      <article class="bg-info m-2 p-2">
+        <h2>First article</h2>
+
+        <p class="mt-5">
+          Tacos actually microdosing, pour-over semiotics banjo chicharrones retro fanny pack portland everyday carry
+          vinyl typewriter. Tacos PBR&B pork belly, everyday carry ennui pickled sriracha normcore hashtag polaroid
+          single-origin coffee cold-pressed. PBR&B tattooed trust fund twee, leggings salvia iPhone photo booth health
+          goth gastropub hammock.
+        </p>
+      </article>
+
+      <article class="bg-info m-2 p-2">
+        <h2>Second article</h2>
+...
+```
+
+which will be displayed as:
+
+
+![Flexbox: flex](e03-bs-flex/docs/images/flexbox_flex.png)
+
+
+The Flexbox model is quite elaborate, as it is intended to give you total control over the placement of flex items:
+
+![Flex model](../01-vanilla-css/images/flexbox-model.png)
+
+In essence, *Flexbox* provides a property called `flex-direction` that can be set to `row` or `column`. As seen on the previous example, the default value is `row`. Additionally, you can set out the items in `row-reverse` and `column-reverse` to arrange them in different order than in normal flow.
+
+That can be enabled using:
+
+```html
+<section class="d-flex flex-row-reverse">
+  <article class="bg-info m-2 p-2">
+    <h2>First article</h2>
+...
+```
+
+which results in:
+
+![Flexbox: row reverse](e03-bs-flex/docs/images/flexbox_row_reverse.png)
+
+And similarly for column direction:
+
+```html
+<section class="d-flex flex-column-reverse">
+  <article class="bg-info m-2 p-2">
+    <h2>First article</h2>
+```
+
+which is displayed as:
+![Flexbox: column reverse](e03-bs-flex/docs/images/flexbox_column_reverse.png)
+
+
+| NOTE: |
+| :---- |
+| In the examples above, the `<section>` element is given the `.d-flex` class to make it behave as the *flex container*. It will behave as a block element in terms of how it interacts with the rest of the page.<br>You can also use `.d-inline-flex` if you want to set out an element's children using *Flexbox*, but you want the element itself to behave as an inline element. |
+
+
+One of the most useful features of *Flexbox* is horizontal and vertical alignment.
+
+Consider the following example in which you have 5 buttons that are laid out right below the header:
+
+![Flexbox: no flex alignment](e03-bs-flex/docs/images/flexbox_hello_alignment_no_flex.png)
+
+
+You can simply add the following:
+
+```html
+<section>
+  <div class="d-flex justify-content-around bg-dark p-3">
+    <button type="button" class="btn btn-primary">Smile</button>
+    <button type="button" class="btn btn-success">Laugh</button>
+    <button type="button" class="btn btn-info">Wink</button>
+    <button type="button" class="btn btn-warning">Shrug</button>
+    <button type="button" class="btn btn-danger">Blush</button>
+  </div>
+</section>
+```
+
+and the buttons will be evenly distributed around the available space:
+
+![Flexbox: space around](e03-bs-flex/docs/images/flexbox_hello_alignment_space_around.png)
+
+Bootstrap provides many other utilities to justify the content in different ways:
+
+![Flexbox: alignment on main axis](e03-bs-flex/docs/images/flexbox_alignment_main_axis.png)
+
+| NOTE: |
+| :---- |
+| In *Flexbox* terms, what we've done is alignment on the main axis (horizontal alignment for direction row, vertical alignment for direction column). |
+
+*Flexbox* also provides properties to align items, which in Bootstraps translates to classes you have to use in containers to align items in the cross-axis. In Bootstrap you can use them with and without wrapping `<div>`s using the `.align-items-*` and `.align-self-*` classes as seen below:
+
+![Flexbox: alignment on cross axis](e03-bs-flex/docs/images/flexbox_alignment_cross_axis.png)
+
+
+| NOTE: |
+| :---- |
+| In *Flexbox* terms, what we've done in the previous exercise is align the elements vertically, when using the row direction, or horizontally if using the column direction. |
+
+
+Finally, you can also some specific Bootstrap *Flexbox* utilities to distribute items to your liking as seen below:
+
+
+![Flexbox: margins](e03-bs-flex/docs/images/flexbox_margins.png)
+
+
 ## Examples, Exercises and mini-projects
 
 ### [01: Hello, Bootstrap v5 refresher](01-hello-bootstrap-v5)
@@ -2964,10 +3115,12 @@ Illustrates the basics of Bootstrap forms
 Using the grid system to obtain three different layouts.
 
 ### [e02: Images in action!](e02-practicing-utilities)
-Illustrates the basics of Bootstrap image utilities
+Illustrates the basics of Bootstrap image utilities.
+
+### [e03: Practicing Bootstrap flex utilities!](e03-bs-flex)
+Practicing Bootstrap v5 *flexbox* utilities.
 
 ## Todo
 
 + [ ] Grokking display utilities: using `d-none` linked to a button to toggle the visibility of elements (e.g. completed
-todo tasks) vs. `d-invisible`
-+ [ ] Review flexbox from vanilla CSS and see how to replicate using Bootstrap flex utilities.
+todo tasks) vs. `d-invisible` (recreating Todo task)

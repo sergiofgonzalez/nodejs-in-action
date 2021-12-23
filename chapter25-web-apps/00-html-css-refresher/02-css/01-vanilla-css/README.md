@@ -3862,9 +3862,9 @@ The methods at your disposal to change how elements are laid out in CSS are as f
 
 #### The `display` property
 
-The `display` property allows you to change the default way something display. All the elements have a value for the `display` property, even when using the *normal flow* (`display: block` for block elements and `display: inline` for inline elements).
+The `display` property allows you to change the default way something is displayed. All the elements have a value for the `display` property, even when using the *normal flow* (`display: block` for block elements and `display: inline` for inline elements).
 
-You can change the default layout behavior of an element switching from one value to another one. For example, you can make a `<li>` element which has a default `display: block` property to use `display: inline` (or `display: inline-block` if you want to display it like an *inline* element but respecting some of the ).
+You can change the default layout behavior of an element switching from one value to another one. For example, you can make a `<li>` element which has a default `display: block` property to use `display: inline` (or `display: inline-block` if you want to display it like an *inline* element but respecting some of the properties typically given to blocks such as width and height).
 
 Apart from `block`, `inline`, and `inline-block` the other really relevant values we will use are `display: flex` to enable the *Flexbox layout* and `display: grid` to enable the *Grid layout*.
 

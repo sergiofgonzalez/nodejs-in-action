@@ -1,4 +1,4 @@
-# e01: Bootstrap v5 &mdash; Practicing Bootstrap utilities!
+# e02: Bootstrap v5 &mdash; Practicing Bootstrap utilities!
 > using Bootstrap v5 utilities to recreate a pure vanilla CSS example.
 
 ## Description
