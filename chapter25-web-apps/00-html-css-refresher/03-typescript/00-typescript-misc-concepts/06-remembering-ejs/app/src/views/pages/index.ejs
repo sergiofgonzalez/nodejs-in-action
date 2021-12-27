@@ -1,0 +1,35 @@
+<%- include('../partials/header') %>
+<body>
+
+  <div class="container">
+    <h2 class="display-2 text-center">Remembering <em>EJS</em></h2>
+
+    <p class="text-muted m-0">
+      Simple interpolation (you can include a <code>name</code> parameter in the request)
+    </p>
+    <p class="bg-dark text-white p-3">
+      Hello to <%= user %>!
+    </p>
+
+    <!-- You can interpolate more complex objects -->
+    <p class="text-muted m-0">
+      Interpolation of an object property
+    </p>
+    <p class="bg-dark text-white p-3">
+      Username.firstname: <%= username.firstName %>
+    </p>
+
+    <!-- or include a scriptlet with JavaScript logic -->
+    <p class="text-muted m-0">
+      Using a scriptlet with JavaScript logic (send <code>admin=true</code> in the request)
+    </p>
+    <% if (username.admin) { %>
+      <p class="bg-dark text-white p-3">Congratulations: you are an <strong>admin!</strong></p>
+    <% } else { %>
+      <p class="bg-dark text-white p-3">You are a regular user</p>
+    <% } %>
+  </div>
+
+  <%- include('../partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<%- include('../partials/header', { title: 'ToDo tasks'}) %>
+<body>
+
+  <div class="container">
+    <h2 class="display-2 text-center">Remembering <em>EJS</em></h2>
+
+    <p class="text-muted m-0">
+      Looping through data in a template
+    </p>
+
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">ToDo Task Description</th>
+          <th scope="col">Done</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const task of tasks) { %>
+          <tr>
+            <th scope="row"><%= task.id %></th>
+            <td><%= task.desc %></td>
+            <td>
+              <% if (task.done) { %>
+                <input type="checkbox" class="form-check-input" readonly checked>
+              <% } else { %>
+                <input type="checkbox" class="form-check-input" readonly>
+              <% } %>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+  <%- include('../partials/footer') %>
+</body>
+</html>

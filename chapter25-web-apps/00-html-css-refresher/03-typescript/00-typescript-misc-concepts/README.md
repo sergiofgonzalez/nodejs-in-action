@@ -48,6 +48,15 @@ WebSockets open a lot interesting scenarios, such as a server sending updates to
 | :------- |
 | See [05: Hello, WebSockets!](05-hello-websockets) for a runnable example illustrating how a client and a server can communicate through the WebSockets protocol. |
 
+
+### Remembering EJS with Express
+
+*EJS* is one of the most popular template engines for JavaScript. Express projects can be easily integrated with *EJS* to provide server-side rendering capabilities, in which application data can be interpolated into HTML templates.
+
+| EXAMPLE: |
+| :------- |
+| See [06: Remembering *EJS*](06-remembering-ejs) for a runnable example illustrating project structure, integration, and basic usage of *EJS* in Express projects. |
+
 ## Exercises, code examples, and mini-projects
 
 ### [01: Hello, `Partial<T>`!](01-hello-partial)
@@ -64,5 +73,8 @@ A gentle introduction to *same-origin policy* in the browser and the *CORS* mech
 
 ### [05: Hello, WebSockets!](05-hello-websockets)
 A very simple introduction to WebSockets.
+
+### [06: Remembering *EJS*](06-remembering-ejs)
+Remembering the basic concepts of the *EJS* template engine for Express projects.
 
 ## ToDo
