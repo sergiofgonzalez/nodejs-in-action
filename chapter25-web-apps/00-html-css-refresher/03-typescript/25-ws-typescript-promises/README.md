@@ -240,4 +240,7 @@ Creating a REST API using the Node.js `http` module, backed by SQLite.
 ### [12: Vanilla TypeScript UI for a REST API](12-vanilla-ts-ui-for-rest-api)
 Creating a Vanilla TypeScript UI for a REST API.
 
+### [e01: Server-side rendered UI for REST API](e01-server-side-rendered-ui-for-rest-api)
+Reimplementing [12: Vanilla TypeScript UI for a REST API](12-vanilla-ts-ui-for-rest-api) with a mix of server-side rendered UI and client TypeScript.
+
 ## ToDo
