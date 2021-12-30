@@ -30,6 +30,7 @@
 + [23 &mdash; Event loop and async behavior](23-ws-typescript-event-loop-and-async)
 + [24 &mdash; Higher-order functions and callbacks](24-ws-typescript-higher-order-functions-and-callbacks)
 + [25 &mdash; Using promises in TypeScript](25-ws-typescript-promises)
++ [26 &mdash: Async/await in TypeScript](26-ws-typescript-async-await)
 
 
 #### ToDo

@@ -91,8 +91,6 @@ Delete the first task we inserted:
 
 ```bash
 $ curl --verbose http://localhost:5000/todos/1 \
-  --request DELETE
-$ curl --verbose http://localhost:5000/todos/1 \
 >   --request DELETE
 ...
 > DELETE /todos/1 HTTP/1.1
