@@ -57,6 +57,14 @@ WebSockets open a lot interesting scenarios, such as a server sending updates to
 | :------- |
 | See [06: Remembering *EJS*](06-remembering-ejs) for a runnable example illustrating project structure, integration, and basic usage of *EJS* in Express projects. |
 
+### Using nodemon to configure hot-reloading your TypeScript application
+
+[nodemon](https://github.com/remy/nodemon) is a well-known tool that helps restarting a Node.js application when file changes in a particular file or directory are detected.
+
+However, nodemon is not readily suited for TypeScript projects, and it requires a little bit of extra work.
+
+The example [07: Configuring Nodemon for reloading](07-nodemon-ts) shows you how to configure your `package.json` to achieve that.
+
 ## Exercises, code examples, and mini-projects
 
 ### [01: Hello, `Partial<T>`!](01-hello-partial)
@@ -76,5 +84,8 @@ A very simple introduction to WebSockets.
 
 ### [06: Remembering *EJS*](06-remembering-ejs)
 Remembering the basic concepts of the *EJS* template engine for Express projects.
+
+### [07: Configuring Nodemon for reloading](07-nodemon-ts)
+Using nodemon to recompile and restart your TypeScript application when you make changes to your application.
 
 ## ToDo
