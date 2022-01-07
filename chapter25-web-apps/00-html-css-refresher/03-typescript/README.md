@@ -32,6 +32,8 @@
 + [25 &mdash; Using promises in TypeScript](25-ws-typescript-promises)
 + [26 &mdash: Async/await in TypeScript](26-ws-typescript-async-await)
 
+### Part 3 &mdash; example apps
++ [27 &mdash; English irregular verbs quiz](27-eng-irregular-verbs-quiz)
 
 #### ToDo
 - [ ] Express with TypeScript (strong typed!) (https://dev.to/macmacky/get-better-with-typescript-using-express-3ik6)
