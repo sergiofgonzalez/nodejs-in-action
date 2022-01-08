@@ -24,8 +24,8 @@ The backend will use SQLite for persistence.
 
 #### Backend Tasks
 
-- [] Import the list of irregular verbs from markdown
-- [] Import the list of irregular verbs from JSON
+- [X] Import the list of irregular verbs from markdown
+- [X] Import the list of irregular verbs from JSON
 - [] Import the JSON into the SQLite database
 - [] Think about the payload structure for the resources
 - [] Learn about NestJS
@@ -36,4 +36,8 @@ The backend will use SQLite for persistence.
 ## Prototypes index
 
 ### [01 &mdash; Hello, verbs importer!](01-hello-verbs-importer)
-Imports the list of irregular verbs from a markdown file and creates a JSON from it
+Imports the list of irregular verbs from a markdown file and creates a JSON from it.
+
+### [02 &mdash; Importing the irregular verbs JSON file](02-hello-json-importer)
+Imports the list of irregular verbs from a JSON file.
+

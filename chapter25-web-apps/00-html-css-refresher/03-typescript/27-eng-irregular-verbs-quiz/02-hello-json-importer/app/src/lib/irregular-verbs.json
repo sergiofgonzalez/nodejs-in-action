@@ -1,0 +1,1282 @@
+[
+  {
+    "be": {
+      "infinitive": "be",
+      "pastSimple": [
+        "was",
+        "were"
+      ],
+      "pastParticiple": [
+        "been"
+      ]
+    }
+  },
+  {
+    "beat": {
+      "infinitive": "beat",
+      "pastSimple": [
+        "beat"
+      ],
+      "pastParticiple": [
+        "beaten"
+      ]
+    }
+  },
+  {
+    "become": {
+      "infinitive": "become",
+      "pastSimple": [
+        "became"
+      ],
+      "pastParticiple": [
+        "become"
+      ]
+    }
+  },
+  {
+    "begin": {
+      "infinitive": "begin",
+      "pastSimple": [
+        "began"
+      ],
+      "pastParticiple": [
+        "begun"
+      ]
+    }
+  },
+  {
+    "bend": {
+      "infinitive": "bend",
+      "pastSimple": [
+        "bent"
+      ],
+      "pastParticiple": [
+        "bent"
+      ]
+    }
+  },
+  {
+    "bet": {
+      "infinitive": "bet",
+      "pastSimple": [
+        "bet"
+      ],
+      "pastParticiple": [
+        "bet"
+      ]
+    }
+  },
+  {
+    "bite": {
+      "infinitive": "bite",
+      "pastSimple": [
+        "bit"
+      ],
+      "pastParticiple": [
+        "bitten"
+      ]
+    }
+  },
+  {
+    "blow": {
+      "infinitive": "blow",
+      "pastSimple": [
+        "blew"
+      ],
+      "pastParticiple": [
+        "blown"
+      ]
+    }
+  },
+  {
+    "break": {
+      "infinitive": "break",
+      "pastSimple": [
+        "broke"
+      ],
+      "pastParticiple": [
+        "broken"
+      ]
+    }
+  },
+  {
+    "bring": {
+      "infinitive": "bring",
+      "pastSimple": [
+        "brought"
+      ],
+      "pastParticiple": [
+        "brought"
+      ]
+    }
+  },
+  {
+    "broadcast": {
+      "infinitive": "broadcast",
+      "pastSimple": [
+        "broadcast"
+      ],
+      "pastParticiple": [
+        "broadcast"
+      ]
+    }
+  },
+  {
+    "build": {
+      "infinitive": "build",
+      "pastSimple": [
+        "built"
+      ],
+      "pastParticiple": [
+        "built"
+      ]
+    }
+  },
+  {
+    "burst": {
+      "infinitive": "burst",
+      "pastSimple": [
+        "burst"
+      ],
+      "pastParticiple": [
+        "burst"
+      ]
+    }
+  },
+  {
+    "buy": {
+      "infinitive": "buy",
+      "pastSimple": [
+        "bought"
+      ],
+      "pastParticiple": [
+        "bought"
+      ]
+    }
+  },
+  {
+    "catch": {
+      "infinitive": "catch",
+      "pastSimple": [
+        "caught"
+      ],
+      "pastParticiple": [
+        "caught"
+      ]
+    }
+  },
+  {
+    "choose": {
+      "infinitive": "choose",
+      "pastSimple": [
+        "chose"
+      ],
+      "pastParticiple": [
+        "chosen"
+      ]
+    }
+  },
+  {
+    "come": {
+      "infinitive": "come",
+      "pastSimple": [
+        "came"
+      ],
+      "pastParticiple": [
+        "come"
+      ]
+    }
+  },
+  {
+    "cost": {
+      "infinitive": "cost",
+      "pastSimple": [
+        "cost"
+      ],
+      "pastParticiple": [
+        "cost"
+      ]
+    }
+  },
+  {
+    "creep": {
+      "infinitive": "creep",
+      "pastSimple": [
+        "crept"
+      ],
+      "pastParticiple": [
+        "crept"
+      ]
+    }
+  },
+  {
+    "cut": {
+      "infinitive": "cut",
+      "pastSimple": [
+        "cut"
+      ],
+      "pastParticiple": [
+        "cut"
+      ]
+    }
+  },
+  {
+    "deal": {
+      "infinitive": "deal",
+      "pastSimple": [
+        "dealt"
+      ],
+      "pastParticiple": [
+        "dealt"
+      ]
+    }
+  },
+  {
+    "dig": {
+      "infinitive": "dig",
+      "pastSimple": [
+        "dug"
+      ],
+      "pastParticiple": [
+        "dug"
+      ]
+    }
+  },
+  {
+    "do": {
+      "infinitive": "do",
+      "pastSimple": [
+        "did"
+      ],
+      "pastParticiple": [
+        "done"
+      ]
+    }
+  },
+  {
+    "draw": {
+      "infinitive": "draw",
+      "pastSimple": [
+        "drew"
+      ],
+      "pastParticiple": [
+        "drawn"
+      ]
+    }
+  },
+  {
+    "drink": {
+      "infinitive": "drink",
+      "pastSimple": [
+        "drank"
+      ],
+      "pastParticiple": [
+        "drunk"
+      ]
+    }
+  },
+  {
+    "drive": {
+      "infinitive": "drive",
+      "pastSimple": [
+        "drove"
+      ],
+      "pastParticiple": [
+        "driven"
+      ]
+    }
+  },
+  {
+    "eat": {
+      "infinitive": "eat",
+      "pastSimple": [
+        "ate"
+      ],
+      "pastParticiple": [
+        "eaten"
+      ]
+    }
+  },
+  {
+    "fall": {
+      "infinitive": "fall",
+      "pastSimple": [
+        "fell"
+      ],
+      "pastParticiple": [
+        "fallen"
+      ]
+    }
+  },
+  {
+    "feed": {
+      "infinitive": "feed",
+      "pastSimple": [
+        "fed"
+      ],
+      "pastParticiple": [
+        "fed"
+      ]
+    }
+  },
+  {
+    "feel": {
+      "infinitive": "feel",
+      "pastSimple": [
+        "felt"
+      ],
+      "pastParticiple": [
+        "felt"
+      ]
+    }
+  },
+  {
+    "fight": {
+      "infinitive": "fight",
+      "pastSimple": [
+        "fought"
+      ],
+      "pastParticiple": [
+        "fought"
+      ]
+    }
+  },
+  {
+    "find": {
+      "infinitive": "find",
+      "pastSimple": [
+        "found"
+      ],
+      "pastParticiple": [
+        "found"
+      ]
+    }
+  },
+  {
+    "flee": {
+      "infinitive": "flee",
+      "pastSimple": [
+        "fled"
+      ],
+      "pastParticiple": [
+        "fled"
+      ]
+    }
+  },
+  {
+    "fly": {
+      "infinitive": "fly",
+      "pastSimple": [
+        "flew"
+      ],
+      "pastParticiple": [
+        "flown"
+      ]
+    }
+  },
+  {
+    "forbid": {
+      "infinitive": "forbid",
+      "pastSimple": [
+        "forbade"
+      ],
+      "pastParticiple": [
+        "forbidden"
+      ]
+    }
+  },
+  {
+    "forget": {
+      "infinitive": "forget",
+      "pastSimple": [
+        "forgot"
+      ],
+      "pastParticiple": [
+        "forgotten"
+      ]
+    }
+  },
+  {
+    "forgive": {
+      "infinitive": "forgive",
+      "pastSimple": [
+        "forgave"
+      ],
+      "pastParticiple": [
+        "forgiven"
+      ]
+    }
+  },
+  {
+    "freeze": {
+      "infinitive": "freeze",
+      "pastSimple": [
+        "froze"
+      ],
+      "pastParticiple": [
+        "frozen"
+      ]
+    }
+  },
+  {
+    "get": {
+      "infinitive": "get",
+      "pastSimple": [
+        "got"
+      ],
+      "pastParticiple": [
+        "got",
+        "gotten"
+      ]
+    }
+  },
+  {
+    "give": {
+      "infinitive": "give",
+      "pastSimple": [
+        "gave"
+      ],
+      "pastParticiple": [
+        "given"
+      ]
+    }
+  },
+  {
+    "go": {
+      "infinitive": "go",
+      "pastSimple": [
+        "went"
+      ],
+      "pastParticiple": [
+        "gone"
+      ]
+    }
+  },
+  {
+    "grow": {
+      "infinitive": "grow",
+      "pastSimple": [
+        "grew"
+      ],
+      "pastParticiple": [
+        "grown"
+      ]
+    }
+  },
+  {
+    "hang": {
+      "infinitive": "hang",
+      "pastSimple": [
+        "hung"
+      ],
+      "pastParticiple": [
+        "hung"
+      ]
+    }
+  },
+  {
+    "have": {
+      "infinitive": "have",
+      "pastSimple": [
+        "had"
+      ],
+      "pastParticiple": [
+        "had"
+      ]
+    }
+  },
+  {
+    "hear": {
+      "infinitive": "hear",
+      "pastSimple": [
+        "heard"
+      ],
+      "pastParticiple": [
+        "heard"
+      ]
+    }
+  },
+  {
+    "hide": {
+      "infinitive": "hide",
+      "pastSimple": [
+        "hid"
+      ],
+      "pastParticiple": [
+        "hidden"
+      ]
+    }
+  },
+  {
+    "hit": {
+      "infinitive": "hit",
+      "pastSimple": [
+        "hit"
+      ],
+      "pastParticiple": [
+        "hit"
+      ]
+    }
+  },
+  {
+    "hold": {
+      "infinitive": "hold",
+      "pastSimple": [
+        "held"
+      ],
+      "pastParticiple": [
+        "held"
+      ]
+    }
+  },
+  {
+    "hurt": {
+      "infinitive": "hurt",
+      "pastSimple": [
+        "hurt"
+      ],
+      "pastParticiple": [
+        "hurt"
+      ]
+    }
+  },
+  {
+    "keep": {
+      "infinitive": "keep",
+      "pastSimple": [
+        "kept"
+      ],
+      "pastParticiple": [
+        "kept"
+      ]
+    }
+  },
+  {
+    "kneel": {
+      "infinitive": "kneel",
+      "pastSimple": [
+        "knelt"
+      ],
+      "pastParticiple": [
+        "knelt"
+      ]
+    }
+  },
+  {
+    "know": {
+      "infinitive": "know",
+      "pastSimple": [
+        "knew"
+      ],
+      "pastParticiple": [
+        "known"
+      ]
+    }
+  },
+  {
+    "lay": {
+      "infinitive": "lay",
+      "pastSimple": [
+        "laid"
+      ],
+      "pastParticiple": [
+        "laid"
+      ]
+    }
+  },
+  {
+    "lead": {
+      "infinitive": "lead",
+      "pastSimple": [
+        "led"
+      ],
+      "pastParticiple": [
+        "led"
+      ]
+    }
+  },
+  {
+    "leave": {
+      "infinitive": "leave",
+      "pastSimple": [
+        "left"
+      ],
+      "pastParticiple": [
+        "left"
+      ]
+    }
+  },
+  {
+    "lend": {
+      "infinitive": "lend",
+      "pastSimple": [
+        "lent"
+      ],
+      "pastParticiple": [
+        "lent"
+      ]
+    }
+  },
+  {
+    "let": {
+      "infinitive": "let",
+      "pastSimple": [
+        "let"
+      ],
+      "pastParticiple": [
+        "let"
+      ]
+    }
+  },
+  {
+    "lie": {
+      "infinitive": "lie",
+      "pastSimple": [
+        "lay"
+      ],
+      "pastParticiple": [
+        "lain"
+      ]
+    }
+  },
+  {
+    "light": {
+      "infinitive": "light",
+      "pastSimple": [
+        "lit"
+      ],
+      "pastParticiple": [
+        "lit"
+      ]
+    }
+  },
+  {
+    "lose": {
+      "infinitive": "lose",
+      "pastSimple": [
+        "lost"
+      ],
+      "pastParticiple": [
+        "lost"
+      ]
+    }
+  },
+  {
+    "make": {
+      "infinitive": "make",
+      "pastSimple": [
+        "made"
+      ],
+      "pastParticiple": [
+        "made"
+      ]
+    }
+  },
+  {
+    "mean": {
+      "infinitive": "mean",
+      "pastSimple": [
+        "meant"
+      ],
+      "pastParticiple": [
+        "meant"
+      ]
+    }
+  },
+  {
+    "meet": {
+      "infinitive": "meet",
+      "pastSimple": [
+        "met"
+      ],
+      "pastParticiple": [
+        "met"
+      ]
+    }
+  },
+  {
+    "pay": {
+      "infinitive": "pay",
+      "pastSimple": [
+        "paid"
+      ],
+      "pastParticiple": [
+        "paid"
+      ]
+    }
+  },
+  {
+    "put": {
+      "infinitive": "put",
+      "pastSimple": [
+        "put"
+      ],
+      "pastParticiple": [
+        "put"
+      ]
+    }
+  },
+  {
+    "read": {
+      "infinitive": "read",
+      "pastSimple": [
+        "read"
+      ],
+      "pastParticiple": [
+        "read"
+      ]
+    }
+  },
+  {
+    "ride": {
+      "infinitive": "ride",
+      "pastSimple": [
+        "rode"
+      ],
+      "pastParticiple": [
+        "ridden"
+      ]
+    }
+  },
+  {
+    "ring": {
+      "infinitive": "ring",
+      "pastSimple": [
+        "rang"
+      ],
+      "pastParticiple": [
+        "rung"
+      ]
+    }
+  },
+  {
+    "rise": {
+      "infinitive": "rise",
+      "pastSimple": [
+        "rose"
+      ],
+      "pastParticiple": [
+        "risen"
+      ]
+    }
+  },
+  {
+    "run": {
+      "infinitive": "run",
+      "pastSimple": [
+        "ran"
+      ],
+      "pastParticiple": [
+        "run"
+      ]
+    }
+  },
+  {
+    "say": {
+      "infinitive": "say",
+      "pastSimple": [
+        "said"
+      ],
+      "pastParticiple": [
+        "said"
+      ]
+    }
+  },
+  {
+    "see": {
+      "infinitive": "see",
+      "pastSimple": [
+        "saw"
+      ],
+      "pastParticiple": [
+        "seen"
+      ]
+    }
+  },
+  {
+    "seek": {
+      "infinitive": "seek",
+      "pastSimple": [
+        "sought"
+      ],
+      "pastParticiple": [
+        "sought"
+      ]
+    }
+  },
+  {
+    "sell": {
+      "infinitive": "sell",
+      "pastSimple": [
+        "sold"
+      ],
+      "pastParticiple": [
+        "sold"
+      ]
+    }
+  },
+  {
+    "send": {
+      "infinitive": "send",
+      "pastSimple": [
+        "sent"
+      ],
+      "pastParticiple": [
+        "sent"
+      ]
+    }
+  },
+  {
+    "set": {
+      "infinitive": "set",
+      "pastSimple": [
+        "set"
+      ],
+      "pastParticiple": [
+        "set"
+      ]
+    }
+  },
+  {
+    "sew": {
+      "infinitive": "sew",
+      "pastSimple": [
+        "sewed"
+      ],
+      "pastParticiple": [
+        "sewn",
+        "sewed"
+      ]
+    }
+  },
+  {
+    "shake": {
+      "infinitive": "shake",
+      "pastSimple": [
+        "shook"
+      ],
+      "pastParticiple": [
+        "shaken"
+      ]
+    }
+  },
+  {
+    "shine": {
+      "infinitive": "shine",
+      "pastSimple": [
+        "shone"
+      ],
+      "pastParticiple": [
+        "shone"
+      ]
+    }
+  },
+  {
+    "shoot": {
+      "infinitive": "shoot",
+      "pastSimple": [
+        "shot"
+      ],
+      "pastParticiple": [
+        "shot"
+      ]
+    }
+  },
+  {
+    "show": {
+      "infinitive": "show",
+      "pastSimple": [
+        "showed"
+      ],
+      "pastParticiple": [
+        "shown",
+        "showed"
+      ]
+    }
+  },
+  {
+    "shrink": {
+      "infinitive": "shrink",
+      "pastSimple": [
+        "shrank"
+      ],
+      "pastParticiple": [
+        "shrunk"
+      ]
+    }
+  },
+  {
+    "shut": {
+      "infinitive": "shut",
+      "pastSimple": [
+        "shut"
+      ],
+      "pastParticiple": [
+        "shut"
+      ]
+    }
+  },
+  {
+    "sing": {
+      "infinitive": "sing",
+      "pastSimple": [
+        "sang"
+      ],
+      "pastParticiple": [
+        "sung"
+      ]
+    }
+  },
+  {
+    "sink": {
+      "infinitive": "sink",
+      "pastSimple": [
+        "sank"
+      ],
+      "pastParticiple": [
+        "sunk"
+      ]
+    }
+  },
+  {
+    "sit": {
+      "infinitive": "sit",
+      "pastSimple": [
+        "sat"
+      ],
+      "pastParticiple": [
+        "sat"
+      ]
+    }
+  },
+  {
+    "sleep": {
+      "infinitive": "sleep",
+      "pastSimple": [
+        "slept"
+      ],
+      "pastParticiple": [
+        "slept"
+      ]
+    }
+  },
+  {
+    "slide": {
+      "infinitive": "slide",
+      "pastSimple": [
+        "slid"
+      ],
+      "pastParticiple": [
+        "slid"
+      ]
+    }
+  },
+  {
+    "speak": {
+      "infinitive": "speak",
+      "pastSimple": [
+        "spoke"
+      ],
+      "pastParticiple": [
+        "spoken"
+      ]
+    }
+  },
+  {
+    "spend": {
+      "infinitive": "spend",
+      "pastSimple": [
+        "spent"
+      ],
+      "pastParticiple": [
+        "spent"
+      ]
+    }
+  },
+  {
+    "spit": {
+      "infinitive": "spit",
+      "pastSimple": [
+        "spat"
+      ],
+      "pastParticiple": [
+        "spat"
+      ]
+    }
+  },
+  {
+    "split": {
+      "infinitive": "split",
+      "pastSimple": [
+        "split"
+      ],
+      "pastParticiple": [
+        "split"
+      ]
+    }
+  },
+  {
+    "spread": {
+      "infinitive": "spread",
+      "pastSimple": [
+        "spread"
+      ],
+      "pastParticiple": [
+        "spread"
+      ]
+    }
+  },
+  {
+    "spring": {
+      "infinitive": "spring",
+      "pastSimple": [
+        "sprang"
+      ],
+      "pastParticiple": [
+        "sprung"
+      ]
+    }
+  },
+  {
+    "stand": {
+      "infinitive": "stand",
+      "pastSimple": [
+        "stood"
+      ],
+      "pastParticiple": [
+        "stood"
+      ]
+    }
+  },
+  {
+    "steal": {
+      "infinitive": "steal",
+      "pastSimple": [
+        "stole"
+      ],
+      "pastParticiple": [
+        "stolen"
+      ]
+    }
+  },
+  {
+    "stick": {
+      "infinitive": "stick",
+      "pastSimple": [
+        "stuck"
+      ],
+      "pastParticiple": [
+        "stuck"
+      ]
+    }
+  },
+  {
+    "sting": {
+      "infinitive": "sting",
+      "pastSimple": [
+        "stung"
+      ],
+      "pastParticiple": [
+        "stung"
+      ]
+    }
+  },
+  {
+    "stink": {
+      "infinitive": "stink",
+      "pastSimple": [
+        "stank"
+      ],
+      "pastParticiple": [
+        "stunk"
+      ]
+    }
+  },
+  {
+    "strike": {
+      "infinitive": "strike",
+      "pastSimple": [
+        "struck"
+      ],
+      "pastParticiple": [
+        "struck"
+      ]
+    }
+  },
+  {
+    "swear": {
+      "infinitive": "swear",
+      "pastSimple": [
+        "swore"
+      ],
+      "pastParticiple": [
+        "sworn"
+      ]
+    }
+  },
+  {
+    "sweep": {
+      "infinitive": "sweep",
+      "pastSimple": [
+        "swept"
+      ],
+      "pastParticiple": [
+        "swept"
+      ]
+    }
+  },
+  {
+    "swim": {
+      "infinitive": "swim",
+      "pastSimple": [
+        "swam"
+      ],
+      "pastParticiple": [
+        "swum"
+      ]
+    }
+  },
+  {
+    "swing": {
+      "infinitive": "swing",
+      "pastSimple": [
+        "swung"
+      ],
+      "pastParticiple": [
+        "swung"
+      ]
+    }
+  },
+  {
+    "take": {
+      "infinitive": "take",
+      "pastSimple": [
+        "took"
+      ],
+      "pastParticiple": [
+        "taken"
+      ]
+    }
+  },
+  {
+    "teach": {
+      "infinitive": "teach",
+      "pastSimple": [
+        "taught"
+      ],
+      "pastParticiple": [
+        "taught"
+      ]
+    }
+  },
+  {
+    "tear": {
+      "infinitive": "tear",
+      "pastSimple": [
+        "tore"
+      ],
+      "pastParticiple": [
+        "torn"
+      ]
+    }
+  },
+  {
+    "tell": {
+      "infinitive": "tell",
+      "pastSimple": [
+        "told"
+      ],
+      "pastParticiple": [
+        "told"
+      ]
+    }
+  },
+  {
+    "think": {
+      "infinitive": "think",
+      "pastSimple": [
+        "thought"
+      ],
+      "pastParticiple": [
+        "thought"
+      ]
+    }
+  },
+  {
+    "throw": {
+      "infinitive": "throw",
+      "pastSimple": [
+        "threw"
+      ],
+      "pastParticiple": [
+        "thrown"
+      ]
+    }
+  },
+  {
+    "understand": {
+      "infinitive": "understand",
+      "pastSimple": [
+        "understood"
+      ],
+      "pastParticiple": [
+        "understood"
+      ]
+    }
+  },
+  {
+    "wake": {
+      "infinitive": "wake",
+      "pastSimple": [
+        "woke"
+      ],
+      "pastParticiple": [
+        "woken"
+      ]
+    }
+  },
+  {
+    "wear": {
+      "infinitive": "wear",
+      "pastSimple": [
+        "wore"
+      ],
+      "pastParticiple": [
+        "worn"
+      ]
+    }
+  },
+  {
+    "weep": {
+      "infinitive": "weep",
+      "pastSimple": [
+        "wept"
+      ],
+      "pastParticiple": [
+        "wept"
+      ]
+    }
+  },
+  {
+    "win": {
+      "infinitive": "win",
+      "pastSimple": [
+        "won"
+      ],
+      "pastParticiple": [
+        "won"
+      ]
+    }
+  },
+  {
+    "write": {
+      "infinitive": "write",
+      "pastSimple": [
+        "wrote"
+      ],
+      "pastParticiple": [
+        "written"
+      ]
+    }
+  }
+]
