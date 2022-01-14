@@ -65,6 +65,44 @@ However, nodemon is not readily suited for TypeScript projects, and it requires 
 
 The example [07: Configuring Nodemon for reloading](07-nodemon-ts) shows you how to configure your `package.json` to achieve that.
 
+### TypeScript basics refresher
+
+TypeScript comes with a lot of *baggage* that is not needed when doing JavaScript development. It is common every now and then to refresh basic concepts when approaching a new TypeScript project (e.g. intersection types, interfaces vs. types, enums...).
+
+The example [08: TypeScript basics sandbox](08-ts-basics-sandbox) features a set of basic exercises to refresh those basic concepts.
+
+### TypeScript 4 features
+
+TypeScript 4 introduced a great list of features such as:
++ variadic tuple types
++ template literal types
++ labeled tuples
+
+The example [09: TypeScript 4 concepts](09-ts4-features) illustrates those concepts.
+
+### Mastering conditionals
+
+Conditionals (if, ternary operator, switch) are inherited from the JavaScript syntax and you don't typically spend much time thinking about them when writing TypeScript. However, you can write them in a more *type-safe way* by embracing the TypeScript ways.
+
+The example [10: Mastering conditionals](10-mastering-conditionals) illustrate how to write conditionals in this way with very simple examples.
+
+### Structural typing
+
+Structural typing is a concept loosely related to *duck-typing*, and that becomes very important when learning TypeScript.
+
+The example [11: TypeScript structural typing](11-ts-structural-typing) illustrates duck-typing and the basics of structural typing.
+
+### Hello, utility types!
+
+The TypeScript language bundles a several utility types for you to use in your application such as:
++ `Record` to describe key-value maps entry shape
++ `Partial` to create a type with all the properties of another type marked as optional
++ `Required` to create a type with all the properties of another type marked as required
++ `Pick` to create a type with specific properties of another type
++ `Omit` to create a type without specific properties of another type.
+
+You can use the example [12: Hello, utility types!](12-hello-utility-types) to practice the utility types.
+
 ## Exercises, code examples, and mini-projects
 
 ### [01: Hello, `Partial<T>`!](01-hello-partial)
@@ -87,5 +125,20 @@ Remembering the basic concepts of the *EJS* template engine for Express projects
 
 ### [07: Configuring Nodemon for reloading](07-nodemon-ts)
 Using nodemon to recompile and restart your TypeScript application when you make changes to your application.
+
+### [08: TypeScript basics sandbox](08-ts-basics-sandbox)
+A sandbox project to refresh basic TypeScript concepts.
+
+### [09: TypeScript 4 concepts](09-ts4-features)
+A sandbox project to introduce some TypeScript 4 concepts.
+
+### [10: Mastering conditionals](10-mastering-conditionals)
+Illustrating different ways to write conditional *in the TypeScript way*.
+
+### [11: TypeScript structural typing](11-ts-structural-typing)
+Introducing structural typing in TypeScript
+
+### [12: Hello, utility types!](12-hello-utility-types)
+Introducing TypeScript utility types: `Record`, `Partial`, `Required`, `Pic`, `Omit`...
 
 ## ToDo

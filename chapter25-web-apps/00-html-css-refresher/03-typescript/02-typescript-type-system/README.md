@@ -118,7 +118,7 @@ When doing so, the compiler won't complain, as it can detect the exact type of t
 
 ### Type aliases
 
-TypeScript allows you to create a *named type* that can be used as a substitute for a type union. *Type aliases* canbe used anywere a type can be used:
+TypeScript allows you to create a *named type* that can be used as a substitute for a type union. *Type aliases* can be used anywere a type can be used:
 
 ```typescript
 type stringOrNumber = string | number;
