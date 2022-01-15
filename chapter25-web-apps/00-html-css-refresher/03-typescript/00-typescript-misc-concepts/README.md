@@ -103,6 +103,16 @@ The TypeScript language bundles a several utility types for you to use in your a
 
 You can use the example [12: Hello, utility types!](12-hello-utility-types) to practice the utility types.
 
+### Hello, advanced types and assertions!
+
+TypeScript lets you create your own utility types (like `Record` and `Partial`) by using quite advanced type related concepts such as:
++ capturing property keys with `keyof`/`keyof typeof`
++ branded types for enabling nominal types for stricter type checking (disables structural typing)
++ conditional types that mutate depending on how they are instantiated.
+
+The example [13: Hello, advanced types and assertions!](13-advanced-types-and-assertions) introduces a few examples in these concepts.
+
+
 ## Exercises, code examples, and mini-projects
 
 ### [01: Hello, `Partial<T>`!](01-hello-partial)
@@ -140,5 +150,11 @@ Introducing structural typing in TypeScript
 
 ### [12: Hello, utility types!](12-hello-utility-types)
 Introducing TypeScript utility types: `Record`, `Partial`, `Required`, `Pic`, `Omit`...
+
+### [13: Hello, advanced types and assertions!](13-advanced-types-and-assertions)
+Introduction to the creation of your custom utility types using advanced techniques such as capturing property keys, enabling nominal types (i.e. disabling structural types), and using conditional types.
+
+## Description
+
 
 ## ToDo

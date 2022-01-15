@@ -40,3 +40,7 @@ Structural typing in TypeScript will allow to assign to the `logger` variable an
 const log = { log: (msg: string) => console.log(msg) };
 logger = log; //OK: structural typing
 ```
+
+| NOTE: |
+| :---- |
+| In short, structural typing means that if two types contain the same structure (same property names), they are considered to be compatible. |
