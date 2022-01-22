@@ -69,7 +69,7 @@ SG_ID="$(aws \
 --profile $PROFILE_NAME \
 ec2 create-security-group \
 --group-name temp-security-group \
---description "Temporaty security group created by spin_up_vm.sh" \
+--description "Temporary security group created by spin_up_vm.sh" \
 --vpc-id "$VPC_ID" \
 --output text)"
 
