@@ -104,15 +104,15 @@ Each AWS account comes with a *root* user granted unrestricted access to all res
 
 To access your AWS account, an attacker must be able to authenticate to your account either using the *root* user, using another user, or authenticating as an *AWS resource*, such as an *EC2 instance*.
 
-To authenticate as a root user or normal user an attacker will need your credentials and possibly access to your device if you have enabled multi-factor authentication (which is clearly encouraged). To authenticate as an *AWS resource* the attacker needs to send API/CLI requests.
+To authenticate as a root user or normal user an attacker will need your credentials and possibly access to your device if you have enabled multi-factor authentication (which is strongly encouraged). To authenticate as an *AWS resource* the attacker needs to send API/CLI requests.
 
-As a result, as basic security measures you should:
-+ Enable MFA for your *root* user.
-+ Do not use your *root* user for day-to-day AWS tasks, and use a regular user with appropriate permissions instead.
-+ Enable MFA for your *regular* (non-root) users.
-+ Tailor the permissions for your *regular* users following the *Principle of Least Privilege*.
-+ Tailor the permissions of your generated access/secret keys, so that if they get stolen the damages can be contained.
-+ Tailor the permissions of your services (e.g. EC2 instances), so that the amount of API/CLI keys that can be used from within the services follow the *Principle of Least Privilege*.
+As a result, as basic security measures you **must** implement:
++ **Enable MFA** for your *root* user.
++ **Do not use your *root* user** for day-to-day AWS tasks, and use a regular user with appropriate permissions instead.
++ **Enable MFA** for your *regular* (non-root) users.
++ Tailor the permissions for your *regular* users following the **Principle of Least Privilege**.
++ Tailor the **permissions of your generated access/secret keys**, so that if they get stolen the damages can be contained.
++ Tailor the **permissions of your services** (e.g. EC2 instances), so that the amount of API/CLI keys that can be used from within the services follow the *Principle of Least Privilege*.
 
 ### AWS Identity and Access Management (IAM)
 
@@ -203,7 +203,7 @@ The following policy has the effect of allowing every action for the *EC2* servi
 }
 ```
 
-As a consequence, the following policy denies all actions. That is, the second statement of the policy has no consequences:
+As a consequence, the following policy will effectively deny all actions. That is, the second statement of the policy is inconsequential and could be removed, as it has no effect:
 
 ```json
 {
@@ -230,7 +230,7 @@ Resources in the policies must be specified using their *Amazon Resource Name (A
 The syntax for an *ARN* is as follows:
 
 ```
-arn:aws:{service}:{region}:{account-id}:{maybe-resource-type}/{resource}
+arn:aws:{service}:[{maybe-region}]:{account-id}:[{maybe-resource-type}]/{resource}
 ```
 
 For example, the *ARN* for a given *EC2* instance running on `us-east-1` in the account `123456789012` will be similar to:
@@ -251,7 +251,9 @@ $ aws iam get-user --query "User.Arn"
 | AS IAM is a global service, the `{region}` part of the ARN is empty. |
 
 
-Now that you know how to describe specific resources, you can write policies that allow specific actions on specific resources:
+Now that you know how to describe specific resources, you can write policies that allow specific actions on specific resources.
+
+A user/resource granted with the following policy will be allowed to execute the termination of the instance with ID `i-06d4262a0fd80193f` defined in the `us-east-1` region of the `123456789012` account.
 
 ```json
 {
@@ -284,11 +286,15 @@ You can use the wildcard character `*` to specify a set of items matching a give
 
 There are two types of policies:
 
-+ *Managed Policies* &mdash; used when you want to create policies that can be reused in your account. There are two subtypes:
++ **Managed Policies** &mdash; policies that can be reused in your account. There are two subtypes:
   + *AWS managed policy* &mdash; a policy maintained by AWS. Those are policies that grant admin rights, read-only rights, power user rights, etc.
   + *Customer managed policy* &mdash; a policy maintained by yoursef that represents reusable roles in your organizations (e.g. sysadmin roles, DevOps engineers role, Software devs roles, etc.)
 
-+ *Inline policy* &mdash; a policy that belongs to a certain *IAM role*, *IAM user*, or *IAM group*. An *inline policy* isn't a *standalone object* and therefore, cannot exist without the *IAM role*, *IAM user* or *IAM group* that is attached to.
++ *Inline policy* &mdash; a policy that belongs to a certain *IAM role*, *IAM user*, or *IAM group*, and that cannot be reused for another *IAM role*, *IAM user*, or *IAM group*. An *inline policy* isn't a *standalone object* and therefore, cannot exist without the *IAM role*, *IAM user* or *IAM group* that is attached to.
+
+*AWS managed* and *Customer managed* policies can be easily differentiated in the IAM Management Console:
+
+![IAM Managed Policies](images/IAM_aws_managed_vs_customer_managed_policies.png)
 
 | NOTE: |
 | :---- |
@@ -298,7 +304,7 @@ There are two types of policies:
 
 A user can authenticate using either a user name and password (*AWS Management console*), or through some access keys (*AWS CLI*).
 
-As the *root user* has total control over your account, is highly encouraged that you create *IAM users* to comply with the *Principle of Least Privilege*. Thus:
+As the *root user* has total control over your account, is highly encouraged that you create and use *IAM users* other than the *root user* to comply with the *Principle of Least Privilege*. Thus:
 + each person access your account will have their unique username and credentials.
 + you can grant each individual the exact permission set they require.
 
@@ -309,7 +315,7 @@ The following script creates an `"Admins"` group, attaches the `"Administrator"`
 ```bash
 $ aws iam create-group --group-name "Admins"
 $ aws iam attach-group-policy --group-name "Admins" \
---policy-arn "arn:aws:iam:aws:policy/AdministratorAccess"
+--policy-arn "arn:aws:iam::aws:policy/AdministratorAccess"
 $ aws iam create-user --user-name "myuser"
 $ aws iam add-user-to-group --group-name "Admins" \
 --user-name "myuser"
@@ -366,7 +372,7 @@ Role:
                   'ec2:ResourceTag/aws:cloudformation:stack-id': !Ref 'AWS::StackId'
 ```
 
-To attach an inline role to an instance, you must first create an *instance profile*:
+To attach an inline role to an instance, you must first create an *instance profile* resource type:
 
 ```yaml
 InstanceProfile:
@@ -387,7 +393,7 @@ The same applies to resources on AWS. You are given tools to open only the ports
 
 Before network traffic can enter or leave your AWS resource, it goes through a firewall provided by AWS. This firewall inspects the network traffic and uses rules to decide whether the traffic is allowed or denied.
 
-This firewall is implemented in AWS through the concept of *Security Groups*. By default, a *Security Group* does not allow any inbound traffic (you must add your own rules to allow specific incoming traffic), and allows all outbound traffic (you must add your own rules to restrict egress traffic).
+This firewall is implemented in AWS through the concept of **Security Groups**. By default, a **Security Group** does not allow any inbound traffic (you must add your own rules to allow specific incoming traffic), and allows all outbound traffic (you must add your own rules to restrict egress traffic).
 
 | NOTE: |
 | :---- |
