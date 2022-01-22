@@ -112,6 +112,11 @@ TypeScript lets you create your own utility types (like `Record` and `Partial`) 
 
 The example [13: Hello, advanced types and assertions!](13-advanced-types-and-assertions) introduces a few examples in these concepts.
 
+### OOP in TypeScript
+
+TypeScript has first class support to OOP techniques, and the four pillars of OOP: encapsulation, abstraction, inheritance, and polymorphism can be used in a very clean way.
+
+You can use the example [14: OOP refresher](14-oop-refresher) as a sandbox to practice those techniques.
 
 ## Exercises, code examples, and mini-projects
 
@@ -153,6 +158,9 @@ Introducing TypeScript utility types: `Record`, `Partial`, `Required`, `Pic`, `O
 
 ### [13: Hello, advanced types and assertions!](13-advanced-types-and-assertions)
 Introduction to the creation of your custom utility types using advanced techniques such as capturing property keys, enabling nominal types (i.e. disabling structural types), and using conditional types.
+
+### [14: OOP refresher](14-oop-refresher)
+Refreshing OOP pillars in TypeScript: abstraction, inheritance, encapsulation, and polymorphism.
 
 ## Description
 
