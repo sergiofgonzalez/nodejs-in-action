@@ -484,10 +484,156 @@ Once we build the project with `npm run build` we will get:
 | See [Hello, webpack: step 4](hello-webpack-04) for a runnable example of the previous code. |
 
 #### Bundling fonts
-https://webpack.js.org/guides/asset-management/#loading-fonts
+
+The *Assets Module* can be used to take any file you load through them and output it to the build directory.
+
+For example, to bundle fonts you would do:
+
+```javascript
+/* file: webpack.config.js */
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif|ico)$/i,
+        type: 'asset/resource'
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource'
+      }
+    ]
+  },
+  mode: 'development'  // either: 'production', 'development', or 'none'
+};
+```
+
+Then in your CSS, you can load the font and reference it using `@font-face` declaration:
+
+```css
+/* file: src/style.css */
+@font-face {
+  font-family: 'MyFont1';
+  src: url('./SedgwickAve-Regular.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+
+.hello {
+  color: rebeccapurple;
+  font-family: 'MyFont1';
+  background: url('./noise.png');
+}
+```
+
+Then simply re-run: `npm run build` and load the page and you will see the changes on the page:
+
+![Bundling fonts](docs/images/bundling_fonts.png)
+
+| EXAMPLE: |
+| :------- |
+| See [Hello, webpack: step 5](hello-webpack-05) for a runnable example of the previous code. |
+
+#### Bundling data (othen than JSON)
+
+It is also possible to configure webpack to load data (othen than JSON, which is supported by default using `import Data from './data.json').
+
+Again, the first part is configure your `webpack.config.js`:
+
+```javascript
+/* file: webpack.config.js */
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif|ico)$/i,
+        type: 'asset/resource'
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource'
+      },
+      {
+        test: /\.(csv|tsv)$/i,
+        use: ['csv-loader']
+      },
+      {
+        test: /\.xml$/i,
+        use: ['xml-loader']
+      }
+    ]
+  },
+  mode: 'development'  // either: 'production', 'development', or 'none'
+};
+```
+
+Then add some data files to your source project:
+
+```xml
+<!-- src/data.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<note>
+  <to>Mary</to>
+  <from>John</from>
+  <heading>Reminder</heading>
+  <body>Call Cindy on Tuesday</body>
+</note>
+```
+
+```csv
+to,from,heading,body
+Mary,John,Reminder,Call Cindy on Tuesday
+Zoe,Bill,Reminder,Buy orange juice
+Autumn,Lindsey,Letter,I miss you
+```
+
+Then install the corresponding loaders and perform the build, and you will see how the data is made available to your JavaScript application.
+
+```bash
+npm install --save-dev csv-loader xml-loader
+npm run build
+```
+
+
+![bundling data](docs/images/bundling_data.png)
+
+| EXAMPLE: |
+| :------- |
+| See [Hello, webpack: step 6](hello-webpack-06) for a runnable example of the previous code. |
+
+
+| NOTE: |
+| :---- |
+| Similarly, it is possible to import YAML and other types of files. See [Customize parser of JSON modules](https://webpack.js.org/guides/asset-management/#customize-parser-of-json-modules) for additional details. |
+
+#### Output Management
+Up until now, we've manually included our assets in our `dist/` directory, which is less than desirable.
 
 ## ToDo:
 - [X] Getting started guide: https://webpack.js.org/guides/getting-started/
-- [ ] Asset Management guide: Asset Management : https://webpack.js.org/guides/asset-management/
+- [X] Asset Management guide: Asset Management : https://webpack.js.org/guides/asset-management/
 - [ ] TypeScript basic setup: https://webpack.js.org/guides/typescript/#basic-setup
 - [ ] Using TypeScript in the configuration file: webpack.js.org/configuration/configuration-languages/

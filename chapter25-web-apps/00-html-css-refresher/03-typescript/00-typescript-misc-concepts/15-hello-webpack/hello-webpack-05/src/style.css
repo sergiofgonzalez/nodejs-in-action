@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'MyFont1';
+  src: url('./SedgwickAve-Regular.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+
+.hello {
+  color: rebeccapurple;
+  font-family: 'MyFont1';
+  background: url('./noise.png');
+}
