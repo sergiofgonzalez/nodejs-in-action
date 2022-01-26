@@ -629,8 +629,44 @@ npm run build
 | :---- |
 | Similarly, it is possible to import YAML and other types of files. See [Customize parser of JSON modules](https://webpack.js.org/guides/asset-management/#customize-parser-of-json-modules) for additional details. |
 
+| NOTE: |
+| :---- |
+| The project [Hello, webpack: step 7](hello-webpack-07-cleanup) is the result of cleaning up the assets that won't be needed for the subsequent sections. |
+
 #### Output Management
 Up until now, we've manually included our assets in our `dist/` directory, which is less than desirable.
+
+In the project [Hello, webpack: step 8](hello-webpack-08) we setup the project in a way in which the HTML is generated, and two bundles are created (as if we have different entry points for our app).
+
+#### Development
+
+Webpack comes with all the necessary tools to facilitate your frontend development:
++ source maps support
++ watch mode to run the build on file changes
++ development server with live reload
+
+The project [Hello, webpack: step 9](hello-webpack-09) comes configured with such capabilities:
++ source maps are added via `devtool: 'inline-source-map'` in the `webpack.config.js` file.
++ watch mode enabled in the `package.json`
++ development server with live reload: configured in the `webpack.config.js` (using `devServer` which publishes the results in `http://localhost:8080`) and `package.json`.
+
+Use:
++ `npm run watch` to see watch mode in action
++ `npm start` to see the webpack dev server in action
+
+| NOTE: |
+| :---- |
+| Webpack dev server requires the `webpack-dev-server` dependency. |
+
+##### Using `webpack-dev-middleware`
+
+Using the `webpack-dev-middleware` you can configure your own custom Express server to be aware of your webpack bundled frontend.
+
+The example [Hello, webpack: step 10](hello-webpack-10) illustrate this approach.
+
+| NOTE: |
+| :---- |
+| While the middleware will recompile the frontend on each change, the custom Express server will not feature *Live Reload* capabilities. |
 
 ## ToDo:
 - [X] Getting started guide: https://webpack.js.org/guides/getting-started/

@@ -1,0 +1,27 @@
+{
+  "name": "hello-webpack",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "start": "webpack serve --open",
+    "server": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "4.17.2",
+    "html-webpack-plugin": "5.5.0",
+    "webpack": "5.66.0",
+    "webpack-cli": "4.9.1",
+    "webpack-dev-middleware": "5.3.0",
+    "webpack-dev-server": "4.7.3"
+  },
+  "dependencies": {
+    "lodash": "4.17.21"
+  }
+}
