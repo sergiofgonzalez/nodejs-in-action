@@ -1,0 +1,7 @@
+# ignore definition files wherever they are
+**/*.d.ts
+# ignore contents of custom definition files dir
+app/src/types/
+# ignore generated build artifacts
+dist/*
+coverage/*

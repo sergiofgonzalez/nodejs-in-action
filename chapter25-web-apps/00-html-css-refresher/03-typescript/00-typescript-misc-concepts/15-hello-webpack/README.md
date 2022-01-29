@@ -662,14 +662,31 @@ Use:
 
 Using the `webpack-dev-middleware` you can configure your own custom Express server to be aware of your webpack bundled frontend.
 
-The example [Hello, webpack: step 10](hello-webpack-10) illustrate this approach.
+The example [Hello, webpack: step 10](hello-webpack-10) illustrates this approach.
 
 | NOTE: |
 | :---- |
 | While the middleware will recompile the frontend on each change, the custom Express server will not feature *Live Reload* capabilities. |
 
-## ToDo:
-- [X] Getting started guide: https://webpack.js.org/guides/getting-started/
-- [X] Asset Management guide: Asset Management : https://webpack.js.org/guides/asset-management/
-- [ ] TypeScript basic setup: https://webpack.js.org/guides/typescript/#basic-setup
-- [ ] Using TypeScript in the configuration file: webpack.js.org/configuration/configuration-languages/
+### Using TypeScript in webpack
+
+The example [Hello, webpack: step 11](hello-webpack-11) illustrates a simple example that creates a bundle out of a TypeScript frontend application.
+
+The example uses the `ts-loader` and provides a simple `tsconfig.json` configuration.
+
+Note that even with that simple config, you will be able to debug your TypeScript code seamlessly in the browser, which was very challenging when not using webpack, as the browser could not make sense of the source maps correctly.
+
+![Debugging TypeScript](docs/images/debugging_ts.png)
+
+#### Webpack config using TypeScript
+Although webpack config file is very simple, you might want to write it in TypeScript for consistency.
+
+The project [Hello, webpack: step 12](hello-webpack-12) illustrates how to using the TypeScript configuration.
+
+Note that this option uses `ts-node` which has a limitation with *ESModules*, so you might want to consider sticking to JavaScript config file, in which you include the `ts-loader` to handle TypeScript files.
+
+## Using TypeScript with webpack
+
+Once we have a feel of the capabilities of webpack, we can use it to bundle dependencies, libraries, and assets.
+
+The example [Webpack: Vanilla TypeScript UI for REST API](webpack-vanilla-ts-ui-for-rest-api) is the bundling of the Vanilla TS UI project using webpack. It includes TypeScript sources and libraries, along with CSS, HTML, etc.
