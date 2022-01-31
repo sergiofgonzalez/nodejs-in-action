@@ -1,5 +1,5 @@
 # 15: Misc concepts &mdash; Hello, webpack!
->
+> grokking webpack, the module bundler of modern frontend applications.
 
 ## Webpack
 

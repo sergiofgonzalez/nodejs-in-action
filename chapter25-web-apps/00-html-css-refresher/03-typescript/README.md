@@ -35,6 +35,8 @@
 ### Part 3 &mdash; example apps
 + [27 &mdash; English irregular verbs quiz](27-eng-irregular-verbs-quiz)
 
++ [28 &mdash; Pandora list](28-pandora-list)
+
 #### ToDo
 - [ ] Express with TypeScript (strong typed!) (https://dev.to/macmacky/get-better-with-typescript-using-express-3ik6)
 - [ ] Express with InversifyJS

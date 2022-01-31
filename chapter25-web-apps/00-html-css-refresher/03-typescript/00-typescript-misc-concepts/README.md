@@ -118,6 +118,20 @@ TypeScript has first class support to OOP techniques, and the four pillars of OO
 
 You can use the example [14: OOP refresher](14-oop-refresher) as a sandbox to practice those techniques.
 
+### Webpack
+
+Modern and robust frontend applications require a bundler takes control of your frontend application packaging.
+
+One of the popular choices is [webpack](https://webpack.js.org/).
+
+The example [15: Hello, webpack!](15-hello-webpack/README.md) guides you through the fundamental concepts of webpack, so you can start using it for your frontend development. It also features examples that illustrate several scenarios (TypeScript applications, assets bundling, etc.).
+
+
+### Hello, React!
+
+A very simple example using React using TypeScript and bundled with webpack is created in [16: Hello, React!](16-hello-react).
+
+
 ## Exercises, code examples, and mini-projects
 
 ### [01: Hello, `Partial<T>`!](01-hello-partial)
@@ -161,6 +175,13 @@ Introduction to the creation of your custom utility types using advanced techniq
 
 ### [14: OOP refresher](14-oop-refresher)
 Refreshing OOP pillars in TypeScript: abstraction, inheritance, encapsulation, and polymorphism.
+
+### [15: Hello, webpack!](15-hello-webpack)
+Grokking webpack, the module bundler of modern frontend applications.
+
+### [16: Hello, React!](16-hello-react)
+Illustrates how to create the simplest possible React example using TypeScript and webpack as a bundler.
+
 
 ## Description
 
